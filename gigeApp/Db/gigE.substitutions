@@ -1,0 +1,121 @@
+#==============================================================================
+#
+# Abs:  IOC Administration Records
+#
+# Name: iocAdmin.substitutions
+#
+#==============================================================================
+#
+file ADBase.template
+{
+	{
+		R		= ":Base:",
+		PORT	= "PS1",
+		ADDR	= "0",
+		TIMEOUT	= "1"
+	}
+}
+
+file prosilica.template
+{
+	{
+		R		= ":Prosilica:",
+		PORT	= "PS1",
+		ADDR	= "0",
+		TIMEOUT	= "1"
+	}
+}
+
+file NDPluginBase.template
+{
+	{
+		R				= ":Image1:",
+		PORT			= "PS1Image",
+		ADDR			= "0",
+		TIMEOUT			= "1",
+		NDARRAY_PORT	= "PS1",
+		NDARRAY_ADDR	= "0",
+	}
+	{
+		R				= ":File1:",
+		PORT			= "PS1File",
+		ADDR			= "0",
+		TIMEOUT			= "1",
+		NDARRAY_PORT	= "PS1",
+		NDARRAY_ADDR	= "0",
+	}
+	{
+		R				= ":ROI1:",
+		PORT			= "PS1ROI",
+		ADDR			= "0",
+		TIMEOUT			= "1",
+		NDARRAY_PORT	= "PS1",
+		NDARRAY_ADDR	= "0",
+	}
+}
+
+file NDStdArrays.template
+{
+	{
+		R				= ":Image1:",
+		PORT			= "PS1Image",
+		ADDR			= "0",
+		TIMEOUT			= "1",
+		SIZE			= "8",
+		FTVL			= "UCHAR",
+		NELEMENTS		= "1392640",
+	}
+}
+
+file NDFile.template
+{
+	{
+		R				= ":File1:",
+		PORT			= "PS1File",
+		ADDR			= "0",
+		TIMEOUT			= "1",
+	}
+}
+
+file NDROI.template
+{
+	{
+		R				= ":ROI1:",
+		PORT			= "PS1ROI",
+		ADDR			= "0",
+		TIMEOUT			= "1",
+	}
+}
+
+file NDROIN.template
+{
+	{
+		R				= ":ROI1:0:",
+		PORT			= "PS1ROI",
+		ADDR			= "0",
+		TIMEOUT			= "1",
+		HIST_SIZE		= "256"
+	}
+	{
+		R				= ":ROI1:1:",
+		PORT			= "PS1ROI",
+		ADDR			= "1",
+		TIMEOUT			= "1",
+		HIST_SIZE		= "256"
+	}
+	{
+		R				= ":ROI1:2:",
+		PORT			= "PS1ROI",
+		ADDR			= "2",
+		TIMEOUT			= "1",
+		HIST_SIZE		= "256"
+	}
+	{
+		R				= ":ROI1:3:",
+		PORT			= "PS1ROI",
+		ADDR			= "3",
+		TIMEOUT			= "1",
+		HIST_SIZE		= "256"
+	}
+}
+

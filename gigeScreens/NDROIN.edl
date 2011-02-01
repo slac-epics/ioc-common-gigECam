@@ -1,0 +1,2126 @@
+4 0 0
+beginScreenProperties
+major 4
+minor 0
+release 0
+x 262
+y 385
+w 620
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor rgb 0 0 0
+bgColor rgb 47872 47872 47872
+textColor rgb 0 0 0
+ctlFgColor1 rgb 64256 62208 18944
+ctlFgColor2 rgb 60928 46592 11008
+ctlBgColor1 rgb 52480 24832 0
+ctlBgColor2 rgb 65280 45056 65280
+topShadowColor rgb 44544 19968 48128
+botShadowColor rgb 13312 13056 34304
+snapToGrid
+gridSize 5
+endScreenProperties
+
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 148
+y 42
+w 106
+h 20
+lineColor rgb 55808 55808 55808
+fill
+fillColor rgb 55808 55808 55808
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 122
+y 43
+w 159
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor rgb 2560 0 47104
+useDisplayBg
+value {
+ "Definition"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 40
+w 350
+h 380
+lineColor rgb 0 0 0
+fillColor rgb 0 0 0
+lineWidth 0
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 72
+w 61
+h 18
+controlPv "$(P)$(R)Use_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 71
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Use this ROI?"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 193
+y 129
+w 10
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "X"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 286
+y 129
+w 10
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Y"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 57
+y 331
+w 265
+h 20
+
+beginGroup
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 332
+w 61
+h 18
+controlPv "$(P)$(R)ImageSizeY_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 332
+w 61
+h 18
+controlPv "$(P)$(R)ImageSizeX_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 57
+y 331
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "ROI Size"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 370
+y 362
+w 230
+h 229
+# Appearance
+border
+graphTitle "Histogram"
+xLabel "Bin number"
+yLabel "Counts"
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+gridColor rgb 0 0 0
+font "helvetica-medium-r-10.0"
+# Operating Modes
+plotMode "plotLastNPts"
+nPts 1
+#  X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMin -9
+xMax 9
+xLablePrecision 1
+#  Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMin -9
+yMax 9
+#  Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)Histogram_RBV"
+}
+plotStyle {
+  0 "line"
+}
+plotUpdateMode {
+  0 "x"
+}
+plotSymbolType {
+  0 "circle"
+}
+plotColor {
+  0 rgb 0 0 0
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 370
+y 122
+w 230
+h 230
+lineColor rgb 0 0 0
+fillColor rgb 0 0 0
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 381
+y 152
+w 110
+h 20
+font "helvetica-medium-r-12.0"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Compute"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 152
+w 61
+h 18
+controlPv "$(P)$(R)ComputeHistogram_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 381
+y 171
+w 110
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "histogram?"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 124
+w 106
+h 20
+lineColor rgb 55808 55808 55808
+fill
+fillColor rgb 55808 55808 55808
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 435
+y 124
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor rgb 2560 0 47104
+useDisplayBg
+value {
+ "Histogram"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 260
+w 60
+h 20
+controlPv "$(P)$(R)HistMin"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 240
+w 61
+h 18
+controlPv "$(P)$(R)HistMin_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 421
+y 260
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Minimum"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 215
+w 60
+h 20
+controlPv "$(P)$(R)HistSize"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 195
+w 61
+h 18
+controlPv "$(P)$(R)HistSize_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 421
+y 215
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Size"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 391
+y 330
+w 172
+h 20
+
+beginGroup
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 331
+w 61
+h 18
+controlPv "$(P)$(R)HistEntropy_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 391
+y 330
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Entropy"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 305
+w 60
+h 20
+controlPv "$(P)$(R)HistMax"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 285
+w 61
+h 18
+controlPv "$(P)$(R)HistMax_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 421
+y 305
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Maximum"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 430
+w 350
+h 160
+lineColor rgb 0 0 0
+fillColor rgb 0 0 0
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 467
+w 180
+h 20
+font "helvetica-medium-r-12.0"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Compute statistics"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 279
+y 468
+w 61
+h 18
+controlPv "$(P)$(R)ComputeStatistics_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 142
+y 433
+w 107
+h 21
+
+beginGroup
+
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 142
+y 433
+w 106
+h 20
+lineColor rgb 55808 55808 55808
+fill
+fillColor rgb 55808 55808 55808
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 145
+y 433
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor rgb 2560 0 47104
+useDisplayBg
+value {
+ "Statistics"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 84
+y 101
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Name"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 166
+y 99
+w 150
+h 20
+controlPv "$(P)$(R)Name"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 358
+w 254
+h 20
+
+beginGroup
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 358
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Data type"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 359
+w 80
+h 18
+controlPv "$(P)$(R)DataType_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 151
+w 235
+h 40
+
+beginGroup
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 171
+w 60
+h 20
+controlPv "$(P)$(R)BinX"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 171
+w 60
+h 20
+controlPv "$(P)$(R)BinY"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 151
+w 61
+h 18
+controlPv "$(P)$(R)BinX_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 151
+w 61
+h 18
+controlPv "$(P)$(R)BinY_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 171
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Binning"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 107
+y 196
+w 215
+h 40
+
+beginGroup
+
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 196
+w 154
+h 40
+
+beginGroup
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 196
+w 61
+h 18
+controlPv "$(P)$(R)MinX_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 216
+w 60
+h 20
+controlPv "$(P)$(R)MinX"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 216
+w 60
+h 20
+controlPv "$(P)$(R)MinY"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 196
+w 61
+h 18
+controlPv "$(P)$(R)MinY_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 107
+y 216
+w 50
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "ROI start"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 117
+y 241
+w 205
+h 40
+
+beginGroup
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 117
+y 261
+w 40
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "ROI size"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 241
+w 154
+h 40
+
+beginGroup
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 261
+w 60
+h 20
+controlPv "$(P)$(R)SizeX"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 261
+w 60
+h 20
+controlPv "$(P)$(R)SizeY"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 241
+w 61
+h 18
+controlPv "$(P)$(R)SizeX_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 241
+w 61
+h 18
+controlPv "$(P)$(R)SizeY_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+endGroup
+
+endObjectProperties
+
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 286
+w 235
+h 40
+
+beginGroup
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 286
+w 61
+h 18
+controlPv "$(P)$(R)ReverseY_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 306
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Reverse"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 286
+w 61
+h 18
+controlPv "$(P)$(R)ReverseX_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 383
+w 235
+h 20
+
+beginGroup
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 383
+w 61
+h 18
+controlPv "$(P)$(R)BgdWidth_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 383
+w 60
+h 20
+controlPv "$(P)$(R)BgdWidth"
+font "helvetica-medium-r-12.0"
+smartRefresh
+fastUpdate
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 383
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Bgd. width"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 50
+y 123
+w 290
+h 230
+lineColor rgb 0 0 0
+fillColor rgb 0 0 0
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 499
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Minimum"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 101
+y 500
+w 80
+h 18
+controlPv "$(P)$(R)MinValue_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 524
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Maximum"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 101
+y 525
+w 80
+h 18
+controlPv "$(P)$(R)MaxValue_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 202
+y 500
+w 40
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Mean"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 253
+y 501
+w 100
+h 18
+controlPv "$(P)$(R)MeanValue_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 192
+y 525
+w 50
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Total"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 253
+y 526
+w 100
+h 18
+controlPv "$(P)$(R)Total_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 212
+y 550
+w 30
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor rgb 0 0 0
+useDisplayBg
+value {
+ "Net"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 253
+y 551
+w 100
+h 18
+controlPv "$(P)$(R)Net_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor rgb 2560 0 47104
+bgColor rgb 47872 47872 47872
+autoHeight
+format decimal
+nullColor rgb 60928 46592 11008
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 9
+w 359
+h 25
+lineColor rgb 55808 55808 55808
+fill
+fillColor rgb 55808 55808 55808
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 202
+y 10
+w 216
+h 25
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor rgb 2560 0 47104
+useDisplayBg
+value {
+ "$(P)$(R)"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 72
+w 60
+h 18
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+inconsistentColor rgb 17920 17920 17920
+topShadowColor rgb 55808 55808 55808
+botShadowColor rgb 17920 17920 17920
+controlPv "$(P)$(R)Use"
+indicatorPv "$(P)$(R)Use"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 57
+y 331
+w 265
+h 20
+
+beginGroup
+
+
+endGroup
+
+endObjectProperties
+
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 502
+y 171
+w 60
+h 18
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+inconsistentColor rgb 17920 17920 17920
+topShadowColor rgb 55808 55808 55808
+botShadowColor rgb 17920 17920 17920
+controlPv "$(P)$(R)ComputeHistogram"
+indicatorPv "$(P)$(R)ComputeHistogram"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 391
+y 330
+w 172
+h 20
+
+beginGroup
+
+
+endGroup
+
+endObjectProperties
+
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 212
+y 468
+w 60
+h 18
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+inconsistentColor rgb 17920 17920 17920
+topShadowColor rgb 55808 55808 55808
+botShadowColor rgb 17920 17920 17920
+controlPv "$(P)$(R)ComputeStatistics"
+indicatorPv "$(P)$(R)ComputeStatistics"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 142
+y 433
+w 107
+h 21
+
+beginGroup
+
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 358
+w 254
+h 20
+
+beginGroup
+
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 359
+w 80
+h 18
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+inconsistentColor rgb 17920 17920 17920
+topShadowColor rgb 55808 55808 55808
+botShadowColor rgb 17920 17920 17920
+controlPv "$(P)$(R)DataType"
+indicatorPv "$(P)$(R)DataType"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 151
+w 235
+h 40
+
+beginGroup
+
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 107
+y 196
+w 215
+h 40
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 196
+w 154
+h 40
+
+beginGroup
+
+
+endGroup
+
+endObjectProperties
+
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 117
+y 241
+w 205
+h 40
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 241
+w 154
+h 40
+
+beginGroup
+
+
+endGroup
+
+endObjectProperties
+
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 286
+w 235
+h 40
+
+beginGroup
+
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 261
+y 306
+w 60
+h 18
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+inconsistentColor rgb 17920 17920 17920
+topShadowColor rgb 55808 55808 55808
+botShadowColor rgb 17920 17920 17920
+controlPv "$(P)$(R)ReverseY"
+indicatorPv "$(P)$(R)ReverseY"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 306
+w 60
+h 18
+fgColor rgb 0 0 0
+bgColor rgb 29440 57088 65280
+inconsistentColor rgb 17920 17920 17920
+topShadowColor rgb 55808 55808 55808
+botShadowColor rgb 17920 17920 17920
+controlPv "$(P)$(R)ReverseX"
+indicatorPv "$(P)$(R)ReverseX"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 87
+y 383
+w 235
+h 20
+
+beginGroup
+
+
+endGroup
+
+endObjectProperties
+
+
