@@ -1,10 +1,10 @@
 # IOC archive file
-## Replace XPP:IOC:GIGE:01 with the PV prefix used for
+## Replace XPP:IOC:GIGE1 with the PV prefix used for
 ## iocAdmin PV's on this IOC
 
 # Generate IOC archive request 
 file archive_gige.archive
 {
-	{ IOC = "XPP:IOC:GIGE:01" }
+	{ IOC = "XPP:IOC:GIGE1" }
 }
 
