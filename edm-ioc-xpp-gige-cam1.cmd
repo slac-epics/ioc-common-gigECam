@@ -18,5 +18,4 @@ export EDMWEBBROWSER=mozilla
 export PATH=$PATH:$EPICS_SITE_TOP/extensions/current/bin/$EPICS_HOST_ARCH
 export EDMDATAFILES=".:.."
 
-#edm -x -m "IOC=XPP:IOC:GIGE:01" -eolc gigeScreens/gige.edl &
-edm -x -m "IOC=XPP:USR:IOC:GIG1,P=XPP:USR:CVV:GIG1" -eolc gigeScreens/prosilicaCam.edl &
+edm -x -m "P=XPP:USR:CVV:GIGE1" -eolc gigeScreens/prosilicaCam.edl &
