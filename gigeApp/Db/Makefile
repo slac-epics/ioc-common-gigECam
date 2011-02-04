@@ -23,7 +23,9 @@ ARCHIVE += archive_gige.archive
 # Create and install (or just install)
 # Autosave request files, templates, substitutions like this
 #
-REQ += autosave_gige.req
+# FIXME -- is this right
+REQ += autosave_prosilica.req
+
 
 # Nothing to build for autosave, just install from $AUTOSAVE/db
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
