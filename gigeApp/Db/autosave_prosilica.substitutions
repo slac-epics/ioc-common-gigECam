@@ -1,0 +1,77 @@
+file ADBase_settings.req
+{
+    {
+        P = $(P),
+        R = ":Base:"
+    }
+}
+file NDPluginBase_settings.req
+{
+    {
+        P = $(P),
+        R = :Image1:
+    }
+}
+file NDStdArrays_settings.req
+{
+    {
+        P = $(P),
+        R = :Image1:
+    }
+}
+file NDPluginBase_settings.req
+{
+    {
+        P = $(P),
+        R = :File1:
+    }
+}
+file NDFile_settings.req
+{
+    {
+        P = $(P),
+        R = :File1:
+    }
+}
+file NDPluginBase_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:
+    }
+}
+file NDROI_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:
+    }
+}
+file NDROIN_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:0:
+    }
+}
+file NDROIN_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:1:
+    }
+}
+file NDROIN_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:2:
+    }
+}
+file NDROIN_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:3:
+    }
+}
