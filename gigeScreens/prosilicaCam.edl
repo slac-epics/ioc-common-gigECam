@@ -35,9 +35,9 @@ x 4
 y 48
 w 1360
 h 1024
-dataPvStr "$(P):Image1:ArrayData"
-widthPvStr "$(P):Image1:ArraySize0_RBV"
-heightPvStr "$(P):Image1:ArraySize1_RBV"
+dataPvStr "$(P):image$(C):ArrayData"
+widthPvStr "$(P):image$(C):ArraySize0_RBV"
+heightPvStr "$(P):image$(C):ArraySize1_RBV"
 dataWidth 1360
 pvBasedDataSize 1
 nBitsPerPixel 8
@@ -58,7 +58,7 @@ fgColor index 14
 bgColor index 56
 value {
   "Proscilica GC1350C Camera Image"
-  "$(P)"
+  "$(P):cam$(C)"
 }
 endObjectProperties
 
@@ -124,7 +124,7 @@ x 1464
 y 64
 w 88
 h 24
-controlPv "$(P):Base:ImageRate_RBV"
+controlPv "$(P):cam$(C):ImageRate_RBV"
 font "courier-medium-r-12.0"
 fontAlign "center"
 fgColor index 16
@@ -166,7 +166,7 @@ x 1464
 y 96
 w 88
 h 24
-controlPv "$(P):Base:ImageCounter_RBV"
+controlPv "$(P):cam$(C):ImageCounter_RBV"
 format "decimal"
 font "courier-medium-r-12.0"
 fontAlign "center"
@@ -261,7 +261,7 @@ x 1444
 y 152
 w 52
 h 24
-controlPv "$(P):Base:AcquireTime"
+controlPv "$(P):cam$(C):AcquireTime"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -286,7 +286,7 @@ x 1504
 y 152
 w 52
 h 24
-controlPv "$(P):Base:AcquireTime_RBV"
+controlPv "$(P):cam$(C):AcquireTime_RBV"
 precision 1
 fgColor index 16
 fgAlarm
@@ -308,7 +308,7 @@ x 1444
 y 184
 w 52
 h 24
-controlPv "$(P):Base:AcquirePeriod"
+controlPv "$(P):cam$(C):AcquirePeriod"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -333,7 +333,7 @@ x 1504
 y 184
 w 52
 h 24
-controlPv "$(P):Base:AcquirePeriod_RBV"
+controlPv "$(P):cam$(C):AcquirePeriod_RBV"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -356,7 +356,7 @@ x 1444
 y 216
 w 52
 h 24
-controlPv "$(P):Base:Gain"
+controlPv "$(P):cam$(C):Gain"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -381,7 +381,7 @@ x 1504
 y 216
 w 52
 h 24
-controlPv "$(P):Base:Gain_RBV"
+controlPv "$(P):cam$(C):Gain_RBV"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -423,7 +423,7 @@ x 1444
 y 248
 w 52
 h 24
-controlPv "$(P):Base:NumImages"
+controlPv "$(P):cam$(C):NumImages"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -448,7 +448,7 @@ x 1504
 y 248
 w 52
 h 24
-controlPv "$(P):Base:NumImages_RBV"
+controlPv "$(P):cam$(C):NumImages_RBV"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -523,7 +523,7 @@ x 1504
 y 316
 w 52
 h 24
-controlPv "$(P):Base:MinX_RBV"
+controlPv "$(P):cam$(C):MinX_RBV"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -545,7 +545,7 @@ x 1444
 y 316
 w 52
 h 24
-controlPv "$(P):Base:MinX"
+controlPv "$(P):cam$(C):MinX"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -646,7 +646,7 @@ x 1504
 y 348
 w 52
 h 24
-controlPv "$(P):Base:SizeX_RBV"
+controlPv "$(P):cam$(C):SizeX_RBV"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -668,7 +668,7 @@ x 1444
 y 348
 w 52
 h 24
-controlPv "$(P):Base:SizeX"
+controlPv "$(P):cam$(C):SizeX"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -693,7 +693,7 @@ x 1504
 y 416
 w 52
 h 24
-controlPv "$(P):Base:SizeY_RBV"
+controlPv "$(P):cam$(C):SizeY_RBV"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -715,7 +715,7 @@ x 1444
 y 416
 w 52
 h 24
-controlPv "$(P):Base:SizeY"
+controlPv "$(P):cam$(C):SizeY"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -740,7 +740,7 @@ x 1504
 y 384
 w 52
 h 24
-controlPv "$(P):Base:MinY_RBV"
+controlPv "$(P):cam$(C):MinY_RBV"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -762,7 +762,7 @@ x 1444
 y 384
 w 52
 h 24
-controlPv "$(P):Base:MinY"
+controlPv "$(P):cam$(C):MinY"
 font "courier-bold-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -776,45 +776,6 @@ fastUpdate
 newPos
 objType "controls"
 endObjectProperties
-
-# (Text Update)
-#object TextupdateClass
-#beginObjectProperties
-#major 10
-#minor 0
-#release 0
-#x 1428
-#y 1364
-#w 128
-#h 24
-#controlPv "IOC:$(I):TOD"
-#precision 1
-#fgColor index 14
-#fgAlarm
-#bgColor index 12
-#font "helvetica-medium-r-12.0"
-#fontAlign "right"
-#endObjectProperties
-
-# (Static Text)
-#object activeXTextClass
-#beginObjectProperties
-#major 4
-#minor 1
-#release 0
-#x 1452
-#y 1020
-#w 104
-#h 24
-#font "helvetica-medium-r-12.0"
-#fontAlign "right"
-#fgColor index 14
-#bgColor index 4
-#useDisplayBg
-#value {
-#  "IOC:$(I)"
-#}
-#endObjectProperties
 
 # (Static Text)
 object activeXTextClass
@@ -850,7 +811,7 @@ onColor index 4
 offColor index 4
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):Base:Acquire"
+controlPv "$(P):cam$(C):Acquire"
 pressValue "1"
 onLabel "Start"
 offLabel "Start"
@@ -874,7 +835,7 @@ onColor index 4
 offColor index 4
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):Base:Acquire"
+controlPv "$(P):cam$(C):Acquire"
 pressValue "0"
 onLabel "Stop"
 offLabel "Stop"
@@ -951,8 +912,8 @@ bgColor index 4
 inconsistentColor index 4
 topShadowColor index 0
 botShadowColor index 14
-controlPv "$(P):Base:ImageMode"
-indicatorPv "$(P):Base:ImageMode_RBV"
+controlPv "$(P):cam$(C):ImageMode"
+indicatorPv "$(P):cam$(C):ImageMode_RBV"
 font "helvetica-medium-r-14.0"
 endObjectProperties
 
@@ -991,8 +952,8 @@ bgColor index 4
 inconsistentColor index 4
 topShadowColor index 0
 botShadowColor index 14
-controlPv "$(P):Base:TriggerMode"
-indicatorPv "$(P):Base:TriggerMode_RBV"
+controlPv "$(P):cam$(C):TriggerMode"
+indicatorPv "$(P):cam$(C):TriggerMode_RBV"
 font "helvetica-medium-r-14.0"
 endObjectProperties
 
