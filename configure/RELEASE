@@ -17,7 +17,7 @@ IOCADMIN_MODULE_VERSION=R2.0.0-1.0.0
 CALC_MODULE_VERSION=R2.6.1-1.0.0
 SSCAN_MODULE_VERSION=R2.5.2.3-1.0.0
 ASYN_MODULE_VERSION=R4.10.1-1.0.0
-AREADETECTOR_MODULE_VERSION=R1.2.0-0.3.0
+AREA_DETECTOR_MODULE_VERSION=R1.2.0-0.3.0
 
 # ============================================================
 # External Support module path definitions
@@ -38,4 +38,4 @@ CALC=$(EPICS_MODULES)/calc/$(CALC_MODULE_VERSION)
 SSCAN=$(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
 ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 # FIXME
-AREADETECTOR=/reg/neh/home/pstoffel/repo/epics/trunk/modules/areaDetector/current
+AREA_DETECTOR=/reg/neh/home/pstoffel/repo/epics/trunk/modules/areaDetector/current
