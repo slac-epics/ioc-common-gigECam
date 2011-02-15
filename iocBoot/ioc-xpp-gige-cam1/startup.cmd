@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Setup the IOC user environment
-# TODO: Change xxx as needed for your hutch
 source /reg/d/iocCommon/All/xpp_env.sh
 export IOC="ioc-xpp-gige-cam1"
 
@@ -23,4 +22,4 @@ cd ~pstoffel/repo/epics/trunk/ioc/common/gigECam/current/iocBoot/ioc-xpp-gige-ca
 $RUNUSER "cp ../../archive/$IOC.archive $IOC_DATA/$IOC/archive"
 
 # Launch the IOC
-$RUNUSER "$PROCSERV --logfile $IOC_DATA/$IOC/iocInfo/ioc.log --name $IOC 30001 ../../bin/linux-x86_64/gige st.cmd"
+$RUNUSER "$PROCSERV --logfile $IOC_DATA/$IOC/iocInfo/ioc.log --name $IOC 30066 ../../bin/linux-x86_64/gige st.cmd"
