@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Setup edm environment
-export EPICS_CA_MAX_ARRAY_BYTES=10000000
+export EPICS_CA_MAX_ARRAY_BYTES=1400000
 
 export EPICS_SITE_TOP=/reg/g/pcds/package/epics/3.14
 export EPICS_HOST_ARCH=$($EPICS_SITE_TOP/base/current/startup/EpicsHostArch.pl)
@@ -18,4 +18,4 @@ export EDMWEBBROWSER=mozilla
 export PATH=$PATH:$EPICS_SITE_TOP/extensions/current/bin/$EPICS_HOST_ARCH
 export EDMDATAFILES=".:.."
 
-edm -x -m "P=XPP:USR:CVV:GIGE1" -eolc gigeScreens/prosilicaCam.edl &
+edm -x -m "IOC=XPP:USR:IOC:GIGE1,P=XPP:USR:GIGE1,C=1" -eolc gigeScreens/prosilicaCam.edl &
