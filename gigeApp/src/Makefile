@@ -3,7 +3,7 @@ TOP=../..
 include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
-#  #=============================
+#=============================
 
 #=============================
 # Build an ioc application
@@ -47,5 +47,4 @@ gige_LIBS += $(EPICS_BASE_IOC_LIBS)
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-../../../lib/linux-x86_64/libImageLib.a:
-	touch ../../../lib/linux-x86_64/libImageLib.a
+
