@@ -2,120 +2,120 @@ file ADBase_settings.req
 {
     {
         P = $(P),
-        R = cam1:
+        R = :cam1:
     }
     {
         P = $(P),
-        R = cam2:
+        R = :cam2:
     }
 }
 file NDPluginBase_settings.req
 {
     {
         P = $(P),
-        R = image1:
+        R = :image1:
     }
     {
         P = $(P),
-        R = image2:
+        R = :image2:
     }
 }
 file NDStdArrays_settings.req
 {
     {
         P = $(P),
-        R = image1:
+        R = :image1:
     }
     {
         P = $(P),
-        R = image2:
+        R = :image2:
     }
 }
 file NDPluginBase_settings.req
 {
     {
         P = $(P),
-        R = file1:
+        R = :file1:
     }
     {
         P = $(P),
-        R = file2:
+        R = :file2:
     }
 }
 file NDFile_settings.req
 {
     {
         P = $(P),
-        R = file1:
+        R = :file1:
     }
     {
         P = $(P),
-        R = file2:
+        R = :file2:
     }
 }
 file NDPluginBase_settings.req
 {
     {
         P = $(P),
-        R = ROI1:
+        R = :ROI1:
     }
     {
         P = $(P),
-        R = ROI2:
+        R = :ROI2:
     }
 }
 file NDROI_settings.req
 {
     {
         P = $(P),
-        R = ROI1:
+        R = :ROI1:
     }
     {
         P = $(P),
-        R = ROI2:
-    }
-}
-file NDROIN_settings.req
-{
-    {
-        P = $(P),
-        R = ROI1:0:
-    }
-    {
-        P = $(P),
-        R = ROI2:0:
+        R = :ROI2:
     }
 }
 file NDROIN_settings.req
 {
     {
         P = $(P),
-        R = ROI1:1:
+        R = :ROI1:0:
     }
     {
         P = $(P),
-        R = ROI2:1:
-    }
-}
-file NDROIN_settings.req
-{
-    {
-        P = $(P),
-        R = ROI1:2:
-    }
-    {
-        P = $(P),
-        R = ROI2:2:
+        R = :ROI2:0:
     }
 }
 file NDROIN_settings.req
 {
     {
         P = $(P),
-        R = ROI1:3:
+        R = :ROI1:1:
     }
     {
         P = $(P),
-        R = ROI2:3:
+        R = :ROI2:1:
+    }
+}
+file NDROIN_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:2:
+    }
+    {
+        P = $(P),
+        R = :ROI2:2:
+    }
+}
+file NDROIN_settings.req
+{
+    {
+        P = $(P),
+        R = :ROI1:3:
+    }
+    {
+        P = $(P),
+        R = :ROI2:3:
     }
 }
