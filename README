@@ -1,3 +1,10 @@
 TODO: Add notes on how to build and run this IOC,
 along with any useful information that would help
 someone else to support this IOC if needed.
+
+IOC created with the commands:
+
+$ makeBaseApp.pl -t pcdsIoc -a linux-x86_64 -r 'IOC:XPP:GIGE:01' gige
+$ makeBaseApp.pl -i -t pcdsIoc -a linux-x86_64 -p gige -r 'IOC:XPP:GIGE:01' ioc-xpp-gige-01
+$ makeBaseApp.pl -i -t pcdsIoc -a linux-x86_64 -p gige -r 'IOC:XPP:GIGE:02' ioc-xpp-gige-02
+     

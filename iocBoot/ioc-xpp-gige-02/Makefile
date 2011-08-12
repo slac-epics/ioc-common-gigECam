@@ -12,11 +12,11 @@ USR_ARCHIVEFLAGS += -V
 #----------------------------------------------------
 # Create and install IOC archive file
 #
-ARCHIVE += ioc-xpp-gige-cam2.archive
+ARCHIVE += ioc-xpp-gige-02.archive
 
 # See RULES.copy for more information on these variables.
 COPY_ONLY_IF_NON_LOCAL=1
-COPY_SUBDIR=iocBoot/ioc-xpp-gige-cam2
+COPY_SUBDIR=iocBoot/ioc-xpp-gige-02
 COPY_FILES=st.cmd
 
 include $(TOP)/configure/RULES.ioc

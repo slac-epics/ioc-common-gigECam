@@ -43,8 +43,8 @@ $(info RULES.copy: '$(MAKECMDGOALS)')
 # directory after setting the 'COPY_{SUBDIR,FILES}' variables and
 # optionally setting the 'COPY_ONLY_...' flag.
 
-INSTALL_DIR = $(INSTALL_LOCATION)/$(COPY_SUBDIR)
-INSTALL_FILES = $(COPY_FILES:%=$(INSTALL_DIR)/%)
+INSTALL_DIR   := $(INSTALL_LOCATION)/$(COPY_SUBDIR)
+INSTALL_FILES := $(addprefix $(INSTALL_DIR)/,$(notdir $(COPY_FILES)))
 
 all: install
 
@@ -61,8 +61,8 @@ install: $(INSTALL_FILES)
 buildInstall: $(INSTALL_FILES)
 
 $(INSTALL_FILES): $(COPY_FILES)
-	@echo "RULES.copy: Installing $(@F) -> $(@D)"
-	@$(INSTALL) -d -m 644 $(@F) $(@D)
+	@echo "RULES.copy: Installing $(?F) -> $(INSTALL_DIR)"
+	@$(INSTALL) -d -m 644 $? $(INSTALL_DIR)
 
 clean::
 	@echo RULES.copy: Cleaning $(INSTALL_DIR)
@@ -88,8 +88,8 @@ install: $(INSTALL_FILES)
 buildInstall: $(INSTALL_FILES)
 
 $(INSTALL_FILES): $(COPY_FILES)
-	@echo "RULES.copy: Installing $(@F) -> $(@D)"
-	@$(INSTALL) -d -m 644 $(@F) $(@D)
+	@echo "RULES.copy: Installing $(?F) -> $(INSTALL_DIR)"
+	@$(INSTALL) -d -m 644 $? $(INSTALL_DIR)
 
 clean::
 	@echo RULES.copy: Cleaning $(INSTALL_DIR)
