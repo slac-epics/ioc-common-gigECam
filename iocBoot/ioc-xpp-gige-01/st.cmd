@@ -1,20 +1,6 @@
 #!../../bin/linux-x86_64/gige
 
-## ToDo: The following substitutions can be done via makeBaseApp.pl
-## If they weren't, do them before releasing your IOC
-##
-## Replace _ USER _ with your userid
-##
-## Replace _ APPNAME _ with the name of the application
-##
-## Replace _ IOC _ with the network name of the IOC
-##
-## Replace _ IOCPVROOT _ with the PV prefix used for
-## iocAdmin PV's on this IOC
-## ex. AMO:R15:IOC:23
-##
-
-epicsEnvSet( "ENGINEER", "your_name (pstoffel)" )
+epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
 epicsEnvSet( "LOCATION", "IOC:XPP:GIGE:01" )
 epicsEnvSet( "IOCSH_PS1", "ioc-xpp-gige-01> " )
 < envPaths
