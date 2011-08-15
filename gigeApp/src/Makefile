@@ -43,7 +43,6 @@ gige_SRCS_DEFAULT += gigeMain.cpp
 
 gige_LIBS += devIocStats
 gige_LIBS += autosave
-
 gige_LIBS += prosilica
 gige_LIBS += NDPlugin
 gige_LIBS += ADBase
@@ -56,23 +55,18 @@ gige_LIBS += sscan
 gige_LIBS += mca
 gige_LIBS += std
 gige_LIBS += asyn
-
 #gige_LIBS += Ipac
-
 gige_LIBS += NeXus
 gige_LIBS += mfhdf
 gige_LIBS += df
 gige_LIBS += hdf5
 gige_LIBS += mxml
-
 gige_LIBS += tiff
 gige_LIBS += jpeg
 gige_LIBS += z
-
 gige_LIBS += seq
 gige_LIBS += seqDev
 gige_LIBS += pv
-
 gige_LIBS += genSub
 gige_LIBS += receive
 gige_LIBS += transmit
