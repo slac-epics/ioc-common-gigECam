@@ -5,25 +5,24 @@ include $(TOP)/RELEASE_SITE
 # ===============================================================
 # Define the location and version of EPICS base
 # ===============================================================
-BASE_MODULE_VERSION = R3.14.12-0.2.0
+BASE_MODULE_VERSION = R3.14.11-0.1.0
 EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
 # ===============================================================
 # Define the version of modules needed by
 # IOC apps or other Support apps
 # ===============================================================
-ADMIN_MODULE_VERSION         = R3.0.0-1.2.0
-ASYN_MODULE_VERSION	         = R4.14.0-0.2.0
-AUTOSAVE_MODULE_VERSION	     = R4.2.1.2-2.3.0
-BUSY_MODULE_VERSION	         = R1.3.0-0.3.0
-CALC_MODULE_VERSION	         = R2.8.0-0.2.0
-GENSUB_MODULE_VERSION        = R1.6.1.2-2.1.0
-#IPAC_MODULE_VERSION	         = R2.11.0-0.2.0
-MCA_MODULE_VERSION	         = R6.12.2-0.3.0
-SEQ_MODULE_VERSION	         = R2.0.11-2.2.0
-SSCAN_MODULE_VERSION	     = R2.6.6.0-0.3.0
-STD_MODULE_VERSION	         = R2.8.0-0.3.0
-AREA_DETECTOR_MODULE_VERSION	         = R1.6.0-0.3.0
+# Example
+AREADETECTOR_MODULE_VERSION	 = R1.6.0-0.1.1
+ASYN_MODULE_VERSION	         = R4.14.0-0.1.0
+AUTOSAVE_MODULE_VERSION	     = R4.2.1.2-2.1.0
+BUSY_MODULE_VERSION	         = R1.3.0-0.1.0
+CALC_MODULE_VERSION	         = R2.8.0-0.1.1
+IPAC_MODULE_VERSION	         = R2.11.0-0.1.0
+MCA_MODULE_VERSION	         = R6.12.2-0.1.1
+SEQ_MODULE_VERSION	         = R2.0.11-1.1.0
+SSCAN_MODULE_VERSION	     = R2.6.6.0-0.1.0
+STD_MODULE_VERSION	         = R2.8.0-0.1.0
 
 # ============================================================
 # External Support module path definitions
@@ -38,15 +37,12 @@ AREA_DETECTOR_MODULE_VERSION	         = R1.6.0-0.3.0
 #
 # If your build fails, look for these paths in your build output
 # ============================================================
-ADMIN        = $(EPICS_MODULES)/iocAdmin/$(ADMIN_MODULE_VERSION)
+AREA_DETECTOR = $(EPICS_MODULES)/areaDetector/$(AREADETECTOR_MODULE_VERSION)
 ASYN         = $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 AUTOSAVE     = $(EPICS_MODULES)/autosave/$(AUTOSAVE_MODULE_VERSION)
 BUSY         = $(EPICS_MODULES)/busy/$(BUSY_MODULE_VERSION)
 CALC         = $(EPICS_MODULES)/calc/$(CALC_MODULE_VERSION)
-GENSUB       = $(EPICS_MODULES)/genSub/$(GENSUB_MODULE_VERSION)
-#IPAC         = $(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
 MCA          = $(EPICS_MODULES)/mca/$(MCA_MODULE_VERSION)
 SEQ          = $(EPICS_MODULES)/seq/$(SEQ_MODULE_VERSION)
 SSCAN        = $(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
 STD          = $(EPICS_MODULES)/std/$(STD_MODULE_VERSION)
-AREA_DETECTOR   = $(EPICS_MODULES)/areaDetector/$(AREA_DETECTOR_MODULE_VERSION)

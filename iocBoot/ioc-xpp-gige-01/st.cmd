@@ -29,8 +29,9 @@ prosilicaConfigIp(  "PS1", 116474, "192.168.100.220", 50, -1)
 ##############################################################
 
 
-asynSetTraceIOMask("$(PORT)",0,2)
+##asynSetTraceIOMask("$(PORT)",0,2)
 #asynSetTraceMask("$(PORT)",0,255)
+asynSetTraceIOMask("$(PORT)",0,0)
 
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=CAM1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=CAM1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
@@ -47,6 +48,7 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=I
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=IMAGE1:,PORT=Image1,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=4177920")
 
 #asynSetTraceMask("$(PORT)",0,255)
+asynSetTraceMask("$(PORT)",0,0)
 
 
 # Load record instances
