@@ -24,12 +24,13 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # Autosave request files, templates, substitutions like this
 #
-REQ += autosave_gige.req
+#REQ += autosave_gige.req
 #REQ += ioc-xpp-gige-01.req
 #REQ += ioc-xpp-gige-02.req
+REQ += ioc-tst-gige1.req
 
 # Nothing to build for autosave, just install from $AUTOSAVE/db
-##DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 
 include $(TOP)/configure/RULES
 ##include $(TOP)/configure/RULES.archive
