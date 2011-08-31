@@ -24,7 +24,7 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # Autosave request files, templates, substitutions like this
 #
-##REQ += autosave_gige.req
+REQ += autosave_gige.req
 #REQ += ioc-xpp-gige-01.req
 #REQ += ioc-xpp-gige-02.req
 

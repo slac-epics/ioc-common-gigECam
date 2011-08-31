@@ -5,7 +5,7 @@ epicsEnvSet( "LOCATION", "TST:R40:IOC:18:GIGE:01" )
 epicsEnvSet( "IOCSH_PS1", "ioc-tst-gige-01> " )
 
 < envPaths
-cd( "../" )
+cd( "../.." )
 
 < /reg/d/iocCommon/All/pre_linux.cmd
 
@@ -35,12 +35,12 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=i
 ####### Autosave #############
 
 set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
-set_requestfile_path( "$(TOP)/autosave" )
+set_requestfile_path( "autosave" )
 save_restoreSet_status_prefix("TST:R40:IOC:18:GIGE:01:")
 save_restoreSet_IncompleteSetsOk( 1 )
 save_restoreSet_DatedBackupFiles( 1 )
-set_pass0_restoreFile( "autosave.sav" )
-set_pass1_restoreFile( "autosave.sav" )
+set_pass0_restoreFile( "autosave_gige.sav" )
+set_pass1_restoreFile( "autosave_gige.sav" )
 
 save_restoreSet_NumSeqFiles(5)
 save_restoreSet_SeqPeriodInSeconds(30)
@@ -50,6 +50,7 @@ iocInit()
 dbpf $(PREFIX)cam1:ArrayCallbacks 1
 dbpf $(PREFIX)image1:EnableCallbacks 1
 
-create_monitor_set("autosave.req", 30, "IOC=TST:R40:IOC:18:GIGE:01")
+pwd()
+create_monitor_set("autosave_gige.req", 30, "IOC=TST:R40:IOC:18:GIGE:01")
 
 < /reg/d/iocCommon/All/post_linux.cmd

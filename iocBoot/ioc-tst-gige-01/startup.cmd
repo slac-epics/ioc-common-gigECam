@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export EPICS_CA_MAX_ARRAY_BYTES=8000000
+
 # Setup the IOC user environment
 source /reg/d/iocCommon/All/tst_env.sh
 

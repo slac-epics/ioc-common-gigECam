@@ -14,7 +14,7 @@ file archive_iocAdmin.template
 {
 	{
 		# Hack till msi supports empty substitutions
-		IOC		=	$(IOC),
+		IOC		=	$(IOC)
 	}
 }
 
@@ -27,7 +27,7 @@ file archive_SR.template
 {
 	{
 		# Hack till msi supports empty substitutions
-		IOC		=	$(IOC),
+		IOC		=	$(IOC)
 	}
 }
 
