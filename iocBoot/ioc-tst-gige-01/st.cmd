@@ -7,6 +7,8 @@ epicsEnvSet( "IOCSH_PS1", "ioc-tst-gige-01> " )
 < envPaths
 cd( "../" )
 
+< /reg/d/iocCommon/All/pre_linux.cmd
+
 dbLoadDatabase("$(AREA_DETECTOR)/dbd/prosilicaApp.dbd")
 gige_registerRecordDeviceDriver(pdbbase)
 
@@ -30,8 +32,24 @@ NDStdArraysConfigure("Image1", 5, 0, "$(PORT)", 0, -1)
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=0")
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=4177920")
 
+####### Autosave #############
+
+set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
+set_requestfile_path( "$(TOP)/autosave" )
+save_restoreSet_status_prefix("TST:R40:IOC:18:GIGE:01:")
+save_restoreSet_IncompleteSetsOk( 1 )
+save_restoreSet_DatedBackupFiles( 1 )
+set_pass0_restoreFile( "autosave.sav" )
+set_pass1_restoreFile( "autosave.sav" )
+
+save_restoreSet_NumSeqFiles(5)
+save_restoreSet_SeqPeriodInSeconds(30)
+
 iocInit()
 
 dbpf $(PREFIX)cam1:ArrayCallbacks 1
 dbpf $(PREFIX)image1:EnableCallbacks 1
 
+create_monitor_set("autosave.req", 30, "IOC=TST:R40:IOC:18:GIGE:01")
+
+< /reg/d/iocCommon/All/post_linux.cmd
