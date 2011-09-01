@@ -7,8 +7,7 @@ include $(TOP)/configure/CONFIG
 
 #=============================
 # Build an ioc application
-# Use PROD_IOC_RTEMS for RTEMS only
-# Use PROD_IOC_Linux for Linux only
+
 PROD_IOC = gige
 
 # gige.dbd will be created and installed
@@ -16,23 +15,20 @@ DBD += gige.dbd
 
 # gige.dbd will be made up from these files:
 gige_DBD += base.dbd
-#  gige_DBD += iocAdmin.dbd
-gige_DBD += autosaveSupport.dbd
+##gige_DBD += iocAdmin.dbd
+gige_DBD += ADSupport.dbd
 gige_DBD += asyn.dbd
+gige_DBD += autosaveSupport.dbd
 gige_DBD += busyRecord.dbd
 gige_DBD += busySupport.dbd
 gige_DBD += calc.dbd
-#  gige_DBD += genSub.dbd
-#  gige_DBD += genSubRecord.dbd
-#  gige_DBD += drvIpac.dbd
-gige_DBD += mca.dbd
 gige_DBD += devSequencer.dbd
-gige_DBD += sscan.dbd
-gige_DBD += std.dbd
-gige_DBD += ADSupport.dbd
+gige_DBD += mca.dbd
 gige_DBD += pluginSupport.dbd
 gige_DBD += prosilicaApp.dbd
 gige_DBD += prosilicaSupport.dbd
+gige_DBD += sscan.dbd
+gige_DBD += std.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 gige_SRCS += gige_registerRecordDeviceDriver.cpp

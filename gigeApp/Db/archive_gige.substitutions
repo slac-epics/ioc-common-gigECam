@@ -1,9 +1,5 @@
 #
-# gige substitutions file
-#
-
-#
-# gige substitutions file
+# unixCam substitutions file
 #
 
 # Generate iocAdmin archive request 
@@ -19,9 +15,9 @@
 ##}
 
 
-# Generate Save/Restore status archive requests
+# Generate autosave Save/Restore status archive requests
 #	Macros:
-#		IOC		- PV prefix for all IOC Save/Restore PV's
+#		IOC		- PV prefix for all IOC autosave Save/Restore PV's
 # Typically, IOC will be expanded in the iocBoot/<ioc_name>/Makefile
 file archive_SR.template
 {

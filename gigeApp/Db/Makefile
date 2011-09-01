@@ -10,15 +10,13 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
+#DB += xxx.db
+
+# Generate db files from substitutions
 ##DB += iocAdmin.db
 
-#----------------------------------------------------
-# Create and install (or just install)
-# Archive files, templates, substitutions like this
-#
-ARCHIVE += archive_gige.archive
-#ARCHIVE += ioc-xpp-gige-01.archive
-#ARCHIVE += ioc-xpp-gige-02.archive
+# Nothing to build, just install from autosave/db
+DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 
 #----------------------------------------------------
 # Create and install (or just install)
@@ -27,10 +25,23 @@ ARCHIVE += archive_gige.archive
 #REQ += autosave_gige.req
 #REQ += ioc-xpp-gige-01.req
 #REQ += ioc-xpp-gige-02.req
-REQ += ioc-tst-gige1.req
+REQ += tst_gige1.req
 
-# Nothing to build for autosave, just install from $AUTOSAVE/db
-DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+
+#----------------------------------------------------
+# Create and install (or just install)
+# Archive files, templates, substitutions like this
+#
+ARCHIVE += archive_gige.archive
+
+# This one gets installed from the edt_unix module so it
+# can be used by msi expansion in iocBoot/<iocname>/Makefile
+#ARCHIVE += ioc-xpp-gige-01.archive
+#ARCHIVE += ioc-xpp-gige-02.archive
+
+#----------------------------------------------------
+# If <anyname>.db template is not named <anyname>*.template add
+# <anyname>_template = <templatename>
 
 include $(TOP)/configure/RULES
 ##include $(TOP)/configure/RULES.archive

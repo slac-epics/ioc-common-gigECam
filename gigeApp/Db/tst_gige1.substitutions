@@ -3,12 +3,12 @@
 #
 
 # Generate iocAdmin autosave request 
-file autosave_iocAdmin.template
-{
-    {
-        IOC     =   $(IOC)
-    }
-}
+##file autosave_iocAdmin.template
+##{
+##    {
+##        IOC     =   $(IOC)
+##    }
+##}
 
 # Generate one set per camera
 file tst_gige1.template
