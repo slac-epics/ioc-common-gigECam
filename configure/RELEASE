@@ -5,7 +5,7 @@ include $(TOP)/RELEASE_SITE
 # ===============================================================
 # Define the location and version of EPICS base
 # ===============================================================
-BASE_MODULE_VERSION = R3.14.11-0.1.0
+BASE_MODULE_VERSION = R3.14.11-0.2.0
 EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
 # ===============================================================
@@ -13,16 +13,16 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # IOC apps or other Support apps
 # ===============================================================
 # Example
-AREADETECTOR_MODULE_VERSION	 = R1.6.0-0.1.1
-ASYN_MODULE_VERSION	         = R4.14.0-0.1.0
-AUTOSAVE_MODULE_VERSION	     = R4.2.1.2-2.1.0
-BUSY_MODULE_VERSION	         = R1.3.0-0.1.0
-CALC_MODULE_VERSION	         = R2.8.0-0.1.1
-IPAC_MODULE_VERSION	         = R2.11.0-0.1.0
-MCA_MODULE_VERSION	         = R6.12.2-0.1.1
-SEQ_MODULE_VERSION	         = R2.0.11-1.1.0
-SSCAN_MODULE_VERSION	     = R2.6.6.0-0.1.0
-STD_MODULE_VERSION	         = R2.8.0-0.1.0
+AREADETECTOR_MODULE_VERSION	 = R1.6.0-0.2.0
+ASYN_MODULE_VERSION	         = R4.14.0-0.1.5
+AUTOSAVE_MODULE_VERSION	     = R4.2.1.2-2.2.0
+BUSY_MODULE_VERSION	         = R1.3.0-0.2.2
+CALC_MODULE_VERSION	         = R2.8.0-0.1.2
+IPAC_MODULE_VERSION	         = R2.11.0-0.1.2
+MCA_MODULE_VERSION	         = R6.12.2-0.2.0
+SEQ_MODULE_VERSION	         = R2.0.11-2.1.0
+SSCAN_MODULE_VERSION	     = R2.6.6.0-0.2.0
+STD_MODULE_VERSION	         = R2.8.0-0.2.0
 
 # ============================================================
 # External Support module path definitions
