@@ -33,7 +33,7 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=i
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=4177920")
 
 # Load record instances
-dbLoadRecords( "db/iocAdmin.db",			"IOC=TST:R40:IOC:18:GIGE:01" )
+##dbLoadRecords( "db/iocAdmin.db",			"IOC=TST:R40:IOC:18:GIGE:01" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=TST:R40:IOC:18:GIGE:01" )
 
 ####### Autosave #############

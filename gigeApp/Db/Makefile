@@ -16,7 +16,7 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # Archive files, templates, substitutions like this
 #
-#ARCHIVE += archive_gige.archive
+ARCHIVE += archive_gige.archive
 #ARCHIVE += ioc-xpp-gige-01.archive
 #ARCHIVE += ioc-xpp-gige-02.archive
 

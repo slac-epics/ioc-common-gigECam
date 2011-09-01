@@ -10,13 +10,13 @@
 #	Macros:
 #		IOC		- PV prefix for all iocAdmin PV's
 # Typically, IOC will be expanded in the iocBoot/<ioc_name>/Makefile
-file archive_iocAdmin.template
-{
-	{
-		# Hack till msi supports empty substitutions
-		IOC		=	$(IOC)
-	}
-}
+##file archive_iocAdmin.template
+##{
+##	{
+##		# Hack till msi supports empty substitutions
+##		IOC		=	$(IOC)
+##	}
+##}
 
 
 # Generate Save/Restore status archive requests
@@ -31,3 +31,14 @@ file archive_SR.template
 	}
 }
 
+# Generate GIGE archive request 
+#   Macros:
+#       GIGE     - PV prefix for all GIGE PV's
+# Typically, GIGE will be expanded in the iocBoot/<ioc_name>/Makefile
+file archive_gige.template
+{
+    {
+        # Hack till msi supports empty substitutions
+        IOC     =   $(IOC)
+    }
+}
