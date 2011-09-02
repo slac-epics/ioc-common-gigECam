@@ -12,7 +12,7 @@ USR_ARCHIVEFLAGS += -V
 #----------------------------------------------------
 # Create and install IOC archive file
 #
-#ARCHIVE += ioc-tst-gige-01.archive
+ARCHIVE += ioc-tst-gige-01.archive
 
 # See RULES.copy for more information on these variables.
 COPY_ONLY_IF_NON_LOCAL=1
@@ -23,4 +23,4 @@ include $(TOP)/configure/RULES.ioc
 #include $(TOP)/configure/RULES.ioc-targets
 #-include $(TOP)/configure/RULES.autosave
 #-include $(TOP)/configure/RULES.archive
-#-include $(TOP)/configure/RULES.copy
+-include $(TOP)/configure/RULES.copy

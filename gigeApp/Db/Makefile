@@ -13,7 +13,7 @@ include $(TOP)/configure/CONFIG
 #DB += xxx.db
 
 # Generate db files from substitutions
-##DB += iocAdmin.db
+DB += iocAdmin.db
 
 # Nothing to build, just install from autosave/db
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
@@ -38,14 +38,15 @@ ARCHIVE += archive_gige.archive
 # can be used by msi expansion in iocBoot/<iocname>/Makefile
 #ARCHIVE += ioc-xpp-gige-01.archive
 #ARCHIVE += ioc-xpp-gige-02.archive
+ARCHIVE += ioc-tst-gige-01.archive
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_template = <templatename>
 
 include $(TOP)/configure/RULES
-##include $(TOP)/configure/RULES.archive
-##include $(TOP)/configure/RULES.autosave
+#include $(TOP)/configure/RULES.archive
+#include $(TOP)/configure/RULES.autosave
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
 

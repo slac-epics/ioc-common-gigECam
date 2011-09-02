@@ -1,0 +1,183 @@
+# iocAdmin Archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# Archive these values only when they change
+TST:R40:IOC:18:GIGE:01:APP_DIR1        30 monitor
+TST:R40:IOC:18:GIGE:01:APP_DIR2        30 monitor
+TST:R40:IOC:18:GIGE:01:BSP_REV         30 monitor
+TST:R40:IOC:18:GIGE:01:CA_CLNT_CNT     1 monitor
+TST:R40:IOC:18:GIGE:01:CA_CONN_CNT     1 monitor
+TST:R40:IOC:18:GIGE:01:EPICS_VERS      30 monitor
+TST:R40:IOC:18:GIGE:01:FD_CNT          1 monitor
+TST:R40:IOC:18:GIGE:01:FD_FREE         1 monitor
+TST:R40:IOC:18:GIGE:01:FD_MAX          1 monitor
+TST:R40:IOC:18:GIGE:01:HOSTNAME        30 monitor
+TST:R40:IOC:18:GIGE:01:KERNEL_VERS     30 monitor
+TST:R40:IOC:18:GIGE:01:RECORD_CNT      10 monitor
+TST:R40:IOC:18:GIGE:01:STARTTOD        30 monitor
+TST:R40:IOC:18:GIGE:01:ST_SCRIPT1      30 monitor
+TST:R40:IOC:18:GIGE:01:ST_SCRIPT2      30 monitor
+TST:R40:IOC:18:GIGE:01:SUSP_TASK_CNT   30 monitor
+TST:R40:IOC:18:GIGE:01:SYSRESET        30 monitor
+
+# Archive these values at the specified rate
+TST:R40:IOC:18:GIGE:01:DAT_MBUF_FREE   10
+TST:R40:IOC:18:GIGE:01:DAT_MBUF_MAX    10
+TST:R40:IOC:18:GIGE:01:LOAD            30
+TST:R40:IOC:18:GIGE:01:MEM_BLK_FREE    30
+TST:R40:IOC:18:GIGE:01:MEM_FREE        30
+TST:R40:IOC:18:GIGE:01:MEM_USED        30
+TST:R40:IOC:18:GIGE:01:SYS_MBUF_FREE   30
+# autosave Save/Restore Archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# Archive each status change
+TST:R40:IOC:18:GIGE:01:SR_rebootStatus			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_rebootStatusStr		1 monitor
+TST:R40:IOC:18:GIGE:01:SR_statusStr				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_0_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_0_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_1_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_1_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_2_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_2_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_3_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_3_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_4_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_4_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_5_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_5_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_6_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_6_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_7_Status				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_7_StatusStr			1 monitor
+TST:R40:IOC:18:GIGE:01:SR_0_State				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_1_State				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_2_State				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_3_State				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_4_State				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_5_State				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_6_State				1 monitor
+TST:R40:IOC:18:GIGE:01:SR_7_State				1 monitor
+
+# Archive these values only when they change
+TST:R40:IOC:18:GIGE:01:SR_recentlyStr			30 monitor
+TST:R40:IOC:18:GIGE:01:SR_rebootTime			30 monitor
+TST:R40:IOC:18:GIGE:01:SR_0_Name				30 monitor
+TST:R40:IOC:18:GIGE:01:SR_1_Name				30 monitor
+TST:R40:IOC:18:GIGE:01:SR_2_Name				30 monitor
+TST:R40:IOC:18:GIGE:01:SR_3_Name				30 monitor
+TST:R40:IOC:18:GIGE:01:SR_4_Name				30 monitor
+TST:R40:IOC:18:GIGE:01:SR_5_Name				30 monitor
+TST:R40:IOC:18:GIGE:01:SR_6_Name				30 monitor
+TST:R40:IOC:18:GIGE:01:SR_7_Name				30 monitor
+
+# Archive these values at the specified rate
+TST:R40:IOC:18:GIGE:01:SR_heartbeat				30
+TST:R40:IOC:18:GIGE:01:SR_0_Time				30
+TST:R40:IOC:18:GIGE:01:SR_1_Time				30
+TST:R40:IOC:18:GIGE:01:SR_2_Time				30
+TST:R40:IOC:18:GIGE:01:SR_3_Time				30
+TST:R40:IOC:18:GIGE:01:SR_4_Time				30
+TST:R40:IOC:18:GIGE:01:SR_5_Time				30
+TST:R40:IOC:18:GIGE:01:SR_6_Time				30
+TST:R40:IOC:18:GIGE:01:SR_7_Time				30
+
+# Event modules archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# Capture frequent changes to these
+
+# Capture these once/sec
+#TST:R40:IOC:18:GIGE:01:FIDUCIALCTRL 1 
+#TST:R40:IOC:18:GIGE:01:FIDUCIALDIAG 1 
+
+# These can change frequently but we don't care
+TST:R40:IOC:18:GIGE:01:FIDUCIAL 10
+TST:R40:IOC:18:GIGE:01:FIDUCIALRATE 10
+TST:R40:IOC:18:GIGE:01:MODIFIER5 10
+TST:R40:IOC:18:GIGE:01:PATTERN 10
+TST:R40:IOC:18:GIGE:01:PATTERN.L 10
+TST:R40:IOC:18:GIGE:01:PATTERN360HZ 10
+TST:R40:IOC:18:GIGE:01:PATTERND 10
+TST:R40:IOC:18:GIGE:01:PATTERND-0 10
+TST:R40:IOC:18:GIGE:01:PATTERND-1 10
+TST:R40:IOC:18:GIGE:01:PATTERND-2 10
+TST:R40:IOC:18:GIGE:01:PATTERND-3 10
+TST:R40:IOC:18:GIGE:01:PATTERNFO 10
+TST:R40:IOC:18:GIGE:01:PATTERNN-1 10
+TST:R40:IOC:18:GIGE:01:PATTERNN-2 10
+TST:R40:IOC:18:GIGE:01:PATTERNSTATE 10
+
+# Don't exect these to change much.  Just monitor
+TST:R40:IOC:18:GIGE:01:RESETCNT 30 monitor
+TST:R40:IOC:18:GIGE:01:TREF 30 monitor
+
+# Archive event controls
+#
+# edt_unix Archive PV list
+#
+
+# Archive these values at the specified rate
+13PS1:image1:ArrayCounter_RBV   30
+
+# Archive these values only when they change
+13PS1:cam1:AcquirePeriod        30 monitor
+13PS1:cam1:AcquireTime          30 monitor
+13PS1:cam1:ArrayCallbacks       30 monitor
+13PS1:cam1:AutoIncrement        30 monitor
+13PS1:cam1:AutoSave             30 monitor
+13PS1:cam1:BinX                 30 monitor
+13PS1:cam1:BinY                 30 monitor
+13PS1:cam1:ColorMode            30 monitor
+13PS1:cam1:Cross1Color          30 monitor
+13PS1:cam1:Cross1X              30 monitor
+13PS1:cam1:Cross1Y              30 monitor
+13PS1:cam1:Cross2Color          30 monitor
+13PS1:cam1:Cross2X              30 monitor
+13PS1:cam1:Cross2Y              30 monitor
+13PS1:cam1:DataType             30 monitor
+13PS1:cam1:FileFormat           30 monitor
+13PS1:cam1:FileNumber           30 monitor
+13PS1:cam1:FileNumber_Sync      30 monitor
+13PS1:cam1:FileNumber_write     30 monitor
+13PS1:cam1:FileWriteMode        30 monitor
+13PS1:cam1:FrameType            30 monitor
+13PS1:cam1:Gain                 30 monitor
+13PS1:cam1:ImageMode            30 monitor
+13PS1:cam1:NumCapture           30 monitor
+13PS1:cam1:NumExposures         30 monitor
+13PS1:cam1:NumImages            30 monitor
+13PS1:cam1:PSReadStatistics     30 monitor
+13PS1:cam1:ReadFile             30 monitor
+13PS1:cam1:ReadStatus           30 monitor
+13PS1:cam1:ReverseX             30 monitor
+13PS1:cam1:ReverseY             30 monitor
+13PS1:cam1:ShutterCloseDelay    30 monitor
+13PS1:cam1:ShutterCloseEPICS    30 monitor
+13PS1:cam1:ShutterControl       30 monitor
+13PS1:cam1:ShutterControlEPICS  30 monitor
+13PS1:cam1:ShutterFanout        30 monitor
+13PS1:cam1:ShutterMode          30 monitor
+13PS1:cam1:ShutterOpenDelay     30 monitor
+13PS1:cam1:ShutterOpenEPICS     30 monitor
+13PS1:cam1:Strobe1CtlDuration   30 monitor
+13PS1:cam1:Strobe1Delay         30 monitor
+13PS1:cam1:Strobe1Duration      30 monitor
+13PS1:cam1:Strobe1Mode          30 monitor
+13PS1:cam1:SyncOut1Invert       30 monitor
+13PS1:cam1:SyncOut1Level        30 monitor
+13PS1:cam1:SyncOut1Mode         30 monitor
+13PS1:cam1:SyncOut2Invert       30 monitor
+13PS1:cam1:SyncOut2Level        30 monitor
+13PS1:cam1:SyncOut2Mode         30 monitor
+13PS1:cam1:SyncOut3Invert       30 monitor
+13PS1:cam1:SyncOut3Level        30 monitor
+13PS1:cam1:SyncOut3Mode         30 monitor
+13PS1:cam1:TriggerMode          30 monitor
+13PS1:image1:BlockingCallbacks  30 monitor
+13PS1:image1:EnableCallbacks    30 monitor

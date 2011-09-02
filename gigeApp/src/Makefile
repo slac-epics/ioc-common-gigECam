@@ -15,7 +15,7 @@ DBD += gige.dbd
 
 # gige.dbd will be made up from these files:
 gige_DBD += base.dbd
-##gige_DBD += iocAdmin.dbd
+gige_DBD += iocAdmin.dbd
 gige_DBD += ADSupport.dbd
 gige_DBD += asyn.dbd
 gige_DBD += autosaveSupport.dbd
@@ -37,7 +37,7 @@ gige_SRCS_DEFAULT += gigeMain.cpp
 # Add locally compiled object code
 #gige_SRCS += dbSubExample.c
 
-#  gige_LIBS += devIocStats
+gige_LIBS += devIocStats
 gige_LIBS += prosilica
 gige_LIBS += NDPlugin
 gige_LIBS += ADBase

@@ -21,7 +21,7 @@ $RUNUSER "chmod ug+w -R $IOC_DATA/$IOC"
 cd ~pstoffel/repo/epics/trunk/ioc/common/gigECam/current/iocBoot/$IOC
 
 # Copy the archive file to iocData
-#$RUNUSER "cp ../../archive/$IOC.archive $IOC_DATA/$IOC/archive"
+$RUNUSER "cp ../../archive/$IOC.archive $IOC_DATA/$IOC/archive"
 
 # Launch the IOC
 $RUNUSER "$PROCSERV --logfile $IOC_DATA/$IOC/iocInfo/ioc.log --name $IOC 32501 st.cmd"
