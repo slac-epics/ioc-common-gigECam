@@ -1,0 +1,183 @@
+# iocAdmin Archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# Archive these values only when they change
+IOC:XPP:GIGE:02:APP_DIR1        30 monitor
+IOC:XPP:GIGE:02:APP_DIR2        30 monitor
+IOC:XPP:GIGE:02:BSP_REV         30 monitor
+IOC:XPP:GIGE:02:CA_CLNT_CNT     1 monitor
+IOC:XPP:GIGE:02:CA_CONN_CNT     1 monitor
+IOC:XPP:GIGE:02:EPICS_VERS      30 monitor
+IOC:XPP:GIGE:02:FD_CNT          1 monitor
+IOC:XPP:GIGE:02:FD_FREE         1 monitor
+IOC:XPP:GIGE:02:FD_MAX          1 monitor
+IOC:XPP:GIGE:02:HOSTNAME        30 monitor
+IOC:XPP:GIGE:02:KERNEL_VERS     30 monitor
+IOC:XPP:GIGE:02:RECORD_CNT      10 monitor
+IOC:XPP:GIGE:02:STARTTOD        30 monitor
+IOC:XPP:GIGE:02:ST_SCRIPT1      30 monitor
+IOC:XPP:GIGE:02:ST_SCRIPT2      30 monitor
+IOC:XPP:GIGE:02:SUSP_TASK_CNT   30 monitor
+IOC:XPP:GIGE:02:SYSRESET        30 monitor
+
+# Archive these values at the specified rate
+IOC:XPP:GIGE:02:DAT_MBUF_FREE   10
+IOC:XPP:GIGE:02:DAT_MBUF_MAX    10
+IOC:XPP:GIGE:02:LOAD            30
+IOC:XPP:GIGE:02:MEM_BLK_FREE    30
+IOC:XPP:GIGE:02:MEM_FREE        30
+IOC:XPP:GIGE:02:MEM_USED        30
+IOC:XPP:GIGE:02:SYS_MBUF_FREE   30
+# autosave Save/Restore Archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# Archive each status change
+IOC:XPP:GIGE:02:SR_rebootStatus			1 monitor
+IOC:XPP:GIGE:02:SR_status				1 monitor
+IOC:XPP:GIGE:02:SR_rebootStatusStr		1 monitor
+IOC:XPP:GIGE:02:SR_statusStr				1 monitor
+IOC:XPP:GIGE:02:SR_0_Status				1 monitor
+IOC:XPP:GIGE:02:SR_0_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_1_Status				1 monitor
+IOC:XPP:GIGE:02:SR_1_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_2_Status				1 monitor
+IOC:XPP:GIGE:02:SR_2_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_3_Status				1 monitor
+IOC:XPP:GIGE:02:SR_3_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_4_Status				1 monitor
+IOC:XPP:GIGE:02:SR_4_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_5_Status				1 monitor
+IOC:XPP:GIGE:02:SR_5_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_6_Status				1 monitor
+IOC:XPP:GIGE:02:SR_6_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_7_Status				1 monitor
+IOC:XPP:GIGE:02:SR_7_StatusStr			1 monitor
+IOC:XPP:GIGE:02:SR_0_State				1 monitor
+IOC:XPP:GIGE:02:SR_1_State				1 monitor
+IOC:XPP:GIGE:02:SR_2_State				1 monitor
+IOC:XPP:GIGE:02:SR_3_State				1 monitor
+IOC:XPP:GIGE:02:SR_4_State				1 monitor
+IOC:XPP:GIGE:02:SR_5_State				1 monitor
+IOC:XPP:GIGE:02:SR_6_State				1 monitor
+IOC:XPP:GIGE:02:SR_7_State				1 monitor
+
+# Archive these values only when they change
+IOC:XPP:GIGE:02:SR_recentlyStr			30 monitor
+IOC:XPP:GIGE:02:SR_rebootTime			30 monitor
+IOC:XPP:GIGE:02:SR_0_Name				30 monitor
+IOC:XPP:GIGE:02:SR_1_Name				30 monitor
+IOC:XPP:GIGE:02:SR_2_Name				30 monitor
+IOC:XPP:GIGE:02:SR_3_Name				30 monitor
+IOC:XPP:GIGE:02:SR_4_Name				30 monitor
+IOC:XPP:GIGE:02:SR_5_Name				30 monitor
+IOC:XPP:GIGE:02:SR_6_Name				30 monitor
+IOC:XPP:GIGE:02:SR_7_Name				30 monitor
+
+# Archive these values at the specified rate
+IOC:XPP:GIGE:02:SR_heartbeat				30
+IOC:XPP:GIGE:02:SR_0_Time				30
+IOC:XPP:GIGE:02:SR_1_Time				30
+IOC:XPP:GIGE:02:SR_2_Time				30
+IOC:XPP:GIGE:02:SR_3_Time				30
+IOC:XPP:GIGE:02:SR_4_Time				30
+IOC:XPP:GIGE:02:SR_5_Time				30
+IOC:XPP:GIGE:02:SR_6_Time				30
+IOC:XPP:GIGE:02:SR_7_Time				30
+
+# Event modules archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# Capture frequent changes to these
+
+# Capture these once/sec
+#IOC:XPP:GIGE:02:FIDUCIALCTRL 1 
+#IOC:XPP:GIGE:02:FIDUCIALDIAG 1 
+
+# These can change frequently but we don't care
+IOC:XPP:GIGE:02:FIDUCIAL 10
+IOC:XPP:GIGE:02:FIDUCIALRATE 10
+IOC:XPP:GIGE:02:MODIFIER5 10
+IOC:XPP:GIGE:02:PATTERN 10
+IOC:XPP:GIGE:02:PATTERN.L 10
+IOC:XPP:GIGE:02:PATTERN360HZ 10
+IOC:XPP:GIGE:02:PATTERND 10
+IOC:XPP:GIGE:02:PATTERND-0 10
+IOC:XPP:GIGE:02:PATTERND-1 10
+IOC:XPP:GIGE:02:PATTERND-2 10
+IOC:XPP:GIGE:02:PATTERND-3 10
+IOC:XPP:GIGE:02:PATTERNFO 10
+IOC:XPP:GIGE:02:PATTERNN-1 10
+IOC:XPP:GIGE:02:PATTERNN-2 10
+IOC:XPP:GIGE:02:PATTERNSTATE 10
+
+# Don't exect these to change much.  Just monitor
+IOC:XPP:GIGE:02:RESETCNT 30 monitor
+IOC:XPP:GIGE:02:TREF 30 monitor
+
+# Archive event controls
+#
+# edt_unix Archive PV list
+#
+
+# Archive these values at the specified rate
+XPP:GIGE:image2:ArrayCounter_RBV   30
+
+# Archive these values only when they change
+XPP:GIGE:cam2:AcquirePeriod        30 monitor
+XPP:GIGE:cam2:AcquireTime          30 monitor
+XPP:GIGE:cam2:ArrayCallbacks       30 monitor
+XPP:GIGE:cam2:AutoIncrement        30 monitor
+XPP:GIGE:cam2:AutoSave             30 monitor
+XPP:GIGE:cam2:BinX                 30 monitor
+XPP:GIGE:cam2:BinY                 30 monitor
+XPP:GIGE:cam2:ColorMode            30 monitor
+XPP:GIGE:cam2:Cross1Color          30 monitor
+XPP:GIGE:cam2:Cross1X              30 monitor
+XPP:GIGE:cam2:Cross1Y              30 monitor
+XPP:GIGE:cam2:Cross2Color          30 monitor
+XPP:GIGE:cam2:Cross2X              30 monitor
+XPP:GIGE:cam2:Cross2Y              30 monitor
+XPP:GIGE:cam2:DataType             30 monitor
+XPP:GIGE:cam2:FileFormat           30 monitor
+XPP:GIGE:cam2:FileNumber           30 monitor
+XPP:GIGE:cam2:FileNumber_Sync      30 monitor
+XPP:GIGE:cam2:FileNumber_write     30 monitor
+XPP:GIGE:cam2:FileWriteMode        30 monitor
+XPP:GIGE:cam2:FrameType            30 monitor
+XPP:GIGE:cam2:Gain                 30 monitor
+XPP:GIGE:cam2:ImageMode            30 monitor
+XPP:GIGE:cam2:NumCapture           30 monitor
+XPP:GIGE:cam2:NumExposures         30 monitor
+XPP:GIGE:cam2:NumImages            30 monitor
+XPP:GIGE:cam2:PSReadStatistics     30 monitor
+XPP:GIGE:cam2:ReadFile             30 monitor
+XPP:GIGE:cam2:ReadStatus           30 monitor
+XPP:GIGE:cam2:ReverseX             30 monitor
+XPP:GIGE:cam2:ReverseY             30 monitor
+XPP:GIGE:cam2:ShutterCloseDelay    30 monitor
+XPP:GIGE:cam2:ShutterCloseEPICS    30 monitor
+XPP:GIGE:cam2:ShutterControl       30 monitor
+XPP:GIGE:cam2:ShutterControlEPICS  30 monitor
+XPP:GIGE:cam2:ShutterFanout        30 monitor
+XPP:GIGE:cam2:ShutterMode          30 monitor
+XPP:GIGE:cam2:ShutterOpenDelay     30 monitor
+XPP:GIGE:cam2:ShutterOpenEPICS     30 monitor
+XPP:GIGE:cam2:Strobe1CtlDuration   30 monitor
+XPP:GIGE:cam2:Strobe1Delay         30 monitor
+XPP:GIGE:cam2:Strobe1Duration      30 monitor
+XPP:GIGE:cam2:Strobe1Mode          30 monitor
+XPP:GIGE:cam2:SyncOut1Invert       30 monitor
+XPP:GIGE:cam2:SyncOut1Level        30 monitor
+XPP:GIGE:cam2:SyncOut1Mode         30 monitor
+XPP:GIGE:cam2:SyncOut2Invert       30 monitor
+XPP:GIGE:cam2:SyncOut2Level        30 monitor
+XPP:GIGE:cam2:SyncOut2Mode         30 monitor
+XPP:GIGE:cam2:SyncOut3Invert       30 monitor
+XPP:GIGE:cam2:SyncOut3Level        30 monitor
+XPP:GIGE:cam2:SyncOut3Mode         30 monitor
+XPP:GIGE:cam2:TriggerMode          30 monitor
+XPP:GIGE:image2:BlockingCallbacks  30 monitor
+XPP:GIGE:image2:EnableCallbacks    30 monitor
