@@ -2,12 +2,11 @@
 # unixCam IOC archive substitutions file
 #
 
-# Generate generic portion of unixCam archive request 
+# Generate IOC archive request 
 file archive_gige.archive
 {
     {
-        IOC     =   TST:R40:IOC:18:GIGE:01,
+        IOC = TST:R40:IOC:18:GIGE:01,
     }
 }
-
 
