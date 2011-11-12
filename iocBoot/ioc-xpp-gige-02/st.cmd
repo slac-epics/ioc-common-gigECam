@@ -10,7 +10,7 @@ cd( "../.." )
 < /reg/d/iocCommon/All/pre_linux.cmd
 
 # Register all support components
-dbLoadDatabase("$(AREA_DETECTOR)/dbd/prosilicaApp.dbd")
+dbLoadDatabase( "dbd/gige.dbd" )
 gige_registerRecordDeviceDriver(pdbbase)
 
 
