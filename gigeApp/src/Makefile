@@ -29,6 +29,7 @@ gige_DBD += prosilicaApp.dbd
 gige_DBD += prosilicaSupport.dbd
 gige_DBD += sscan.dbd
 gige_DBD += std.dbd
+gige_DBD += stdSupport.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 gige_SRCS += gige_registerRecordDeviceDriver.cpp
