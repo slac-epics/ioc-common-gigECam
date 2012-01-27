@@ -1,0 +1,12 @@
+#
+# unixCam IOC archive substitutions file
+#
+
+# Generate IOC archive request 
+file archive_gige.archive
+{
+    {
+        IOC = TST:R40:IOC:18,
+    }
+}
+
