@@ -22,10 +22,7 @@ DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 # Create and install (or just install)
 # Autosave request files, templates, substitutions like this
 #
-#REQ += autosave_gige.req
-#REQ += ioc-xpp-gige-01.req
-#REQ += ioc-xpp-gige-02.req
-REQ += tst_gige1.req
+REQ += gige.req
 
 
 #----------------------------------------------------
@@ -45,8 +42,8 @@ ARCHIVE += ioc-tst-gige-01.archive
 # <anyname>_template = <templatename>
 
 include $(TOP)/configure/RULES
-#include $(TOP)/configure/RULES.archive
-#include $(TOP)/configure/RULES.autosave
+include $(TOP)/configure/RULES.archive
+include $(TOP)/configure/RULES.autosave
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
 

@@ -15,6 +15,8 @@ gige_registerRecordDeviceDriver(pdbbase)
 
 
 epicsEnvSet("PREFIX", "XPP:GIGE:")
+epicsEnvSet("CAM1",   "cam2")
+epicsEnvSet("IMG1",   "image2")
 epicsEnvSet("PORT",   "PS2")
 epicsEnvSet("QSIZE",  "20")
 epicsEnvSet("XSIZE",  "1360")
@@ -68,7 +70,7 @@ dbpf $(PREFIX)cam2:ArrayCallbacks 1
 dbpf $(PREFIX)image2:EnableCallbacks 1
 
 # Start autosave backups
-create_monitor_set( "autosave_gige.req", 30, "IOC=IOC:XPP:GIGE:02" )
+create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd

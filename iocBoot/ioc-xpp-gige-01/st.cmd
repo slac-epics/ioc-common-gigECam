@@ -1,13 +1,14 @@
 #! ../../bin/linux-x86_64/gige
 
+# Run common startup commands for linux soft IOC's
+< /reg/d/iocCommon/All/pre_linux.cmd
+
+< envPaths
+
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
 epicsEnvSet( "LOCATION", "IOC:XPP:GIGE:01" )
 epicsEnvSet( "IOCSH_PS1", "ioc-xpp-gige-01> " )
-< envPaths
 cd( "../.." )
-
-# Run common startup commands for linux soft IOC's
-< /reg/d/iocCommon/All/pre_linux.cmd
 
 # Register all support components
 dbLoadDatabase( "dbd/gige.dbd" )
@@ -15,6 +16,8 @@ gige_registerRecordDeviceDriver(pdbbase)
 
 
 epicsEnvSet("PREFIX", "XPP:GIGE:")
+epicsEnvSet("CAM1",   "cam1")
+epicsEnvSet("IMG1",   "image1")
 epicsEnvSet("PORT",   "PS1")
 epicsEnvSet("QSIZE",  "20")
 epicsEnvSet("XSIZE",  "1360")
@@ -68,7 +71,7 @@ dbpf $(PREFIX)cam1:ArrayCallbacks 1
 dbpf $(PREFIX)image1:EnableCallbacks 1
 
 # Start autosave backups
-create_monitor_set( "autosave_gige.req", 30, "IOC=IOC:XPP:GIGE:01" )
+create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd

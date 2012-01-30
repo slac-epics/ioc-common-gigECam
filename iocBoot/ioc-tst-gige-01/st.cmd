@@ -1,20 +1,21 @@
 #! ../../bin/linux-x86_64/gige
 
+# Run common startup commands for linux soft IOC's
+< /reg/d/iocCommon/All/pre_linux.cmd
+
+< envPaths
+
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
 epicsEnvSet( "LOCATION", "TST:R40:IOC:18:GIGE:01" )
 epicsEnvSet( "IOCSH_PS1", "ioc-tst-gige-01> " )
 
-< envPaths
 cd( "../.." )
 
-# Run common startup commands for linux soft IOC's
-< /reg/d/iocCommon/All/pre_linux.cmd
-
-# Register all support components
-dbLoadDatabase( "dbd/gige.dbd" )
-gige_registerRecordDeviceDriver(pdbbase)
-
-#epicsEnvSet("PREFIX", "13PS1:")
+epicsEnvSet("PREFIX", "13PS1:")
+epicsEnvSet("CAM1",   "CAM1")
+epicsEnvSet("CAM2",   "CAM2")
+epicsEnvSet("IMG1",   "IMAGE1")
+epicsEnvSet("IMG2",   "IMAGE2")
 #epicsEnvSet("PORT",   "PS1")
 epicsEnvSet("QSIZE",  "20")
 #epicsEnvSet("XSIZE",  "1360")
@@ -27,6 +28,10 @@ epicsEnvSet("NELEMENTS2", "452400")
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "8000000")
 epicsEnvSet(  "IP1", "192.168.100.2" )
 epicsEnvSet(  "IP2", "192.168.101.2" )
+
+# Register all support components
+dbLoadDatabase( "dbd/gige.dbd" )
+gige_registerRecordDeviceDriver(pdbbase)
 
 ##############################################################
 # configure and initialize the camera
@@ -46,22 +51,22 @@ asynSetTraceMask("PS1",0,0)
 asynSetTraceMask("PS2",0,0)
 
 
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=13PS1:,R=cam1:,PORT=PS1,ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=13PS1:,R=cam1:,PORT=PS1,ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=13PS1:,R=cam1:,PORT=PS1,ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=13PS1:,R=CAM1:,PORT=PS1,ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=13PS1:,R=CAM1:,PORT=PS1,ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=13PS1:,R=CAM1:,PORT=PS1,ADDR=0,TIMEOUT=1")
 
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=13PS2:,R=cam1:,PORT=PS2,ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=13PS2:,R=cam1:,PORT=PS2,ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=13PS2:,R=cam1:,PORT=PS2,ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=13PS2:,R=CAM1:,PORT=PS2,ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=13PS2:,R=CAM1:,PORT=PS2,ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=13PS2:,R=CAM1:,PORT=PS2,ADDR=0,TIMEOUT=1")
 
 # Create a standard arrays plugin, set it to get data from first Prosilica driver.
 NDStdArraysConfigure("Image1", 5, 0, "PS1", 0, -1)
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=13PS1:,R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=PS1,NDARRAY_ADDR=0")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=13PS1:,R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(NELEMENTS1)")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=13PS1:,R=IMAGE1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=PS1,NDARRAY_ADDR=0")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=13PS1:,R=IMAGE1:,PORT=Image1,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(NELEMENTS1)")
 
 NDStdArraysConfigure("Image2", 5, 0, "PS2", 0, -1)
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=13PS2:,R=image1:,PORT=Image2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=PS2,NDARRAY_ADDR=0")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=13PS2:,R=image1:,PORT=Image2,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(NELEMENTS2)")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=13PS2:,R=IMAGE1:,PORT=Image2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=PS2,NDARRAY_ADDR=0")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=13PS2:,R=IMAGE1:,PORT=Image2,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(NELEMENTS2)")
 
 
 # Load record instances
@@ -84,14 +89,14 @@ save_restoreSet_SeqPeriodInSeconds(30)
 # Initialize the IOC and start processing records
 iocInit()
 
-dbpf 13PS1:cam1:ArrayCallbacks 1
-dbpf 13PS1:image1:EnableCallbacks 1
+dbpf 13PS1:CAM1:ArrayCallbacks 1
+dbpf 13PS1:IMAGE1:EnableCallbacks 1
 
-dbpf 13PS2:cam1:ArrayCallbacks 1
-dbpf 13PS2:image1:EnableCallbacks 1
+dbpf 13PS2:CAM1:ArrayCallbacks 1
+dbpf 13PS2:IMAGE1:EnableCallbacks 1
 
 # Start autosave backups
-create_monitor_set("tst_gige1.req", 5, "IOC=TST:R40:IOC:18:GIGE:01")
+create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd
