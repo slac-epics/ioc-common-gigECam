@@ -4,46 +4,28 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
 #----------------------------------------------------
-#  Optimization of db files using dbst (DEFAULT: NO)
-#DB_OPT = YES
-
-#----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
-#DB += xxx.db
-
-# Generate db files from substitutions
 DB += iocAdmin.db
+DB += gige-camera.tpl-db
 
-# Nothing to build, just install from autosave/db
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
-
-#----------------------------------------------------
-# Create and install (or just install)
-# Autosave request files, templates, substitutions like this
-#
-REQ += gige.req
-
 
 #----------------------------------------------------
 # Create and install (or just install)
 # Archive files, templates, substitutions like this
 #
-ARCHIVE += archive_gige.archive
-
-# This one gets installed from the edt_unix module so it
-# can be used by msi expansion in iocBoot/<iocname>/Makefile
-#ARCHIVE += ioc-xpp-gige-01.archive
-#ARCHIVE += ioc-xpp-gige-02.archive
-ARCHIVE += ioc-tst-gige-01.archive
+ARCHIVE += gige-ioc.archive
+ARCHIVE += gige-camera.tpl-arch
 
 #----------------------------------------------------
-# If <anyname>.db template is not named <anyname>*.template add
-# <anyname>_template = <templatename>
+# Create and install (or just install)
+# Autosave request files, templates, substitutions like this
+#
+REQ += gige-ioc.req
+REQ += gige-camera.tpl-req
 
 include $(TOP)/configure/RULES
-include $(TOP)/configure/RULES.archive
-include $(TOP)/configure/RULES.autosave
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
 

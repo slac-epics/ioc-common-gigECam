@@ -1,0 +1,14 @@
+# Archive file for ioc-tst-gige3
+
+file gige-ioc.archive
+{
+    {
+        IOC = TST:IOC:GIGE3
+    }
+}
+
+
+file gige-camera.tpl-arch
+{
+    {   CAM = "CAM1",  IMG = "IMAGE1" }
+}

@@ -3,10 +3,10 @@
 export EPICS_CA_MAX_ARRAY_BYTES=8000000
 
 # Setup the IOC user environment
-source /reg/d/iocCommon/All/tst_env.sh
+source /reg/d/iocCommon/All/xcs_env.sh
 
 # Make sure the IOC's data directories are ready for use
-export IOC="ioc-tst-gige-01"
+export IOC="ioc-xcs-gige-01"
 $RUNUSER "mkdir -p $IOC_DATA/$IOC/autosave"
 $RUNUSER "mkdir -p $IOC_DATA/$IOC/archive"
 $RUNUSER "mkdir -p $IOC_DATA/$IOC/iocInfo"
@@ -19,10 +19,9 @@ $RUNUSER "chmod ug+w -R $IOC_DATA/$IOC"
 
 # For development
 cd ~pstoffel/repo/epics/trunk/ioc/common/gigECam/current/iocBoot/$IOC
-#cd ~bhill/wa2/epics//ioc/common/gigECam/current/iocBoot/$IOC
 
 # Copy the archive file to iocData
-#$RUNUSER "cp ../../archive/$IOC.archive $IOC_DATA/$IOC/archive"
+$RUNUSER "cp ../../archive/$IOC.archive $IOC_DATA/$IOC/archive"
 
 # Launch the IOC
 $RUNUSER "$PROCSERV --logfile $IOC_DATA/$IOC/iocInfo/ioc.log --name $IOC 32501 st.cmd"

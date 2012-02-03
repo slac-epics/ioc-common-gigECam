@@ -1,0 +1,14 @@
+# Archive file for ioc-xpp-gige-01
+
+file gige-ioc.archive
+{
+    {
+        IOC = XPP:IOC:GIGE:01
+    }
+}
+
+
+file gige-camera.tpl-arch
+{
+    {   CAM = "CAM1",  IMG = "IMAGE1" }
+}

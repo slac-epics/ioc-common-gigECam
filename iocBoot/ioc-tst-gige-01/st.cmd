@@ -1,3 +1,4 @@
+#! /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R0.1.0/bin/linux-x86_64/gige
 #! ../../bin/linux-x86_64/gige
 
 # Run common startup commands for linux soft IOC's
@@ -20,14 +21,19 @@ epicsEnvSet("IMG2",   "IMAGE2")
 epicsEnvSet("QSIZE",  "20")
 #epicsEnvSet("XSIZE",  "1360")
 #epicsEnvSet("YSIZE",  "1024")
-epicsEnvSet("XSIZE",  "780")
-epicsEnvSet("YSIZE",  "580")
+epicsEnvSet("XSIZE",  "1388")
+epicsEnvSet("YSIZE",  "1038")
+#epicsEnvSet("XSIZE",  "1360")
+#epicsEnvSet("YSIZE",  "1024")
+#epicsEnvSet("XSIZE",  "780")
+#epicsEnvSet("YSIZE",  "580")
 epicsEnvSet("NCHANS", "2048")
 epicsEnvSet("NELEMENTS1", "4177920")
-epicsEnvSet("NELEMENTS2", "452400")
+epicsEnvSet("NELEMENTS2", "4177920")
+#epicsEnvSet("NELEMENTS2", "452400")
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "8000000")
-epicsEnvSet(  "IP1", "192.168.100.2" )
-epicsEnvSet(  "IP2", "192.168.101.2" )
+epicsEnvSet(  "IP1", "192.168.100.10" )
+epicsEnvSet(  "IP2", "192.168.0.101" )
 
 # Register all support components
 dbLoadDatabase( "dbd/gige.dbd" )

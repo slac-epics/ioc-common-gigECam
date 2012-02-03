@@ -26,15 +26,3 @@ file archive_SR.template
 		IOC		=	$(IOC)
 	}
 }
-
-# Generate GIGE archive request 
-#   Macros:
-#       IOC     - PV prefix for all IOC  PV's
-# Typically, IOC  will be expanded in the iocBoot/<ioc_name>/Makefile
-file archive_gige.template
-{
-    {
-        # Hack till msi supports empty substitutions
-        IOC     =   $(IOC)
-    }
-}

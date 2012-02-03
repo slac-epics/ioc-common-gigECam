@@ -10,17 +10,24 @@ TARGETS = envPaths
 USR_ARCHIVEFLAGS += -V
 
 #----------------------------------------------------
+# Create and install IOC db file
+#
+DB += ioc-xpp-gige-01.db
+
+#----------------------------------------------------
 # Create and install IOC archive file
 #
 ARCHIVE += ioc-xpp-gige-01.archive
+
+#----------------------------------------------------
+# Create and install IOC autosave file
+#
+REQ += ioc-xpp-gige-01.req
 
 # See RULES.copy for more information on these variables.
 COPY_ONLY_IF_NON_LOCAL=1
 COPY_SUBDIR=iocBoot/ioc-xpp-gige-01
 COPY_FILES=st.cmd
 
-include $(TOP)/configure/RULES.ioc
-#include $(TOP)/configure/RULES.ioc-targets
-#-include $(TOP)/configure/RULES.autosave
-#-include $(TOP)/configure/RULES.archive
--include $(TOP)/configure/RULES.copy
+include $(TOP)/configure/RULES
+include $(TOP)/configure/RULES.ioc-targets

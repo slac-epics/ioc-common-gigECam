@@ -28,7 +28,8 @@ epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "8000000")
 ##############################################################
 # configure and initialize the camera
 #   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
-prosilicaConfigIp(  "PS1", 116474, "192.168.100.220", 50, -1)
+##prosilicaConfigIp(  "PS1", 116474, "192.168.100.220", 50, -1)
+prosilicaConfigIp(  "PS1", 116474, "192.168.100.10", 50, -1)
 ##############################################################
 
 
@@ -53,16 +54,16 @@ dbLoadRecords( "db/iocAdmin.db",			"IOC=IOC:XPP:GIGE:01" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=IOC:XPP:GIGE:01" )
 
 # Setup autosave
-set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
-set_requestfile_path( "autosave" )
-save_restoreSet_status_prefix( "IOC:XPP:GIGE:01:" )
-save_restoreSet_IncompleteSetsOk( 1 )
-save_restoreSet_DatedBackupFiles( 1 )
-set_pass0_restoreFile( "xpp_gige1.sav" )
-set_pass1_restoreFile( "xpp_gige1.sav" )
+##set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
+##set_requestfile_path( "autosave" )
+##save_restoreSet_status_prefix( "IOC:XPP:GIGE:01:" )
+##save_restoreSet_IncompleteSetsOk( 1 )
+##save_restoreSet_DatedBackupFiles( 1 )
+##set_pass0_restoreFile( "xpp_gige1.sav" )
+##set_pass1_restoreFile( "xpp_gige1.sav" )
 
-save_restoreSet_NumSeqFiles(5)
-save_restoreSet_SeqPeriodInSeconds(30)
+##save_restoreSet_NumSeqFiles(5)
+##save_restoreSet_SeqPeriodInSeconds(30)
 
 # Initialize the IOC and start processing records
 iocInit()

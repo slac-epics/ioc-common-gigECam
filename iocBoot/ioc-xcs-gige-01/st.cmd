@@ -1,4 +1,3 @@
-#! /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R0.1.0/bin/linux-x86_64/gige
 #! ../../bin/linux-x86_64/gige
 
 # Run common startup commands for linux soft IOC's
@@ -8,11 +7,11 @@
 
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
 # FIXME: elevation
-epicsEnvSet( "LOCATION",  "TST:R40:IOC:88" )
-epicsEnvSet( "IOC",       "ioc-tst-gige3")
+epicsEnvSet( "LOCATION",  "XCS:R42:IOC:38" )
+epicsEnvSet( "IOC",       "ioc-xcs-gige-01")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
-epicsEnvSet("PREFIX", "TST:GIGE:")
+epicsEnvSet("PREFIX", "XCS:GIGE:")
 epicsEnvSet("CAM1",   "CAM1")
 epicsEnvSet("IMG1",   "IMAGE1")
 epicsEnvSet("CAM2",   "CAM2")
@@ -23,15 +22,15 @@ epicsEnvSet("CAM4",   "CAM4")
 epicsEnvSet("IMG4",   "IMAGE4")
 
 # ----- Manta G046B -----
-#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",     "192.168.0.105")
-#epicsEnvSet("C1_XSIZE",  "780")
-#epicsEnvSet("C1_YSIZE",  "580")
-#epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
+# epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
+# epicsEnvSet("C1_IP",     "192.168.100.30")
+# epicsEnvSet("C1_XSIZE",  "780")
+# epicsEnvSet("C1_YSIZE",  "580")
+# epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+# epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
 
 # ----- Manta G146C -----
-epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
+epicsEnvSet("CAM1_ENABLED",  "")                              # "" = YES,  "#" = NO
 epicsEnvSet("C1_IP",         "192.168.0.101")
 epicsEnvSet("C1_XSIZE",      "1388")
 epicsEnvSet("C1_YSIZE",      "1038")
@@ -39,8 +38,8 @@ epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
 epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
 
 # ----- Manta G146C -----
-epicsEnvSet("CAM2_ENABLED",  "")                             # "" = YES,  "#" = NO
-epicsEnvSet("C2_IP",         "192.168.0.105")
+epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO
+epicsEnvSet("C2_IP",         "192.168.100.20")
 epicsEnvSet("C2_XSIZE",      "1388")
 epicsEnvSet("C2_YSIZE",      "1038")
 epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
@@ -76,14 +75,9 @@ gige_registerRecordDeviceDriver(pdbbase)
 # configure and initialize the camera
 #   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
 $(CAM1_ENABLED) prosilicaConfigIp(  "$(CAM1)", 999999, "$(C1_IP)", 50, -1)
-$(CAM1_ENABLED) epicsThreadSleep(1)
 $(CAM2_ENABLED) prosilicaConfigIp(  "$(CAM2)", 999999, "$(C2_IP)", 50, -1)
-$(CAM2_ENABLED) epicsThreadSleep(1)
 $(CAM3_ENABLED) prosilicaConfigIp(  "$(CAM3)", 999999, "$(C3_IP)", 50, -1)
-$(CAM3_ENABLED) epicsThreadSleep(1)
 $(CAM4_ENABLED) prosilicaConfigIp(  "$(CAM4)", 999999, "$(C4_IP)", 50, -1)
-$(CAM4_ENABLED) epicsThreadSleep(1)
-
 ##############################################################
 
 #asynSetTraceMask("$(CAM1)",0,9)
@@ -133,16 +127,16 @@ dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
 
 # Setup autosave
-set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
-set_requestfile_path( "autosave" )
-save_restoreSet_status_prefix("$(LOCATION)")
-save_restoreSet_IncompleteSetsOk( 1 )
-save_restoreSet_DatedBackupFiles( 1 )
-set_pass0_restoreFile( "$(IOC).sav" )
-set_pass1_restoreFile( "$(IOC).sav" )
+##set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
+##set_requestfile_path( "autosave" )
+##save_restoreSet_status_prefix("$(LOCATION)")
+##save_restoreSet_IncompleteSetsOk( 1 )
+##save_restoreSet_DatedBackupFiles( 1 )
+##set_pass0_restoreFile( "$(IOC).sav" )
+##set_pass1_restoreFile( "$(IOC).sav" )
 
-save_restoreSet_NumSeqFiles(5)
-save_restoreSet_SeqPeriodInSeconds(30)
+##save_restoreSet_NumSeqFiles(5)
+##save_restoreSet_SeqPeriodInSeconds(30)
 
 # Initialize the IOC and start processing records
 iocInit()
@@ -168,7 +162,7 @@ $(CAM1_ENABLED) dbpr $(PREFIX)$(CAM1):ArrayCounter_RBV
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ArrayCallbacks 1
 $(CAM2_ENABLED) dbpf $(PREFIX)$(IMG2):EnableCallbacks 1
 #
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ColorMode $(C2_COLORMODE)         # 0=Mono, 2=RGB1
+$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
@@ -186,7 +180,7 @@ $(CAM2_ENABLED) dbpr $(PREFIX)$(CAM2):ArrayCounter_RBV
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ArrayCallbacks 1
 $(CAM3_ENABLED) dbpf $(PREFIX)$(IMG3):EnableCallbacks 1
 #
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ColorMode $(C3_COLORMODE)         # 0=Mono, 2=RGB1
+$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
@@ -204,7 +198,7 @@ $(CAM3_ENABLED) dbpr $(PREFIX)$(CAM3):ArrayCounter_RBV
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ArrayCallbacks 1
 $(CAM4_ENABLED) dbpf $(PREFIX)$(IMG4):EnableCallbacks 1
 #
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ColorMode $(C4_COLORMODE)         # 0=Mono, 2=RGB1
+$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate

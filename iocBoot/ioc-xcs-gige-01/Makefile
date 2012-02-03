@@ -12,21 +12,21 @@ USR_ARCHIVEFLAGS += -V
 #----------------------------------------------------
 # Create and install IOC db file
 #
-DB += ioc-xpp-gige-02.db
+DB += ioc-xcs-gige-01.db
 
 #----------------------------------------------------
 # Create and install IOC archive file
 #
-ARCHIVE += ioc-xpp-gige-02.archive
+ARCHIVE += ioc-xcs-gige-01.archive
 
 #----------------------------------------------------
 # Create and install IOC autosave file
 #
-REQ += ioc-xpp-gige-02.req
+REQ += ioc-xcs-gige-01.req
 
 # See RULES.copy for more information on these variables.
 COPY_ONLY_IF_NON_LOCAL=1
-COPY_SUBDIR=iocBoot/ioc-xpp-gige-02
+COPY_SUBDIR=iocBoot/ioc-xcs-gige-01
 COPY_FILES=st.cmd
 
 include $(TOP)/configure/RULES

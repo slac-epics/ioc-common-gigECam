@@ -1,0 +1,11 @@
+#
+# GigE IOC db substitutions file
+#
+
+file gige.tpl-db
+{
+pattern
+{ IOC,             CAM,  IMG }
+{ XPP:IOC:GIGE:02, CAM1, IMAGE1 }
+}
+
