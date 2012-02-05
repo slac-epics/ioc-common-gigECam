@@ -70,7 +70,7 @@ dbpf $(PREFIX)cam2:ArrayCallbacks 1
 dbpf $(PREFIX)image2:EnableCallbacks 1
 
 # Start autosave backups
-create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
+create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd

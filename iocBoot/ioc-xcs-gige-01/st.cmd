@@ -214,10 +214,10 @@ $(CAM4_ENABLED) dbpr $(PREFIX)$(CAM4):ArrayCounter_RBV
 # ----------
 
 # Start autosave backups
-$(CAM1_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
-$(CAM2_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM2),IMG=$(PREFIX)$(IMG2)")
-$(CAM3_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM3),IMG=$(PREFIX)$(IMG3)")
-$(CAM4_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM4),IMG=$(PREFIX)$(IMG4)")
+$(CAM1_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
+$(CAM2_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM2),IMG=$(PREFIX)$(IMG2)")
+$(CAM3_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM3),IMG=$(PREFIX)$(IMG3)")
+$(CAM4_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM4),IMG=$(PREFIX)$(IMG4)")
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd
