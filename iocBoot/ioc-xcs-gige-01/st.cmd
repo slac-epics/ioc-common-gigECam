@@ -38,8 +38,8 @@ epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
 epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
 
 # ----- Manta G146C -----
-epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO
-epicsEnvSet("C2_IP",         "192.168.100.20")
+epicsEnvSet("CAM2_ENABLED",  "")                             # "" = YES,  "#" = NO
+epicsEnvSet("C2_IP",         "192.168.0.105")
 epicsEnvSet("C2_XSIZE",      "1388")
 epicsEnvSet("C2_YSIZE",      "1038")
 epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
@@ -127,16 +127,16 @@ dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
 
 # Setup autosave
-##set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
-##set_requestfile_path( "autosave" )
-##save_restoreSet_status_prefix("$(LOCATION)")
-##save_restoreSet_IncompleteSetsOk( 1 )
-##save_restoreSet_DatedBackupFiles( 1 )
-##set_pass0_restoreFile( "$(IOC).sav" )
-##set_pass1_restoreFile( "$(IOC).sav" )
+set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
+set_requestfile_path( "autosave" )
+save_restoreSet_status_prefix("$(LOCATION)")
+save_restoreSet_IncompleteSetsOk( 1 )
+save_restoreSet_DatedBackupFiles( 1 )
+set_pass0_restoreFile( "$(IOC).sav" )
+set_pass1_restoreFile( "$(IOC).sav" )
 
-##save_restoreSet_NumSeqFiles(5)
-##save_restoreSet_SeqPeriodInSeconds(30)
+save_restoreSet_NumSeqFiles(5)
+save_restoreSet_SeqPeriodInSeconds(30)
 
 # Initialize the IOC and start processing records
 iocInit()
@@ -214,10 +214,10 @@ $(CAM4_ENABLED) dbpr $(PREFIX)$(CAM4):ArrayCounter_RBV
 # ----------
 
 # Start autosave backups
-$(CAM1_ENABLED) create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
-$(CAM2_ENABLED) create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM2),IMG=$(PREFIX)$(IMG2)")
-$(CAM3_ENABLED) create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM3),IMG=$(PREFIX)$(IMG3)")
-$(CAM4_ENABLED) create_monitor_set("gige.req", 5, "CAM=$(PREFIX)$(CAM4),IMG=$(PREFIX)$(IMG4)")
+$(CAM1_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
+$(CAM2_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM2),IMG=$(PREFIX)$(IMG2)")
+$(CAM3_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM3),IMG=$(PREFIX)$(IMG3)")
+$(CAM4_ENABLED) create_monitor_set("ioc-xcs-gige-01.req", 5, "CAM=$(PREFIX)$(CAM4),IMG=$(PREFIX)$(IMG4)")
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd
