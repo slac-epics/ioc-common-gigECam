@@ -12,7 +12,7 @@ epicsEnvSet( "IOCSH_PS1", "ioc-tst-gige-01> " )
 
 cd( "../.." )
 
-epicsEnvSet("PREFIX", "13PS1:")
+epicsEnvSet("PREFIX", "TST:GIGE:01")
 epicsEnvSet("CAM1",   "CAM1")
 epicsEnvSet("CAM2",   "CAM2")
 epicsEnvSet("IMG1",   "IMAGE1")

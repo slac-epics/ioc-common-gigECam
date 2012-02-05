@@ -10,11 +10,6 @@ TARGETS = envPaths
 USR_ARCHIVEFLAGS += -V
 
 #----------------------------------------------------
-# Create and install IOC db file
-#
-DB += ioc-tst-gige3.db
-
-#----------------------------------------------------
 # Create and install IOC archive file
 #
 ARCHIVE += ioc-tst-gige3.archive

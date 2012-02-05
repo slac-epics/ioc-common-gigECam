@@ -52,5 +52,3 @@ MCA          = $(EPICS_MODULES)/mca/$(MCA_MODULE_VERSION)
 SEQ          = $(EPICS_MODULES)/seq/$(SEQ_MODULE_VERSION)
 SSCAN        = $(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
 STD          = $(EPICS_MODULES)/std/$(STD_MODULE_VERSION)
-#
-#IOCADMIN     = ~/repo/trunk/pcds/epics/modules/iocAdmin/current
