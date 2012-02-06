@@ -18,35 +18,32 @@ gige_registerRecordDeviceDriver(pdbbase)
 epicsEnvSet("PREFIX", "XPP:GIGE:")
 epicsEnvSet("CAM1",   "cam1")
 epicsEnvSet("IMG1",   "image1")
-epicsEnvSet("PORT",   "PS1")
-epicsEnvSet("QSIZE",  "20")
 epicsEnvSet("XSIZE",  "1360")
 epicsEnvSet("YSIZE",  "1024")
-epicsEnvSet("NCHANS", "2048")
+epicsEnvSet("NELEMENTS",  "4177920")  # X * Y * 3
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "8000000")
 
 ##############################################################
 # configure and initialize the camera
 #   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
-##prosilicaConfigIp(  "PS1", 116474, "192.168.100.220", 50, -1)
-prosilicaConfigIp(  "PS1", 116474, "192.168.100.10", 50, -1)
+prosilicaConfigIp(  "$(CAM1)", 999999, "192.168.100.10", 50, -1)
 ##############################################################
 
 
-##asynSetTraceIOMask("$(PORT)",0,2)
-asynSetTraceIOMask("$(PORT)",0,0)
+##asynSetTraceIOMask("$(CAM1)",0,2)
+asynSetTraceIOMask("$(CAM1)",0,0)
 
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
 
 # Create a standard arrays plugin, set it to get data from first Prosilica driver.
-NDStdArraysConfigure("Image1", 5, 0, "$(PORT)", 0, -1)
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=0")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=4177920")
+NDStdArraysConfigure("$(IMG1)", 5, 0, "$(CAM1)", 0, -1)
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=($IMG1):,PORT=$(IMG1),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM1),NDARRAY_ADDR=0")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=($IMG1):,PORT=$(IMG1),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(NELEMENTS)")
 
-#asynSetTraceMask("$(PORT)",0,255)
-asynSetTraceMask("$(PORT)",0,0)
+#asynSetTraceMask("$(CAM1)",0,255)
+asynSetTraceMask("$(CAM1)",0,0)
 
 
 # Load record instances
@@ -68,8 +65,8 @@ dbLoadRecords( "db/save_restoreStatus.db",	"IOC=IOC:XPP:GIGE:01" )
 # Initialize the IOC and start processing records
 iocInit()
 
-dbpf $(PREFIX)cam1:ArrayCallbacks 1
-dbpf $(PREFIX)image1:EnableCallbacks 1
+dbpf $(PREFIX)$(CAM1):ArrayCallbacks 1
+dbpf $(PREFIX)($IMG1):EnableCallbacks 1
 
 # Start autosave backups
 create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
