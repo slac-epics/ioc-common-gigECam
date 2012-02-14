@@ -1,6 +1,7 @@
 #! /bin/env python
 
 import sys
+import time
 import logging
 from PycaImage import PycaImage
 from PyQt4.QtGui import QApplication
@@ -10,6 +11,7 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtCore import QRect
 from PyQt4.QtGui import QPen, QBrush
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 from GigEViewer_ui import Ui_MainWindow
 from pyca_widgets import *
 
@@ -23,6 +25,12 @@ class DisplayImage(QWidget):
         self.scaled_image = img.img
         self.painter = QPainter()
         img.set_new_image_callback(self.set_image)
+        self.updates = 0
+        self.last_updates = 0
+        self.last_time = time.time()
+        self.rateTimer = QTimer()
+        self.connect(self.rateTimer, SIGNAL("timeout()"), self.calcDisplayRate)
+        self.rateTimer.start(1000)
 
     def paintEvent(self, event):
         self.painter.begin(self)
@@ -30,6 +38,7 @@ class DisplayImage(QWidget):
             self.painter.drawImage(0, 0, self.scaled_image)
             self.drawCross(self.painter)
         self.painter.end()
+        self.updates += 1
 
     def drawCross(self, qp):
         color = self._gui.cbCross1Color.currentIndex()
@@ -102,6 +111,16 @@ class DisplayImage(QWidget):
         self.image = img
         self.scaled_image = self.image.scaled(self.width(), self.height())
         self.update()
+
+    def calcDisplayRate(self):
+        now = time.time()
+        updates = self.updates - self.last_updates
+        delta = now - self.last_time
+        rate = updates/delta
+        self._gui.label_rate.setText('%.1f' % rate)
+        self._gui.label_rate.repaint()
+        self.last_time = now
+        self.last_updates = self.updates
 
 
 class GigEImageViewer(QMainWindow, Ui_MainWindow):
