@@ -30,6 +30,7 @@ epicsEnvSet("IMG4",   "IMAGE4")
 # epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
 
 # ----- Manta G146C -----
+## Disabled because cannot ping
 epicsEnvSet("CAM1_ENABLED",  "")                              # "" = YES,  "#" = NO
 epicsEnvSet("C1_IP",         "192.168.0.101")
 epicsEnvSet("C1_XSIZE",      "1388")
@@ -162,7 +163,7 @@ $(CAM1_ENABLED) dbpr $(PREFIX)$(CAM1):ArrayCounter_RBV
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ArrayCallbacks 1
 $(CAM2_ENABLED) dbpf $(PREFIX)$(IMG2):EnableCallbacks 1
 #
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
+$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ColorMode $(C2_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
@@ -180,7 +181,7 @@ $(CAM2_ENABLED) dbpr $(PREFIX)$(CAM2):ArrayCounter_RBV
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ArrayCallbacks 1
 $(CAM3_ENABLED) dbpf $(PREFIX)$(IMG3):EnableCallbacks 1
 #
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
+$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ColorMode $(C3_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
@@ -198,7 +199,7 @@ $(CAM3_ENABLED) dbpr $(PREFIX)$(CAM3):ArrayCounter_RBV
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ArrayCallbacks 1
 $(CAM4_ENABLED) dbpf $(PREFIX)$(IMG4):EnableCallbacks 1
 #
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
+$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ColorMode $(C4_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
