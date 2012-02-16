@@ -1,5 +1,5 @@
-#! ../../bin/linux-x86_64/gige
 #! /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R0.1.0/bin/linux-x86_64/gige
+#! ../../bin/linux-x86_64/gige
 
 # Run common startup commands for linux soft IOC's
 < /reg/d/iocCommon/All/pre_linux.cmd
@@ -7,11 +7,12 @@
 < envPaths
 
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
-epicsEnvSet( "LOCATION", "TST:R40:IOC:18:GIGE:01" )
-epicsEnvSet( "IOC",       "ioc-tst-gige-01")
+# FIXME: elevation
+epicsEnvSet( "LOCATION",  "MEC:R40:IOC:88" )
+epicsEnvSet( "IOC",       "ioc-mec-gige1")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
-epicsEnvSet("PREFIX", "TST:GIGE:")
+epicsEnvSet("PREFIX", "MEC:GIGE:")
 epicsEnvSet("CAM1",   "CAM1")
 epicsEnvSet("IMG1",   "IMAGE1")
 epicsEnvSet("CAM2",   "CAM2")
@@ -22,24 +23,25 @@ epicsEnvSet("CAM4",   "CAM4")
 epicsEnvSet("IMG4",   "IMAGE4")
 
 # ----- Manta G046B -----
-#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",     "192.168.0.105")
-#epicsEnvSet("C1_XSIZE",  "780")
-#epicsEnvSet("C1_YSIZE",  "580")
-#epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
+epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
+epicsEnvSet("C1_IP",         "192.168.100.10")
+epicsEnvSet("C1_XSIZE",      "780")
+epicsEnvSet("C1_YSIZE",      "580")
+epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
 
 # ----- Manta G146C -----
-epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-epicsEnvSet("C1_IP",         "192.168.0.101")
-epicsEnvSet("C1_XSIZE",      "1388")
-epicsEnvSet("C1_YSIZE",      "1038")
-epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
+#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
+#epicsEnvSet("C1_IP",         "192.168.0.105")  #XCS
+#epicsEnvSet("C1_IP",         "192.168.100.10")  #TST
+#epicsEnvSet("C1_XSIZE",      "1388")
+#epicsEnvSet("C1_YSIZE",      "1038")
+#epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
+#epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
 
 # ----- Manta G146C -----
 epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO
-epicsEnvSet("C2_IP",         "192.168.0.105")
+epicsEnvSet("C2_IP",         "192.168.100.20")
 epicsEnvSet("C2_XSIZE",      "1388")
 epicsEnvSet("C2_YSIZE",      "1038")
 epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
@@ -60,9 +62,6 @@ epicsEnvSet("C4_XSIZE",      "1388")
 epicsEnvSet("C4_YSIZE",      "1038")
 epicsEnvSet("C4_COLORMODE",  "2")        # 0=Mono, 2=RGB1
 epicsEnvSet("C4_NELEMENTS",  "4322232")  # X * Y * 3
-
-#epicsEnvSet("XSIZE",  "1360")
-#epicsEnvSet("YSIZE",  "1024")
 
 # -----------------------
 
