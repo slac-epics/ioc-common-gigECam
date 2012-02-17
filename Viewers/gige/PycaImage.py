@@ -63,7 +63,6 @@ class PycaImage():
                 colorTable = [QColor(i, i, i).rgb() for i in range(256)]
                 self.img.setColorTable(colorTable)
             # TODO  - emit changed img object signal if we had a previous img object
-            # FIXME - check img for None / make this thread safe
             try:
                 buf = int(self.img.bits())
                 size = w * h
