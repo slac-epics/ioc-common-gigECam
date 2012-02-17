@@ -103,13 +103,14 @@ class DisplayImage(QWidget):
             qp.drawLine( x2, y2-5, x2, y2+5)
 
     def resizeEvent(self, event):
-        if self.scaled_image:
+        if self.image:
             self.scaled_image = self.image.scaled(self.width(), self.height())
 
     def set_image(self, img):
         self.setGeometry(QRect(0, 0, self.parent.width(), self.parent.height()))
         self.image = img
-        self.scaled_image = self.image.scaled(self.width(), self.height())
+        if self.image and not self.image.isNull():
+            self.scaled_image = self.image.scaled(self.width(), self.height())
         self.update()
 
     def calcDisplayRate(self):
