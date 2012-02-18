@@ -27,7 +27,7 @@ epicsEnvSet("C1_IP",         "192.168.100.10")
 epicsEnvSet("C1_XSIZE",      "1390")
 epicsEnvSet("C1_YSIZE",      "1038")
 epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
+epicsEnvSet("C1_NELEMENTS",  "1442820")   # X * Y
 
 # ----- Manta G046B -----
 #epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
