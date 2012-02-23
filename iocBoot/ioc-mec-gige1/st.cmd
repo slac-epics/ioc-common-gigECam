@@ -22,12 +22,12 @@ epicsEnvSet("CAM4",   "CAM4")
 epicsEnvSet("IMG4",   "IMAGE4")
 
 # ----- Manta G-145B -----
-epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-epicsEnvSet("C1_IP",         "192.168.100.10")
-epicsEnvSet("C1_XSIZE",      "1390")
-epicsEnvSet("C1_YSIZE",      "1038")
-epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "1442820")   # X * Y
+#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
+#epicsEnvSet("C1_IP",         "192.168.100.10")
+#epicsEnvSet("C1_XSIZE",      "1390")
+#epicsEnvSet("C1_YSIZE",      "1038")
+#epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+#epicsEnvSet("C1_NELEMENTS",  "1442820")   # X * Y
 
 # ----- Manta G046B -----
 #epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
@@ -38,13 +38,13 @@ epicsEnvSet("C1_NELEMENTS",  "1442820")   # X * Y
 #epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
 
 # ----- Manta G146C -----
-#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
+epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
 #epicsEnvSet("C1_IP",         "192.168.0.105")  #XCS
-#epicsEnvSet("C1_IP",         "192.168.100.10")  #TST
-#epicsEnvSet("C1_XSIZE",      "1388")
-#epicsEnvSet("C1_YSIZE",      "1038")
-#epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
+epicsEnvSet("C1_IP",         "192.168.100.10")  #TST
+epicsEnvSet("C1_XSIZE",      "1388")
+epicsEnvSet("C1_YSIZE",      "1038")
+epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
+epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
 
 # ----- Manta G146C -----
 epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO

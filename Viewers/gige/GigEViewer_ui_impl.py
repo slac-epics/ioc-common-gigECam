@@ -104,12 +104,14 @@ class DisplayImage(QWidget):
 
     def resizeEvent(self, event):
         if self.image:
+            logging.debug("w=%d  h=%d", self.width(), self.height())
             self.scaled_image = self.image.scaled(self.width(), self.height())
 
     def set_image(self, img):
         self.setGeometry(QRect(0, 0, self.parent.width(), self.parent.height()))
         self.image = img
         if self.image and not self.image.isNull():
+            # logging.debug("w=%d  h=%d", self.width(), self.height())
             self.scaled_image = self.image.scaled(self.width(), self.height())
         self.update()
 

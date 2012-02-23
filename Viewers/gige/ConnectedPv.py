@@ -62,14 +62,20 @@ class ConnectedPv(Pv):
         # logging.debug("%s value = %s", self.name, self.value)
         self.emmiter.emit(SIGNAL('valueChanged'))
 
-    def set_processor(self, buf, size, format):
+    def set_processor(self, buf, size, width, height, bytesPerLine, format):
         buf_hi = buf >> 32;      # kluge to pass 64-bit address to C using two 32-bit ints
         buf_lo = buf & ((1 << 32) - 1);
+        # logging.debug("buf = 0x%08x", buf)
+        # logging.debug("buf_hi = 0x%08x", buf_hi)
+        # logging.debug("buf_lo = 0x%08x", buf_lo)
 
         support_code = """
             #line 70                      
             static unsigned char *img_buffer;
             static int            img_size;
+            static int            img_width;
+            static int            img_height;
+            static int            img_bytes_per_line;
             static unsigned char *buf_end;
             static                int fmt;
 
@@ -78,9 +84,18 @@ class ConnectedPv(Pv):
                 const unsigned char *data = static_cast<const unsigned char*>(cadata);
 
                 if (fmt == 3) {       // QImage.Format_Indexed8      
-                    if (count > img_size)
-                        count = img_size;
-                    memcpy(img_buffer, cadata, count);
+                    // printf("img_data=%p img_buffer=%p\\n", data, img_buffer);
+                    unsigned char *dp = img_buffer;
+                    for (int j=0; j<img_height; j++) {
+                        // printf("copying %ld bytes from %p to %p\\n", img_width, data, dp);
+                        memcpy(dp, data, img_width);
+                        data += img_width;
+                        dp += img_bytes_per_line;
+                    }
+                    // Save images to a file
+                    // FILE *fp = fopen("/reg/neh/home/pstoffel/nimg.dat", "w");
+                    // fwrite(cadata, 1, count, fp);
+                    // fclose(fp);
                 } else {              // QImage.Format_RGB32         
                     // printf("copying %ld bytes from %p to %p\\n", count, cadata, img_buffer);
                     unsigned char *bp = img_buffer;
@@ -103,6 +118,9 @@ class ConnectedPv(Pv):
             // printf(">>> buf = 0x%0lx\\n", buf);
             img_buffer = reinterpret_cast<unsigned char*>(buf);
             img_size = size;
+            img_width = width;
+            img_height = height;
+            img_bytes_per_line = bytesPerLine;
             buf_end = img_buffer + (size << 2);   // used for RGB32 images only
             fmt = format;
 
@@ -111,7 +129,7 @@ class ConnectedPv(Pv):
             return_val = pyfunc;
         """
 
-        rv = inline(code, ['buf_hi', 'buf_lo', 'size', 'format'],
+        rv = inline(code, ['buf_hi', 'buf_lo', 'size', 'width', 'height', 'bytesPerLine', 'format'],
                     support_code = support_code,
                     force = 0,
                     verbose = 0)

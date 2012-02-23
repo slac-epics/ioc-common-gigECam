@@ -38,7 +38,6 @@ gige_SRCS_DEFAULT += gigeMain.cpp
 # Add locally compiled object code
 #gige_SRCS += dbSubExample.c
 
-gige_LIBS += devIocStats
 gige_LIBS += prosilica
 gige_LIBS += NDPlugin
 gige_LIBS += ADBase
@@ -70,6 +69,7 @@ gige_LIBS += mxml
 gige_LIBS += tiff
 gige_LIBS += jpeg
 gige_LIBS += z
+gige_LIBS += devIocStats
 
 gige_LIBS += std
 #gige_LIBS += Ipac
