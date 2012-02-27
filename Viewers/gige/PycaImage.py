@@ -54,15 +54,13 @@ class PycaImage():
                 format = QImage.Format_RGB32
                 width = self.size1
                 height = self.size2
-                logging.debug("format=color")
+                # logging.debug("format=color")
             else:                    # b/w image
                 format = QImage.Format_Indexed8
                 width = self.size0
                 height = self.size1
-                logging.debug("format=b/w")
-            # width = 1390
-            # height = 1038
-            logging.debug("width=%d  height=%d", width, height)
+                # logging.debug("format=b/w")
+            # logging.debug("width=%d  height=%d", width, height)
             self.img = QImage(width, height, format)
             if format == QImage.Format_Indexed8:
                 colorTable = [QColor(i, i, i).rgb() for i in range(256)]
@@ -71,21 +69,21 @@ class PycaImage():
             try:
                 buf = int(self.img.bits())
                 size = width * height
-                logging.debug("buf=0x%08x  size=%d", buf, size)
+                # logging.debug("buf=0x%08x  size=%d", buf, size)
                 bytesPerLine = self.img.bytesPerLine()
                 self.data_pv.set_processor(buf, size, width, height, bytesPerLine, format)
             except:
                 pass
 
     def counter_changed(self):
-        logging.debug("%d", int(self.counter_pv.value))
+        # logging.debug("%d", int(self.counter_pv.value))
         pass
 
     def set_new_image_callback(self, fnct):
         QObject.connect(self.emitter, SIGNAL('image_changed'), fnct)
 
     def image_changed(self):
-        logging.debug("")
+        # logging.debug("")
         # self.img.save("/reg/neh/home/pstoffel/nimg2.pgm")
         # logging.debug("bytesPerLine=%d  byteCount=%d  w=%d  h=%d",
                       # self.img.bytesPerLine(),
