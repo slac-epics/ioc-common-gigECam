@@ -173,64 +173,85 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self)
         self.setupUi(self)
 
-        cam_pv = pv_name
+        self.cam_pv = pv_name
         image_pv = pv_name.replace( 'cam', 'image' )
         image_pv = image_pv.replace( 'CAM', 'IMAGE' )
 
         self.img = PycaImage(image_pv)
-        # logging.debug("%s", cam_pv+':BinY')
-        self.biny_pv = Pv(cam_pv+':BinY')
-        try:
-            self.biny_pv.connect(1.0)
-        except:
-            pass
 
         self.display_image = DisplayImage(self.wImage, self.img, self)
 
-        self.lPV.setText(cam_pv)
+        self.display_image.roiXoff = self.pv_get(self.cam_pv+':MinX')
+        self.display_image.roiYoff = self.pv_get(self.cam_pv+':MinY')
+        # logging.debug("roiXoff = %d", self.display_image.roiXoff)
+        # logging.debug("roiYoff = %d", self.display_image.roiYoff)
+
+        self.lPV.setText(self.cam_pv)
         GigEImageViewer.myImgCounterLab = PycaLabel      (image_pv+':ArrayCounter_RBV', self.lImgCounter)
         GigEImageViewer.myImgRateLab    = PycaLabel      (image_pv+':ArrayRate_RBV',    self.lImgRate)
-        GigEImageViewer.myExpTimeLab    = PycaLabel      (cam_pv+':AcquireTime_RBV',    self.lExpTime)
-        GigEImageViewer.myExpPeriodLab  = PycaLabel      (cam_pv+':AcquirePeriod_RBV',  self.lExpPeriod)
-        GigEImageViewer.myGainLab       = PycaLabel      (cam_pv+':Gain_RBV',           self.lGain)
-        GigEImageViewer.myExpTimeLE     = PycaLineEdit   (cam_pv+':AcquireTime',        self.leExpTime)
-        GigEImageViewer.myExpPeriodLE   = PycaLineEdit   (cam_pv+':AcquirePeriod',      self.leExpPeriod)
-        GigEImageViewer.myGainLE        = PycaLineEdit   (cam_pv+':Gain',               self.leGain)
-        GigEImageViewer.myROIMinXLab    = PycaLabel      (cam_pv+':MinX_RBV',           self.lRoiXStart)
-        GigEImageViewer.myROISizeXLab   = PycaLabel      (cam_pv+':SizeX_RBV',          self.lRoiXSize)
-        GigEImageViewer.myROIMinYLab    = PycaLabel      (cam_pv+':MinY_RBV',           self.lRoiYStart)
-        GigEImageViewer.myROISizeYLab   = PycaLabel      (cam_pv+':SizeY_RBV',          self.lRoiYSize)
-        GigEImageViewer.myROIMinXLE     = PycaLineEdit   (cam_pv+':MinX',               self.leRoiXStart)
+        GigEImageViewer.myExpTimeLab    = PycaLabel      (self.cam_pv+':AcquireTime_RBV',    self.lExpTime)
+        GigEImageViewer.myExpPeriodLab  = PycaLabel      (self.cam_pv+':AcquirePeriod_RBV',  self.lExpPeriod)
+        GigEImageViewer.myGainLab       = PycaLabel      (self.cam_pv+':Gain_RBV',           self.lGain)
+        GigEImageViewer.myExpTimeLE     = PycaLineEdit   (self.cam_pv+':AcquireTime',        self.leExpTime)
+        GigEImageViewer.myExpPeriodLE   = PycaLineEdit   (self.cam_pv+':AcquirePeriod',      self.leExpPeriod)
+        GigEImageViewer.myGainLE        = PycaLineEdit   (self.cam_pv+':Gain',               self.leGain)
+        GigEImageViewer.myROIMinXLab    = PycaLabel      (self.cam_pv+':MinX_RBV',           self.lRoiXStart)
+        GigEImageViewer.myROISizeXLab   = PycaLabel      (self.cam_pv+':SizeX_RBV',          self.lRoiXSize)
+        GigEImageViewer.myROIMinYLab    = PycaLabel      (self.cam_pv+':MinY_RBV',           self.lRoiYStart)
+        GigEImageViewer.myROISizeYLab   = PycaLabel      (self.cam_pv+':SizeY_RBV',          self.lRoiYSize)
+        GigEImageViewer.myROIMinXLE     = PycaLineEdit   (self.cam_pv+':MinX',               self.leRoiXStart)
         self.leRoiXStart.editingFinished.connect(self.roiXStartChanged)
-        GigEImageViewer.myROISizeXLE    = PycaLineEdit   (cam_pv+':SizeX',              self.leRoiXSize)
-        GigEImageViewer.myROIMinYLE     = PycaLineEdit   (cam_pv+':MinY',               self.leRoiYStart)
+        GigEImageViewer.myROISizeXLE    = PycaLineEdit   (self.cam_pv+':SizeX',              self.leRoiXSize)
+        GigEImageViewer.myROIMinYLE     = PycaLineEdit   (self.cam_pv+':MinY',               self.leRoiYStart)
         self.leRoiYStart.editingFinished.connect(self.roiYStartChanged)
-        GigEImageViewer.myROISizeYLE    = PycaLineEdit   (cam_pv+':SizeY',              self.leRoiYSize)
-        GigEImageViewer.myBinXLE        = PycaLineEdit   (cam_pv+':BinX',               self.leBinX)
-        GigEImageViewer.myBinXLab       = PycaLabel      (cam_pv+':BinX_RBV',           self.lBinX)
+        GigEImageViewer.myROISizeYLE    = PycaLineEdit   (self.cam_pv+':SizeY',              self.leRoiYSize)
+        GigEImageViewer.myBinXLE        = PycaLineEdit   (self.cam_pv+':BinX',               self.leBinX)
+        GigEImageViewer.myBinXLab       = PycaLabel      (self.cam_pv+':BinX_RBV',           self.lBinX)
         self.leBinX.editingFinished.connect(self.setBinning)
         imageModes = ('Single', 'Multiple', 'Continuous')
-        GigEImageViewer.myImgModeCB     = PycaComboBox   (cam_pv+':ImageMode',          self.cbImageMode, items = imageModes)
+        GigEImageViewer.myImgModeCB     = PycaComboBox   (self.cam_pv+':ImageMode',          self.cbImageMode, items = imageModes)
         triggerModes = ('Free Run', 'Sync In 1', 'Sync In 2', 'Sync In 3',
                         'Sync In 4', 'Fixed Rate', 'Software')
-        GigEImageViewer.myTriggerModeCB = PycaComboBox   (cam_pv+':TriggerMode',        self.cbTriggerMode, items = triggerModes)
-        GigEImageViewer.myCross1XLE     = PycaLineEdit   (cam_pv+':Cross1X',            self.leCross1X)
-        GigEImageViewer.myCross1YLE     = PycaLineEdit   (cam_pv+':Cross1Y',            self.leCross1Y)
-        GigEImageViewer.myCross2XLE     = PycaLineEdit   (cam_pv+':Cross2X',            self.leCross2X)
-        GigEImageViewer.myCross2YLE     = PycaLineEdit   (cam_pv+':Cross2Y',            self.leCross2Y)
+        GigEImageViewer.myTriggerModeCB = PycaComboBox   (self.cam_pv+':TriggerMode',        self.cbTriggerMode, items = triggerModes)
+        GigEImageViewer.myCross1XLE     = PycaLineEdit   (self.cam_pv+':Cross1X',            self.leCross1X)
+        GigEImageViewer.myCross1YLE     = PycaLineEdit   (self.cam_pv+':Cross1Y',            self.leCross1Y)
+        GigEImageViewer.myCross2XLE     = PycaLineEdit   (self.cam_pv+':Cross2X',            self.leCross2X)
+        GigEImageViewer.myCross2YLE     = PycaLineEdit   (self.cam_pv+':Cross2Y',            self.leCross2Y)
         colors          = ('None', 'Black', 'Red', 'Green', 'Blue', 'White')
-        GigEImageViewer.myCross1CB      = PycaComboBox   (cam_pv+':Cross1Color',        self.cbCross1Color, items = colors)
-        GigEImageViewer.myCross2CB      = PycaComboBox   (cam_pv+':Cross2Color',        self.cbCross2Color, items = colors)
-        GigEImageViewer.myStartB        = PycaPushButton (cam_pv+':Acquire',            self.bStart,        value = 1)
-        GigEImageViewer.myStopB         = PycaPushButton (cam_pv+':Acquire',            self.bStop,         value = 0)
+        GigEImageViewer.myCross1CB      = PycaComboBox   (self.cam_pv+':Cross1Color',        self.cbCross1Color, items = colors)
+        GigEImageViewer.myCross2CB      = PycaComboBox   (self.cam_pv+':Cross2Color',        self.cbCross2Color, items = colors)
+        GigEImageViewer.myStartB        = PycaPushButton (self.cam_pv+':Acquire',            self.bStart,        value = 1)
+        GigEImageViewer.myStopB         = PycaPushButton (self.cam_pv+':Acquire',            self.bStop,         value = 0)
+
+    def pv_get(self, pv_name):
+        # logging.debug(pv_name)
+        pv = Pv(pv_name)
+        try:
+            pv.connect(timeout=1.0)
+            # logging.debug("connected")
+            pv.get(False, 0.1)
+            # logging.debug("value = %d", pv.value)
+            return pv.value
+        except Exception, e:
+            # logging.debug("exception %s", e)
+            return 0
+
+    def pv_put(self, pv_name, val):
+        # logging.debug("%s, %d", pv_name, val)
+        pv = Pv(pv_name)
+        try:
+            pv.connect(timeout=1.0)
+            # logging.debug("connected")
+            pv.put(val)
+        except Exception, e:
+            # logging.debug("exception %s", e)
+            pass
 
     def setBinning(self):
         # Called when the user enters a number for binning
         try:
             val = int(self.leBinX.text())
-            # logging.debug("val = %d", val)
-            # set the camera binnning value
-            self.biny_pv.put(val, 1.0)
+            self.pv_put(self.cam_pv+':BinY', val)
         except Exception, e:
             # logging.debug("e = %s", e)
             pass
@@ -283,10 +304,6 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         GigEImageViewer.myCross2CB      = None
         GigEImageViewer.myStartB        = None
         GigEImageViewer.myStopB         = None
-        try:
-            self.biny_pv.disconnect()
-        except:
-            pass
 
 
 def main():
