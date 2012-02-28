@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>1060</width>
-    <height>667</height>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -27,6 +27,12 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="minimumSize" >
+       <size>
+        <width>234</width>
+        <height>540</height>
+       </size>
       </property>
       <property name="maximumSize" >
        <size>
@@ -124,7 +130,7 @@
           <enum>QFrame::StyledPanel</enum>
          </property>
          <property name="currentIndex" >
-          <number>0</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="page" >
           <property name="geometry" >
@@ -132,13 +138,13 @@
             <x>0</x>
             <y>0</y>
             <width>212</width>
-            <height>219</height>
+            <height>162</height>
            </rect>
           </property>
           <attribute name="label" >
            <string>Exposure</string>
           </attribute>
-          <widget class="QWidget" name="" >
+          <widget class="QWidget" name="layoutWidget" >
            <property name="geometry" >
             <rect>
              <x>0</x>
@@ -327,13 +333,13 @@
             <x>0</x>
             <y>0</y>
             <width>212</width>
-            <height>219</height>
+            <height>162</height>
            </rect>
           </property>
           <attribute name="label" >
            <string>ROI</string>
           </attribute>
-          <widget class="QWidget" name="" >
+          <widget class="QWidget" name="layoutWidget" >
            <property name="geometry" >
             <rect>
              <x>0</x>
@@ -502,10 +508,18 @@
           </widget>
          </widget>
          <widget class="QWidget" name="page_3" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>212</width>
+            <height>162</height>
+           </rect>
+          </property>
           <attribute name="label" >
            <string>Binning</string>
           </attribute>
-          <widget class="QWidget" name="" >
+          <widget class="QWidget" name="layoutWidget" >
            <property name="geometry" >
             <rect>
              <x>0</x>
@@ -587,10 +601,18 @@
           </widget>
          </widget>
          <widget class="QWidget" name="page_4" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>212</width>
+            <height>162</height>
+           </rect>
+          </property>
           <attribute name="label" >
            <string>Modes</string>
           </attribute>
-          <widget class="QWidget" name="" >
+          <widget class="QWidget" name="layoutWidget" >
            <property name="geometry" >
             <rect>
              <x>0</x>
@@ -667,10 +689,24 @@
           </widget>
          </widget>
          <widget class="QWidget" name="page_5" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>212</width>
+            <height>157</height>
+           </rect>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <attribute name="label" >
            <string>Crosses</string>
           </attribute>
-          <widget class="QWidget" name="" >
+          <widget class="QWidget" name="layoutWidget" >
            <property name="geometry" >
             <rect>
              <x>6</x>
