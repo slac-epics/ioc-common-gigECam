@@ -50,7 +50,7 @@ class PycaWidget(QWidget):
         # logging.debug("PycaWidget: %s" % self.pv.name)
         self.pv.unsubscribe()    
         if self.pv_connected:
-            logging.debug("disconnecting pv %s", self.pv.name)
+            # logging.debug("disconnecting pv %s", self.pv.name)
             self.pv.disconnect()
         self.pv_connected = False
 
@@ -64,7 +64,7 @@ class PycaWidget(QWidget):
             except:
                 self.widget.setEnabled(False)
         else:
-            logging.debug("error")
+            # logging.debug("error")
             self.widget.setEnabled(False)
 
     def _disconnected(self, exception = None):
@@ -87,7 +87,8 @@ class PycaWidget(QWidget):
                     val = float(val)
                 self.pv.put(val, self.timeout)
             except Exception, e:
-                logging.debug("failed:  %s", str(e))
+                # logging.debug("failed:  %s", str(e))
+                pass
 
 class PycaLabel(PycaWidget):
     def __init__(self, pv_name, label, timeout = 1.0):
@@ -125,10 +126,11 @@ class PycaComboBox(PycaWidget):
                 self.pv_connected = True
                 self.widget.setEnabled(True)
             except Exception, e:
-                logging.debug("PycaComboBox:  error:  %s", str(e))
+                # logging.debug("PycaComboBox:  error:  %s", str(e))
                 self.widget.setEnabled(False)
         else:
-            logging.debug("PycaComboBox:  error")
+            # logging.debug("PycaComboBox:  error")
+            pass
 
     def _update_pv(self):
         if self.pv_connected:
@@ -147,7 +149,8 @@ class PycaComboBox(PycaWidget):
                     val = float(val)
                 self.pv.put(val, self.timeout)
             except Exception, e:
-                logging.debug("caput failed:  %s", str(e))
+                # logging.debug("caput failed:  %s", str(e))
+                pass
 
 
 class PycaPushButton(PycaWidget):
@@ -162,7 +165,7 @@ class PycaPushButton(PycaWidget):
             self.pv_connected = True
             self.widget.setEnabled(True)
         else:
-            logging.debug("PycaPushButton:  error")
+            # logging.debug("PycaPushButton:  error")
             self.widget.setEnabled(False)
 
     def _update_pv(self):
@@ -170,7 +173,8 @@ class PycaPushButton(PycaWidget):
             try:
                 self.pv.put(self.val, self.timeout)
             except Exception, e:
-                logging.debug("caput failed:  %s", str(e))
+                # logging.debug("caput failed:  %s", str(e))
+                pass
 
 
 def main(args):
