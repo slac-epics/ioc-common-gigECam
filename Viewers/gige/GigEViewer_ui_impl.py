@@ -26,6 +26,10 @@ class DisplayImage(QWidget):
         self.xoff = 0
         self.yoff = 0
         self.scale = 1.0
+        self.old_width = 0
+        self.old_height = 0
+        self.roiXoff = 0
+        self.roiYoff = 0
         self.painter = QPainter()
         img.set_new_image_callback(self.set_image)
         self.updates = 0
@@ -71,6 +75,8 @@ class DisplayImage(QWidget):
                 y1 = int(self._gui.leCross1Y.text())
             except:
                 y1 = 0
+            x1 -= self.roiXoff
+            y1 -= self.roiYoff
             x1 *= self.scale
             y1 *= self.scale
             x1 += self.xoff
@@ -105,6 +111,8 @@ class DisplayImage(QWidget):
                 y2 = int(self._gui.leCross2Y.text())
             except:
                 y2 = 0
+            x2 -= self.roiXoff
+            y2 -= self.roiYoff
             x2 *= self.scale
             y2 *= self.scale
             x2 += self.xoff
@@ -115,19 +123,31 @@ class DisplayImage(QWidget):
 
     def resizeEvent(self, event):
         if self.image:
-            # logging.debug("w=%d  h=%d", self.width(), self.height())
+            logging.debug("frame size: %d x %d", self.width(), self.height())
             self.scaled_image = self.image.scaled(self.width(), self.height(), aspectRatioMode = Qt.KeepAspectRatio)
             self.xoff = ( self.width() - self.scaled_image.width() ) / 2
             self.yoff = ( self.height() - self.scaled_image.height() ) / 2
             self.scale = float(self.scaled_image.width()) / self.image.width()
-            # logging.debug("scale = %f", self.scale)
+            logging.debug("img xoff = %f", self.xoff)
+            logging.debug("img yoff = %f", self.yoff)
+            logging.debug("img scale = %f", self.scale)
 
     def set_image(self, img):
         self.setGeometry(QRect(0, 0, self.parent.width(), self.parent.height()))
         self.image = img
         if self.image and not self.image.isNull():
-            # logging.debug("w=%d  h=%d", self.width(), self.height())
             self.scaled_image = self.image.scaled(self.width(), self.height(), aspectRatioMode = Qt.KeepAspectRatio)
+            if self.image.width() != self.old_width or self.image.height() != self.old_height:
+                logging.debug("img:  w=%d  h=%d", self.image.width(), self.image.height())
+                self.old_width = self.image.width()
+                self.old_height = self.image.height()
+                logging.debug("scaled img:  w=%d  h=%d", self.scaled_image.width(), self.scaled_image.height())
+                self.xoff = ( self.width() - self.scaled_image.width() ) / 2
+                self.yoff = ( self.height() - self.scaled_image.height() ) / 2
+                self.scale = float(self.scaled_image.width()) / self.image.width()
+                logging.debug("img xoff = %f", self.xoff)
+                logging.debug("img yoff = %f", self.yoff)
+                logging.debug("img scale = %f", self.scale)
         self.update()
 
     def calcDisplayRate(self):
@@ -203,8 +223,10 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         GigEImageViewer.myROIMinYLab    = PycaLabel      (cam_pv+':MinY_RBV',           self.lRoiYStart)
         GigEImageViewer.myROISizeYLab   = PycaLabel      (cam_pv+':SizeY_RBV',          self.lRoiYSize)
         GigEImageViewer.myROIMinXLE     = PycaLineEdit   (cam_pv+':MinX',               self.leRoiXStart)
+        self.leRoiXStart.editingFinished.connect(self.roiXStartChanged)
         GigEImageViewer.myROISizeXLE    = PycaLineEdit   (cam_pv+':SizeX',              self.leRoiXSize)
         GigEImageViewer.myROIMinYLE     = PycaLineEdit   (cam_pv+':MinY',               self.leRoiYStart)
+        self.leRoiYStart.editingFinished.connect(self.roiYStartChanged)
         GigEImageViewer.myROISizeYLE    = PycaLineEdit   (cam_pv+':SizeY',              self.leRoiYSize)
         GigEImageViewer.myBinXLE        = PycaLineEdit   (cam_pv+':BinX',               self.leBinX)
         GigEImageViewer.myBinXLab       = PycaLabel      (cam_pv+':BinX_RBV',           self.lBinX)
@@ -233,7 +255,22 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
             self.biny_pv.put(val, 1.0)
         except Exception, e:
             logging.debug("e = %s", e)
-            pass
+
+    def roiXStartChanged(self):
+        # Called when the user enters a number for X start of ROI
+        try:
+            self.display_image.roiXoff = int(self.leRoiXStart.text())
+            logging.debug("roiXoff = %d", self.display_image.roiXoff)
+        except Exception, e:
+            logging.debug("e = %s", e)
+
+    def roiYStartChanged(self):
+        # Called when the user enters a number for Y start of ROI
+        try:
+            self.display_image.roiYoff = int(self.leRoiYStart.text())
+            logging.debug("roiYoff = %d", self.display_image.roiYoff)
+        except Exception, e:
+            logging.debug("e = %s", e)
 
     def __del__(self):
         self.img.disconnect()
