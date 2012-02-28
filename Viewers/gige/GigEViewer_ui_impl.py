@@ -181,6 +181,8 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
 
         self.display_image = DisplayImage(self.wImage, self.img, self)
 
+        # FIXME - shouldn't these all be MinX_RBV
+        # NOTE:  there is also a bug in the ROI plugin--the _RBV values could be wrong if out of range
         self.display_image.roiXoff = self.pv_get(self.cam_pv+':MinX')
         self.display_image.roiYoff = self.pv_get(self.cam_pv+':MinY')
         # logging.debug("roiXoff = %d", self.display_image.roiXoff)
