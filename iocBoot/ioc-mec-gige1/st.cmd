@@ -22,53 +22,36 @@ epicsEnvSet("CAM4",   "CAM4")
 epicsEnvSet("IMG4",   "IMAGE4")
 
 # ----- Manta G-145B -----
-#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",         "192.168.100.10")
-#epicsEnvSet("C1_XSIZE",      "1390")
-#epicsEnvSet("C1_YSIZE",      "1038")
-#epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C1_NELEMENTS",  "1442820")   # X * Y
-
-# ----- Manta G046B -----
-#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",         "192.168.100.10")
-#epicsEnvSet("C1_XSIZE",      "780")
-#epicsEnvSet("C1_YSIZE",      "580")
-#epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
-
-# ----- Manta G146C -----
 epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",         "192.168.0.105")  #XCS
-epicsEnvSet("C1_IP",         "192.168.100.10")  #TST
-epicsEnvSet("C1_XSIZE",      "1388")
+epicsEnvSet("C1_IP",         "192.168.100.10")
+epicsEnvSet("C1_XSIZE",      "1390")
 epicsEnvSet("C1_YSIZE",      "1038")
-epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
+epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+epicsEnvSet("C1_NELEMENTS",  "1442820")   # X * Y
 
-# ----- Manta G146C -----
-epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO
-epicsEnvSet("C2_IP",         "192.168.100.20")
-epicsEnvSet("C2_XSIZE",      "1388")
+# ----- Manta G-145B -----
+epicsEnvSet("CAM2_ENABLED",  "")                             # "" = YES,  "#" = NO
+epicsEnvSet("C2_IP",         "192.168.110.2")
+epicsEnvSet("C2_XSIZE",      "1390")
 epicsEnvSet("C2_YSIZE",      "1038")
-epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C2_NELEMENTS",  "4322232")  # X * Y * 3
+epicsEnvSet("C2_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+epicsEnvSet("C2_NELEMENTS",  "1442820")   # X * Y
 
-# ----- Manta G146C -----
+# ----- Manta G-145B -----
 epicsEnvSet("CAM3_ENABLED",  "#")                             # "" = YES,  "#" = NO
-epicsEnvSet("C3_IP",         "192.168.100.30")
-epicsEnvSet("C3_XSIZE",      "1388")
+epicsEnvSet("C3_IP",         "192.168.120.2")
+epicsEnvSet("C3_XSIZE",      "1390")
 epicsEnvSet("C3_YSIZE",      "1038")
-epicsEnvSet("C3_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C3_NELEMENTS",  "4322232")  # X * Y * 3
+epicsEnvSet("C3_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+epicsEnvSet("C3_NELEMENTS",  "1442820")   # X * Y
 
-# ----- Manta G146C -----
+# ----- Manta G-145B -----
 epicsEnvSet("CAM4_ENABLED",  "#")                             # "" = YES,  "#" = NO
-epicsEnvSet("C4_IP",         "192.168.100.40")
-epicsEnvSet("C4_XSIZE",      "1388")
+epicsEnvSet("C4_IP",         "192.168.130.2")
+epicsEnvSet("C4_XSIZE",      "1390")
 epicsEnvSet("C4_YSIZE",      "1038")
-epicsEnvSet("C4_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C4_NELEMENTS",  "4322232")  # X * Y * 3
+epicsEnvSet("C4_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+epicsEnvSet("C4_NELEMENTS",  "1442820")   # X * Y
 
 # -----------------------
 
@@ -137,7 +120,7 @@ $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template",
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG4):,PORT=$(IMG4),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C4_NELEMENTS)")
 
 # Load record instances
-dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
+##dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
 
 # Setup autosave
@@ -179,11 +162,11 @@ $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):DataType 0                        # 0=UInt
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquirePeriod 1
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquireTime 0.1
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Gain 0
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquirePeriod 1
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquireTime 0.1
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Gain 0
 #
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Acquire 1                         # Start the camera
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Acquire 1                         # Start the camera
 
 # ----------
 

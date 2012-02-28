@@ -105,7 +105,10 @@ class DisplayImage(QWidget):
             self.scaled_image = self.image.scaled(self.width(), self.height(), aspectRatioMode = Qt.KeepAspectRatio)
             self.xoff = ( self.width() - self.scaled_image.width() ) / 2
             self.yoff = ( self.height() - self.scaled_image.height() ) / 2
-            self.scale = float(self.scaled_image.width()) / self.image.width()
+            try:     # avoid a division by zero
+                self.scale = float(self.scaled_image.width()) / self.image.width()
+            except:
+                self.scale = 1.0
             # logging.debug("img xoff = %f", self.xoff)
             # logging.debug("img yoff = %f", self.yoff)
             # logging.debug("img scale = %f", self.scale)
@@ -176,6 +179,7 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         self.cam_pv = pv_name
         image_pv = pv_name.replace( 'cam', 'image' )
         image_pv = image_pv.replace( 'CAM', 'IMAGE' )
+        image_pv = image_pv.replace( 'CVV', 'IMAGE' )
 
         self.img = PycaImage(image_pv)
 
