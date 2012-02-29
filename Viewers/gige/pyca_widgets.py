@@ -16,13 +16,14 @@ class PycaWidget(QWidget):
         self.widget = widget
         self.timeout = timeout
         self.val = None
+        self.callback = None
         self.pv_connected = False
         self.widget.setEnabled(False)
-        # logging.debug("PycaWidget: starting %s timer ...", pv_name)
+        logging.info("PycaWidget: starting %s timer ...", pv_name)
         QTimer.singleShot(50, self.connect_pv)
 
     def __del__(self):
-        # logging.debug("deleting %s", self.pv.name)
+        logging.info("deleting %s", self.pv.name)
         if self.pv_connected:
             # logging.debug("disconnecting %s", self.pv.name)
             self.pv.disconnect()
@@ -61,6 +62,8 @@ class PycaWidget(QWidget):
                 self.widget.setText(str(self.val))
                 self.pv_connected = True
                 self.widget.setEnabled(True)
+                if self.callback:
+                    self.callback()
             except:
                 self.widget.setEnabled(False)
         else:
@@ -89,6 +92,9 @@ class PycaWidget(QWidget):
             except Exception, e:
                 # logging.debug("failed:  %s", str(e))
                 pass
+
+    def setCallback(self, cb):
+        self.callback = cb
 
 class PycaLabel(PycaWidget):
     def __init__(self, pv_name, label, timeout = 1.0):

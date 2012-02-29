@@ -17,11 +17,12 @@ from pyca_widgets import *
 
 
 class DisplayImage(QWidget):
+    # A widget for displaying an image from a GigE camera
     def __init__(self, parent, img, gui):
         QWidget.__init__(self, parent)
         self.parent = parent
         self.image = img.img
-        self._gui = gui
+        self.gui = gui
         self.scaled_image = img.img
         self.xoff = 0
         self.yoff = 0
@@ -30,6 +31,7 @@ class DisplayImage(QWidget):
         self.old_height = 0
         self.roiXoff = 0
         self.roiYoff = 0
+        self.binning = 0
         self.painter = QPainter()
         img.set_new_image_callback(self.set_image)
         self.updates = 0
@@ -44,21 +46,17 @@ class DisplayImage(QWidget):
         if self.scaled_image:
             self.painter.drawImage(self.xoff, self.yoff, self.scaled_image)
             try:
-                x = int(self._gui.leCross1X.text())
-                y = int(self._gui.leCross1Y.text())
-                color = self._gui.cbCross1Color.currentIndex()
-                # logging.debug("cross1: x=%d y=%d color=%d", x, y, color)
-                if (color != 0) and self.isCrossOnROIImage(x, y):
-                    self.drawCross(self.painter, x, y, color)
+                x = int(self.gui.leCross1X.text())
+                y = int(self.gui.leCross1Y.text())
+                color = self.gui.cbCross1Color.currentIndex()
+                self.drawCross(self.painter, x, y, color)
             except Exception, e:
                 logging.debug("%s", e)
             try:
-                x = int(self._gui.leCross2X.text())
-                y = int(self._gui.leCross2Y.text())
-                color = self._gui.cbCross2Color.currentIndex()
-                # logging.debug("cross2: x=%d y=%d color=%d", x, y, color)
-                if (color != 0) and self.isCrossOnROIImage(x, y):
-                    self.drawCross(self.painter, x, y, color)
+                x = int(self.gui.leCross2X.text())
+                y = int(self.gui.leCross2Y.text())
+                color = self.gui.cbCross2Color.currentIndex()
+                self.drawCross(self.painter, x, y, color)
             except Exception, e:
                 logging.debug("%s", e)
         self.painter.end()
@@ -67,14 +65,15 @@ class DisplayImage(QWidget):
     def isCrossOnROIImage(self, x, y):
         # logging.debug("ROI: x=%d y=%d w=%d h=%d", self.roiXoff, self.roiYoff, self.image.width(), self.image.height())
         # logging.debug("%s", self.roiXoff <= x and x <= self.roiXoff + self.image.width() and self.roiYoff <= y and y <= self.roiYoff + self.image.height())
-        return self.roiXoff <= x and x <= self.roiXoff + self.image.width() and \
-               self.roiYoff <= y and y <= self.roiYoff + self.image.height()
+        return self.roiXoff <= x and x <= self.roiXoff + self.image.width() * self.binning and \
+               self.roiYoff <= y and y <= self.roiYoff + self.image.height() * self.binning
 
     def drawCross(self, qp, x, y, color):
-        # logging.debug("color = %d", color)
-        if color == 0:
-            color = None
-        elif color == 1:
+        # logging.debug("x=%d y=%d color=%d", x, y, color)
+        if (color == 0) or not self.isCrossOnROIImage(x, y):
+            return
+
+        if color == 1:
             color = Qt.black
         elif color == 2:
             color = Qt.red
@@ -85,19 +84,19 @@ class DisplayImage(QWidget):
         elif color == 5:
             color = Qt.white
         width = 1
-        if color != None:
-            style = Qt.SolidLine
-            pen = QPen(QBrush(color), width, style)
-            qp.setPen(pen)
-            x -= self.roiXoff
-            y -= self.roiYoff
-            x *= self.scale
-            y *= self.scale
-            x += self.xoff
-            y += self.yoff
-            # logging.debug("x=%d  y=%d", x, y)
-            qp.drawLine( x-5, y, x+5, y)
-            qp.drawLine( x, y-5, x, y+5)
+        pen = QPen(QBrush(color), width, style = Qt.SolidLine)
+        qp.setPen(pen)
+        x -= self.roiXoff
+        y -= self.roiYoff
+        x /= self.binning
+        y /= self.binning
+        x *= self.scale
+        y *= self.scale
+        x += self.xoff
+        y += self.yoff
+        # logging.debug("x=%d  y=%d", x, y)
+        qp.drawLine( x-5, y, x+5, y)
+        qp.drawLine( x, y-5, x, y+5)
 
     def resizeEvent(self, event):
         if self.image:
@@ -105,13 +104,10 @@ class DisplayImage(QWidget):
             self.scaled_image = self.image.scaled(self.width(), self.height(), aspectRatioMode = Qt.KeepAspectRatio)
             self.xoff = ( self.width() - self.scaled_image.width() ) / 2
             self.yoff = ( self.height() - self.scaled_image.height() ) / 2
-            try:     # avoid a division by zero
+            try:     # avoid a possible division by zero
                 self.scale = float(self.scaled_image.width()) / self.image.width()
             except:
                 self.scale = 1.0
-            # logging.debug("img xoff = %f", self.xoff)
-            # logging.debug("img yoff = %f", self.yoff)
-            # logging.debug("img scale = %f", self.scale)
 
     def set_image(self, img):
         self.setGeometry(QRect(0, 0, self.parent.width(), self.parent.height()))
@@ -126,9 +122,6 @@ class DisplayImage(QWidget):
                 self.xoff = ( self.width() - self.scaled_image.width() ) / 2
                 self.yoff = ( self.height() - self.scaled_image.height() ) / 2
                 self.scale = float(self.scaled_image.width()) / self.image.width()
-                # logging.debug("img xoff = %f", self.xoff)
-                # logging.debug("img yoff = %f", self.yoff)
-                # logging.debug("img scale = %f", self.scale)
         self.update()
 
     def calcDisplayRate(self):
@@ -136,16 +129,16 @@ class DisplayImage(QWidget):
         updates = self.updates - self.last_updates
         delta = now - self.last_time
         rate = updates/delta
-        self._gui.label_rate.setText('%.1f' % rate)
-        self._gui.label_rate.repaint()
+        self.gui.label_rate.setText('%.1f' % rate)
+        self.gui.label_rate.repaint()
         self.last_time = now
         self.last_updates = self.updates
 
 
 class GigEImageViewer(QMainWindow, Ui_MainWindow):
-    myImgCounterLab = None
-    myImgRateLab    = None
-    myExpTimeLab    = None
+    # myImgCounterLab = None
+    # myImgRateLab    = None
+    # myExpTimeLab    = None
     myExpPeriodLab  = None
     myGainLab       = None
     myExpTimeLE     = None
@@ -185,34 +178,33 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
 
         self.display_image = DisplayImage(self.wImage, self.img, self)
 
-        # FIXME - shouldn't these all be MinX_RBV
         # NOTE:  there is also a bug in the ROI plugin--the _RBV values could be wrong if out of range
-        self.display_image.roiXoff = self.pv_get(self.cam_pv+':MinX')
-        self.display_image.roiYoff = self.pv_get(self.cam_pv+':MinY')
-        # logging.debug("roiXoff = %d", self.display_image.roiXoff)
-        # logging.debug("roiYoff = %d", self.display_image.roiYoff)
+        self.display_image.roiXoff = self.pv_get(self.cam_pv+':MinX_RBV')
+        self.display_image.roiYoff = self.pv_get(self.cam_pv+':MinY_RBV')
+        self.display_image.binning = self.pv_get(self.cam_pv+':BinX_RBV')
 
         self.lPV.setText(self.cam_pv)
-        GigEImageViewer.myImgCounterLab = PycaLabel      (image_pv+':ArrayCounter_RBV', self.lImgCounter)
-        GigEImageViewer.myImgRateLab    = PycaLabel      (image_pv+':ArrayRate_RBV',    self.lImgRate)
-        GigEImageViewer.myExpTimeLab    = PycaLabel      (self.cam_pv+':AcquireTime_RBV',    self.lExpTime)
+        self.myImgCounterLab = PycaLabel      (image_pv+':ArrayCounter_RBV', self.lImgCounter)
+        self.myImgRateLab    = PycaLabel      (image_pv+':ArrayRate_RBV',    self.lImgRate)
+        self.myExpTimeLab    = PycaLabel      (self.cam_pv+':AcquireTime_RBV',    self.lExpTime)
         GigEImageViewer.myExpPeriodLab  = PycaLabel      (self.cam_pv+':AcquirePeriod_RBV',  self.lExpPeriod)
         GigEImageViewer.myGainLab       = PycaLabel      (self.cam_pv+':Gain_RBV',           self.lGain)
         GigEImageViewer.myExpTimeLE     = PycaLineEdit   (self.cam_pv+':AcquireTime',        self.leExpTime)
         GigEImageViewer.myExpPeriodLE   = PycaLineEdit   (self.cam_pv+':AcquirePeriod',      self.leExpPeriod)
         GigEImageViewer.myGainLE        = PycaLineEdit   (self.cam_pv+':Gain',               self.leGain)
         GigEImageViewer.myROIMinXLab    = PycaLabel      (self.cam_pv+':MinX_RBV',           self.lRoiXStart)
+        GigEImageViewer.myROIMinXLab.setCallback(self.roiXStartChanged)
         GigEImageViewer.myROISizeXLab   = PycaLabel      (self.cam_pv+':SizeX_RBV',          self.lRoiXSize)
         GigEImageViewer.myROIMinYLab    = PycaLabel      (self.cam_pv+':MinY_RBV',           self.lRoiYStart)
+        GigEImageViewer.myROIMinYLab.setCallback(self.roiYStartChanged)
         GigEImageViewer.myROISizeYLab   = PycaLabel      (self.cam_pv+':SizeY_RBV',          self.lRoiYSize)
         GigEImageViewer.myROIMinXLE     = PycaLineEdit   (self.cam_pv+':MinX',               self.leRoiXStart)
-        self.leRoiXStart.editingFinished.connect(self.roiXStartChanged)
         GigEImageViewer.myROISizeXLE    = PycaLineEdit   (self.cam_pv+':SizeX',              self.leRoiXSize)
         GigEImageViewer.myROIMinYLE     = PycaLineEdit   (self.cam_pv+':MinY',               self.leRoiYStart)
-        self.leRoiYStart.editingFinished.connect(self.roiYStartChanged)
         GigEImageViewer.myROISizeYLE    = PycaLineEdit   (self.cam_pv+':SizeY',              self.leRoiYSize)
-        GigEImageViewer.myBinXLE        = PycaLineEdit   (self.cam_pv+':BinX',               self.leBinX)
         GigEImageViewer.myBinXLab       = PycaLabel      (self.cam_pv+':BinX_RBV',           self.lBinX)
+        GigEImageViewer.myBinXLab.setCallback(self.binningChanged)
+        GigEImageViewer.myBinXLE        = PycaLineEdit   (self.cam_pv+':BinX',               self.leBinX)
         self.leBinX.editingFinished.connect(self.setBinning)
         imageModes = ('Single', 'Multiple', 'Continuous')
         GigEImageViewer.myImgModeCB     = PycaComboBox   (self.cam_pv+':ImageMode',          self.cbImageMode, items = imageModes)
@@ -263,28 +255,34 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
             pass
 
     def roiXStartChanged(self):
-        # Called when the user enters a number for X start of ROI
+        # called when the PV  XXX:MinX_RBV  changed
         try:
-            self.display_image.roiXoff = int(self.leRoiXStart.text())
-            # logging.debug("roiXoff = %d", self.display_image.roiXoff)
+            self.display_image.roiXoff = int(self.lRoiXStart.text())
         except Exception, e:
             # logging.debug("e = %s", e)
             pass
 
     def roiYStartChanged(self):
-        # Called when the user enters a number for Y start of ROI
+        # called when the PV  XXX:MinY_RBV  changed
         try:
-            self.display_image.roiYoff = int(self.leRoiYStart.text())
-            # logging.debug("roiYoff = %d", self.display_image.roiYoff)
+            self.display_image.roiYoff = int(self.lRoiYStart.text())
+        except Exception, e:
+            # logging.debug("e = %s", e)
+            pass
+
+    def binningChanged(self):
+        # called when the PV  XXX:BinY_RBV  changed
+        try:
+            self.display_image.binning = int(self.lBinX.text())
         except Exception, e:
             # logging.debug("e = %s", e)
             pass
 
     def __del__(self):
         self.img.disconnect()
-        GigEImageViewer.myImgCounterLab = None
-        GigEImageViewer.myImgRateLab    = None
-        GigEImageViewer.myExpTimeLab    = None
+        # GigEImageViewer.myImgCounterLab = None
+        # GigEImageViewer.myImgRateLab    = None
+        # GigEImageViewer.myExpTimeLab    = None
         GigEImageViewer.myExpPeriodLab  = None
         GigEImageViewer.myGainLab       = None
         GigEImageViewer.myExpTimeLE     = None
