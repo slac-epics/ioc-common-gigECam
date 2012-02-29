@@ -19,11 +19,11 @@ class PycaWidget(QWidget):
         self.callback = None
         self.pv_connected = False
         self.widget.setEnabled(False)
-        logging.info("PycaWidget: starting %s timer ...", pv_name)
+        # logging.debug("PycaWidget: starting %s timer ...", pv_name)
         QTimer.singleShot(50, self.connect_pv)
 
     def __del__(self):
-        logging.info("deleting %s", self.pv.name)
+        # logging.debug("deleting %s", self.pv.name)
         if self.pv_connected:
             # logging.debug("disconnecting %s", self.pv.name)
             self.pv.disconnect()
