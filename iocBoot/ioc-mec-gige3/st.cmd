@@ -22,7 +22,7 @@ epicsEnvSet("CAM4",   "CAM4")
 epicsEnvSet("IMG4",   "IMAGE4")
 
 # ----- Manta G-145B -----
-epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
+epicsEnvSet("CAM1_ENABLED",  "#")                             # "" = YES,  "#" = NO
 epicsEnvSet("C1_IP",         "192.168.100.10")
 epicsEnvSet("C1_XSIZE",      "1390")
 epicsEnvSet("C1_YSIZE",      "1038")
@@ -38,7 +38,7 @@ epicsEnvSet("C2_COLORMODE",  "0")        # 0=Mono, 2=RGB1
 epicsEnvSet("C2_NELEMENTS",  "1442820")   # X * Y
 
 # ----- Manta G-145B -----
-epicsEnvSet("CAM3_ENABLED",  "#")                             # "" = YES,  "#" = NO
+epicsEnvSet("CAM3_ENABLED",  "")                             # "" = YES,  "#" = NO
 epicsEnvSet("C3_IP",         "192.168.102.2")
 epicsEnvSet("C3_XSIZE",      "1390")
 epicsEnvSet("C3_YSIZE",      "1038")
