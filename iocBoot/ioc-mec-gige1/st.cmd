@@ -120,6 +120,7 @@ $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template",
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG4):,PORT=$(IMG4),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C4_NELEMENTS)")
 
 # Load record instances
+# FIXME - this causes te ioc to constantly reboot after iocInit and some error messages
 ##dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
 
