@@ -8,7 +8,7 @@
 
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
 epicsEnvSet( "LOCATION",  "MEC:B999M64A:IOC:44" )
-epicsEnvSet( "IOC",       "ioc-mec-gige1")
+epicsEnvSet( "IOC",       "ioc-mec-gige2")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
 epicsEnvSet("PREFIX", "MEC:GIGE:")

@@ -12,16 +12,16 @@ USR_ARCHIVEFLAGS += -V
 #----------------------------------------------------
 # Create and install IOC archive file
 #
-ARCHIVE += ioc-mec-gige1.archive
+ARCHIVE += ioc-mec-gige2.archive
 
 #----------------------------------------------------
 # Create and install IOC autosave file
 #
-REQ += ioc-mec-gige1.req
+REQ += ioc-mec-gige2.req
 
 # See RULES.copy for more information on these variables.
 COPY_ONLY_IF_NON_LOCAL=1
-COPY_SUBDIR=iocBoot/ioc-mec-gige1
+COPY_SUBDIR=iocBoot/ioc-mec-gige2
 COPY_FILES=st.cmd
 
 include $(TOP)/configure/RULES

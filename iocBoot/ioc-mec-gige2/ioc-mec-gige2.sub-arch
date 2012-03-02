@@ -1,0 +1,14 @@
+# Archive file for ioc-mec-gige2
+
+file gige-ioc.archive
+{
+    {
+        IOC = MEC:IOC:GIGE2
+    }
+}
+
+
+file gige-camera.tpl-arch
+{
+    {   P = "MEC:GIGE2", CAM = "CAM2",  IMG = "IMAGE2" }
+}
