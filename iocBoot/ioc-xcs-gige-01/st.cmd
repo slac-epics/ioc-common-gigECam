@@ -150,13 +150,11 @@ $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):DataType 0                        # 0=UInt
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Gain 0
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Gain 0
 #
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
-#
-$(CAM1_ENABLED) dbpr $(PREFIX)$(CAM1):ArrayCounter_RBV
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
 
 # ----------
 
@@ -168,13 +166,11 @@ $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):DataType 0                        # 0=UInt
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquirePeriod 1
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquireTime 0.1
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Gain 0
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquirePeriod 1
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquireTime 0.1
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Gain 0
 #
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Acquire 1                         # Start the camera
-#
-$(CAM2_ENABLED) dbpr $(PREFIX)$(CAM2):ArrayCounter_RBV
+##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Acquire 1                         # Start the camera
 
 # ----------
 
@@ -186,13 +182,11 @@ $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):DataType 0                        # 0=UInt
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):AcquirePeriod 1
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):AcquireTime 0.1
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):Gain 0
+##$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):AcquirePeriod 1
+##$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):AcquireTime 0.1
+##$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):Gain 0
 #
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):Acquire 1                         # Start the camera
-#
-$(CAM3_ENABLED) dbpr $(PREFIX)$(CAM3):ArrayCounter_RBV
+##$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):Acquire 1                         # Start the camera
 
 # ----------
 
@@ -204,13 +198,11 @@ $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):DataType 0                        # 0=UInt
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):AcquirePeriod 1
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):AcquireTime 0.1
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):Gain 0
+##$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):AcquirePeriod 1
+##$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):AcquireTime 0.1
+##$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):Gain 0
 #
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):Acquire 1                         # Start the camera
-#
-$(CAM4_ENABLED) dbpr $(PREFIX)$(CAM4):ArrayCounter_RBV
+##$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):Acquire 1                         # Start the camera
 
 # ----------
 

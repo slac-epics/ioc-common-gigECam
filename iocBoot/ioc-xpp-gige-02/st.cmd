@@ -78,13 +78,11 @@ $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):DataType 0                        # 0=UInt
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Gain 0
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Gain 0
 #
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
-#
-$(CAM1_ENABLED) dbpr $(PREFIX)$(CAM1):ArrayCounter_RBV
+##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
 
 # Start autosave backups
 $(CAM1_ENABLED) create_monitor_set("$(IOC).req", 5, "PRE=$(PREFIX),CAM=$(CAM1),IMG=$(IMG1)")
