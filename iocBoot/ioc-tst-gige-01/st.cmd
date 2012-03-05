@@ -1,5 +1,4 @@
 #! ../../bin/linux-x86_64/gige
-#! /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R0.1.0/bin/linux-x86_64/gige
 
 # Run common startup commands for linux soft IOC's
 < /reg/d/iocCommon/All/pre_linux.cmd

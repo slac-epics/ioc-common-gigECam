@@ -1,4 +1,3 @@
-#! /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R0.1.0/bin/linux-x86_64/gige
 #! ../../bin/linux-x86_64/gige
 
 # Run common startup commands for linux soft IOC's
@@ -120,8 +119,7 @@ $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template",
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG4):,PORT=$(IMG4),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C4_NELEMENTS)")
 
 # Load record instances
-# FIXME - this causes te ioc to constantly reboot after iocInit and some error messages
-##dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
+dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
 
 # Setup autosave
