@@ -146,6 +146,8 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         image_pv = image_pv.replace( 'CAM', 'IMAGE' )
         image_pv = image_pv.replace( 'CVV', 'IMAGE' )
 
+        self.setWindowTitle(self.cam_pv)
+
         self.img = PycaImage(image_pv)
 
         self.display_image = DisplayImage(self.wImage, self.img, self)
