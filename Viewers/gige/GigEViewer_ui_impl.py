@@ -146,7 +146,6 @@ class SaveImage():
         self.dir = dir
         self.file = file
         self.prefix = self.dir + '/' + self.file + '_'
-        self.img_num = self.next_img()
         self.num_images = num
         self.period = period
         self.timer = None
@@ -160,10 +159,8 @@ class SaveImage():
 
     def saveImage(self):
         ts = self.time_stamp()
-        # self.full_name = self.prefix + ("%06d" % self.img_num) + '.png'
         self.full_name = self.prefix + ts + '.png'
         logging.debug("%s", self.full_name)
-        self.img_num += 1
         self.img.save(self.full_name)
         self.num_images -= 1
         # logging.debug("num_images = %d", self.num_images)
@@ -181,10 +178,6 @@ class SaveImage():
         # logging.debug('')
         if self.timer != None and self.timer.isActive():
             self.timer.stop()
-
-    def next_img(self):
-        # TODO
-        return 1
 
 class GigEImageViewer(QMainWindow, Ui_MainWindow):
 
@@ -232,20 +225,19 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         self.myBinXLE        = PycaLineEdit   (self.cam_pv+':BinX',               self.leBinX)
         self.leBinX.editingFinished.connect(self.setBinning)
         imageModes = ('Single', 'Multiple', 'Continuous')
-        GigEImageViewer.myImgModeCB     = PycaComboBox   (self.cam_pv+':ImageMode',          self.cbImageMode, items = imageModes)
+        self.myImgModeCB     = PycaComboBox   (self.cam_pv+':ImageMode',          self.cbImageMode, items = imageModes)
         triggerModes = ('Free Run', 'Sync In 1', 'Sync In 2', 'Sync In 3',
                         'Sync In 4', 'Fixed Rate', 'Software')
-        GigEImageViewer.myTriggerModeCB = PycaComboBox   (self.cam_pv+':TriggerMode',        self.cbTriggerMode, items = triggerModes)
-        # FIXME
-        # GigEImageViewer.myCross1XLE     = PycaLineEdit   (self.cam_pv+':Cross1X',            self.leCross1X)
-        # GigEImageViewer.myCross1YLE     = PycaLineEdit   (self.cam_pv+':Cross1Y',            self.leCross1Y)
-        # GigEImageViewer.myCross2XLE     = PycaLineEdit   (self.cam_pv+':Cross2X',            self.leCross2X)
-        # GigEImageViewer.myCross2YLE     = PycaLineEdit   (self.cam_pv+':Cross2Y',            self.leCross2Y)
-        # colors          = ('None', 'Black', 'Red', 'Green', 'Blue', 'White')
-        # GigEImageViewer.myCross1CB      = PycaComboBox   (self.cam_pv+':Cross1Color',        self.cbCross1Color, items = colors)
-        # GigEImageViewer.myCross2CB      = PycaComboBox   (self.cam_pv+':Cross2Color',        self.cbCross2Color, items = colors)
-        GigEImageViewer.myStartB        = PycaPushButton (self.cam_pv+':Acquire',            self.bStart,        value = 1)
-        GigEImageViewer.myStopB         = PycaPushButton (self.cam_pv+':Acquire',            self.bStop,         value = 0)
+        self.myTriggerModeCB = PycaComboBox   (self.cam_pv+':TriggerMode',        self.cbTriggerMode, items = triggerModes)
+        self.myCross1XLE     = PycaLineEdit   (self.cam_pv+':Cross1X',            self.leCross1X)
+        self.myCross1YLE     = PycaLineEdit   (self.cam_pv+':Cross1Y',            self.leCross1Y)
+        self.myCross2XLE     = PycaLineEdit   (self.cam_pv+':Cross2X',            self.leCross2X)
+        self.myCross2YLE     = PycaLineEdit   (self.cam_pv+':Cross2Y',            self.leCross2Y)
+        colors          = ('None', 'Black', 'Red', 'Green', 'Blue', 'White')
+        self.myCross1CB      = PycaComboBox   (self.cam_pv+':Cross1Color',        self.cbCross1Color, items = colors)
+        self.myCross2CB      = PycaComboBox   (self.cam_pv+':Cross2Color',        self.cbCross2Color, items = colors)
+        self.myStartB        = PycaPushButton (self.cam_pv+':Acquire',            self.bStart,        value = 1)
+        self.myStopB         = PycaPushButton (self.cam_pv+':Acquire',            self.bStop,         value = 0)
 
         self.dir = '.'
         self.file = 'img'

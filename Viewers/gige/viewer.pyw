@@ -9,7 +9,7 @@ import sys
 from options import Options
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s', level=logging.INFO)
     options = Options(['camerapv'], ['width', 'height'], [])
     try:
         options.parse()
