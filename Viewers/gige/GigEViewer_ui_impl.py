@@ -3,6 +3,7 @@
 import sys
 import time
 import logging
+import math
 from PycaImage import PycaImage
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QPainter
@@ -11,7 +12,6 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtCore import QRect
 from PyQt4.QtGui import QPen, QBrush
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
 from GigEViewer_ui import Ui_MainWindow
 from pyca_widgets import *
 
@@ -38,7 +38,7 @@ class DisplayImage(QWidget):
         self.last_updates = 0
         self.last_time = time.time()
         self.rateTimer = QTimer()
-        self.connect(self.rateTimer, SIGNAL("timeout()"), self.calcDisplayRate)
+        self.rateTimer.timeout.connect(self.calcDisplayRate)
         self.rateTimer.start(1000)
 
     def paintEvent(self, event):
@@ -46,19 +46,23 @@ class DisplayImage(QWidget):
         if self.scaled_image:
             self.painter.drawImage(self.xoff, self.yoff, self.scaled_image)
             try:
-                x = int(self.gui.leCross1X.text())
-                y = int(self.gui.leCross1Y.text())
                 color = self.gui.cbCross1Color.currentIndex()
-                self.drawCross(self.painter, x, y, color)
+                if color:
+                    x = int(self.gui.leCross1X.text())
+                    y = int(self.gui.leCross1Y.text())
+                    self.drawCross(self.painter, x, y, color)
             except Exception, e:
-                logging.debug("%s", e)
+                # logging.debug("%s", e)
+                pass
             try:
-                x = int(self.gui.leCross2X.text())
-                y = int(self.gui.leCross2Y.text())
                 color = self.gui.cbCross2Color.currentIndex()
-                self.drawCross(self.painter, x, y, color)
+                if color:
+                    x = int(self.gui.leCross2X.text())
+                    y = int(self.gui.leCross2Y.text())
+                    self.drawCross(self.painter, x, y, color)
             except Exception, e:
-                logging.debug("%s", e)
+                # logging.debug("%s", e)
+                pass
         self.painter.end()
         self.updates += 1
 
@@ -135,6 +139,53 @@ class DisplayImage(QWidget):
         self.last_updates = self.updates
 
 
+class SaveImage():
+    def __init__(self, parent, img, dir='.', file='img-', num=1, period=1):
+        self.parent = parent
+        self.img = img
+        self.dir = dir
+        self.file = file
+        self.prefix = self.dir + '/' + self.file + '_'
+        self.img_num = self.next_img()
+        self.num_images = num
+        self.period = period
+        self.timer = None
+        if self.num_images > 0:
+            self.saveImage()
+        if self.num_images > 0:
+            self.timer = QTimer()
+            self.timer.timeout.connect(self.saveImage)
+            self.timer.start(self.period)
+            # logging.debug("%d ms timer started", self.period)
+
+    def saveImage(self):
+        ts = self.time_stamp()
+        # self.full_name = self.prefix + ("%06d" % self.img_num) + '.png'
+        self.full_name = self.prefix + ts + '.png'
+        logging.debug("%s", self.full_name)
+        self.img_num += 1
+        self.img.save(self.full_name)
+        self.num_images -= 1
+        # logging.debug("num_images = %d", self.num_images)
+        if self.num_images <= 0:
+            self.saveImageCancel()
+
+    def time_stamp(self):
+        t = time.time()
+        l = time.localtime(t)
+        f = '.%02d' % int(100 * math.modf(t)[0] + 0.5)
+        datetime_stamp = ('%04d-%02d-%02d_%02d:%02d:%02d' % (l[:6])) + f
+        return datetime_stamp
+
+    def saveImageCancel(self):
+        # logging.debug('')
+        if self.timer != None and self.timer.isActive():
+            self.timer.stop()
+
+    def next_img(self):
+        # TODO
+        return 1
+
 class GigEImageViewer(QMainWindow, Ui_MainWindow):
 
     def __init__(self, pv_name):
@@ -185,15 +236,30 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         triggerModes = ('Free Run', 'Sync In 1', 'Sync In 2', 'Sync In 3',
                         'Sync In 4', 'Fixed Rate', 'Software')
         GigEImageViewer.myTriggerModeCB = PycaComboBox   (self.cam_pv+':TriggerMode',        self.cbTriggerMode, items = triggerModes)
-        GigEImageViewer.myCross1XLE     = PycaLineEdit   (self.cam_pv+':Cross1X',            self.leCross1X)
-        GigEImageViewer.myCross1YLE     = PycaLineEdit   (self.cam_pv+':Cross1Y',            self.leCross1Y)
-        GigEImageViewer.myCross2XLE     = PycaLineEdit   (self.cam_pv+':Cross2X',            self.leCross2X)
-        GigEImageViewer.myCross2YLE     = PycaLineEdit   (self.cam_pv+':Cross2Y',            self.leCross2Y)
-        colors          = ('None', 'Black', 'Red', 'Green', 'Blue', 'White')
-        GigEImageViewer.myCross1CB      = PycaComboBox   (self.cam_pv+':Cross1Color',        self.cbCross1Color, items = colors)
-        GigEImageViewer.myCross2CB      = PycaComboBox   (self.cam_pv+':Cross2Color',        self.cbCross2Color, items = colors)
+        # FIXME
+        # GigEImageViewer.myCross1XLE     = PycaLineEdit   (self.cam_pv+':Cross1X',            self.leCross1X)
+        # GigEImageViewer.myCross1YLE     = PycaLineEdit   (self.cam_pv+':Cross1Y',            self.leCross1Y)
+        # GigEImageViewer.myCross2XLE     = PycaLineEdit   (self.cam_pv+':Cross2X',            self.leCross2X)
+        # GigEImageViewer.myCross2YLE     = PycaLineEdit   (self.cam_pv+':Cross2Y',            self.leCross2Y)
+        # colors          = ('None', 'Black', 'Red', 'Green', 'Blue', 'White')
+        # GigEImageViewer.myCross1CB      = PycaComboBox   (self.cam_pv+':Cross1Color',        self.cbCross1Color, items = colors)
+        # GigEImageViewer.myCross2CB      = PycaComboBox   (self.cam_pv+':Cross2Color',        self.cbCross2Color, items = colors)
         GigEImageViewer.myStartB        = PycaPushButton (self.cam_pv+':Acquire',            self.bStart,        value = 1)
         GigEImageViewer.myStopB         = PycaPushButton (self.cam_pv+':Acquire',            self.bStop,         value = 0)
+
+        self.dir = '.'
+        self.file = 'img'
+        self.num_images = 1
+        self.savePeriod = 1000
+
+        self.imageSaver = None
+
+        self.lePath.editingFinished.connect(self.saveDirectoryChanged)
+        self.leFile.editingFinished.connect(self.saveFileChanged)
+        self.leNumber.editingFinished.connect(self.saveNumberChanged)
+        self.lePeriod.editingFinished.connect(self.savePeriodChanged)
+        self.bSave.clicked.connect(self.saveStart)
+        self.bStopSave.clicked.connect(self.saveStop)
 
     def pv_get(self, pv_name):
         # logging.debug(pv_name)
@@ -251,6 +317,38 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         except Exception, e:
             # logging.debug("e = %s", e)
             pass
+
+    def saveDirectoryChanged(self):
+        # logging.debug("")
+        self.dir = self.lePath.text()
+
+    def saveFileChanged(self):
+        # logging.debug("")
+        self.file = self.leFile.text()
+
+    def saveNumberChanged(self):
+        # logging.debug("")
+        try:
+            self.num_images = int(self.leNumber.text())
+        except:
+            pass
+
+    def savePeriodChanged(self):
+        # logging.debug("")
+        try:
+            self.savePeriod = int(self.lePeriod.text())
+        except:
+            pass
+
+    def saveStart(self):
+        # logging.debug("")
+        # self.img.img.save('./img-00001.png')
+        self.imageSaver = SaveImage(self, self.img.img, dir=self.dir, file=self.file, num=self.num_images, period=self.savePeriod)
+
+    def saveStop(self):
+        # logging.debug("")
+        if self.imageSaver != None:
+            self.imageSaver.saveImageCancel()
 
     def __del__(self):
         self.img.disconnect()
