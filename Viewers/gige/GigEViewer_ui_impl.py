@@ -140,22 +140,22 @@ class DisplayImage(QWidget):
 
 
 class SaveImage():
-    def __init__(self, parent, img, dir='.', file='img-', num=1, period=1):
+    def __init__(self, parent, img, dir='.', file='img-', num=1, period=1.0):
         self.parent = parent
         self.img = img
         self.dir = dir
         self.file = file
         self.prefix = self.dir + '/' + self.file + '_'
         self.num_images = num
-        self.period = period
         self.timer = None
+        self.period = 1000.0 * period
         if self.num_images > 0:
             self.saveImage()
         if self.num_images > 0:
             self.timer = QTimer()
             self.timer.timeout.connect(self.saveImage)
             self.timer.start(self.period)
-            # logging.debug("%d ms timer started", self.period)
+                # logging.debug("%d ms timer started", self.period)
 
     def saveImage(self):
         ts = self.time_stamp()
@@ -242,7 +242,7 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         self.dir = '.'
         self.file = 'img'
         self.num_images = 1
-        self.savePeriod = 1000
+        self.savePeriod = 1.0
 
         self.imageSaver = None
 
@@ -328,7 +328,7 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
     def savePeriodChanged(self):
         # logging.debug("")
         try:
-            self.savePeriod = int(self.lePeriod.text())
+            self.savePeriod = float(self.lePeriod.text())
         except:
             pass
 

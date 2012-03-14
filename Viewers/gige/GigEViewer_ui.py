@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'GigEViewer.ui'
 #
-# Created: Wed Mar 14 13:29:29 2012
+# Created: Wed Mar 14 14:45:56 2012
 #      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -470,7 +470,7 @@ class Ui_MainWindow(object):
         self.label_10.setText(QtGui.QApplication.translate("MainWindow", "Count", None, QtGui.QApplication.UnicodeUTF8))
         self.leNumber.setText(QtGui.QApplication.translate("MainWindow", "1", None, QtGui.QApplication.UnicodeUTF8))
         self.label_12.setText(QtGui.QApplication.translate("MainWindow", "Period", None, QtGui.QApplication.UnicodeUTF8))
-        self.lePeriod.setText(QtGui.QApplication.translate("MainWindow", "1000", None, QtGui.QApplication.UnicodeUTF8))
+        self.lePeriod.setText(QtGui.QApplication.translate("MainWindow", "1.0", None, QtGui.QApplication.UnicodeUTF8))
         self.bSave.setText(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
         self.bStopSave.setText(QtGui.QApplication.translate("MainWindow", "Stop", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_6), QtGui.QApplication.translate("MainWindow", "Saving", None, QtGui.QApplication.UnicodeUTF8))
