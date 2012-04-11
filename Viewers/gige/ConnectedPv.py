@@ -13,8 +13,16 @@ from PyQt4.QtCore import SIGNAL
 
 
 class ConnectedPv(Pv):
+    """ When constructed, an object of this class tries to connect itself
+    to a PV in an IOC over channel access. If it fails to connect,
+    it will retry forever every second.  Once connected, the object emits
+    a Qt signal every time the value of the PV changes. It also calls a
+    user callback function if one is provided.
+    """
 
     def __init__(self, name, callback = None):
+        """ Constructor:  name is the name of the PV.
+        When the value of the PV changes, the callback is called if any """
         Pv.__init__(self, name)
         self.name = name
         self.callback = callback
@@ -27,12 +35,15 @@ class ConnectedPv(Pv):
             QObject.connect(self.emmiter, SIGNAL('valueChanged'), self.callback)
 
     def __del__(self):
+        """ Destructor:  disconnect if connected """
         # logging.debug("deleting %s", self.name)
         if self.connected:
             # logging.debug("disconecting %s", self.name)
             self.disconnect()
 
     def try_connect(self):
+        """ Try to connected to the PV every second.
+        When successful, start monitoring the PV and call self.changed() when it changes"""
         # logging.debug("connecting to %s ...", self.name)
         try:
             self.connect(timeout = 1.0)
@@ -49,20 +60,34 @@ class ConnectedPv(Pv):
             QTimer.singleShot(1000, self.try_connect)
 
     def disconnect(self):
+        """ Disconnect from channel access if connected """
         # logging.debug("disconnect %s", self.name)
         if self.connected:
             # logging.debug("unsubscribing from %s", self.name)
             self.unsubscribe()
 
     def disconnected(self):
+        """ Called when the PV disconnects at the remote end.
+        Start a periodic sequence to attempt to reconnect every second """
         # logging.debug("disconnected %s", self.name)
         QTimer.singleShot(1000, self.try_connect)
 
     def changed(self):
+        """ Called when the value of the PV changes.
+        Emitting the signal will cause the callback to be invoked. """
         # logging.debug("%s value = %s", self.name, self.value)
         self.emmiter.emit(SIGNAL('valueChanged'))
 
     def set_processor(self, buf, size, width, height, bytesPerLine, format):
+        """ This method registers a 'processor' function for an object of class Pv.
+        Normally, when the value of a PV changes, the Pv class will fetch the value
+        from channel access, convert it to a python value and return it.
+        This conversion can be quite inefficient for large arrays like images.
+        The array grows as data arrives and probably multiple realloc() take
+        place under the hood.
+        This automatic conversion does not take place if one registers a callback
+        function as a processor with the object of class Pv
+        """
         buf_hi = buf >> 32;      # kluge to pass 64-bit address to C using two 32-bit ints
         buf_lo = buf & ((1 << 32) - 1);
         # logging.debug("buf = 0x%08x", buf)
@@ -70,7 +95,7 @@ class ConnectedPv(Pv):
         # logging.debug("buf_lo = 0x%08x", buf_lo)
 
         support_code = """
-            #line 70                      
+            #line 98                      
             static unsigned char *img_buffer;
             static int            img_size;
             static int            img_width;
