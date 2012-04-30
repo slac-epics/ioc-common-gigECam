@@ -95,7 +95,7 @@ class ConnectedPv(Pv):
         # logging.debug("buf_lo = 0x%08x", buf_lo)
 
         support_code = """
-            #line 98                      
+            #line 99                      
             static unsigned char *img_buffer;
             static int            img_size;
             static int            img_width;
@@ -137,7 +137,7 @@ class ConnectedPv(Pv):
             }
         """
         code = """
-            #line 59
+            #line 141
             // the 64-bit address of the image buffer
             unsigned long buf = ((unsigned long)buf_hi << 32) | (buf_lo & ((1L << 32) - 1));
             // printf(">>> buf = 0x%0lx\\n", buf);
