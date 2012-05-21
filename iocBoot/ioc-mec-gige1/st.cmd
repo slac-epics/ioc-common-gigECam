@@ -22,7 +22,7 @@ epicsEnvSet("IMG4",   "IMAGE4")
 
 # ----- Manta G-145B -----
 epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-epicsEnvSet("C1_IP",         "192.168.100.10")
+epicsEnvSet("C1_IP",         "192.168.100.2")
 epicsEnvSet("C1_XSIZE",      "1390")
 epicsEnvSet("C1_YSIZE",      "1038")
 epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
