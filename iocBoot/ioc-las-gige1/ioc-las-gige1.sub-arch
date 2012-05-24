@@ -1,0 +1,14 @@
+# Archive file for IOC
+
+file gige-ioc.archive
+{
+    {
+        IOC = LAS:IOC:GIGE1
+    }
+}
+
+
+file gige-camera.tpl-arch
+{
+    {   P = "LAS:GIGE", CAM = "CAM1",  IMG = "IMAGE1" }
+}

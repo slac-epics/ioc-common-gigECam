@@ -1,0 +1,11 @@
+# Autosave file for IOC
+
+file gige-ioc.req
+{
+    { IOC = "LAS:IOC:GIGE1" }
+}
+
+file gige-camera.tpl-req
+{
+    { P = "LAS:GIGE", CAM = "CAM1", IMG = "IMAGE1" }
+}

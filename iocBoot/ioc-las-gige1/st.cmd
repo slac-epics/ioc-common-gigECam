@@ -5,13 +5,12 @@
 
 < envPaths
 
-epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
-# FIXME: elevation
-epicsEnvSet( "LOCATION",  "TST:R40:IOC:88" )
-epicsEnvSet( "IOC",       "ioc-tst-gige3")
+epicsEnvSet( "ENGINEER", "Bruce Hill (bhill)" )
+epicsEnvSet( "LOCATION",  "LAS:R51:IOC:25" )
+epicsEnvSet( "IOC",       "ioc-las-gige1")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
-epicsEnvSet("PREFIX", "TST:GIGE:")
+epicsEnvSet("PREFIX", "LAS:GIGE:")
 epicsEnvSet("CAM1",   "CAM1")
 epicsEnvSet("IMG1",   "IMAGE1")
 epicsEnvSet("CAM2",   "CAM2")
@@ -22,53 +21,36 @@ epicsEnvSet("CAM4",   "CAM4")
 epicsEnvSet("IMG4",   "IMAGE4")
 
 # ----- Manta G046B -----
-#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",         "192.168.101.2")
-#epicsEnvSet("C1_XSIZE",      "780")
-#epicsEnvSet("C1_YSIZE",      "580")
-#epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
+epicsEnvSet("CAM1_ENABLED",  "")			# "" = YES,  "#" = NO
+epicsEnvSet("C1_IP",         "192.168.100.2")
+epicsEnvSet("C1_XSIZE",      "780")
+epicsEnvSet("C1_YSIZE",      "580")
+epicsEnvSet("C1_COLORMODE",  "0")			# 0=Mono, 2=RGB1
+epicsEnvSet("C1_NELEMENTS",  "452400")		# X * Y
 
-# ----- Manta G145B -----
-#epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",         "192.168.100.10")
-#epicsEnvSet("C1_XSIZE",      "1390")
-#epicsEnvSet("C1_YSIZE",      "1038")
-#epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C1_NELEMENTS",  "1442820")  # X * Y
+# ----- Manta G046B -----
+epicsEnvSet("CAM2_ENABLED",  "#")			# "" = YES,  "#" = NO
+epicsEnvSet("C2_IP",         "192.168.101.2")
+epicsEnvSet("C2_XSIZE",      "780")
+epicsEnvSet("C2_YSIZE",      "580")
+epicsEnvSet("C2_COLORMODE",  "0")      		# 0=Mono, 2=RGB1
+epicsEnvSet("C2_NELEMENTS",  "452400")		   # X * Y
 
-# ----- Prosilica 1350C -----
-epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C1_IP",         "192.168.0.105")  #XCS
-epicsEnvSet("C1_IP",         "192.168.100.221")   # XPP Prosilica
-epicsEnvSet("C1_XSIZE",      "1360")
-epicsEnvSet("C1_YSIZE",      "1024")
-epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
+# ----- Manta G-145B -----
+epicsEnvSet("CAM3_ENABLED",  "#")			# "" = YES,  "#" = NO
+epicsEnvSet("C3_IP",         "192.168.102.2")
+epicsEnvSet("C3_XSIZE",      "780")
+epicsEnvSet("C3_YSIZE",      "580")
+epicsEnvSet("C3_COLORMODE",  "0")			# 0=Mono, 2=RGB1
+epicsEnvSet("C3_NELEMENTS",  "452400")		# X * Y
 
-# ----- Manta G146C -----
-#epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C2_IP",         "192.168.100.20")
-#epicsEnvSet("C2_XSIZE",      "1388")
-#epicsEnvSet("C2_YSIZE",      "1038")
-#epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C2_NELEMENTS",  "4322232")  # X * Y * 3
-
-# ----- Manta G146C -----
-epicsEnvSet("CAM3_ENABLED",  "#")                             # "" = YES,  "#" = NO
-epicsEnvSet("C3_IP",         "192.168.100.30")
-epicsEnvSet("C3_XSIZE",      "1388")
-epicsEnvSet("C3_YSIZE",      "1038")
-epicsEnvSet("C3_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C3_NELEMENTS",  "4322232")  # X * Y * 3
-
-# ----- Manta G146C -----
-epicsEnvSet("CAM4_ENABLED",  "#")                             # "" = YES,  "#" = NO
-epicsEnvSet("C4_IP",         "192.168.100.40")
-epicsEnvSet("C4_XSIZE",      "1388")
-epicsEnvSet("C4_YSIZE",      "1038")
-epicsEnvSet("C4_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C4_NELEMENTS",  "4322232")  # X * Y * 3
+# ----- Manta G-145B -----
+epicsEnvSet("CAM4_ENABLED",  "#")			# "" = YES,  "#" = NO
+epicsEnvSet("C4_IP",         "192.168.103.2")
+epicsEnvSet("C4_XSIZE",      "780")
+epicsEnvSet("C4_YSIZE",      "580")
+epicsEnvSet("C4_COLORMODE",  "0")			# 0=Mono, 2=RGB1
+epicsEnvSet("C4_NELEMENTS",  "452400")		# X * Y
 
 # -----------------------
 
@@ -82,7 +64,7 @@ gige_registerRecordDeviceDriver(pdbbase)
 
 ##############################################################
 # configure and initialize the camera
-#   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
+#   Args:  port, dummy, ip, nbuffers, nbuffers x width x height + overhead
 $(CAM1_ENABLED) prosilicaConfigIp(  "$(CAM1)", 999999, "$(C1_IP)", 50, -1)
 $(CAM1_ENABLED) epicsThreadSleep(1)
 $(CAM2_ENABLED) prosilicaConfigIp(  "$(CAM2)", 999999, "$(C2_IP)", 50, -1)
@@ -106,12 +88,15 @@ $(CAM4_ENABLED) epicsThreadSleep(1)
 $(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
 $(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
 $(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
+
 $(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1")
 $(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1")
 $(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1")
+
 $(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1")
 $(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1")
 $(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1")
+
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1")
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1")
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1")
@@ -137,28 +122,20 @@ $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template",
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG4):,PORT=$(IMG4),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C4_NELEMENTS)")
 
 # Load record instances
-dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
-dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
+dbLoadRecords( "db/iocAdmin.db",			"IOC=LAS:R51:IOC:25" )
+dbLoadRecords( "db/save_restoreStatus.db",	"IOC=LAS:R51:IOC:25" )
 
 # Setup autosave
-#set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
-#set_requestfile_path( "autosave" )
-#save_restoreSet_status_prefix("$(LOCATION)")
-#save_restoreSet_IncompleteSetsOk( 1 )
-#save_restoreSet_DatedBackupFiles( 1 )
-#set_pass0_restoreFile( "$(IOC).sav" )
-#$(CAM1_ENABLED) set_pass0_restoreFile( "$(IOC)_cam1.sav" )
-#$(CAM2_ENABLED) set_pass0_restoreFile( "$(IOC)_cam2.sav" )
-#$(CAM3_ENABLED) set_pass0_restoreFile( "$(IOC)_cam3.sav" )
-#$(CAM4_ENABLED) set_pass0_restoreFile( "$(IOC)_cam4.sav" )
-#set_pass1_restoreFile( "$(IOC).sav" )
-#$(CAM1_ENABLED) set_pass1_restoreFile( "$(IOC)_cam1.sav" )
-#$(CAM2_ENABLED) set_pass1_restoreFile( "$(IOC)_cam2.sav" )
-#$(CAM3_ENABLED) set_pass1_restoreFile( "$(IOC)_cam3.sav" )
-#$(CAM4_ENABLED) set_pass1_restoreFile( "$(IOC)_cam4.sav" )
+set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
+set_requestfile_path( "autosave" )
+save_restoreSet_status_prefix("LAS:R51:IOC:25")
+save_restoreSet_IncompleteSetsOk( 1 )
+save_restoreSet_DatedBackupFiles( 1 )
+set_pass0_restoreFile( "$(IOC).sav" )
+set_pass1_restoreFile( "$(IOC).sav" )
 
-#save_restoreSet_NumSeqFiles(5)
-#save_restoreSet_SeqPeriodInSeconds(30)
+save_restoreSet_NumSeqFiles(5)
+save_restoreSet_SeqPeriodInSeconds(30)
 
 # Initialize the IOC and start processing records
 iocInit()
@@ -181,7 +158,7 @@ $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free
 
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ArrayCallbacks 1
 $(CAM2_ENABLED) dbpf $(PREFIX)$(IMG2):EnableCallbacks 1
-
+#
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ColorMode $(C2_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
@@ -190,7 +167,7 @@ $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquirePeriod 1
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquireTime 0.1
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Gain 0
-
+#
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Acquire 1                         # Start the camera
 
 # ----------
@@ -228,14 +205,10 @@ $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):TriggerMode 5                     # 0=Free
 # ----------
 
 # Start autosave backups
-#create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
-#$(CAM1_ENABLED) create_monitor_set("$(IOC)_cam1.req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
-#$(CAM2_ENABLED) create_monitor_set("$(IOC)_cam2.req", 5, "CAM=$(PREFIX)$(CAM2),IMG=$(PREFIX)$(IMG2)")
-#$(CAM3_ENABLED) create_monitor_set("$(IOC)_cam3.req", 5, "CAM=$(PREFIX)$(CAM3),IMG=$(PREFIX)$(IMG3)")
-#$(CAM4_ENABLED) create_monitor_set("$(IOC)_cam4.req", 5, "CAM=$(PREFIX)$(CAM4),IMG=$(PREFIX)$(IMG4)")
+$(CAM1_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
+$(CAM2_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM2),IMG=$(PREFIX)$(IMG2)")
+$(CAM3_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM3),IMG=$(PREFIX)$(IMG3)")
+$(CAM4_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM4),IMG=$(PREFIX)$(IMG4)")
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd
-
-sleep( 10 )
-dbgrep *Acquire
