@@ -7,7 +7,7 @@
 
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
 epicsEnvSet( "LOCATION",  "MEC:B999M64A:IOC:44" )
-epicsEnvSet( "IOC",       "ioc-mec-gige3")
+epicsEnvSet( "IOC",       "ioc-mec-gige4")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
 epicsEnvSet("PREFIX", "MEC:GIGE:")
@@ -37,7 +37,7 @@ epicsEnvSet("C2_COLORMODE",  "0")        # 0=Mono, 2=RGB1
 epicsEnvSet("C2_NELEMENTS",  "1442820")   # X * Y
 
 # ----- Manta G-046B -----
-epicsEnvSet("CAM3_ENABLED",  "")                             # "" = YES,  "#" = NO
+epicsEnvSet("CAM3_ENABLED",  "#")                             # "" = YES,  "#" = NO
 epicsEnvSet("C3_IP",         "192.168.102.2")
 epicsEnvSet("C3_XSIZE",      "780")
 epicsEnvSet("C3_YSIZE",      "580")
@@ -45,7 +45,7 @@ epicsEnvSet("C3_COLORMODE",  "0")        # 0=Mono, 2=RGB1
 epicsEnvSet("C3_NELEMENTS",  "452400")   # X * Y
 
 # ----- Manta G-046B -----
-epicsEnvSet("CAM4_ENABLED",  "#")                             # "" = YES,  "#" = NO
+epicsEnvSet("CAM4_ENABLED",  "")                             # "" = YES,  "#" = NO
 epicsEnvSet("C4_IP",         "192.168.103.2")
 epicsEnvSet("C4_XSIZE",      "780")
 epicsEnvSet("C4_YSIZE",      "580")

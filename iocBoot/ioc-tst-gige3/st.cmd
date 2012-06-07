@@ -47,12 +47,12 @@ epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
 epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
 
 # ----- Manta G146C -----
-#epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO
-#epicsEnvSet("C2_IP",         "192.168.100.20")
-#epicsEnvSet("C2_XSIZE",      "1388")
-#epicsEnvSet("C2_YSIZE",      "1038")
-#epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-#epicsEnvSet("C2_NELEMENTS",  "4322232")  # X * Y * 3
+epicsEnvSet("CAM2_ENABLED",  "#")                             # "" = YES,  "#" = NO
+epicsEnvSet("C2_IP",         "192.168.100.20")
+epicsEnvSet("C2_XSIZE",      "1388")
+epicsEnvSet("C2_YSIZE",      "1038")
+epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
+epicsEnvSet("C2_NELEMENTS",  "4322232")  # X * Y * 3
 
 # ----- Manta G146C -----
 epicsEnvSet("CAM3_ENABLED",  "#")                             # "" = YES,  "#" = NO
@@ -236,6 +236,3 @@ $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):TriggerMode 5                     # 0=Free
 
 # All IOCs should dump some common info after initial startup.
 < /reg/d/iocCommon/All/post_linux.cmd
-
-sleep( 10 )
-dbgrep *Acquire
