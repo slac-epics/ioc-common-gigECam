@@ -9,13 +9,17 @@ import sys
 from options import Options
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s', level=logging.INFO)
-    options = Options(['camerapv'], ['width', 'height'], [])
+    options = Options(['camerapv'], ['width', 'height'], ['debug'])
     try:
         options.parse()
     except Exception, msg:
         options.usage(str(msg))
         sys.exit()
+
+    if options.debug != None:
+        logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s', level=logging.DEBUG)
+    else:
+        logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s', level=logging.CRITICAL)
 
     app = QApplication([''])
     win = GigEImageViewer(options.camerapv)
