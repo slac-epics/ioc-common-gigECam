@@ -1,0 +1,20 @@
+# Archive file for IOC
+
+file gige-ioc.archive
+{
+    {
+        IOC = "LAS:R52:IOC:33"
+    }
+}
+
+file archive_pmc_evr.tpl-arch
+{
+    {
+        EVR = "LAS:R52:EVR:33"
+	}
+}
+
+file gige-camera.tpl-arch
+{
+    {   P = "LAS:GIGE2", CAM = "CAM1",  IMG = "IMAGE1" }
+}
