@@ -66,7 +66,7 @@ class DisplayImage(QWidget):
         self.painter.end()
         self.updates += 1
 
-    def isCrossOnROIImage(self, x, y):
+    def isPointOnROIImage(self, x, y):
         # logging.debug("ROI: x=%d y=%d w=%d h=%d", self.roiXoff, self.roiYoff, self.image.width(), self.image.height())
         # logging.debug("%s", self.roiXoff <= x and x <= self.roiXoff + self.image.width() and self.roiYoff <= y and y <= self.roiYoff + self.image.height())
         return self.roiXoff <= x and x <= self.roiXoff + self.image.width() * self.binning and \
@@ -74,7 +74,7 @@ class DisplayImage(QWidget):
 
     def drawCross(self, qp, x, y, color):
         # logging.debug("x=%d y=%d color=%d", x, y, color)
-        if (color == 0) or not self.isCrossOnROIImage(x, y):
+        if (color == 0) or not self.isPointOnROIImage(x, y):
             return
 
         if color == 1:
@@ -112,6 +112,35 @@ class DisplayImage(QWidget):
                 self.scale = float(self.scaled_image.width()) / self.image.width()
             except:
                 self.scale = 1.0
+
+    def mousePressEvent(self, ev):
+        logging.debug("mousePressEvent:  x=%d  y=%d" % (ev.x(), ev.y()))
+        if self.gui.bCross1.isChecked():
+            x, y = self.screen2imgTransform(ev.x(), ev.y())
+            if self.isPointOnROIImage(x, y):
+                self.gui.leCross1X.setText("%.0f" % x)
+                self.gui.leCross1Y.setText("%.0f" % y)
+                self.gui.myCross1XLE.update_pv()
+                self.gui.myCross1YLE.update_pv()
+        if self.gui.bCross2.isChecked():
+            x, y = self.screen2imgTransform(ev.x(), ev.y())
+            if self.isPointOnROIImage(x, y):
+                self.gui.leCross2X.setText("%.0f" % x)
+                self.gui.leCross2Y.setText("%.0f" % y)
+                self.gui.myCross2XLE.update_pv()
+                self.gui.myCross2YLE.update_pv()
+
+    def screen2imgTransform(self, x, y):
+        x = x - self.xoff
+        x /= self.scale
+        x *= self.binning
+        x += self.roiXoff
+        y = y - self.yoff
+        y /= self.scale
+        y *= self.binning
+        y += self.roiYoff
+        logging.debug("Image coordinates: x=%.0f  y=%.0f" % (x, y))
+        return (x, y)
 
     def set_image(self, img):
         self.setGeometry(QRect(0, 0, self.parent.width(), self.parent.height()))
@@ -239,6 +268,9 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         self.myStartB        = PycaPushButton (self.cam_pv+':Acquire',            self.bStart,        value = 1)
         self.myStopB         = PycaPushButton (self.cam_pv+':Acquire',            self.bStop,         value = 0)
 
+        self.bCross1.toggled.connect(self.bCross1Toggled)
+        self.bCross2.toggled.connect(self.bCross2Toggled)
+
         self.dir = '.'
         self.file = 'img'
         self.num_images = 1
@@ -344,6 +376,16 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
 
     def __del__(self):
         self.img.disconnect()
+
+    def bCross1Toggled(self):
+        logging.debug("bCross1Toggled: isChecked = %d" % self.bCross1.isChecked())
+        if self.bCross1.isChecked():
+            self.bCross2.setChecked(False)
+
+    def bCross2Toggled(self):
+        logging.debug("bCross2Toggled: isChecked = %d" % self.bCross2.isChecked())
+        if self.bCross2.isChecked():
+            self.bCross1.setChecked(False)
 
 
 def main():

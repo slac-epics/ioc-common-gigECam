@@ -74,7 +74,7 @@ class PycaWidget(QWidget):
         self.pv_connected = False
         self.widget.setEnabled(False)
 
-    def _update_pv(self):
+    def update_pv(self):
         if self.pv_connected:
             try:
                 val = self.widget.text()
@@ -105,7 +105,7 @@ class PycaLineEdit(PycaWidget):
     
     def __init__(self, pv_name, line_edit, timeout = 1.0):
         PycaWidget.__init__(self, pv_name, line_edit, timeout)
-        self.widget.editingFinished.connect(self._update_pv)
+        self.widget.editingFinished.connect(self.update_pv)
 
 
 class PycaComboBox(PycaWidget):
@@ -120,7 +120,7 @@ class PycaComboBox(PycaWidget):
         self.widget.addItems(items)
         # logging.debug("PycaComboBox:  widget had %d items", self.widget.count())
         self.widget.setCurrentIndex(self.val)
-        self.widget.connect(self.widget, SIGNAL("currentIndexChanged(int)"), self._update_pv)
+        self.widget.connect(self.widget, SIGNAL("currentIndexChanged(int)"), self.update_pv)
 
     def _update_widget(self, exception = None):
         # logging.debug("PycaComboBox:  _update_widget")
@@ -138,7 +138,7 @@ class PycaComboBox(PycaWidget):
             # logging.debug("PycaComboBox:  error")
             pass
 
-    def _update_pv(self):
+    def update_pv(self):
         if self.pv_connected:
             try:
                 # TODO: might want to map val using a dictionary
@@ -163,7 +163,7 @@ class PycaPushButton(PycaWidget):
     
     def __init__(self, pv_name, push_button, timeout = 1.0, value = 0):
         PycaWidget.__init__(self, pv_name, push_button, timeout)
-        self.widget.clicked.connect(self._update_pv)
+        self.widget.clicked.connect(self.update_pv)
         self.val = value
 
     def _update_widget(self, exception = None):
@@ -174,7 +174,7 @@ class PycaPushButton(PycaWidget):
             # logging.debug("PycaPushButton:  error")
             self.widget.setEnabled(False)
 
-    def _update_pv(self):
+    def update_pv(self):
         if self.pv_connected:
             try:
                 self.pv.put(self.val, self.timeout)

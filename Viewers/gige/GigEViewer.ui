@@ -130,15 +130,15 @@
           <enum>QFrame::StyledPanel</enum>
          </property>
          <property name="currentIndex" >
-          <number>0</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="page" >
           <property name="geometry" >
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>212</width>
-            <height>207</height>
+            <width>96</width>
+            <height>26</height>
            </rect>
           </property>
           <attribute name="label" >
@@ -332,8 +332,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>96</width>
-            <height>26</height>
+            <width>212</width>
+            <height>207</height>
            </rect>
           </property>
           <attribute name="label" >
@@ -486,6 +486,51 @@
                 </property>
                 <property name="alignment" >
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QToolButton" name="bSelectROI" >
+                <property name="toolTip" >
+                 <string>Click and drag the mouse over the image to define the ROI</string>
+                </property>
+                <property name="text" >
+                 <string>S</string>
+                </property>
+                <property name="icon" >
+                 <iconset resource="GigEViewer.qrc" >:/new/prefix1/images/Crop3.png</iconset>
+                </property>
+                <property name="iconSize" >
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="checkable" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="bClearROI" >
+                <property name="toolTip" >
+                 <string>Clear the ROI</string>
+                </property>
+                <property name="text" >
+                 <string>C</string>
+                </property>
+                <property name="icon" >
+                 <iconset resource="GigEViewer.qrc" >:/new/prefix1/images/FullImage3.png</iconset>
+                </property>
+                <property name="iconSize" >
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
                 </property>
                </widget>
               </item>
@@ -693,8 +738,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>96</width>
-            <height>26</height>
+            <width>212</width>
+            <height>207</height>
            </rect>
           </property>
           <property name="minimumSize" >
@@ -711,7 +756,7 @@
             <rect>
              <x>6</x>
              <y>10</y>
-             <width>201</width>
+             <width>204</width>
              <height>191</height>
             </rect>
            </property>
@@ -826,6 +871,38 @@
                 </property>
                </widget>
               </item>
+              <item row="4" column="1" >
+               <widget class="QToolButton" name="bCross1" >
+                <property name="toolTip" >
+                 <string>Set Cross 1 by clicking the mouse on the image</string>
+                </property>
+                <property name="text" >
+                 <string>1</string>
+                </property>
+                <property name="icon" >
+                 <iconset resource="GigEViewer.qrc" >:/new/prefix1/images/Click3.png</iconset>
+                </property>
+                <property name="checkable" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2" >
+               <widget class="QToolButton" name="bCross2" >
+                <property name="toolTip" >
+                 <string>Set Cross 1 by clicking the mouse on the image</string>
+                </property>
+                <property name="text" >
+                 <string>2</string>
+                </property>
+                <property name="icon" >
+                 <iconset resource="GigEViewer.qrc" >:/new/prefix1/images/Click3.png</iconset>
+                </property>
+                <property name="checkable" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
@@ -849,8 +926,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>212</width>
-            <height>207</height>
+            <width>96</width>
+            <height>26</height>
            </rect>
           </property>
           <attribute name="label" >
@@ -1162,6 +1239,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar" />
  </widget>
- <resources/>
+ <resources>
+  <include location="GigEViewer.qrc" />
+ </resources>
  <connections/>
 </ui>
