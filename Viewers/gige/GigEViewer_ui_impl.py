@@ -40,6 +40,10 @@ class DisplayImage(QWidget):
         self.rateTimer = QTimer()
         self.rateTimer.timeout.connect(self.calcDisplayRate)
         self.rateTimer.start(1000)
+        self.ROIX = -1
+        self.ROIY = 0
+        self.ROIW = 0
+        self.ROIH = 0
 
     def paintEvent(self, event):
         self.painter.begin(self)
@@ -63,6 +67,12 @@ class DisplayImage(QWidget):
             except Exception, e:
                 # logging.debug("%s", e)
                 pass
+            if self.ROIX >= 0:
+                x = self.ROIX
+                y = self.ROIY
+                w = self.ROIW
+                h = self.ROIH
+                self.drawRect(self.painter, x, y, w, h)
         self.painter.end()
         self.updates += 1
 
@@ -102,6 +112,18 @@ class DisplayImage(QWidget):
         qp.drawLine( x-5, y, x+5, y)
         qp.drawLine( x, y-5, x, y+5)
 
+    def drawRect(self, qp, x, y, w, h):
+        color = Qt.white
+        # if (color == 0) or not self.isPointOnROIImage(x, y) or not self.isPointOnROIImage(x+w, y+h):
+            # return
+
+        logging.debug("x=%d y=%d w=%d h=%d", x, y, w, h)
+        color = Qt.white
+        width = 1
+        pen = QPen(QBrush(color), width, style = Qt.DashLine)
+        qp.setPen(pen)
+        qp.drawRect( x, y, w, h )
+
     def resizeEvent(self, event):
         if self.image:
             # logging.debug("frame size: %d x %d", self.width(), self.height())
@@ -129,6 +151,43 @@ class DisplayImage(QWidget):
                 self.gui.leCross2Y.setText("%.0f" % y)
                 self.gui.myCross2XLE.update_pv()
                 self.gui.myCross2YLE.update_pv()
+        if self.gui.bSelectROI.isChecked():
+            x, y = self.screen2imgTransform(ev.x(), ev.y())
+            if self.isPointOnROIImage(x, y):
+                self.ROIX = ev.x()
+                self.ROIY = ev.y()
+                self.ROIW = 0
+                self.ROIH = 0
+            else:
+                self.ROIX = -1
+
+    def mouseMoveEvent(self, ev):
+        # logging.debug("x=%d  y=%d" % (ev.x(), ev.y()))
+        if self.gui.bSelectROI.isChecked():
+            x, y = self.screen2imgTransform(ev.x(), ev.y())
+            if self.isPointOnROIImage(x, y):
+                self.ROIW = ev.x() - self.ROIX
+                self.ROIH = ev.y() - self.ROIY
+
+    def mouseReleaseEvent(self, ev):
+        # logging.debug("x=%d  y=%d" % (ev.x(), ev.y()))
+        if self.gui.bSelectROI.isChecked():
+            x, y = self.screen2imgTransform(ev.x(), ev.y())
+            if self.isPointOnROIImage(x, y):
+                self.ROIW = ev.x() - self.ROIX
+                self.ROIH = ev.y() - self.ROIY
+
+                logging.debug("ROI: x=%d  y=%d  w=%d  h=%d" \
+                              % (self.ROIX, self.ROIY, self.ROIW, self.ROIH))
+                x1, y1 = self.screen2imgTransform(self.ROIX, self.ROIY)
+                x2, y2 = self.screen2imgTransform(ev.x(), ev.y())
+                w = x2 - x1
+                h = y2 - y1
+                logging.debug("ROI: x=%d  y=%d  w=%d  h=%d" \
+                              % (x1, y1, w, h))
+
+            self.ROIX = -1
+            self.gui.bSelectROI.setChecked(False)
 
     def screen2imgTransform(self, x, y):
         x = x - self.xoff
@@ -139,7 +198,7 @@ class DisplayImage(QWidget):
         y /= self.scale
         y *= self.binning
         y += self.roiYoff
-        logging.debug("Image coordinates: x=%.0f  y=%.0f" % (x, y))
+        # logging.debug("Image coordinates: x=%.0f  y=%.0f" % (x, y))
         return (x, y)
 
     def set_image(self, img):
@@ -270,6 +329,8 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
 
         self.bCross1.toggled.connect(self.bCross1Toggled)
         self.bCross2.toggled.connect(self.bCross2Toggled)
+        self.bSelectROI.toggled.connect(self.bSelectROIToggled)
+        self.bClearROI.clicked.connect(self.clearROI)
 
         self.dir = '.'
         self.file = 'img'
@@ -381,11 +442,24 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         logging.debug("bCross1Toggled: isChecked = %d" % self.bCross1.isChecked())
         if self.bCross1.isChecked():
             self.bCross2.setChecked(False)
+            self.bSelectROI.setChecked(False)
 
     def bCross2Toggled(self):
         logging.debug("bCross2Toggled: isChecked = %d" % self.bCross2.isChecked())
         if self.bCross2.isChecked():
             self.bCross1.setChecked(False)
+            self.bSelectROI.setChecked(False)
+
+    def bSelectROIToggled(self):
+        logging.debug("bSelectROIToggled: isChecked = %d" % self.bSelectROI.isChecked())
+        if self.bSelectROI.isChecked():
+            self.bCross1.setChecked(False)
+            self.bCross2.setChecked(False)
+
+    def clearROI(self):
+        self.bCross1.setChecked(False)
+        self.bCross2.setChecked(False)
+        self.bSelectROI.setChecked(False)
 
 
 def main():
