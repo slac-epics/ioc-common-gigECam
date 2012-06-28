@@ -14,12 +14,18 @@ epicsEnvSet("IMG1",   "image2")
 
 ##prosilica
 epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
-epicsEnvSet("C1_IP",     "192.168.100.221")
-epicsEnvSet("C1_XSIZE",  "1360")
-epicsEnvSet("C1_YSIZE",  "1024")
-epicsEnvSet("C1_COLORMODE",  "2")
-epicsEnvSet("C1_NELEMENTS",  "4177920")  # X * Y * 3
-/reg/d/iocData//ioc-xpp-gige-02/autosave/xpp_gige2.sav
+#epicsEnvSet("C1_IP",     "192.168.100.221")
+#epicsEnvSet("C1_XSIZE",  "1360")
+#epicsEnvSet("C1_YSIZE",  "1024")
+#epicsEnvSet("C1_COLORMODE",  "2")
+#epicsEnvSet("C1_NELEMENTS",  "4177920")  # X * Y * 3
+
+epicsEnvSet("C1_IP",  "192.168.100.10")
+epicsEnvSet("C1_XSIZE", "1388")
+epicsEnvSet("C1_YSIZE", "1038")
+epicsEnvSet("C1_COLORMODE", "2") # 0=Mono, 2=RGB1
+epicsEnvSet("C1_NELEMENTS", "4322232") # X * Y * 3
+
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "8000000")
 
 cd( "../.." )
@@ -73,16 +79,16 @@ iocInit()
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ArrayCallbacks 1
 $(CAM1_ENABLED) dbpf $(PREFIX)$(IMG1):EnableCallbacks 1
 #
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ColorMode $(C2_COLORMODE)         # 0=Mono, 2=RGB1
+$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):DataType 0                        # 0=UInt8, 1=UInt16
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
-##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
-##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
-##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Gain 0
+$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
+$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
+$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Gain 10
 #
-##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
+$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
 
 # Start autosave backups
 $(CAM1_ENABLED) create_monitor_set("$(IOC).req", 5, "PRE=$(PREFIX),CAM=$(CAM1),IMG=$(IMG1)")
