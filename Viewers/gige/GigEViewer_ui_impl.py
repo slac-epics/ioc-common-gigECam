@@ -117,7 +117,7 @@ class DisplayImage(QWidget):
         # if (color == 0) or not self.isPointOnROIImage(x, y) or not self.isPointOnROIImage(x+w, y+h):
             # return
 
-        logging.debug("x=%d y=%d w=%d h=%d", x, y, w, h)
+        # logging.debug("x=%d y=%d w=%d h=%d", x, y, w, h)
         color = Qt.white
         width = 1
         pen = QPen(QBrush(color), width, style = Qt.DashLine)
@@ -136,7 +136,7 @@ class DisplayImage(QWidget):
                 self.scale = 1.0
 
     def mousePressEvent(self, ev):
-        logging.debug("mousePressEvent:  x=%d  y=%d" % (ev.x(), ev.y()))
+        # logging.debug("mousePressEvent:  x=%d  y=%d" % (ev.x(), ev.y()))
         if self.gui.bCross1.isChecked():
             x, y = self.screen2imgTransform(ev.x(), ev.y())
             if self.isPointOnROIImage(x, y):
@@ -177,14 +177,22 @@ class DisplayImage(QWidget):
                 self.ROIW = ev.x() - self.ROIX
                 self.ROIH = ev.y() - self.ROIY
 
-                logging.debug("ROI: x=%d  y=%d  w=%d  h=%d" \
-                              % (self.ROIX, self.ROIY, self.ROIW, self.ROIH))
+                # logging.debug("ROI: x=%d  y=%d  w=%d  h=%d" \
+                              # % (self.ROIX, self.ROIY, self.ROIW, self.ROIH))
                 x1, y1 = self.screen2imgTransform(self.ROIX, self.ROIY)
                 x2, y2 = self.screen2imgTransform(ev.x(), ev.y())
                 w = x2 - x1
                 h = y2 - y1
-                logging.debug("ROI: x=%d  y=%d  w=%d  h=%d" \
-                              % (x1, y1, w, h))
+                # logging.debug("ROI: x=%d  y=%d  w=%d  h=%d" \
+                              # % (x1, y1, w, h))
+                self.gui.leRoiXStart.setText("%d" % x1)
+                self.gui.leRoiYStart.setText("%d" % y1)
+                self.gui.leRoiXSize.setText("%d" % w)
+                self.gui.leRoiYSize.setText("%d" % h)
+                self.gui.myROIMinXLE.update_pv()
+                self.gui.myROIMinYLE.update_pv()
+                self.gui.myROISizeXLE.update_pv()
+                self.gui.myROISizeYLE.update_pv()
 
             self.ROIX = -1
             self.gui.bSelectROI.setChecked(False)
@@ -248,7 +256,7 @@ class SaveImage():
     def saveImage(self):
         ts = self.time_stamp()
         self.full_name = self.prefix + ts + '.png'
-        logging.debug("%s", self.full_name)
+        # logging.debug("%s", self.full_name)
         self.img.save(self.full_name)
         self.num_images -= 1
         # logging.debug("num_images = %d", self.num_images)
@@ -288,6 +296,9 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         self.display_image.roiXoff = self.pv_get(self.cam_pv+':MinX_RBV')
         self.display_image.roiYoff = self.pv_get(self.cam_pv+':MinY_RBV')
         self.display_image.binning = self.pv_get(self.cam_pv+':BinX_RBV')
+
+        self.maxSizeX = int(self.pv_get(self.cam_pv+':MaxSizeX_RBV')) & ~3
+        self.maxSizeY = int(self.pv_get(self.cam_pv+':MaxSizeY_RBV')) & ~3
 
         self.lPV.setText(self.cam_pv)
         self.myImgCounterLab = PycaLabel      (image_pv+':ArrayCounter_RBV', self.lImgCounter)
@@ -439,19 +450,19 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         self.img.disconnect()
 
     def bCross1Toggled(self):
-        logging.debug("bCross1Toggled: isChecked = %d" % self.bCross1.isChecked())
+        # logging.debug("bCross1Toggled: isChecked = %d" % self.bCross1.isChecked())
         if self.bCross1.isChecked():
             self.bCross2.setChecked(False)
             self.bSelectROI.setChecked(False)
 
     def bCross2Toggled(self):
-        logging.debug("bCross2Toggled: isChecked = %d" % self.bCross2.isChecked())
+        # logging.debug("bCross2Toggled: isChecked = %d" % self.bCross2.isChecked())
         if self.bCross2.isChecked():
             self.bCross1.setChecked(False)
             self.bSelectROI.setChecked(False)
 
     def bSelectROIToggled(self):
-        logging.debug("bSelectROIToggled: isChecked = %d" % self.bSelectROI.isChecked())
+        # logging.debug("bSelectROIToggled: isChecked = %d" % self.bSelectROI.isChecked())
         if self.bSelectROI.isChecked():
             self.bCross1.setChecked(False)
             self.bCross2.setChecked(False)
@@ -460,11 +471,24 @@ class GigEImageViewer(QMainWindow, Ui_MainWindow):
         self.bCross1.setChecked(False)
         self.bCross2.setChecked(False)
         self.bSelectROI.setChecked(False)
+        self.leRoiXStart.setText("0")
+        self.leRoiYStart.setText("0")
+        self.leRoiXSize.setText("%d" % self.maxSizeX)
+        self.leRoiYSize.setText("%d" % self.maxSizeY)
+        self.myROIMinXLE.update_pv()
+        self.myROIMinYLE.update_pv()
+        self.myROISizeXLE.update_pv()
+        self.myROISizeYLE.update_pv()
 
 
 def main():
+    sys.argv = ['./viewer.pyw', '--camerapv', 'MEC:GIGE:CAM1']
+
+    logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s', level=logging.INFO)
+    # logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s', level=logging.DEBUG)
+
     from options import Options
-    options = Options(['camerapv'], [], [])
+    options = Options(['camerapv'], ['width', 'height'], [])
     try:
         options.parse()
     except Exception, msg:
@@ -474,7 +498,7 @@ def main():
     app = QApplication(sys.argv)
 
     win = GigEImageViewer(options.camerapv)
-    win.resize(1080, 687)
+    # win.resize(1080, 687)
 
     sys.setcheckinterval(1000) # default is 100
     win.show()
@@ -482,6 +506,4 @@ def main():
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(filename)s:%(lineno)d:%(levelname)-8s %(funcName)s: %(message)s',
-                        level=logging.DEBUG)
     main()
