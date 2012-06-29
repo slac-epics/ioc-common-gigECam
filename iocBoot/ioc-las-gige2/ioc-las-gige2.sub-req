@@ -7,12 +7,12 @@ file gige-ioc.req
 	}
 }
 
-file autosave_pmc_evr.tpl-req
-{
-    {
-        EVR = "LAS:R52:EVR:33"
-	}
-}
+#file autosave_pmc_evr.tpl-req
+#{
+#    {
+#        EVR = "LAS:R52:EVR:33"
+#	}
+#}
 
 file gige-camera.tpl-req
 {
