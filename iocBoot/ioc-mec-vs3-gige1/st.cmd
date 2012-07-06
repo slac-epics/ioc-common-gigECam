@@ -6,7 +6,7 @@
 < envPaths
 
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
-epicsEnvSet( "LOCATION",  "MEC:B999M64A:IOC:44" )
+epicsEnvSet( "LOCATION",  "MEC:M64A:43" )
 epicsEnvSet( "IOC",       "ioc-mec-vs3-gige1")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
@@ -52,13 +52,13 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG1):,PORT=$(IMG1),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C1_NELEMENTS)")
 
 # Load record instances
-dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
-dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
+dbLoadRecords( "db/iocAdmin.db",		"IOC=IOC:MEC:VS3:GIGE1" )
+dbLoadRecords( "db/save_restoreStatus.db",	"IOC=IOC:MEC:VS3:GIGE1" )
 
 # Setup autosave
 set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
 set_requestfile_path( "autosave" )
-save_restoreSet_status_prefix("$(LOCATION)")
+save_restoreSet_status_prefix("IOC:MEC:VS3:GIGE1")
 save_restoreSet_IncompleteSetsOk( 1 )
 save_restoreSet_DatedBackupFiles( 1 )
 set_pass0_restoreFile( "$(IOC).sav" )
