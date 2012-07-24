@@ -17,4 +17,7 @@ export PATH=$PATH:$EPICS_SITE_TOP/extensions/current/bin/$EPICS_HOST_ARCH
 export EDMDATAFILES=".:..:$EPICS_SITE_TOP/modules/areaDetector/R1.6.0-0.5.0/ADApp/op/edl"
 
 #edm -x -m "IOC=LAS:R51:IOC:25" -eolc gigeScreens/gige.edl &
-edm -x -m "IOC=LAS:R51:IOC:25,P=LAS:GIGE:,R=CAM1:" -eolc ADBase.edl &
+edm -x -eolc	\
+	-m "IOC=LAS:R51:IOC:25,P=LAS:GIGE1:,R=CAM1:"	\
+	-m "EVR=LAS:R51:EVR:25"	\
+	ADBase.edl evrscreens/evr.edl &

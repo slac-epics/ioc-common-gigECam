@@ -7,6 +7,7 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # databases, templates, substitutions like this
 DB += iocAdmin.db
+DB += evrPmc230.db
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 

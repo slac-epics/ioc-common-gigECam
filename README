@@ -7,4 +7,12 @@ IOC created with the commands:
 $ makeBaseApp.pl -t pcdsIoc -a linux-x86_64 -r 'IOC:XPP:GIGE:01' gige
 $ makeBaseApp.pl -i -t pcdsIoc -a linux-x86_64 -p gige -r 'IOC:XPP:GIGE:01' ioc-xpp-gige-01
 $ makeBaseApp.pl -i -t pcdsIoc -a linux-x86_64 -p gige -r 'IOC:XPP:GIGE:02' ioc-xpp-gige-02
-     
+ 
+To run the python viewer, you must install the following yum packages:
+lapack-devel
+
+Also, You need to source the following script:
+source /reg/g/pcds/setup/pyca.sh
+
+This will setup your environment to run python 2.5.5
+

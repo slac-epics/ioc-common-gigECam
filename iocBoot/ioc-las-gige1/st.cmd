@@ -10,7 +10,7 @@ epicsEnvSet( "LOCATION",  "LAS:R51:IOC:25" )
 epicsEnvSet( "IOC",       "ioc-las-gige1")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
-epicsEnvSet("PREFIX", "LAS:GIGE:")
+epicsEnvSet("PREFIX", "LAS:GIGE1:")
 epicsEnvSet("CAM1",   "CAM1")
 epicsEnvSet("IMG1",   "IMAGE1")
 epicsEnvSet("CAM2",   "CAM2")
@@ -19,6 +19,9 @@ epicsEnvSet("CAM3",   "CAM3")
 epicsEnvSet("IMG3",   "IMAGE3")
 epicsEnvSet("CAM4",   "CAM4")
 epicsEnvSet("IMG4",   "IMAGE4")
+
+# Do we use an EVR?
+epicsEnvSet("EVR_ENABLED",  "")				# "" = YES,  "#" = NO
 
 # ----- Manta G046B -----
 epicsEnvSet("CAM1_ENABLED",  "")			# "" = YES,  "#" = NO
@@ -66,13 +69,13 @@ gige_registerRecordDeviceDriver(pdbbase)
 # configure and initialize the camera
 #   Args:  port, dummy, ip, nbuffers, nbuffers x width x height + overhead
 $(CAM1_ENABLED) prosilicaConfigIp(  "$(CAM1)", 999999, "$(C1_IP)", 50, -1)
-$(CAM1_ENABLED) epicsThreadSleep(1)
+$(CAM1_ENABLED) epicsThreadSleep(2)
 $(CAM2_ENABLED) prosilicaConfigIp(  "$(CAM2)", 999999, "$(C2_IP)", 50, -1)
-$(CAM2_ENABLED) epicsThreadSleep(1)
+$(CAM2_ENABLED) epicsThreadSleep(2)
 $(CAM3_ENABLED) prosilicaConfigIp(  "$(CAM3)", 999999, "$(C3_IP)", 50, -1)
-$(CAM3_ENABLED) epicsThreadSleep(1)
+$(CAM3_ENABLED) epicsThreadSleep(2)
 $(CAM4_ENABLED) prosilicaConfigIp(  "$(CAM4)", 999999, "$(C4_IP)", 50, -1)
-$(CAM4_ENABLED) epicsThreadSleep(1)
+$(CAM4_ENABLED) epicsThreadSleep(2)
 
 ##############################################################
 
@@ -120,6 +123,11 @@ $(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", 
 $(CAM4_ENABLED) NDStdArraysConfigure("$(IMG4)", 5, 0, "$(CAM4)", 0, -1)
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$(IMG4):,PORT=$(IMG4),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM4),NDARRAY_ADDR=0")
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG4):,PORT=$(IMG4),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C4_NELEMENTS)")
+
+# Initialize EVR
+$(EVR_ENABLED) ErDebugLevel( 0 )
+$(EVR_ENABLED) ErConfigure( 0, 0, 0, 0, 1 )
+$(EVR_ENABLED) dbLoadRecords( "db/evrPmc230.db",  "IOC=LAS:R51:IOC:25,EVR=LAS:R51:EVR:25" )
 
 # Load record instances
 dbLoadRecords( "db/iocAdmin.db",			"IOC=LAS:R51:IOC:25" )
@@ -211,4 +219,4 @@ $(CAM3_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM3),IMG=$(
 $(CAM4_ENABLED) create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM4),IMG=$(PREFIX)$(IMG4)")
 
 # All IOCs should dump some common info after initial startup.
-< /reg/d/iocCommon/All/post_linux.cmd
+#< /reg/d/iocCommon/All/post_linux.cmd

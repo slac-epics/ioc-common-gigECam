@@ -1,19 +1,21 @@
 #! /usr/bin/env python
 
+# ----- Camera UI -----
 from prosilica1350_ui import Ui_GigEImageViewer
+
+# ----- EPICS Channel Access and PV's -----
 from Pv import Pv
 import pycaqt
 import pyca
 
 from PyQt4 import QtCore
-#from PyQt4.QtGui import *
 from PyQt4.QtGui import QWidget, QImage, QPainter
 from PyQt4.QtGui import QPen, QBrush, QMainWindow, QMessageBox
-# from PyQt4.QtCore import QTimer, Qt, QPoint, QSize, QObject
 from PyQt4.QtCore import QTimer, Qt, QPoint, QSize
 
 import time
 import threading
+import logging
 
 
 # TODO -- the code needs major cleanup
@@ -99,7 +101,7 @@ class Camera():
         # self.caput("BinY", int(val))
 
     def setCross1X(self, val):
-        ## print "Setting cross1 X = %d" % int(val)
+        #logging.debug(  "Setting cross1 X = %d" % int(val) )
         self.caput("Cross1X", int(val))
         self._cross1X = int(val)
 
@@ -120,7 +122,7 @@ class Camera():
         # return stat, str(data)
 
     def cross1X(self):
-        ## print "Getting cross1 X : %d" % self._cross1X
+        #logging.debug(  "Getting cross1 X : %d" % self._cross1X )
         return 1, self._cross1X
 
     def cross1Y(self):
@@ -161,47 +163,47 @@ class Camera():
         self.caput("TriggerMode", int(val))
 
     def start(self):
-        # print "starting ..."
+        logging.debug(  "starting ..." )
         self.caput("ArrayCallbacks", 1)
         self.caput("ColorMode", 2)
         self.caput("DataType", 0)
         self.caput("Acquire", 1)
 
     def stop(self):
-        # print "stopping ..."
+        logging.debug(  "stopping ..." )
         self.caput("Acquire", 0)
 
     def caget(self, pvname, timeout=1.0):
       try:
         pv = Pv(self.name + ":" + pvname)
-        ## print "caget: " + self.name + ":" + pvname
+        #logging.debug(  "caget: " + self.name + ":" + pvname )
         pv.connect(timeout)
         pv.get(ctrl=False, timeout=timeout)
         pv.disconnect()
         return (1, pv.value)
       # except pyca.pyexc, e:
-        # print 'pyca exception: %s' %(e)
+        logging.debug(  'pyca exception: %s' %(e) )
       except pyca.pyexc:
         pass
       # except pyca.caexc, e:
-        # print 'channel access exception: %s' %(e)
+        logging.debug(  'channel access exception: %s' %(e) )
       except pyca.caexc:
         pass
       return (-1, 0)
 
     def caput(self, pvname, value, timeout=1.0):
       try:
-        ## print "caput: " + self.name + ":" + pvname
+        #logging.debug(  "caput: " + self.name + ":" + pvname )
         pv = Pv(self.name + ":" + pvname)
         pv.connect(timeout)
         pv.get(ctrl=False, timeout=timeout)
         pv.put(value, timeout)
         pv.disconnect()
       except pyca.pyexc, e:
-#        print 'pyca exception: %s' %(e)
+         logging.debug(  'pyca exception: %s' %(e) )
          pass
       except pyca.caexc, e:
-#        print 'channel access exception: %s' %(e)
+         logging.debug(  'channel access exception: %s' %(e) )
          pass
 
 
@@ -248,7 +250,7 @@ class DisplayImage(QWidget):
           qp.setPen(pen)
           stat, x1 = self.cam.cross1X()
           stat, y1 = self.cam.cross1Y()
-          ## print "Drawing cross1 @ %d %d" % (x1, y1)
+          #logging.debug(  "Drawing cross1 @ %d %d" % (x1, y1) )
           qp.drawLine( x1-5, y1, x1+5, y1)
           qp.drawLine( x1, y1-5, x1, y1+5)
 
@@ -373,14 +375,14 @@ class GraphicUserInterface(QMainWindow, Ui_GigEImageViewer):
     # ----- action routines -----
 
     def startClicked(self):
-        # print "start clicked"
+        logging.debug(  "start clicked" )
         try:
             self.cam.start()
         except:
             pass
 
     def stopClicked(self):
-        # print "stop clicked"
+        logging.debug(  "stop clicked" )
         try:
             self.cam.stop()
         except:
@@ -389,11 +391,11 @@ class GraphicUserInterface(QMainWindow, Ui_GigEImageViewer):
     def selectCurrentCamera(self, val):
         self.current_cam_num = val
         self.cam = self.cameras[val]
-        ## print "Selecting camera %d" % (val + 1)
+        #logging.debug(  "Selecting camera %d" % (val + 1) )
         self.clearEntryFields()
 
     def clearEntryFields(self):
-        ## print "Clearing data entry fields"
+        #logging.debug(  "Clearing data entry fields" )
         self.leExpTime.setText('')
         self.leExpPeriod.setText('')
         self.leGain.setText('')
@@ -476,8 +478,8 @@ class GraphicUserInterface(QMainWindow, Ui_GigEImageViewer):
         cam_pv = self.camera_pvs[ self.current_cam_num ]
         self.cam = self.cameras[self.current_cam_num]
         self.image_pv = self.image_pvs[ self.current_cam_num ]
-        # print cam_pv
-        print self.image_pv
+        logging.debug(  cam_pv )
+        print self.image_pv )
 
         self.pvs = {}
         self.pvs['ImageRate'] = Pv(cam_pv + ':ArrayRate_RBV')
@@ -640,171 +642,171 @@ class GraphicUserInterface(QMainWindow, Ui_GigEImageViewer):
             self.updates += 1
             self.display_image.update()
           else:
-#            print "%-30s " %(self.name), exception
+             logging.debug(  "%-30s " %(self.name), exception )
              pass
         except Exception, e:
-#          print e
+           logging.debug( "%s", exception )
            pass
            
 
     def updateImageRate(self, exception=None):
-        # print "In updateImageRate"
+        logging.debug(  "In updateImageRate" )
         try:
           if exception is None:
-            pv = self.pvs['ImageRate']
-            data = pv.value
-            self.disp_val(self.lImgRate, 1, data)
+               pv = self.pvs['ImageRate']
+               data = pv.value
+               self.disp_val(self.lImgRate, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lImgRate, -1, None)
+                     logging.debug(  "%-30s " %(self.name), exception )
+               self.disp_val(self.lImgRate, -1, None)
         except Exception, e:
-#          print e
-          self.disp_val(self.lImgRate, -1, None)
+                logging.debug( "%s", exception )
+                self.disp_val(self.lImgRate, -1, None)
 
 
     def updateImageCounter(self, exception=None):
-        # print "In updateImageCounter"
+        logging.debug(  "In updateImageCounter" )
         try:
           if exception is None:
             pv = self.pvs['ImageCounter']
             data = pv.value
-            # print "ImageCounter = " + data
+            logging.debug(  "ImageCounter = " + data )
             self.disp_val(self.lImgCounter, 1, data)
           else:
-            print "%-30s " %(self.name), exception
+            print "%-30s " %(self.name), exception )
             self.disp_val(self.lImgCounter, -1, None)
         except Exception, e:
-          print "ImageCounter exception: " + e
+          print "ImageCounter exception: " + e )
           self.disp_val(self.lImgCounter, -1, None)
 
 
     def updateExpTime(self, exception=None):
-        # print "In updateExpTime"
+        logging.debug(  "In updateExpTime" )
         try:
           if exception is None:
-            pv = self.pvs['ExpTime']
-            data = pv.value
-            self.disp_val(self.lExpTime, 1, data)
+               pv = self.pvs['ExpTime']
+               data = pv.value
+               self.disp_val(self.lExpTime, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lExpTime, -1, None)
+      logging.debug(  "%-30s " %(self.name), exception )
+               self.disp_val(self.lExpTime, -1, None)
         except Exception, e:
-#          print e
+    logging.debug( "%s", exception )
           self.disp_val(self.lExpTime, -1, None)
 
 
     def updateExpPeriod(self, exception=None):
-        # print "In updateExpPeriod"
+        logging.debug(  "In updateExpPeriod" )
         try:
           if exception is None:
-            pv = self.pvs['ExpPeriod']
-            data = pv.value
-            self.disp_val(self.lExpPeriod, 1, data)
+               pv = self.pvs['ExpPeriod']
+               data = pv.value
+               self.disp_val(self.lExpPeriod, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lExpPeriod, -1, None)
+             logging.debug(  "%-30s " %(self.name), exception )
+             self.disp_val(self.lExpPeriod, -1, None)
         except Exception, e:
-#          print e
+          logging.debug( "%s", exception )
           self.disp_val(self.lExpPeriod, -1, None)
 
 
     def updateGain(self, exception=None):
-        # print "In updateGain"
+        logging.debug(  "In updateGain" )
         try:
           if exception is None:
-            pv = self.pvs['Gain']
-            data = pv.value
-            self.disp_val(self.lGain, 1, data)
+                        pv = self.pvs['Gain']
+                        data = pv.value
+                        self.disp_val(self.lGain, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lGain, -1, None)
+                        logging.debug(  "%-30s " %(self.name), exception )
+                     self.disp_val(self.lGain, -1, None)
         except Exception, e:
-#          print e
-          self.disp_val(self.lGain, -1, None)
+                logging.debug( "%s", exception )
+                self.disp_val(self.lGain, -1, None)
 
 
     def updateCross1X(self, exception=None):
-        ## print "In updateCross1X"
+        #logging.debug(  "In updateCross1X" )
         try:
           if exception is None:
-            pv = self.pvs['Cross1X']
-            data = pv.value
-            self.disp_val(self.leCross1X, 1, data)
+                        pv = self.pvs['Cross1X']
+                        data = pv.value
+                        self.disp_val(self.leCross1X, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lGain, -1, None)
+      logging.debug(  "%-30s " %(self.name), exception )
+               self.disp_val(self.lGain, -1, None)
         except Exception, e:
-#          print e
+    logging.debug( "%s", exception )
           self.disp_val(self.lGain, -1, None)
 
     def updateCross1Y(self, exception=None):
-        # print "In updateCross1Y"
+        logging.debug(  "In updateCross1Y" )
         try:
           if exception is None:
-            pv = self.pvs['Cross1Y']
-            data = pv.value
-            self.disp_val(self.leCross1Y, 1, data)
+                        pv = self.pvs['Cross1Y']
+                        data = pv.value
+                        self.disp_val(self.leCross1Y, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lGain, -1, None)
+         logging.debug(  "%-30s " %(self.name), exception )
+               self.disp_val(self.lGain, -1, None)
         except Exception, e:
-#          print e
+    logging.debug( "%s", exception )
           self.disp_val(self.lGain, -1, None)
 
     def updateCross1Color(self, exception=None):
-        # print "In updateCross1Color"
+        logging.debug(  "In updateCross1Color" )
         try:
           if exception is None:
-            pv = self.pvs['Cross1Color']
-            data = pv.value
-            self.cbCross1Color.setCurrentIndex(data)
+                        pv = self.pvs['Cross1Color']
+                        data = pv.value
+                        self.cbCross1Color.setCurrentIndex(data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lGain, -1, None)
+         logging.debug(  "%-30s " %(self.name), exception )
+               self.disp_val(self.lGain, -1, None)
         except Exception, e:
-#          print e
+    logging.debug( "%s", exception )
           self.disp_val(self.lGain, -1, None)
 
     def updateCross2X(self, exception=None):
-        # print "In updateCross2X"
+        logging.debug(  "In updateCross2X" )
         try:
           if exception is None:
-            pv = self.pvs['Cross2X']
-            data = pv.value
-            self.disp_val(self.leCross2X, 1, data)
+               pv = self.pvs['Cross2X']
+               data = pv.value
+               self.disp_val(self.leCross2X, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
-            self.disp_val(self.lGain, -1, None)
+      logging.debug(  "%-30s " %(self.name), exception )
+               self.disp_val(self.lGain, -1, None)
         except Exception, e:
-#          print e
+          logging.debug( "%s", exception )
           self.disp_val(self.lGain, -1, None)
 
     def updateCross2Y(self, exception=None):
-        # print "In updateCross2Y"
+        logging.debug(  "In updateCross2Y" )
         try:
           if exception is None:
             pv = self.pvs['Cross2Y']
             data = pv.value
             self.disp_val(self.leCross2Y, 1, data)
           else:
-#            print "%-30s " %(self.name), exception
+            logging.debug(  "%-30s " %(self.name), exception )
             self.disp_val(self.lGain, -1, None)
         except Exception, e:
-#          print e
+          logging.debug( "%s", exception )
           self.disp_val(self.lGain, -1, None)
 
     def updateCross2Color(self, exception=None):
-        # print "In updateCross2Color"
+        logging.debug(  "In updateCross2Color" )
         try:
           if exception is None:
             pv = self.pvs['Cross2Color']
             data = pv.value
             self.cbCross1Color.setCurrentIndex(data)
           else:
-#            print "%-30s " %(self.name), exception
+            logging.debug(  "%-30s " %(self.name), exception )
             self.disp_val(self.lGain, -1, None)
         except Exception, e:
-#          print e
+    logging.debug( "%s", exception )
           self.disp_val(self.lGain, -1, None)
 
 

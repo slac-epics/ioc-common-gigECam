@@ -30,6 +30,8 @@ gige_DBD += prosilicaSupport.dbd
 gige_DBD += sscan.dbd
 gige_DBD += std.dbd
 gige_DBD += stdSupport.dbd
+gige_DBD += evrSupport.dbd
+gige_DBD += devMrfEr.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 gige_SRCS += gige_registerRecordDeviceDriver.cpp
@@ -72,11 +74,13 @@ gige_LIBS += z
 gige_LIBS += devIocStats
 
 gige_LIBS += std
-#gige_LIBS += Ipac
 gige_LIBS += seq
 gige_LIBS += seqDev
 gige_LIBS += pv
-#  gige_LIBS += genSub
+gige_LIBS += evrSupport
+gige_LIBS += devMrfEr
+gige_LIBS += drvMrf
+gige_LIBS_Linux += mrfApi
 #  gige_LIBS += receive
 #  gige_LIBS += transmit
 
