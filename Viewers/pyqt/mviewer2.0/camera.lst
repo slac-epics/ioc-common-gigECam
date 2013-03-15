@@ -1,0 +1,15 @@
+# Supports Averaging, Camera PV, EVR PV prefix, Description, Lens PV
+#   EVR PV with blank value ("") means the same EVR as previous camera
+#
+GE,  MEC:LAS:GIGE:IMAGE1, None,  MEC Camera 1 #on ioc-mec-las-gige02
+#GE,  MEC:LAS:GIGE:IMAGE2, None,  MEC Camera 2 #on ioc-mec-las-gige02
+GE,  MEC:LAS:GIGE:IMAGE3, None,  MEC Camera 3 #on ioc-mec-las-gige02
+GE,  MEC:LAS:GIGE:IMAGE4, None,  MEC Camera 4 #on ioc-mec-las-gige02
+GE,  MEC:LAS:GIGE:IMAGE5, None,  MEC Camera 5 #on ioc-mec-las-gige03
+GE,  MEC:LAS:GIGE:IMAGE6, None,  MEC Camera 6 #on ioc-mec-las-gige03
+GE,  MEC:LAS:GIGE:IMAGE7, None,  MEC Camera 7 #on ioc-mec-las-gige03
+#GE,  TST:SWT:GIGE:IMAGE1, None,  TST CAM B901 #on switch-tst-b901
+MM, IOC:TST:PPK:MOT1, None, Pulse Picker motor 1 #installed in B901...
+MM, IOC:TST:PPK:MOT2, None, Pulse Picker Trans X #installed in B901...
+MM, IOC:TST:PPK:MOT3, None, Pulse Picker Trans Y #installed in B901...
+
