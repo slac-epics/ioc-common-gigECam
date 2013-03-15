@@ -10,6 +10,7 @@ DB += iocAdmin.db
 DB += evrPmc230.db
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+DB_INSTALLS += prosilica_gige.template
 
 #----------------------------------------------------
 # Create and install (or just install)
