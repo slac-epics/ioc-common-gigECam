@@ -1,15 +1,31 @@
-# Supports Averaging, Camera PV, EVR PV prefix, Description, Lens PV
-#   EVR PV with blank value ("") means the same EVR as previous camera
-#
-GE,  MEC:LAS:GIGE:IMAGE1, None,  MEC Camera 1 #on ioc-mec-las-gige02
-#GE,  MEC:LAS:GIGE:IMAGE2, None,  MEC Camera 2 #on ioc-mec-las-gige02
-GE,  MEC:LAS:GIGE:IMAGE3, None,  MEC Camera 3 #on ioc-mec-las-gige02
-GE,  MEC:LAS:GIGE:IMAGE4, None,  MEC Camera 4 #on ioc-mec-las-gige02
-GE,  MEC:LAS:GIGE:IMAGE5, None,  MEC Camera 5 #on ioc-mec-las-gige03
-GE,  MEC:LAS:GIGE:IMAGE6, None,  MEC Camera 6 #on ioc-mec-las-gige03
-GE,  MEC:LAS:GIGE:IMAGE7, None,  MEC Camera 7 #on ioc-mec-las-gige03
-#GE,  TST:SWT:GIGE:IMAGE1, None,  TST CAM B901 #on switch-tst-b901
-MM, IOC:TST:PPK:MOT1, None, Pulse Picker motor 1 #installed in B901...
-MM, IOC:TST:PPK:MOT2, None, Pulse Picker Trans X #installed in B901...
-MM, IOC:TST:PPK:MOT3, None, Pulse Picker Trans Y #installed in B901...
+# ---------------------------------------------------------------
+# MultiViewer Description File
+# ---------------------------------------------------------------
+# Syntax:
+#   <TYPE>, <PVNAME|IOCNAME>, <DESC> # some_more_comments
+# Where:
+#   <Type>    : "GIG" -> GigE Cameras or
+#               "MMS" -> Motor or
+#               "IOC" -> Server name
+#   <PVNAME>  : Camera PV Name to display in the display
+#   <IOCNAME> : Server name associated to restart button
+#   <DESC>    : User Camera or Server description
+# Notes:
+#   PVNAME or IOCNAME are not case sensitive.
+#   Line can be commented out by starting with '#' character.
+# ---------------------------------------------------------------
+GIG,  MEC:LAS:GIGE:IMAGE1,   MEC Camera 1 #on ioc-mec-las-gige02
+#GIG,  MEC:LAS:GIGE:IMAGE2, MEC Camera 2 #on ioc-mec-las-gige02
+GIG,  MEC:LAS:GIGE:IMAGE3,  MEC Camera 3 #on ioc-mec-las-gige02
+GIG,  MEC:LAS:GIGE:IMAGE4, MEC Camera 4 #on ioc-mec-las-gige02
+GIG,  MEC:LAS:GIGE:IMAGE5,MEC Camera 5 #on ioc-mec-las-gige03
+GIG,  MEC:LAS:GIGE:IMAGE6,  MEC Camera 6 #on ioc-mec-las-gige03
+GIG,  MEC:LAS:GIGE:IMAGE7,   MEC Camera 7 #on ioc-mec-las-gige03
+#GIG,  TST:SWT:GIGE:IMAGE1,TST CAM B901 #on switch-tst-b901
+MMS, IOC:TST:PPK:MOT1, Pulse Picker motor 1 #installed in B901...
+MMS, IOC:TST:PPK:MOT2, Pulse Picker Trans X #installed in B901...
+MMS, IOC:TST:PPK:MOT3, Pulse Picker Trans Y #installed in B901...
+IOC, ioc-mEc-las-Gige02, Server for cams 1-4 # restart button 1 
+IOC, IOC-mec-LaS-gigE03, Server for cams 5-8 # restart button 2
+
 

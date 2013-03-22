@@ -12,21 +12,26 @@ from Pv import Pv
 import Image
 import signal
 
-## -----------------------------------------------------------------------------
-## Working version:
-## /reg/neh/home1/paiser/workspace/PY_MEC_LAS_CAM/src/CA/gigeViewers/switch
-## command: ./run_mviewer.csh --instr mec --pvlist camera.lst
-## camera.lst file:
-## Supports Averaging, Camera PV, EVR PV prefix, Description, Lens PV
-##   EVR PV with blank value ("") means the same EVR as previous camera
-##LIF, HXX:HXM:CVV:01, XRT:R04:EVR:33,  MEC YAG 0, HXX:HXM:CLZ:01
-##LIF, MEC:HXM:CVV:01, XRT:R44:EVR:38,  MEC YAG 1, MEC:HXM:CLZ:01
-##AVG, MEC:XT2:CVV:01, MEC:R64A:EVR:38, MEC YAG 2, MEC:XT2:CLZ:01
-##AVG, MEC:XT2:CVV:02, MEC:R64A:EVR:38, MEC YAG 3, MEC:XT2:CLZ:02
-##AVG, HFX:DG2:CVV:01, XRT:R32:EVR:41,  XCS Yag2, HFX:DG2:CLZ:01
-##AVG, SXR:YAG:CVV:01, SXR:YAG:EVR:01,  SXR Shared
-##
-##
+## ----------------------------------------------------------
+## Working version (paiser):
+## ~/workspace/PY_MEC_LAS_CAM/src/CA/gigeViewers/mviewer
+## ----------------------------------------------------------
+## command to run: ------------------------------------------ 
+## ./run_mviewer.csh --instr mec --pvlist camera.lst
+## ----------------------------------------------------------
+## RELEASES: ------------------------------------------------
+## on 03/14/2013 ~/dhz_release.sh ioc/common/gigECam R0.30.1
+## ----------------------------------------------------------
+## to compile mantaGiGE.so library: -------------------------
+## source ./COMPILE
+## ---------------------------------------------------------
+## to move eclipse project to svn sandbox:
+## cp -r ../mviewer ~/working/ioc/common/gigECam/current/Viewers/pyqt/mviewer2.0/
+## ---------------------------------------------------------
+## pvlist file (option --pvlist camera.lst): ----------------
+## Device type, Camera PV, EVR PV prefix, Description, Lens PV(opt)
+## Notes:
+##   Device types: GE (gigeCams), MM (ims motors)
 #GE,  MEC:LAS:GIGE:IMAGE1, None,  MEC Camera 1 #on ioc-mec-las-gige02
 ##GE,  MEC:LAS:GIGE:IMAGE2, None,  MEC Camera 2 #on ioc-mec-las-gige02
 #GE,  MEC:LAS:GIGE:IMAGE3, None,  MEC Camera 3 #on ioc-mec-las-gige02
@@ -35,9 +40,11 @@ import signal
 ##GE,  MEC:LAS:GIGE:IMAGE6, None,  MEC Camera 6 #on ioc-mec-las-gige03
 ##GE,  MEC:LAS:GIGE:IMAGE7, None,  MEC Camera 7 #on ioc-mec-las-gige03
 ##GE,  TST:SWT:GIGE:IMAGE1, None,  TST CAM on switch-tst-b901
-##MM,  TST:SWT:GIGE:IMAGE1, None,  TST CAM on switch-tst-b901
-##MM,  TST:SWT:GIGE:IMAGE1, None,  TST CAM on switch-tst-b901
-## to compile pulnix6740 library do : source COMPILE
+##MM,  TST:SWT:GIGE:MMS1, None,  Phantom motor on switch-tst-b901
+##MM,  TST:SWT:GIGE:MOT2, None,  TST Motor on switch-tst-b901
+## ----------------------------------------------------------
+
+# some notes:
 # passing arg to slots using lambda
 #self.connect(self.rfshTimer_2, QtCore.SIGNAL("timeout()"), lambda who=i: self.UpdateRate(i))
 # to restart the ioc:
@@ -687,6 +694,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.cfgdir     = cfgdir
         self.cfg        = None
         self.iScaleIndex= False
+        self.ioc1       = None # server for cams 1-4
+        self.ioc2       = None # server for cams 5-8
         
         #layout = 
         #layout = QtGui.QGridLayout(self)
@@ -737,12 +746,14 @@ class Viewer(QtGui.QMainWindow, form_class):
                         self.cB_onmot_4, self.cB_onmot_5, self.cB_onmot_6,
                         self.cB_onmot_7]
         
+        self.tB_reset = [self.tB_reset_1, self.tB_reset_2]
+        
         for iMotor in range(MAX_MOT): 
             self.lb_limM[iMotor].setPixmap(self.limitoff)
             self.lb_limP[iMotor].setPixmap(self.limitoff)
             
-        self.n_cams = self.readListFile()
-        
+        self.n_cams = self.readPVListFile()
+
         if self.n_cams > len(self.w_Img):
             self.n_cams = len(self.w_Img)
         if not self.n_cams:
@@ -807,7 +818,34 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.connect(self.idock[i],  sig9, self.centerDock)
                 #self.w_Img[i].repaint() 
         self.cam_n = 0
+        self.settoolTips()
         self.show()
+        
+    def settoolTips(self):
+        self.cB_on.setToolTip('Reconnect Camera')
+        #self.pB_save.setToolTip('Not implemented yet')
+        self.pB_elog.setToolTip('Save Images to E-Log\nNot implemented yet')
+        self.tB_mminus_1.setToolTip('Neg Lim\nNot implemented yet')
+        self.tB_mminus_2.setToolTip('Neg Lim\nNot implemented yet')
+        self.tB_mminus_3.setToolTip('Neg Lim\nNot implemented yet')
+        self.tB_mminus_4.setToolTip('Neg Lim\nNot implemented yet')
+        self.tB_mminus_5.setToolTip('Neg Lim\nNot implemented yet')
+        self.tB_mminus_6.setToolTip('Neg Lim\nNot implemented yet')
+        self.tB_mminus_7.setToolTip('Neg Lim\nNot implemented yet')
+        self.tB_mplus_1.setToolTip('Pos Lim\nNot implemented yet')
+        self.tB_mplus_2.setToolTip('Pos Lim\nNot implemented yet')
+        self.tB_mplus_3.setToolTip('Pos Lim\nNot implemented yet')
+        self.tB_mplus_4.setToolTip('Pos Lim\nNot implemented yet')
+        self.tB_mplus_5.setToolTip('Pos Lim\nNot implemented yet')
+        self.tB_mplus_6.setToolTip('Pos Lim\nNot implemented yet')
+        self.tB_mplus_7.setToolTip('Pos Lim\nNot implemented yet')
+        self.lE_mr_1.setToolTip('Relative Positon\nNot implemented yet')
+        self.lE_mr_2.setToolTip('Relative Positon\nNot implemented yet')
+        self.lE_mr_3.setToolTip('Relative Positon\nNot implemented yet')
+        self.lE_mr_4.setToolTip('Relative Positon\nNot implemented yet')
+        self.lE_mr_5.setToolTip('Relative Positon\nNot implemented yet')
+        self.lE_mr_6.setToolTip('Relative Positon\nNot implemented yet')
+        self.lE_mr_7.setToolTip('Relative Positon\nNot implemented yet')
         
     def setCameraCombo(self, cam_n):
         self.cB_camera.setCurrentIndex(cam_n)
@@ -936,28 +974,39 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.lb_dispRate.setText('%.1f Hz' % dispRate)
             self.lb_dataRate.setText('%.1f Hz' % dataRate)
 
-    def readListFile(self):
-#          self.lCameraList = []
-#          self.lCameraDesc = []
-#          self.lMotorList  = []
-#          self.lMotorDesc  = []
-#          self.basename    = list()
-#          self.ctrlname    = list()
-#          self.camtypes    = list()
-#          self.mottypes    = list()
-#          iCamera = -1
-#          iMotor  = -1        
-        ''' Reads camera.lst file, update camera combo, etc...'''
+    def readPVListFile(self):
+#todo add self.ioc1 and self.ioc2
+        ''' Reads camera.lst file, update camera combo, etc...
+        # ---------------------------------------------------------------
+        # MultiViewer Description File
+        # ---------------------------------------------------------------
+        # Syntax:
+        #   <TYPE>, <PVNAME|IOCNAME>, <DESC> # some_more_comments
+        # Where:
+        #   <Type>    : "GIG" -> GigE Cameras or
+        #               "MMS" -> Motor or
+        #               "IOC" -> Server name
+        #   <PVNAME>  : Camera PV Name to display in the display
+        #   <IOCNAME> : Server name associated to restart button
+        #   <DESC>    : User Camera or Server description
+        # Notes:
+        #   PVNAME or IOCNAME are not case sensitive.
+        #   Line can be commented out by starting with '#' character.
+        # ---------------------------------------------------------------
+        '''
         self.lCameraList = []
         self.lCameraDesc = []
         self.lMotorList  = []
         self.lMotorDesc  = []
+        self.lIOCList    = []
+        self.lIOCDesc    = []
         self.basename    = list()
         self.ctrlname    = list()
         self.camtypes    = list()
         self.mottypes    = list()
         iCamera = -1
         iMotor  = -1
+        iIOC    = -1
         try:
           if (self.camerListFilename[0] == '/'):
             fnCameraList = self.camerListFilename
@@ -972,7 +1021,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 continue
             if line.startswith("#"):
               continue
-            if not line.startswith("MM"):
+            if line.startswith("GIG"):
                 iCamera += 1
                 self.cam_n = iCamera
     
@@ -981,8 +1030,8 @@ class Viewer(QtGui.QMainWindow, form_class):
                     print throw("")
                 
                 sCameraPv = lsLine[1].strip()
-                if len(lsLine) >= 4:
-                  sCameraDesc = lsLine[3].strip().split('#')[0]
+                if len(lsLine) >= 3:
+                  sCameraDesc = lsLine[2].strip().split('#')[0]
                 else:
                   sCameraDesc = sCameraPv
                   
@@ -1008,8 +1057,8 @@ class Viewer(QtGui.QMainWindow, form_class):
                     print 'IP ',
                     print 'Using Vendor Libraries (not implemented yet)'
     
-                print sCameraPv
-            else: # now the motors in the lst file:
+                print sCameraPv                
+            elif line.startswith("MM"):
                 iMotor += 1
                 self.mot_n = iMotor
                 
@@ -1018,8 +1067,8 @@ class Viewer(QtGui.QMainWindow, form_class):
                     print throw("")
                 
                 sMotorPv = lsLine[1].strip()
-                if len(lsLine) >= 4:
-                  sMotorDesc = lsLine[3].strip().split('#')[0]
+                if len(lsLine) >= 3:
+                  sMotorDesc = lsLine[2].strip().split('#')[0]
                 else:
                   sMotorDesc = sMotorPv
                   
@@ -1030,12 +1079,136 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.mottypes.append(lsLine[0].strip())
                 
                 print 'Mot[%d] %s ' % (iMotor, sMotorDesc), sMotorPv
+            elif line.startswith("IOC"):
+                iIOC += 1
+                lsLine = line.split(",")
+                if len(lsLine) < 2:
+                    print throw("")
+                
+                sIOC = lsLine[1].strip()
+                sIOC = sIOC.replace(':','-').lower()
+                
+                if len(lsLine) >= 3:
+                  sIOCDesc = lsLine[2].strip().split('#')[0]
+                else:
+                  sIOCDesc = sIOC
+                
+                self.lIOCList.append(sIOC)
+                self.lIOCDesc.append(sIOCDesc)
+                self.tB_reset[iIOC].setToolTip(sIOCDesc)
+                #self.tB_reset[iIOC].setToolTip(sIOC)
+                
+                print 'IOC[%d] %s ' % (iIOC, sIOCDesc), sIOC
+                
+            else:
+                continue
         except:
             #import traceback
             #traceback.print_exc(file=sys.stdout)
             print '!! Failed to read motor pv list from \"%s\"' % fnCameraList
             return 0
         return iCamera + 1
+
+#    def readPVListFile(self):
+##          self.lCameraList = []
+##          self.lCameraDesc = []
+##          self.lMotorList  = []
+##          self.lMotorDesc  = []
+##          self.basename    = list()
+##          self.ctrlname    = list()
+##          self.camtypes    = list()
+##          self.mottypes    = list()
+##          iCamera = -1
+##          iMotor  = -1        
+#        ''' Reads camera.lst file, update camera combo, etc...'''
+#        self.lCameraList = []
+#        self.lCameraDesc = []
+#        self.lMotorList  = []
+#        self.lMotorDesc  = []
+#        self.basename    = list()
+#        self.ctrlname    = list()
+#        self.camtypes    = list()
+#        self.mottypes    = list()
+#        iCamera = -1
+#        iMotor  = -1
+#        try:
+#          if (self.camerListFilename[0] == '/'):
+#            fnCameraList = self.camerListFilename
+#          else:
+#            fnCameraList = self.cwd + "/" + self.camerListFilename
+#          lCameraListLine = open( fnCameraList,"r").readlines()      
+#          self.lCameraList = []
+#          
+#          for line in lCameraListLine:
+#            line = line.lstrip()
+#            if not line:
+#                continue
+#            if line.startswith("#"):
+#              continue
+#            if not line.startswith("MM"):
+#                iCamera += 1
+#                self.cam_n = iCamera
+#    
+#                lsLine = line.split(",")
+#                if len(lsLine) < 2:
+#                    print throw("")
+#                
+#                sCameraPv = lsLine[1].strip()
+#                if len(lsLine) >= 4:
+#                  sCameraDesc = lsLine[3].strip().split('#')[0]
+#                else:
+#                  sCameraDesc = sCameraPv
+#                  
+#                self.lCameraList.append(sCameraPv)
+#                self.lCameraDesc.append(sCameraDesc)
+#            
+#                #self.cB_camera.addItem(sCameraDesc)
+#                comboLable = 'CAM[%d] %s' % (self.cam_n, sCameraPv)#.split(':')[-1])
+#                self.cB_camera.addItem(comboLable)
+#                
+#                self.camtypes.append(lsLine[0].strip())
+#    
+#                print 'Cam[%d] %s ' % (iCamera, sCameraDesc),
+#                if 'IMAGE' in sCameraPv:
+#                    self.ctrlname.append(sCameraPv.replace('IMAGE','CAM'))
+#                    self.basename.append(sCameraPv)
+#                    print 'Pv ',
+#                elif 'CAM' in sCameraPv:
+#                    self.ctrlname.append(sCameraPv)
+#                    self.basename.append(sCameraPv.replace('CAM','IMAGE'))
+#                    print 'Pv ',
+#                else:
+#                    print 'IP ',
+#                    print 'Using Vendor Libraries (not implemented yet)'
+#    
+#                print sCameraPv
+#            else: # now the motors in the lst file:
+#                iMotor += 1
+#                self.mot_n = iMotor
+#                
+#                lsLine = line.split(",")
+#                if len(lsLine) < 2:
+#                    print throw("")
+#                
+#                sMotorPv = lsLine[1].strip()
+#                if len(lsLine) >= 4:
+#                  sMotorDesc = lsLine[3].strip().split('#')[0]
+#                else:
+#                  sMotorDesc = sMotorPv
+#                  
+#                self.lMotorList.append(sMotorPv)
+#                self.lMotorDesc.append(sMotorDesc)
+#                #print sMotorPv, sMotorDesc        
+#                self.cB_onmot[iMotor].setText(sMotorPv)
+#                self.mottypes.append(lsLine[0].strip())
+#                
+#                print 'Mot[%d] %s ' % (iMotor, sMotorDesc), sMotorPv
+#        except:
+#            #import traceback
+#            #traceback.print_exc(file=sys.stdout)
+#            print '!! Failed to read motor pv list from \"%s\"' % fnCameraList
+#            return 0
+#        return iCamera + 1
             
     def snd_cmd(self, cam_n, pv, val):
         self.ca[cam_n].set_cmd(pv, val)
@@ -1146,9 +1319,14 @@ class Viewer(QtGui.QMainWindow, form_class):
         
     def resetIOC(self):
         if self.sender() == self.tB_reset_1:
-            self.snd_cmd(0, 'IOC:MEC:LAS:GIGE02:SYSRESET', '1')
+            reset = '%s:SYSRESET 1' % self.lIOCList[0]
         elif self.sender() == self.tB_reset_2:
-            self.snd_cmd(0, 'IOC:MEC:LAS:GIGE03:SYSRESET', '1')
+            reset = '%s:SYSRESET 1' % self.lIOCList[1]
+        else:
+            return False
+        print reset
+        #self.snd_cmd(0, reset)
+        return True
         
     def mytest(self):
         pass
