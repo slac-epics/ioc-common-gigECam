@@ -1142,9 +1142,6 @@
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -1171,9 +1168,6 @@
              </property>
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
              </property>
             </widget>
            </item>
@@ -1202,9 +1196,6 @@
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -1231,9 +1222,6 @@
              </property>
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
              </property>
             </widget>
            </item>
@@ -1262,9 +1250,6 @@
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -1291,9 +1276,6 @@
              </property>
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
              </property>
             </widget>
            </item>
@@ -1328,9 +1310,6 @@
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -1357,9 +1336,6 @@
              </property>
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background: dark blue</string>
              </property>
             </widget>
            </item>

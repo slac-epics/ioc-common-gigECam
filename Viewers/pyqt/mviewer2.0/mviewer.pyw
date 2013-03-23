@@ -3,6 +3,7 @@ import sys, os
 import mantaGiGE 
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import QTimer, Qt, QPoint, QPointF, QSize, QRectF, QObject
+from PyQt4.QtGui import qApp
 from options import Options
 import time
 from time import strftime as date
@@ -11,6 +12,7 @@ import pyca
 from Pv import Pv
 import Image
 import signal
+#from splash import SplashScreen
 
 ## ----------------------------------------------------------
 ## Working version (paiser):
@@ -687,6 +689,13 @@ class Viewer(QtGui.QMainWindow, form_class):
         super(Viewer, self).__init__(parent)
         #QtGui.QWidget.__init__(self)
         self.setupUi(self)
+        
+        self.splashScreen = SplashScreen()
+#        self.setGeometry(QtCore.QRect(self.width()/2-10, self.height()/2-10,
+#                                      self.width()/2+10, self.height()/2+10))
+        self.splashScreen.showMsg("Starting Aplication...")
+        #time.sleep(0.5)
+
         self.app        = app
         self.cwd        = cwd
         self.instrument = instrument
@@ -751,7 +760,9 @@ class Viewer(QtGui.QMainWindow, form_class):
         for iMotor in range(MAX_MOT): 
             self.lb_limM[iMotor].setPixmap(self.limitoff)
             self.lb_limP[iMotor].setPixmap(self.limitoff)
-            
+
+        self.splashScreen.showMsg("Reading Camera File...")            
+
         self.n_cams = self.readPVListFile()
 
         if self.n_cams > len(self.w_Img):
@@ -803,6 +814,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             iwdg.setEnabled(False)
             iwdg.setWindowTitle('')
         self.lock = [QtCore.QReadWriteLock() for i in range(8)]
+        self.splashScreen.showMsg("Loading Cameras...")            
         for i in range(self.n_cams):
             self.cam_n = i # update current camera
             self.idock[i].setEnabled(True)
@@ -816,11 +828,25 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.connect(self.viewer[i], sig6, self.onUpdateRate)
                 self.connect(self.viewer[i], sig8, self.setCameraCombo)
                 self.connect(self.idock[i],  sig9, self.centerDock)
-                #self.w_Img[i].repaint() 
+                self.splashScreen.showMsg("Loading... %s as Cam[%d]" %\
+                                                (self.lCameraDesc[i], i))
+                time.sleep(1)            
         self.cam_n = 0
         self.settoolTips()
+
+        # Destroy Splash once all are loaded
+        if self.splashScreen:
+            self.splashScreen.finish(self)
+
+        self.centerOnScreen()
         self.show()
-        
+
+    def centerOnScreen(self):
+        '''centerOnScreen() Centers the window on the screen.'''
+        resolution = QtGui.QDesktopWidget().screenGeometry()
+        self.move((resolution.width() / 2) - (self.frameSize().width() / 2),
+                  (resolution.height() / 2) - (self.frameSize().height() / 2))
+
     def settoolTips(self):
         self.cB_on.setToolTip('Reconnect Camera')
         #self.pB_save.setToolTip('Not implemented yet')
@@ -975,7 +1001,6 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.lb_dataRate.setText('%.1f Hz' % dataRate)
 
     def readPVListFile(self):
-#todo add self.ioc1 and self.ioc2
         ''' Reads camera.lst file, update camera combo, etc...
         # ---------------------------------------------------------------
         # MultiViewer Description File
@@ -1031,7 +1056,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 
                 sCameraPv = lsLine[1].strip()
                 if len(lsLine) >= 3:
-                  sCameraDesc = lsLine[2].strip().split('#')[0]
+                  sCameraDesc = lsLine[2].strip().split('#')[0].rstrip()
                 else:
                   sCameraDesc = sCameraPv
                   
@@ -1331,6 +1356,54 @@ class Viewer(QtGui.QMainWindow, form_class):
     def mytest(self):
         pass
 
+
+class SplashScreen(QtGui.QSplashScreen):
+	def __init__(self):
+		self.loadImages()
+		self.lblAlignment = QtCore.Qt.Alignment(QtCore.Qt.AlignBottom | 
+											   QtCore.Qt.AlignRight  |
+                                               QtCore.Qt.AlignAbsolute)
+
+		QtGui.QSplashScreen.__init__(self, self.splashLogo)
+
+		self.centerOnScreen()
+		self.msgdelay = 0
+		self.show()
+		QtCore.QCoreApplication.flush()
+
+#		# Progress bar
+#		self.progressBar = QProgressBar(self)
+#		#self.progressBar.setGeometry(QRect(4, 207, 200, 18))
+#		self.progressBar.setGeometry(self.width()/10, 8*self.height()/20,
+#                        8*self.width()/10, self.height()/20)
+#		self.progressBar.show()
+#		self.barTimer = QTimer() # not implemented yet
+
+	def showMsg(self, msg):
+		'''Show message in lower part of splash screen'''
+		QtGui.QSplashScreen.showMessage(self, msg, 
+                                        self.lblAlignment, 
+                                        QtGui.QColor(QtCore.Qt.black))
+		time.sleep(self.msgdelay)		
+		QtGui.qApp.processEvents()
+
+	def clearMsg(self):
+		'''Clear message in lower part of splash screen'''
+		QtGui.QSplashScreen.clearMessage(self)
+		QtGui.qApp.processEvents()		
+	
+	def loadImages(self):
+		self.splashLogo = QtGui.QPixmap('ui/LCLS_400.png')
+
+	def centerOnScreen(self):
+		'''centerOnScreen() Centers the window on the screen.'''
+		resolution = QtGui.QDesktopWidget().screenGeometry()
+		self.move((resolution.width() / 2) - (self.frameSize().width() / 2),
+                  (resolution.height() / 2) - (self.frameSize().height() / 2))
+
+	def setMsgTime(self, delay=0.5):
+		self.msgdelay = delay
+
 if __name__ == '__main__':
     #===========================================================================
     # Parsing options
@@ -1374,52 +1447,11 @@ if __name__ == '__main__':
     app   = QtGui.QApplication([''])
     app.setStyle('Cleanlooks')
     app.setPalette(app.style().standardPalette())    
-    
+
+#    sp = splashScreen()
+#    sp.showSplashMsg('Complains to ...')
+#    time.sleep(5)
     gui = Viewer(app, cwd, options.instrument, camLstFname, cfgdir)#cwd, cams, cfgdir)
        
     sys.exit(app.exec_())
 
-
-
-'''
-
-self.self.w_Img_1.setStyleSheet("QDockWidget {
-     border: 1px solid lightgray;
-     titlebar-close-icon: url(close.png);
-     titlebar-normal-icon: url(undock.png);
-     titlebar-normal-icon: url(self.ledoff);
- }")
----
-setTitleBarWidget()
----
-
-private void setDockSize(QDockWidget *dock, int, int);
-      public slots:
-      void returnToOldMaxMinSizes();
-source file:
-QSize oldMaxSize, oldMinSize;
- 
-void MainWindow::setDockSize(QDockWidget* dock, int setWidth,int setHeight)
-{
- 
-    oldMaxSize=dock->maximumSize();
-    oldMinSize=dock->minimumSize();
- 
-  if (setWidth>=0)
-    if (dock->width()<setWidth)
-        dock->setMinimumWidth(setWidth);
-    else dock->setMaximumWidth(setWidth);
-  if (setHeight>=0)
-    if (dock->height()<setHeight)
-        dock->setMinimumHeight(setHeight);
-    else dock->setMaximumHeight(setHeight);
- 
-    QTimer::singleShot(1, this, SLOT(returnToOldMaxMinSizes()));
-}
- 
-void MainWindow::returnToOldMaxMinSizes()
-{
-    ui->dockWidget->setMinimumSize(oldMinSize);
-    ui->dockWidget->setMaximumSize(oldMaxSize);
-}
-'''
