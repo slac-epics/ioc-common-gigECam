@@ -13,20 +13,14 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # IOC apps or other Support apps
 # ===============================================================
 # Example
-AREADETECTOR_MODULE_VERSION	 = R1.6.0-0.5.0
-ASYN_MODULE_VERSION          = R4.14.0-0.4.0
-AUTOSAVE_MODULE_VERSION      = R4.2.1.2-2.7.0
-BUSY_MODULE_VERSION          = R1.3.0-0.5.0
-CALC_MODULE_VERSION          = R2.8.0-0.4.0
-EVENT_MODULE_VERSION         = R3.2.2-2.0.0
-#GENSUB_MODULE_VERSION        = R1.6.1.2-2.4.0
+AREADETECTOR_MODULE_VERSION	 = R1.9-0.1.0
+ASYN_MODULE_VERSION          = R4.21-0.1.0
+AUTOSAVE_MODULE_VERSION      = R5.0-0.1.0
+BUSY_MODULE_VERSION          = R1.6.0-0.2.0
+CALC_MODULE_VERSION          = R3.2-0.3.0
+EVENT_MODULE_VERSION         = R3.2.2-2.1.0
 IOCADMIN_MODULE_VERSION      = R3.0.0-1.6.0
-#IPAC_MODULE_VERSION          = R2.11.0-0.5.0
-MCA_MODULE_VERSION           = R6.12.2-1.0.0
-SEQ_MODULE_VERSION           = R2.1.2-0.4.0
-SSCAN_MODULE_VERSION         = R2.6.6.0-0.6.0
-STD_MODULE_VERSION           = R2.8.0-0.7.0
-
+SSCAN_MODULE_VERSION         = R2.8.1-0.1.0
 
 # ============================================================
 # External Support module path definitions
@@ -47,10 +41,8 @@ AUTOSAVE     = $(EPICS_MODULES)/autosave/$(AUTOSAVE_MODULE_VERSION)
 BUSY         = $(EPICS_MODULES)/busy/$(BUSY_MODULE_VERSION)
 CALC         = $(EPICS_MODULES)/calc/$(CALC_MODULE_VERSION)
 EVENT        = $(EPICS_MODULES)/event/$(EVENT_MODULE_VERSION)
-#GENSUB      = $(EPICS_MODULES)/genSub/$(GENSUB_MODULE_VERSION)
 IOCADMIN     = $(EPICS_MODULES)/iocAdmin/$(IOCADMIN_MODULE_VERSION)
-#IPAC        = $(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
-MCA          = $(EPICS_MODULES)/mca/$(MCA_MODULE_VERSION)
-SEQ          = $(EPICS_MODULES)/seq/$(SEQ_MODULE_VERSION)
 SSCAN        = $(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
-STD          = $(EPICS_MODULES)/std/$(STD_MODULE_VERSION)
+
+#AREA_DETECTOR= ~bhill/wa2/trunk/pcds/epics/modules/areaDetector/current
+
