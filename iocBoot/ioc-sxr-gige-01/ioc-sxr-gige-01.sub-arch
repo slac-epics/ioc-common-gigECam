@@ -1,0 +1,15 @@
+# Archive file for ioc-sxr-gige-01
+
+file gige-ioc.archive
+{
+    {
+        IOC = SXR:IOC:GIGE:01
+    }
+}
+
+
+file gige-camera.tpl-arch
+{
+    {   P = "SXR:GIGE", CAM = "CAM1",  IMG = "IMAGE1" }
+    {   P = "SXR:GIGE", CAM = "CAM2",  IMG = "IMAGE2" }
+}
