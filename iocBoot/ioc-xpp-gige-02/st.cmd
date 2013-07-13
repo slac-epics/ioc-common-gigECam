@@ -37,7 +37,7 @@ gige_registerRecordDeviceDriver(pdbbase)
 ##############################################################
 # configure and initialize the camera
 #   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
-$(CAM1_ENABLED) prosilicaConfigIp(  "$(CAM1)", 999999, "$(C1_IP)", 50, -1)
+$(CAM1_ENABLED) prosilicaConfig(  "$(CAM1)", "$(C1_IP)", 50, -1)
 $(CAM1_ENABLED) epicsThreadSleep(1)
 ##############################################################
 

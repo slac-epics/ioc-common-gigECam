@@ -65,13 +65,13 @@ gige_registerRecordDeviceDriver(pdbbase)
 ##############################################################
 # configure and initialize the camera
 #   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
-$(CAM1_ENABLED) prosilicaConfigIp(  "$(CAM1)", 999999, "$(C1_IP)", 50, -1)
+$(CAM1_ENABLED) prosilicaConfig(  "$(CAM1)", "$(C1_IP)", 50, -1)
 $(CAM1_ENABLED) epicsThreadSleep(1)
-$(CAM2_ENABLED) prosilicaConfigIp(  "$(CAM2)", 999999, "$(C2_IP)", 50, -1)
+$(CAM2_ENABLED) prosilicaConfig(  "$(CAM2)", "$(C2_IP)", 50, -1)
 $(CAM2_ENABLED) epicsThreadSleep(1)
-$(CAM3_ENABLED) prosilicaConfigIp(  "$(CAM3)", 999999, "$(C3_IP)", 50, -1)
+$(CAM3_ENABLED) prosilicaConfig(  "$(CAM3)", "$(C3_IP)", 50, -1)
 $(CAM3_ENABLED) epicsThreadSleep(1)
-$(CAM4_ENABLED) prosilicaConfigIp(  "$(CAM4)", 999999, "$(C4_IP)", 50, -1)
+$(CAM4_ENABLED) prosilicaConfig(  "$(CAM4)", "$(C4_IP)", 50, -1)
 $(CAM4_ENABLED) epicsThreadSleep(1)
 
 ##############################################################

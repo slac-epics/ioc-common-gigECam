@@ -32,7 +32,7 @@ epicsEnvSet("IMG4",   "IMAGE4")
 # ----- Manta G146C -----
 ## Disabled because cannot ping
 epicsEnvSet("CAM1_ENABLED",  "")                              # "" = YES,  "#" = NO
-epicsEnvSet("C1_IP",         "192.168.0.101")
+epicsEnvSet("C1_IP",         "gige-xcs-01" )
 epicsEnvSet("C1_XSIZE",      "1388")
 epicsEnvSet("C1_YSIZE",      "1038")
 epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
@@ -40,7 +40,7 @@ epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
 
 # ----- Manta G146C -----
 epicsEnvSet("CAM2_ENABLED",  "")                             # "" = YES,  "#" = NO
-epicsEnvSet("C2_IP",         "192.168.0.105")
+epicsEnvSet("C2_IP",         "gige-xcs-02" )
 epicsEnvSet("C2_XSIZE",      "1388")
 epicsEnvSet("C2_YSIZE",      "1038")
 epicsEnvSet("C2_COLORMODE",  "2")        # 0=Mono, 2=RGB1
@@ -75,10 +75,10 @@ gige_registerRecordDeviceDriver(pdbbase)
 ##############################################################
 # configure and initialize the camera
 #   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
-$(CAM1_ENABLED) prosilicaConfigIp(  "$(CAM1)", 999999, "$(C1_IP)", 50, -1)
-$(CAM2_ENABLED) prosilicaConfigIp(  "$(CAM2)", 999999, "$(C2_IP)", 50, -1)
-$(CAM3_ENABLED) prosilicaConfigIp(  "$(CAM3)", 999999, "$(C3_IP)", 50, -1)
-$(CAM4_ENABLED) prosilicaConfigIp(  "$(CAM4)", 999999, "$(C4_IP)", 50, -1)
+$(CAM1_ENABLED) prosilicaConfig(  "$(CAM1)", "$(C1_IP)", 50, -1)
+$(CAM2_ENABLED) prosilicaConfig(  "$(CAM2)", "$(C2_IP)", 50, -1)
+$(CAM3_ENABLED) prosilicaConfig(  "$(CAM3)", "$(C3_IP)", 50, -1)
+$(CAM4_ENABLED) prosilicaConfig(  "$(CAM4)", "$(C4_IP)", 50, -1)
 ##############################################################
 
 #asynSetTraceMask("$(CAM1)",0,9)
@@ -92,22 +92,22 @@ $(CAM4_ENABLED) prosilicaConfigIp(  "$(CAM4)", 999999, "$(C4_IP)", 50, -1)
 
 $(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
 $(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
-$(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
+$(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1,TRSCAN=1 second")
 $(CAM1_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
 
 $(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1")
 $(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1")
-$(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1")
+$(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1,TRSCAN=1 second")
 $(CAM2_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM2):,PORT=$(CAM2),ADDR=0,TIMEOUT=1")
 
 $(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1")
 $(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1")
-$(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1")
+$(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1,TRSCAN=1 second")
 $(CAM3_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM3):,PORT=$(CAM3),ADDR=0,TIMEOUT=1")
 
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1")
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1")
-$(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1")
+$(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1,TRSCAN=1 second")
 $(CAM4_ENABLED) dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM4):,PORT=$(CAM4),ADDR=0,TIMEOUT=1")
 
 # Create a standard arrays plugin, set it to get data from first Prosilica driver.
@@ -161,7 +161,7 @@ $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free
 ##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
 ##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Gain 0
 #
-##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
+$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
 
 # ----------
 
@@ -177,7 +177,7 @@ $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquireTime 0.1
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Gain 0
 #
-##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Acquire 1                         # Start the camera
+$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):Acquire 1                         # Start the camera
 
 # ----------
 
