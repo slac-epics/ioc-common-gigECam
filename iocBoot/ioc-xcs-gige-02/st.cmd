@@ -8,15 +8,16 @@
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
 # FIXME: elevation
 epicsEnvSet( "LOCATION",  "XCS:R42:IOC:38" )
-epicsEnvSet( "IOC",       "ioc-xcs-gige-01")
+epicsEnvSet( "IOC",       "ioc-xcs-gige-02")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
 epicsEnvSet("PREFIX", "XCS:GIGE:")
-epicsEnvSet("CAM",    "CAM1")
-epicsEnvSet("IMG",    "IMAGE1")
+epicsEnvSet("CAM",    "CAM2")
+epicsEnvSet("IMG",    "IMAGE2")
 
 # ----- Manta G146C -----
-epicsEnvSet("C1_IP",         "gige-xcs-01" )
+## Disabled because cannot ping
+epicsEnvSet("C1_IP",         "gige-xcs-02" )
 epicsEnvSet("C1_XSIZE",      "1388")
 epicsEnvSet("C1_YSIZE",      "1038")
 epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1

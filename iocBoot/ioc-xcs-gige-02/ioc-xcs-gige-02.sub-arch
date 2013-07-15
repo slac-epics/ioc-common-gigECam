@@ -3,12 +3,12 @@
 file gige-ioc.archive
 {
     {
-        IOC = XCS:IOC:GIGE:01
+        IOC = XCS:IOC:GIGE:02
     }
 }
 
 
 file gige-camera.tpl-arch
 {
-    {   P = "XCS:GIGE", CAM = "CAM1",  IMG = "IMAGE1" }
+    {   P = "XCS:GIGE", CAM = "CAM2",  IMG = "IMAGE2" }
 }
