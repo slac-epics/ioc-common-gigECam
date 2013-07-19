@@ -1,9 +1,9 @@
-# Archive file for ioc-xcs-gige-01
+# Archive file for ioc-xcs-gige-703-1
 
 file gige-ioc.archive
 {
     {
-        IOC = XCS:IOC:GIGE:01
+        IOC = XCS:IOC:GIGE:703:1
     }
 }
 

@@ -1,0 +1,14 @@
+# Archive file for ioc-xcs-gige-703-1
+
+file gige-ioc.archive
+{
+    {
+        IOC = XCS:IOC:GIGE:703:3
+    }
+}
+
+
+file gige-camera.tpl-arch
+{
+    {   P = "XCS:GIGE", CAM = "CAM:703:3",  IMG = "$(CAM):IMAGE" }
+}

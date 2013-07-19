@@ -13,7 +13,7 @@ epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
 epicsEnvSet("PREFIX", "XCS:GIGE:")
 epicsEnvSet("CAM",    "CAM1")
-epicsEnvSet("IMG",    "IMAGE1")
+epicsEnvSet("IMG",    "$(CAM):IMAGE")
 
 # ----- Manta G146C -----
 epicsEnvSet("C1_IP",         "gige-xcs-01" )

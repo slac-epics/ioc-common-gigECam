@@ -7,21 +7,21 @@
 
 epicsEnvSet( "ENGINEER", "Bruce Hill (bhill)" )
 # FIXME: elevation
-epicsEnvSet( "LOCATION",  "SXR:GIGE:IOC:01" )
-epicsEnvSet( "IOC",       "ioc-sxr-gige-01")
+epicsEnvSet( "LOCATION",  "XCS:R42:IOC:38" )
+epicsEnvSet( "IOC",       "ioc-xcs-gige-703-3")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
-epicsEnvSet("PREFIX", "SXR:GIGE:")
-epicsEnvSet("CAM",    "CAM1")
-epicsEnvSet("IMG",    "IMAGE1")
+epicsEnvSet("PREFIX", "XCS:GIGE:")
+epicsEnvSet("CAM",    "CAM:703:3")
+epicsEnvSet("IMG",    "$(CAM):IMAGE")
 
-# ----- Manta 201B -----
-epicsEnvSet("C1_IP",         "gige-sxr-cam01" )
-# TODO: Update image size for Manta 201B - These values are for G146C
-epicsEnvSet("C1_XSIZE",      "1624")
-epicsEnvSet("C1_YSIZE",      "1234")
-epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "2004016")  # X * Y * 3
+# ----- Manta G146C -----
+## Disabled because cannot ping
+epicsEnvSet("C1_IP",         "gige-xcs-703-3" )
+epicsEnvSet("C1_XSIZE",      "1388")
+epicsEnvSet("C1_YSIZE",      "1038")
+epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
+epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
 
 # -----------------------
 
@@ -44,7 +44,7 @@ prosilicaConfig(  "$(CAM)", "$(C1_IP)", 50, -1)
 
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM):,PORT=$(CAM),ADDR=0,TIMEOUT=1")
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM):,PORT=$(CAM),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM):,PORT=$(CAM),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM):,PORT=$(CAM),ADDR=0,TIMEOUT=1,TRSCAN=1 second")
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM):,PORT=$(CAM),ADDR=0,TIMEOUT=1")
 
 # Create a standard arrays plugin, set it to get data from first Prosilica driver.
@@ -83,7 +83,7 @@ dbpf $(PREFIX)$(CAM):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 
 ##dbpf $(PREFIX)$(CAM):AcquireTime 0.1
 ##dbpf $(PREFIX)$(CAM):Gain 0
 #
-##dbpf $(PREFIX)$(CAM):Acquire 1                         # Start the camera
+dbpf $(PREFIX)$(CAM):Acquire 1                         # Start the camera
 
 # ----------
 

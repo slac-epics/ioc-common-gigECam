@@ -1,0 +1,11 @@
+# Autosave file for IOC
+
+file gige-ioc.req
+{
+    { IOC = "XCS:IOC:GIGE:703:3" }
+}
+
+file gige-camera.tpl-req
+{
+    { P = "XCS:GIGE", CAM = "CAM:703:3", IMG = "$(CAM):IMAGE" }
+}

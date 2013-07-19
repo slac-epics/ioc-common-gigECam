@@ -7,5 +7,5 @@ file gige-ioc.req
 
 file gige-camera.tpl-req
 {
-    { P = "XCS:GIGE", CAM = "CAM2", IMG = "IMAGE2" }
+    { P = "XCS:GIGE", CAM = "CAM2", IMG = "$(CAM):IMAGE" }
 }

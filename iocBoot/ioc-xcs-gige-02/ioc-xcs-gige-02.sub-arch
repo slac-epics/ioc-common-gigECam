@@ -10,5 +10,5 @@ file gige-ioc.archive
 
 file gige-camera.tpl-arch
 {
-    {   P = "XCS:GIGE", CAM = "CAM2",  IMG = "IMAGE2" }
+    {   P = "XCS:GIGE", CAM = "CAM2",  IMG = "$(CAM):IMAGE" }
 }

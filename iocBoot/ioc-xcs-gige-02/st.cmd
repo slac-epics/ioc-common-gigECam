@@ -13,7 +13,7 @@ epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
 epicsEnvSet("PREFIX", "XCS:GIGE:")
 epicsEnvSet("CAM",    "CAM2")
-epicsEnvSet("IMG",    "IMAGE2")
+epicsEnvSet("IMG",    "$(CAM):IMAGE")
 
 # ----- Manta G146C -----
 ## Disabled because cannot ping

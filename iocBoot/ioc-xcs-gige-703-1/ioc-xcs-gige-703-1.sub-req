@@ -2,7 +2,7 @@
 
 file gige-ioc.req
 {
-    { IOC = "XCS:IOC:GIGE:01" }
+    { IOC = "XCS:IOC:GIGE:703:1" }
 }
 
 file gige-camera.tpl-req
