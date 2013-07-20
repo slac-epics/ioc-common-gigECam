@@ -8,7 +8,8 @@
 epicsEnvSet( "ENGINEER", "Bruce Hill (bhill)" )
 # FIXME: elevation
 epicsEnvSet( "LOCATION",  "XCS:R42:IOC:38" )
-epicsEnvSet( "IOC",       "ioc-xcs-gige-703-3")
+#epicsEnvSet( "IOC",       "ioc-xcs-gige-703-3")
+epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:703:3")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
 epicsEnvSet("PREFIX", "XCS:GIGE:")
@@ -20,9 +21,8 @@ epicsEnvSet("IMG",    "$(CAM):IMAGE")
 epicsEnvSet("C1_IP",         "gige-xcs-703-3" )
 epicsEnvSet("C1_XSIZE",      "1388")
 epicsEnvSet("C1_YSIZE",      "1038")
-epicsEnvSet("C1_COLORMODE",  "2")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "4322232")  # X * Y * 3
-
+epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
+epicsEnvSet("C1_NELEMENTS",  "1440744" )# 1388 x 1038 
 # -----------------------
 
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "8000000")
@@ -53,13 +53,13 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C1_NELEMENTS)")
 
 # Load record instances
-dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
-dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
+dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
+dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
 
 # Setup autosave
 set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
 set_requestfile_path( "autosave" )
-save_restoreSet_status_prefix("$(LOCATION)")
+save_restoreSet_status_prefix("$(IOC_PV)")
 save_restoreSet_IncompleteSetsOk( 1 )
 save_restoreSet_DatedBackupFiles( 1 )
 set_pass0_restoreFile( "$(IOC).sav" )
