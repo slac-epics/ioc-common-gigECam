@@ -5,6 +5,5 @@ source /reg/g/pcds/setup/epicsenv-3.14.12.sh
 export EDMDATAFILES=".:..:areaDetectorScreens"
 
 edm -x -eolc	\
-	-m "IOC=LAS:R51:IOC:25,P=LAS:GIGE1:,R=CAM1:"	\
-	-m "EVR=LAS:R51:EVR:25"	\
-	prosilica.edl ADBase.edl evrscreens/evr.edl &
+	-m "IOC=TST:R40:IOC:18:GIGE:01,P=TST:GIGE1:,R=CAM1:"	\
+	prosilica.edl ADBase.edl &
