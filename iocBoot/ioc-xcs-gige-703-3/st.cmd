@@ -6,8 +6,8 @@
 < envPaths
 
 epicsEnvSet( "ENGINEER", "Bruce Hill (bhill)" )
-# FIXME: elevation
-epicsEnvSet( "LOCATION",  "XCS:R42:IOC:38" )
+epicsEnvSet( "LOCATION",  "XCS L703 GigE 03" )
+epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:703:2"
 #epicsEnvSet( "IOC",       "ioc-xcs-gige-703-3")
 epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:703:3")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )

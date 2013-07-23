@@ -7,4 +7,4 @@ export EDMDATAFILES=".:..:areaDetectorScreens"
 edm -x -eolc	\
 	-m "IOC=LAS:R51:IOC:25,P=LAS:GIGE1:,R=CAM1:"	\
 	-m "EVR=LAS:R51:EVR:25"	\
-	prosilica.edl ADBase.edl evrscreens/evr.edl &
+	prosilica.edl evrscreens/evr.edl &

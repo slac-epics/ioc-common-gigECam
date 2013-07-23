@@ -6,8 +6,8 @@
 < envPaths
 
 epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
-# FIXME: elevation
-epicsEnvSet( "LOCATION",  "XCS:R42:IOC:38" )
+epicsEnvSet( "LOCATION",  "XCS GigE 01" )
+epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:1"
 epicsEnvSet( "IOC",       "ioc-xcs-gige-01")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
@@ -52,13 +52,13 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C1_NELEMENTS)")
 
 # Load record instances
-dbLoadRecords( "db/iocAdmin.db",			"IOC=$(LOCATION)" )
-dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(LOCATION)" )
+dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
+dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
 
 # Setup autosave
 set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
 set_requestfile_path( "autosave" )
-save_restoreSet_status_prefix("$(LOCATION)")
+save_restoreSet_status_prefix("$(IOC_PV)")
 save_restoreSet_IncompleteSetsOk( 1 )
 save_restoreSet_DatedBackupFiles( 1 )
 set_pass0_restoreFile( "$(IOC).sav" )
