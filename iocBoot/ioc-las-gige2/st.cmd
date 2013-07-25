@@ -157,8 +157,8 @@ $(CAM1_ENABLED) dbpf $(PREFIX)$(IMG1):EnableCallbacks 1
 #
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):DataType 0                        # 0=UInt8, 1=UInt16
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
-$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
+#$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
+#$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
 ##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
 ##$(CAM1_ENABLED) dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
@@ -173,8 +173,8 @@ $(CAM2_ENABLED) dbpf $(PREFIX)$(IMG2):EnableCallbacks 1
 #
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ColorMode $(C2_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):DataType 0                        # 0=UInt8, 1=UInt16
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
-$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
+#$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
+#$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquirePeriod 1
 ##$(CAM2_ENABLED) dbpf $(PREFIX)$(CAM2):AcquireTime 0.1
@@ -189,8 +189,8 @@ $(CAM3_ENABLED) dbpf $(PREFIX)$(IMG3):EnableCallbacks 1
 #
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ColorMode $(C3_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):DataType 0                        # 0=UInt8, 1=UInt16
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
-$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
+#$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
+#$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
 ##$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):AcquirePeriod 1
 ##$(CAM3_ENABLED) dbpf $(PREFIX)$(CAM3):AcquireTime 0.1
@@ -205,8 +205,8 @@ $(CAM4_ENABLED) dbpf $(PREFIX)$(IMG4):EnableCallbacks 1
 #
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ColorMode $(C4_COLORMODE)         # 0=Mono, 2=RGB1
 $(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):DataType 0                        # 0=UInt8, 1=UInt16
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
-$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
+#$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
+#$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
 ##$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):AcquirePeriod 1
 ##$(CAM4_ENABLED) dbpf $(PREFIX)$(CAM4):AcquireTime 0.1

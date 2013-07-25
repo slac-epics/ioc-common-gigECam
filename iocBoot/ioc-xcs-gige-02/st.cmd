@@ -49,7 +49,7 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM)
 
 # Create a standard arrays plugin, set it to get data from first Prosilica driver.
 NDStdArraysConfigure("$(IMG)", 5, 0, "$(CAM)", 0, -1)
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$(CAM):,PORT=$(IMG),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C1_NELEMENTS)")
 
 # Load record instances
@@ -76,8 +76,8 @@ dbpf $(PREFIX)$(IMG):EnableCallbacks 1
 #
 dbpf $(PREFIX)$(CAM):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
 dbpf $(PREFIX)$(CAM):DataType 0                        # 0=UInt8, 1=UInt16
-dbpf $(PREFIX)$(CAM):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
-dbpf $(PREFIX)$(CAM):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
+#dbpf $(PREFIX)$(CAM):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
+#dbpf $(PREFIX)$(CAM):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
 ##dbpf $(PREFIX)$(CAM):AcquirePeriod 1
 ##dbpf $(PREFIX)$(CAM):AcquireTime 0.1

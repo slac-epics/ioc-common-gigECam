@@ -13,7 +13,7 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # IOC apps or other Support apps
 # ===============================================================
 # Example
-AREADETECTOR_MODULE_VERSION	 = R1.9-0.1.0
+AREADETECTOR_MODULE_VERSION	 = R1.9-0.3.0
 ASYN_MODULE_VERSION          = R4.21-0.1.0
 AUTOSAVE_MODULE_VERSION      = R5.0-0.1.0
 BUSY_MODULE_VERSION          = R1.6.0-0.2.0

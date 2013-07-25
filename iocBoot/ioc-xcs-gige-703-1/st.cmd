@@ -53,6 +53,20 @@ NDStdArraysConfigure("$(IMG)", 5, 0, "$(CAM)", 0, -1)
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C1_NELEMENTS)")
 
+# Create a JPEG File plugin, set it to get data from the camera
+NDFileJPEGConfigure( "FileJPEG", 5, 0, "$(CAM)", 0, 0)
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template", "P=$(PREFIX)$(CAM):,R=JPEG:,PORT=FileJPEG,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDFile.template",       "P=$(PREFIX)$(CAM):,R=JPEG:,PORT=FileJPEG,ADDR=0,TIMEOUT=1" )
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDFileJPEG.template",   "P=$(PREFIX)$(CAM):,R=JPEG:,PORT=FileJPEG,ADDR=0,TIMEOUT=1" )
+
+# Create 2 ROI plugin's
+NDROIConfigure( "ROI1", 5, 0, "$(CAM)", 0, 0, 0 )
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template", "P=$(PREFIX)$(CAM):,R=ROI1:,PORT=ROI1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX)$(CAM):,R=ROI1:,PORT=ROI1,ADDR=0,TIMEOUT=1" )
+NDROIConfigure( "ROI2", 5, 0, "$(CAM)", 0, 0, 0 )
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template", "P=$(PREFIX)$(CAM):,R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX):$(CAM),R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1" )
+
 # Load record instances
 dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
@@ -77,8 +91,8 @@ dbpf $(PREFIX)$(IMG):EnableCallbacks 1
 #
 dbpf $(PREFIX)$(CAM):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
 dbpf $(PREFIX)$(CAM):DataType 0                        # 0=UInt8, 1=UInt16
-dbpf $(PREFIX)$(CAM):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
-dbpf $(PREFIX)$(CAM):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
+#dbpf $(PREFIX)$(CAM):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
+#dbpf $(PREFIX)$(CAM):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
 #
 ##dbpf $(PREFIX)$(CAM):AcquirePeriod 1
 ##dbpf $(PREFIX)$(CAM):AcquireTime 0.1
