@@ -57,3 +57,11 @@ $(P):$(CAM):SyncOut3Mode
 $(P):$(CAM):TriggerMode
 $(P):$(IMG):BlockingCallbacks
 $(P):$(IMG):EnableCallbacks
+$(P):$(CAM):JPEG:FilePath
+$(P):$(CAM):JPEG:FileName
+$(P):$(CAM):JPEG:FileNumber
+$(P):$(CAM):JPEG:FileTemplate
+$(P):$(CAM):JPEG:NumCapture
+$(P):$(CAM):JPEG:EnableCallbacks
+$(P):$(CAM):JPEG:FileWriteMode
+$(P):$(CAM):JPEG:AutoSave

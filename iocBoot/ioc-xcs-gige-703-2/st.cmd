@@ -8,8 +8,7 @@
 epicsEnvSet( "ENGINEER", "Bruce Hill (bhill)" )
 epicsEnvSet( "LOCATION",  "XCS L703 GigE 2" )
 epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:703:2"
-epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:703:2")
-#epicsEnvSet( "IOC",       "ioc-xcs-gige-703-2")
+#epicsEnvSet( "IOC",      "ioc-xcs-gige-703-2")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
 epicsEnvSet("PREFIX", "XCS:GIGE:")
@@ -17,7 +16,6 @@ epicsEnvSet("CAM",    "CAM:703:2")
 epicsEnvSet("IMG",    "$(CAM):IMAGE")
 
 # ----- Manta G146B -----
-## Disabled because cannot ping
 epicsEnvSet("C1_IP",         "gige-xcs-703-2" )
 epicsEnvSet("C1_XSIZE",      "1388")
 epicsEnvSet("C1_YSIZE",      "1038")
@@ -50,7 +48,7 @@ dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM)
 
 # Create a standard arrays plugin, set it to get data from first Prosilica driver.
 NDStdArraysConfigure("$(IMG)", 5, 0, "$(CAM)", 0, -1)
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$(CAM):,PORT=$(IMG),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
+dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
 dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG):,PORT=$(IMG),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C1_NELEMENTS)")
 
 # Create a JPEG File plugin, set it to get data from the camera
@@ -65,7 +63,7 @@ dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template", "P=$(PREFIX)$(
 dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX)$(CAM):,R=ROI1:,PORT=ROI1,ADDR=0,TIMEOUT=1" )
 NDROIConfigure( "ROI2", 5, 0, "$(CAM)", 0, 0, 0 )
 dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template", "P=$(PREFIX)$(CAM):,R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
-dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX):$(CAM),R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1" )
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX)$(CAM):,R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1" )
 
 # Load record instances
 dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )

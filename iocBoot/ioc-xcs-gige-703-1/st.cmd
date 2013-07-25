@@ -6,10 +6,8 @@
 < envPaths
 
 epicsEnvSet( "ENGINEER", "Bruce Hill (bhill)" )
-# FIXME: elevation
 epicsEnvSet( "LOCATION",  "XCS L703 GigE 1" )
 epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:703:1" )
-epicsEnvSet( "IOC_PV",    "XCS:IOC:GIGE:703:1")
 #epicsEnvSet( "IOC",      "ioc-xcs-gige-703-1")
 epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
 
@@ -65,7 +63,7 @@ dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template", "P=$(PREFIX)$(
 dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX)$(CAM):,R=ROI1:,PORT=ROI1,ADDR=0,TIMEOUT=1" )
 NDROIConfigure( "ROI2", 5, 0, "$(CAM)", 0, 0, 0 )
 dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template", "P=$(PREFIX)$(CAM):,R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM),NDARRAY_ADDR=0")
-dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX):$(CAM),R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1" )
+dbLoadRecords( "$(AREA_DETECTOR)/ADApp/Db/NDROI.template",        "P=$(PREFIX)$(CAM):,R=ROI2:,PORT=ROI2,ADDR=0,TIMEOUT=1" )
 
 # Load record instances
 dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
