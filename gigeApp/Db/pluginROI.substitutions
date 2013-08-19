@@ -1,0 +1,28 @@
+#
+# pluginROI.substitutions
+#
+
+file NDPluginBase.template
+{
+	{
+	P=$(CAM):,
+	R=ROI$(N):,
+	PORT=ROI$(N),
+	ADDR=0,
+	TIMEOUT=1,
+	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_ADDR=0
+	}
+}
+
+file NDROI.template
+{
+	{
+	P=$(CAM):,
+	R=ROI$(N):,
+	PORT=ROI$(N),
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+

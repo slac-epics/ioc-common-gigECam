@@ -1,0 +1,31 @@
+#
+# pluginThumbnail.substitutions
+#
+
+file NDPluginBase.template
+{
+	{
+	P=$(CAM):,
+	R=Thumbnail$(N):,
+	PORT=Thumbnail$(N),
+	ADDR=0,
+	TIMEOUT=1,
+	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_ADDR=0
+	}
+}
+
+file NDStdArrays.template
+{
+	{
+	P=$(CAM):,
+	R=Thumbnail$(N):,
+	PORT=Thumbnail$(N),
+	TYPE=Int8,
+	FTVL=UCHAR,
+	NELEMENTS=$(THUMBNAIL_NELM),
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+

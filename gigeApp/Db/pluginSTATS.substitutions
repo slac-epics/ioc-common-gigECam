@@ -1,0 +1,28 @@
+#
+# pluginSTATS.substitutions
+#
+
+file NDPluginBase.template
+{
+	{
+	P=$(CAM):,
+	R=STATS$(N):,
+	PORT=STATS$(N),
+	ADDR=0,
+	TIMEOUT=1,
+	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_ADDR=0
+	}
+}
+
+file NDStats.template
+{
+	{
+	P=$(CAM):,
+	R=STATS$(N):,
+	PORT=STATS$(N),
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+

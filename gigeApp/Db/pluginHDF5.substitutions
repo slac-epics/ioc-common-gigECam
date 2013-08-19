@@ -1,0 +1,39 @@
+#
+# pluginHDF5.substitutions
+#
+
+file NDPluginBase.template
+{
+	{
+	P=$(CAM):,
+	R=HDF5:,
+	PORT=FileHDF5,
+	ADDR=0,
+	TIMEOUT=1,
+	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_ADDR=0
+	}
+}
+
+file NDFile.template
+{
+	{
+	P=$(CAM):,
+	R=HDF5:,
+	PORT=FileHDF5,
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+
+file NDFileHDF5.template
+{
+	{
+	P=$(CAM):,
+	R=HDF5:,
+	PORT=FileHDF5,
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+

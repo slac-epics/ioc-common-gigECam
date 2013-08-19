@@ -1,0 +1,39 @@
+#
+# pluginNexus.substitutions
+#
+
+file NDPluginBase.template
+{
+	{
+	P=$(CAM):,
+	R=Nexus$(N):,
+	PORT=FileNexus$(N),
+	ADDR=0,
+	TIMEOUT=1,
+	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_ADDR=0
+	}
+}
+
+file NDFile.template
+{
+	{
+	P=$(CAM):,
+	R=Nexus$(N):,
+	PORT=FileNexus$(N),
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+
+file NDFileNexus.template
+{
+	{
+	P=$(CAM):,
+	R=Nexus$(N):,
+	PORT=FileNexus$(N),
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+

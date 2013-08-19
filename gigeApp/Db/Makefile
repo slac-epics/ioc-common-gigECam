@@ -9,6 +9,27 @@ include $(TOP)/configure/CONFIG
 DB += iocAdmin.db
 DB += evrPmc230.db
 
+# Create and install Camera DB Files
+DB += prosilica.db
+
+# Create and install plugin DB Files
+DB += pluginBinnedImage.db
+DB += pluginColorConvert.db
+DB += pluginFileMPEG.db
+DB += pluginHDF5.db
+DB += pluginImage.db
+DB += pluginJPEG.db
+DB += pluginMagick.db
+DB += pluginMJPG.db
+DB += pluginNetCDF.db
+DB += pluginNexus.db
+DB += pluginOverlay.db
+DB += pluginROI.db
+DB += pluginSTATS.db
+DB += pluginTIFF.db
+DB += pluginThumbnail.db
+DB += pluginTransform.db
+
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 DB_INSTALLS += prosilica_gige.template
 

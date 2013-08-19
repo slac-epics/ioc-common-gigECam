@@ -1,0 +1,37 @@
+#
+# pluginFileMPEG.substitutions
+#
+
+file NDPluginBase.template
+{
+	{
+	P=$(CAM):,
+	R=FMPG$(N):,
+	PORT=FMPG$(N),
+	ADDR=0,
+	TIMEOUT=1,
+	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_ADDR=0
+	}
+}
+
+file NDFile.template
+{
+	{
+	P=$(CAM):,
+	R=FMPG$(N):,
+	PORT=FMPG$(N),
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+
+file ffmpegFile.template
+{
+	{
+	P=$(CAM):,
+	R=FMPG$(N):,
+	PORT=FMPG$(N),
+	}
+}
+

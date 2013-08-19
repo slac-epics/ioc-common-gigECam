@@ -1,0 +1,46 @@
+#
+# pluginOverlay.substitutions
+#
+
+file NDPluginBase.template
+{
+	{
+	P=$(CAM):,
+	R=OVER1:,
+	PORT=OVER1,
+	ADDR=0,
+	TIMEOUT=1,
+	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_ADDR=0
+	}
+}
+
+file NDOverlay.template
+{
+	{
+	P=$(CAM):,
+	R=OVER1:,
+	PORT=OVER1,
+	ADDR=0,
+	TIMEOUT=1
+	}
+}
+
+
+#
+# SHAPE:	0 = cross, 1 = rectangle
+#
+file NDOverlayN.template
+{
+	pattern
+	{ P,		R,			NAME,	SHAPE,	O,		XPOS,					YPOS,					XSIZE,					YSIZE,					PORT,	ADDR,	TIMEOUT	}
+	{ $(CAM):,	OVER1:1:,	ROI1,	1,		OVER1:,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	OVER1,	0,		1		}
+	{ $(CAM):,	OVER1:2:,	ROI2,	1,		OVER1:,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	OVER1,	1,		1		}
+	{ $(CAM):,	OVER1:3:,	ROI3,	1,		OVER1:,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	OVER1,	2,		1		}
+	{ $(CAM):,	OVER1:4:,	ROI4,	1,		OVER1:,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	OVER1,	3,		1		}
+	{ $(CAM):,	OVER1:5:,	Cursor1, 1,		OVER1:,	junk,					junk,					junk,					junk,					OVER1,	4,		1		}
+	{ $(CAM):,	OVER1:6:,	Cursor2, 1,		OVER1:,	junk,					junk,					junk,					junk,					OVER1,	5,		1		}
+	{ $(CAM):,	OVER1:7:,	Box1,	1,		OVER1:,	junk,					junk,					junk,					junk,					OVER1,	6,		1		}
+	{ $(CAM):,	OVER1:8:,	Box2,	1,		OVER1:,	junk,					junk,					junk,					junk,					OVER1,	7,		1		}
+}
+
