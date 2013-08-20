@@ -15,12 +15,12 @@ DB += prosilica.db
 # Create and install plugin DB Files
 DB += pluginBinnedImage.db
 DB += pluginColorConvert.db
-DB += pluginFileMPEG.db
+#DB += pluginFileMPEG.db
 DB += pluginHDF5.db
 DB += pluginImage.db
 DB += pluginJPEG.db
 DB += pluginMagick.db
-DB += pluginMJPG.db
+#DB += pluginMJPG.db
 DB += pluginNetCDF.db
 DB += pluginNexus.db
 DB += pluginOverlay.db
