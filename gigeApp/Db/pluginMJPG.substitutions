@@ -7,10 +7,10 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=MJPG$(N):,
-	PORT=MJPG$(N),
+	PORT=$(CAM_PORT).MJPG$(N),
 	ADDR=0,
 	TIMEOUT=1,
-	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_PORT=$(PLUGIN_SRC),
 	NDARRAY_ADDR=0
 	}
 }
@@ -27,7 +27,7 @@ file ffmpegStream.template
 	{
 	P=$(CAM):,
 	R=MJPG$(N):,
-	PORT=MJPG$(N),
+	PORT=$(CAM_PORT).MJPG$(N),
 	QUALITY=100,
 	}
 }

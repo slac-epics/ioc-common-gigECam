@@ -7,10 +7,10 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=Image$(N):,
-	PORT=Image$(N),
+	PORT=$(CAM_PORT).Image$(N),
 	ADDR=0,
 	TIMEOUT=1,
-	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_PORT=$(PLUGIN_SRC),
 	NDARRAY_ADDR=0
 	}
 }
@@ -20,7 +20,7 @@ file NDStdArrays.template
 	{
 	P=$(CAM):,
 	R=Image$(N):,
-	PORT=Image$(N),
+	PORT=$(CAM_PORT).Image$(N),
 	TYPE=Int16,
 	FTVL=SHORT,
 	NELEMENTS=$(IMAGE_NELM),

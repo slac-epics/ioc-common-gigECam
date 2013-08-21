@@ -4,10 +4,10 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
 #----------------------------------------------------
-# Create and install (or just install)
-# scripts, cmd, and env files to $(TOP)/bin
+# Create and/or install (or just install)
+# scripts, cmd, and env files to $(TOP)/scripts
 
-# Create and install camera specific environment scripts
+# Create and/or install camera specific environment scripts
 CMD += MantaG033B.env
 CMD += MantaG046B.env
 CMD += MantaG145B.env
@@ -16,7 +16,11 @@ CMD += MantaG146C.env
 CMD += MantaG201B.env
 CMD += ProsilicaGC1350C.env
 
-# Create and install plugin scripts
+# Create and/or install high level scripts
+CMD += commonPlugins.cmd
+CMD += prosilica.cmd
+
+# Create and/or install plugin scripts
 CMD += pluginColorConvert.cmd
 CMD += pluginFileMPEG.cmd
 CMD += pluginHDF5.cmd

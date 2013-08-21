@@ -7,10 +7,10 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=JPEG$(N):,
-	PORT=FileJPEG$(N),
+	PORT=$(CAM_PORT).FileJPEG$(N),
 	ADDR=0,
 	TIMEOUT=1,
-	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_PORT=$(PLUGIN_SRC),
 	NDARRAY_ADDR=0
 	}
 }
@@ -20,7 +20,7 @@ file NDFile.template
 	{
 	P=$(CAM):,
 	R=JPEG$(N):,
-	PORT=FileJPEG$(N),
+	PORT=$(CAM_PORT).FileJPEG$(N),
 	ADDR=0,
 	TIMEOUT=1
 	}
@@ -31,7 +31,7 @@ file NDFileJPEG.template
 	{
 	P=$(CAM):,
 	R=JPEG$(N):,
-	PORT=FileJPEG$(N),
+	PORT=$(CAM).FileJPEG$(N),
 	ADDR=0,
 	TIMEOUT=1
 	}

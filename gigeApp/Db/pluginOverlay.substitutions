@@ -7,10 +7,10 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=Over1:,
-	PORT=Over1,
+	PORT=$(CAM_PORT).Over1,
 	ADDR=0,
 	TIMEOUT=1,
-	NDARRAY_PORT=$(PLUGIN_PORT),
+	NDARRAY_PORT=$(PLUGIN_SRC),
 	NDARRAY_ADDR=0
 	}
 }
@@ -20,7 +20,7 @@ file NDOverlay.template
 	{
 	P=$(CAM):,
 	R=Over1:,
-	PORT=Over1,
+	PORT=$(CAM_PORT).Over1,
 	ADDR=0,
 	TIMEOUT=1
 	}
@@ -34,13 +34,13 @@ file NDOverlayN.template
 {
 	pattern
 	{ P,		R,			NAME,	SHAPE,	O,		XPOS,					YPOS,					XSIZE,					YSIZE,					PORT,	ADDR,	TIMEOUT	}
-	{ $(CAM):,	Over1:1:,	ROI1,	1,		Over1:,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	Over1,	0,		1		}
-	{ $(CAM):,	Over1:2:,	ROI2,	1,		Over1:,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	Over1,	1,		1		}
-	{ $(CAM):,	Over1:3:,	ROI3,	1,		Over1:,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	Over1,	2,		1		}
-	{ $(CAM):,	Over1:4:,	ROI4,	1,		Over1:,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	Over1,	3,		1		}
-	{ $(CAM):,	Over1:5:,	Cursor1, 1,		Over1:,	junk,					junk,					junk,					junk,					Over1,	4,		1		}
-	{ $(CAM):,	Over1:6:,	Cursor2, 1,		Over1:,	junk,					junk,					junk,					junk,					Over1,	5,		1		}
-	{ $(CAM):,	Over1:7:,	Box1,	1,		Over1:,	junk,					junk,					junk,					junk,					Over1,	6,		1		}
-	{ $(CAM):,	Over1:8:,	Box2,	1,		Over1:,	junk,					junk,					junk,					junk,					Over1,	7,		1		}
+	{ $(CAM):,	Over1:1:,	ROI1,	1,		Over1:,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM_PORT).Over1,	0,		1		}
+	{ $(CAM):,	Over1:2:,	ROI2,	1,		Over1:,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM_PORT).Over1,	1,		1		}
+	{ $(CAM):,	Over1:3:,	ROI3,	1,		Over1:,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM_PORT).Over1,	2,		1		}
+	{ $(CAM):,	Over1:4:,	ROI4,	1,		Over1:,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM_PORT).Over1,	3,		1		}
+	{ $(CAM):,	Over1:5:,	Cursor1, 1,		Over1:,	junk,					junk,					junk,					junk,					$(CAM_PORT).Over1,	4,		1		}
+	{ $(CAM):,	Over1:6:,	Cursor2, 1,		Over1:,	junk,					junk,					junk,					junk,					$(CAM_PORT).Over1,	5,		1		}
+	{ $(CAM):,	Over1:7:,	Box1,	1,		Over1:,	junk,					junk,					junk,					junk,					$(CAM_PORT).Over1,	6,		1		}
+	{ $(CAM):,	Over1:8:,	Box2,	1,		Over1:,	junk,					junk,					junk,					junk,					$(CAM_PORT).Over1,	7,		1		}
 }
 
