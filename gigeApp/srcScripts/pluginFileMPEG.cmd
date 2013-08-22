@@ -7,7 +7,7 @@
 #	PLUGIN_SRC	- Which port should this plugin get its data from
 
 # Configure the plugin
-ffmpegFileConfigure( "$(CAM_PORT).FMPG$(N)", 16, 0, "$(PLUGIN_SRC)", 0, 0)
+ffmpegFileConfigure( "FMPG$(N)", 16, 0, "$(PLUGIN_SRC)", 0, 0)
 
 # Load the plugin records
 dbLoadRecords( "db/pluginFileMPEG.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=$(N)" )

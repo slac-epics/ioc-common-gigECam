@@ -1,13 +1,13 @@
 #
-# pluginROI.substitutions
+# pluginProcess.substitutions
 #
 
 file NDPluginBase.template
 {
 	{
 	P=$(CAM):,
-	R=ROI$(N):,
-	PORT=ROI$(N),
+	R=Proc$(N):,
+	PORT=Proc$(N),
 	ADDR=0,
 	TIMEOUT=1,
 	NDARRAY_PORT=$(PLUGIN_SRC),
@@ -15,12 +15,12 @@ file NDPluginBase.template
 	}
 }
 
-file NDROI.template
+file NDProcess.template
 {
 	{
 	P=$(CAM):,
-	R=ROI$(N):,
-	PORT=ROI$(N),
+	R=Proc$(N):,
+	PORT=Proc$(N),
 	ADDR=0,
 	TIMEOUT=1
 	}

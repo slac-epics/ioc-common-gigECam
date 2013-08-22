@@ -6,7 +6,9 @@
 # Required macros:
 #	CAM			Prefix for all camera PV's
 #	CAM_IP		Network IP addr or hostname	for camera
-#	CAM_PORT	Asyn port name for camera
+
+# Camera asyn port is now just CAM, as we only have one camera per IOC
+epicsEnvSet( "CAM_PORT", "CAM" )
 
 # Configure and initialize a prosilica camera
 # prosilicaConfig( portName, ipName, maxBuffers, maxMemory, priority, stackSize, maxPvAPIFrames )

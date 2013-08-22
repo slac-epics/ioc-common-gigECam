@@ -12,7 +12,7 @@
 # Set maxMemory  to 0 for unlimited memory allocation
 # Set priority   to 0  for default priority
 # Set stackSize  to 0  for default stackSize
-NDROIConfigure( "$(CAM_PORT).ROI$(N)", 5, 0, "$(PLUGIN_SRC)", 0 )
+NDROIConfigure( "ROI$(N)", $(QSIZE), 0, "$(PLUGIN_SRC)", 0 )
 
 # Load the plugin records
 dbLoadRecords( "db/pluginROI.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=$(N)" )

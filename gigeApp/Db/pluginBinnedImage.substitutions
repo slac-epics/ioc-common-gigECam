@@ -7,7 +7,7 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=BinnedImage$(N):,
-	PORT=$(CAM_PORT).BinnedImage$(N),
+	PORT=BinnedImage$(N),
 	ADDR=0,
 	TIMEOUT=1,
 	NDARRAY_PORT=$(PLUGIN_SRC),
@@ -20,7 +20,7 @@ file NDStdArrays.template
 	{
 	P=$(CAM):,
 	R=BinnedImage$(N):,
-	PORT=$(CAM_PORT).BinnedImage$(N),
+	PORT=BinnedImage$(N),
 	TYPE=Int8,
 	FTVL=UCHAR,
 	NELEMENTS=$(BINNED_IMAGE_NELM),

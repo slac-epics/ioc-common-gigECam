@@ -8,7 +8,7 @@
 #	IMAGE_NELM	- How many elements in the image (x*y for b/w, x*y*3 for color)
 
 # Configure the plugin
-NDStdArraysConfigure( "$(CAM_PORT).Image$(N)", 5, 0, "$(PLUGIN_SRC)", 0, -1)
+NDStdArraysConfigure( "Image$(N)", $(QSIZE), 0, "$(PLUGIN_SRC)", 0, -1)
 
 # Load the plugin records
 dbLoadRecords( "db/pluginImage.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=1,IMAGE_NELM=$(IMAGE_NELM)" )

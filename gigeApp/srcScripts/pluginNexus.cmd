@@ -10,7 +10,7 @@
 # NDFileNexusConfigure( portName, queueSize, blockingCallbacks, dataSrcPortName, addr, priority, stackSize )
 # Set priority   to 0  for default priority
 # Set stackSize  to 0  for default stackSize
-NDFileNexusConfigure( "$(CAM_PORT).Nexus$(N)", 5, 0, "$(PLUGIN_SRC)", 0 )
+NDFileNexusConfigure( "Nexus$(N)", $(QSIZE), 0, "$(PLUGIN_SRC)", 0 )
 
 # Load the plugin records
 dbLoadRecords( "db/pluginNexus.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=$(N)" )

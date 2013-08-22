@@ -7,7 +7,7 @@
 #	PLUGIN_SRC	- Which port should this plugin get its data from
 
 # Configure the plugin
-NDFileJPEGConfigure( "$(CAM_PORT).FileJPEG$(N)", 5, 0, "$(PLUGIN_SRC)", 0, 0)
+NDFileJPEGConfigure( "JPEG$(N)", $(QSIZE), 0, "$(PLUGIN_SRC)", 0, 0)
 
 # Load the plugin records
 dbLoadRecords( "db/pluginJPEG.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=$(N)" )

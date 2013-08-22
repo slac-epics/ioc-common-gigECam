@@ -7,7 +7,7 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=Stats$(N):,
-	PORT=$(CAM_PORT).Stats$(N),
+	PORT=Stats$(N),
 	ADDR=0,
 	TIMEOUT=1,
 	NDARRAY_PORT=$(PLUGIN_SRC),
@@ -20,7 +20,9 @@ file NDStats.template
 	{
 	P=$(CAM):,
 	R=Stats$(N):,
-	PORT=$(CAM_PORT).Stats$(N),
+	PORT=Stats$(N),
+	HIST_SIZE=256,
+	NCHANS=2048,
 	ADDR=0,
 	TIMEOUT=1
 	}

@@ -7,7 +7,7 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=CC$(N):,
-	PORT=$(CAM_PORT).CC$(N),
+	PORT=CC$(N),
 	ADDR=0,
 	TIMEOUT=1,
 	NDARRAY_PORT=$(PLUGIN_SRC),
@@ -20,7 +20,7 @@ file NDColorConvert.template
 	{
 	P=$(CAM):,
 	R=CC$(N):,
-	PORT=$(CAM_PORT).CC$(N),
+	PORT=CC$(N),
 	ADDR=0,
 	TIMEOUT=1
 	}

@@ -31,6 +31,7 @@ CMD += pluginMJPG.cmd
 CMD += pluginNetCDF.cmd
 CMD += pluginNexus.cmd
 CMD += pluginOverlay.cmd
+CMD += pluginProcess.cmd
 CMD += pluginROI.cmd
 CMD += pluginStats.cmd
 CMD += pluginTIFF.cmd

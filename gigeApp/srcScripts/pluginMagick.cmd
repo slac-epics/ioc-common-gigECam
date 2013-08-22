@@ -10,7 +10,7 @@
 # NDFileMagickConfigure( portName, queueSize, blockingCallbacks, dataSrcPortName, addr, priority, stackSize )
 # Set priority   to 0  for default priority
 # Set stackSize  to 0  for default stackSize
-NDFileMagickConfigure( "$(CAM_PORT).Magick$(N)", 5, 0, "$(PLUGIN_SRC)", 0 )
+NDFileMagickConfigure( "Magick$(N)", $(QSIZE), 0, "$(PLUGIN_SRC)", 0 )
 
 # Load the plugin records
 dbLoadRecords( "db/pluginMagick.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=$(N)" )

@@ -24,6 +24,7 @@ DB += pluginMagick.db
 DB += pluginNetCDF.db
 DB += pluginNexus.db
 DB += pluginOverlay.db
+DB += pluginProcess.db
 DB += pluginROI.db
 DB += pluginStats.db
 DB += pluginTIFF.db

@@ -7,7 +7,7 @@ file NDPluginBase.template
 	{
 	P=$(CAM):,
 	R=Magick$(N):,
-	PORT=$(CAM_PORT).FileMagick$(N),
+	PORT=Magick$(N),
 	ADDR=0,
 	TIMEOUT=1,
 	NDARRAY_PORT=$(PLUGIN_SRC),
@@ -20,7 +20,7 @@ file NDFile.template
 	{
 	P=$(CAM):,
 	R=Magick$(N):,
-	PORT=$(CAM_PORT).FileMagick$(N),
+	PORT=Magick$(N),
 	ADDR=0,
 	TIMEOUT=1
 	}
@@ -31,7 +31,7 @@ file NDFileMagick.template
 	{
 	P=$(CAM):,
 	R=Magick$(N):,
-	PORT=$(CAM).FileMagick$(N),
+	PORT=Magick$(N),
 	ADDR=0,
 	TIMEOUT=1
 	}

@@ -13,7 +13,7 @@ ffmpegServerConfigure( 8080 )
 
 # ffmpegStreamConfigure( portName, queueSize, blockingCallbacks, NDArrayPort, NDArrayAddr, maxMemory )
 # Set maxMemory  to 0 for unlimited memory allocation
-ffmpegStreamConfigure( "$(CAM_PORT).MJPG$(N)", 2, 0, "$(PLUGIN_SRC)", 0, 0)
+ffmpegStreamConfigure( "MJPG$(N)", 2, 0, "$(PLUGIN_SRC)", 0, 0)
 
 # Load the plugin records
 dbLoadRecords( "db/pluginMJPG.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=$(N)" )
