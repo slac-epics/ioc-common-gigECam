@@ -6,7 +6,7 @@ file NDPluginBase.template
 {
 	{
 	P=$(CAM):,
-	R=HDF5:,
+	R=HDF5$(N):,
 	PORT=HDF5$(N),
 	ADDR=0,
 	TIMEOUT=1,
@@ -19,7 +19,7 @@ file NDFile.template
 {
 	{
 	P=$(CAM):,
-	R=HDF5:,
+	R=HDF5$(N):,
 	PORT=HDF5$(N),
 	ADDR=0,
 	TIMEOUT=1
@@ -30,7 +30,7 @@ file NDFileHDF5.template
 {
 	{
 	P=$(CAM):,
-	R=HDF5:,
+	R=HDF5$(N):,
 	PORT=HDF5$(N),
 	ADDR=0,
 	TIMEOUT=1
