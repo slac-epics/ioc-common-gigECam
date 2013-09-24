@@ -11,4 +11,4 @@
 NDStdArraysConfigure( "Image$(N)", $(QSIZE), 0, "$(PLUGIN_SRC)", 0, -1)
 
 # Load the plugin records
-dbLoadRecords( "db/pluginImage.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=1,IMAGE_NELM=$(IMAGE_NELM)" )
+dbLoadRecords( "db/pluginImage.db",  "CAM=$(CAM),CAM_PORT=$(CAM_PORT),PLUGIN_SRC=$(PLUGIN_SRC),N=1,IMAGE_NELM=$(IMAGE_NELM),IMAGE_BIT_DEPTH=$(IMAGE_BIT_DEPTH)" )
