@@ -1,14 +1,20 @@
-# Archive file for ioc-xpp-gige-02
+# Archive file for IOC
 
 file gige-ioc.archive
 {
     {
-        IOC = XPP:IOC:GIGE:02
+        IOC = "IOC:XPP:GIGE:01"
     }
 }
 
+file archive_pmc_evr.tpl-arch
+{
+    {
+        EVR = "EVR:XPP:GIGE:XX"
+	}
+}
 
 file gige-camera.tpl-arch
 {
-    {   P = "XPP:GIGE", CAM = "cam2",  IMG = "image2" }
+    {   P = "XPP:GIGE:", CAM = "01",  IMG = "Image1" }
 }

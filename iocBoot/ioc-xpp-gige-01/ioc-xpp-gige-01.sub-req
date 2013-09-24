@@ -2,10 +2,19 @@
 
 file gige-ioc.req
 {
-    { IOC = "XPP:IOC:GIGE:01" }
+    {
+        IOC = "IOC:XPP:GIGE:01"
+	}
+}
+
+file autosave_pmc_evr.tpl-req
+{
+    {
+        EVR = "EVR:XPP:GIGE:XX"
+	}
 }
 
 file gige-camera.tpl-req
 {
-    { P = "$(PRE)", CAM = "$(CAM)", IMG = "$(IMG)" }
+    {   P = "XPP:GIGE:", CAM = "01",  IMG = "Image1" }
 }

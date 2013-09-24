@@ -37,7 +37,7 @@ epicsEnvSet("IMG4",   "IMAGE4")
 #epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
 #epicsEnvSet("C1_NELEMENTS",  "1442820")  # X * Y
 
-# ----- Prosilica 1350C -----
+# ----- Prosilica GC1350C -----
 epicsEnvSet("CAM1_ENABLED",  "")                             # "" = YES,  "#" = NO
 #epicsEnvSet("C1_IP",         "192.168.0.105")  #XCS
 epicsEnvSet("C1_IP",         "192.168.100.221")   # XPP Prosilica

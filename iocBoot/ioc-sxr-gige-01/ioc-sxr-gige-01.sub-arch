@@ -7,8 +7,14 @@ file gige-ioc.archive
     }
 }
 
+#file archive_pmc_evr.tpl-arch
+#{
+#    {
+#        EVR = "SXR:EVR:GIGE:01"
+#	}
+#}
 
 file gige-camera.tpl-arch
 {
-    {   P = "SXR:GIGE", CAM = "CAM1",  IMG = "IMAGE" }
+    {   P = "SXR:EXP:GIGE", CAM = "01",  IMG = "Image1" }
 }

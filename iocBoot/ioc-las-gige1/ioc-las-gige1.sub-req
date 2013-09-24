@@ -3,19 +3,18 @@
 file gige-ioc.req
 {
     {
-        IOC = "LAS:R51:IOC:25"
+        IOC = "LAS:IOC:AMO:GIGE:01"
 	}
 }
 
 file autosave_pmc_evr.tpl-req
 {
     {
-        EVR = "LAS:R51:EVR:25"
+        EVR = "LAS:EVR:AMO:GIGE:01"
 	}
 }
 
 file gige-camera.tpl-req
 {
-    { P = "LAS:GIGE1", CAM = "CAM1", IMG = "IMAGE1" }
-#   { P = "LAS:GIGE1", CAM = "CAM2", IMG = "IMAGE2" }
+    {   P = "LAS:GIGE:AMO", CAM = "01",  IMG = "Image1" }
 }

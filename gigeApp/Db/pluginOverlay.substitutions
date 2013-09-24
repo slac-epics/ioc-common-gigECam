@@ -11,7 +11,8 @@ file NDPluginBase.template
 	ADDR=0,
 	TIMEOUT=1,
 	NDARRAY_PORT=$(PLUGIN_SRC),
-	NDARRAY_ADDR=0
+	NDARRAY_ADDR=0,
+	BIT_DEPTH=$(IMAGE_BIT_DEPTH),
 	}
 }
 
@@ -33,11 +34,11 @@ file NDOverlay.template
 file NDOverlayN.template
 {
 	pattern
-	{ P,		R,			NAME,	SHAPE,	O,		XPOS,					YPOS,					XSIZE,					YSIZE,					PORT,	ADDR,	TIMEOUT	}
-	{ $(CAM):,	Over$(N):1:,	ROI1,	1,		Over$(N):,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinX_RBV,	Over$(N),	0,		1		}
-	{ $(CAM):,	Over$(N):2:,	ROI2,	1,		Over$(N):,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinX_RBV,	Over$(N),	1,		1		}
-	{ $(CAM):,	Over$(N):3:,	ROI3,	1,		Over$(N):,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinX_RBV,	Over$(N),	2,		1		}
-	{ $(CAM):,	Over$(N):4:,	ROI4,	1,		Over$(N):,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinX_RBV,	Over$(N),	3,		1		}
+	{ P,		R,				NAME,	SHAPE,	O,			XPOS,					YPOS,					XSIZE,					YSIZE,					PORT,	ADDR,	TIMEOUT	}
+	{ $(CAM):,	Over$(N):1:,	ROI1,	1,		Over$(N):,	$(CAM):ROI1:MinX_RBV,	$(CAM):ROI1:MinY_RBV,	$(CAM):ROI1:SizeX_RBV,	$(CAM):ROI1:SizeY_RBV,	Over$(N),	0,		1		}
+	{ $(CAM):,	Over$(N):2:,	ROI2,	1,		Over$(N):,	$(CAM):ROI2:MinX_RBV,	$(CAM):ROI2:MinY_RBV,	$(CAM):ROI2:SizeX_RBV,	$(CAM):ROI2:SizeY_RBV,	Over$(N),	1,		1		}
+	{ $(CAM):,	Over$(N):3:,	ROI3,	1,		Over$(N):,	$(CAM):ROI3:MinX_RBV,	$(CAM):ROI3:MinY_RBV,	$(CAM):ROI3:SizeX_RBV,	$(CAM):ROI3:SizeY_RBV,	Over$(N),	2,		1		}
+	{ $(CAM):,	Over$(N):4:,	ROI4,	1,		Over$(N):,	$(CAM):ROI4:MinX_RBV,	$(CAM):ROI4:MinY_RBV,	$(CAM):ROI4:SizeX_RBV,	$(CAM):ROI4:SizeY_RBV,	Over$(N),	3,		1		}
 	{ $(CAM):,	Over$(N):5:,	Cursor1, 1,		Over$(N):,	junk,					junk,					junk,					junk,					Over$(N),	4,		1		}
 	{ $(CAM):,	Over$(N):6:,	Cursor2, 1,		Over$(N):,	junk,					junk,					junk,					junk,					Over$(N),	5,		1		}
 	{ $(CAM):,	Over$(N):7:,	Box1,	1,		Over$(N):,	junk,					junk,					junk,					junk,					Over$(N),	6,		1		}

@@ -9,10 +9,15 @@
 
 #include "epicsExit.h"
 #include "epicsThread.h"
+#include "evrIrqHandler.h"
 #include "iocsh.h"
 
 int main(int argc,char *argv[])
 {
+
+	// EVR module must block SIGIO from the main process
+	evrIrqHandlerInit();
+
     if(argc>=2) {    
         iocsh(argv[1]);
         epicsThreadSleep(.2);
