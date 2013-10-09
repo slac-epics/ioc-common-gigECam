@@ -4,90 +4,32 @@
 < /reg/d/iocCommon/All/pre_linux.cmd
 
 < envPaths
+epicsEnvSet( "ENGINEER",	"Bruce Hill (bhill)" )
+epicsEnvSet( "LOCATION",	"MEC:M64A:43" )
 
-epicsEnvSet( "ENGINEER", "Pavel Stoffel (pstoffel)" )
-epicsEnvSet( "LOCATION",  "MEC:M64A:43" )
-epicsEnvSet( "IOC",       "ioc-mec-vs3-gige1")
-epicsEnvSet( "IOCSH_PS1", "$(IOC)> " )
+# Network name or IP addr for gigE camera
+epicsEnvSet( "CAM_IP",		"192.168.100.2" )
 
-epicsEnvSet("PREFIX", "MEC:VS3:")
-epicsEnvSet("CAM1",   "CAM1")
-epicsEnvSet("IMG1",   "IMAGE1")
+# PV prefix for gigE camera
+epicsEnvSet( "CAM",			"MEC:VS3:CAM1" )
 
-# ----- Manta G-046B -----
-epicsEnvSet("C1_IP",         "192.168.100.2")
-epicsEnvSet("C1_XSIZE",      "780")
-epicsEnvSet("C1_YSIZE",      "580")
-epicsEnvSet("C1_COLORMODE",  "0")        # 0=Mono, 2=RGB1
-epicsEnvSet("C1_NELEMENTS",  "452400")   # X * Y
+# Choose camera model from $(TOP)/setupScripts/$(MODEL).env 
+epicsEnvSet( "MODEL",		"MantaG046B" )
 
-# -----------------------
+# Choose which plugins to use from $(TOP)/setupScripts/$(PLUGINS).cmd 
+# Currently only one is commonPlugins.cmd
+# If you create a new one, please name it like xyzPlugins.cmd
+epicsEnvSet( "PLUGINS",		"commonPlugins" )
 
-epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "8000000")
+# PV prefix for EVR, if used
+epicsEnvSet( "EVR_ENABLED",	"#" )				# "" = YES,  "#" = NO
+epicsEnvSet( "EVR_PV",		"MEC:EVR:GIGE:01" )
 
-cd( "../.." )
-
-# Register all support components
-dbLoadDatabase("dbd/gige.dbd")
-gige_registerRecordDeviceDriver(pdbbase)
+# PV prefix for IOC
+epicsEnvSet( "IOC_PV",		"MEC:IOC:VS3:GIGE1" )
+epicsEnvSet( "IOCSH_PS1",	"$(IOC)> " )
 
 ##############################################################
-# configure and initialize the camera
-#   Args:  port, dummy, ip, nbufers, nbufers x width x height + overhead
-prosilicaConfig(  "$(CAM1)", "$(C1_IP)", 50, -1)
-epicsThreadSleep(1)
+# The rest of the startup script is the same for all gigE cameras
+< $(TOP)/setupScripts/template-st.cmd
 
-##############################################################
-
-#asynSetTraceMask("$(CAM1)",0,9)
-#asynSetTraceIOMask("$(CAM1)",0,2)
-
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/ADBase.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDFile.template",   "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/prosilica.template","P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/cross.template",	 "P=$(PREFIX),R=$(CAM1):,PORT=$(CAM1),ADDR=0,TIMEOUT=1")
-
-# Create a standard arrays plugin, set it to get data from first Prosilica driver.
-NDStdArraysConfigure("$(IMG1)", 5, 0, "$(CAM1)", 0, -1)
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDPluginBase.template","P=$(PREFIX),R=$(IMG1):,PORT=$(IMG1),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(CAM1),NDARRAY_ADDR=0")
-dbLoadRecords("$(AREA_DETECTOR)/ADApp/Db/NDStdArrays.template", "P=$(PREFIX),R=$(IMG1):,PORT=$(IMG1),ADDR=0,TIMEOUT=1,TYPE=Int8,FTVL=UCHAR,NELEMENTS=$(C1_NELEMENTS)")
-
-# Load record instances
-dbLoadRecords( "db/iocAdmin.db",		"IOC=IOC:MEC:VS3:GIGE1" )
-dbLoadRecords( "db/save_restoreStatus.db",	"IOC=IOC:MEC:VS3:GIGE1" )
-
-# Setup autosave
-set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
-set_requestfile_path( "autosave" )
-save_restoreSet_status_prefix("IOC:MEC:VS3:GIGE1")
-save_restoreSet_IncompleteSetsOk( 1 )
-save_restoreSet_DatedBackupFiles( 1 )
-set_pass0_restoreFile( "$(IOC).sav" )
-set_pass1_restoreFile( "$(IOC).sav" )
-
-save_restoreSet_NumSeqFiles(5)
-save_restoreSet_SeqPeriodInSeconds(30)
-
-# Initialize the IOC and start processing records
-iocInit()
-
-dbpf $(PREFIX)$(CAM1):ArrayCallbacks 1
-dbpf $(PREFIX)$(IMG1):EnableCallbacks 1
-#
-dbpf $(PREFIX)$(CAM1):ColorMode $(C1_COLORMODE)         # 0=Mono, 2=RGB1
-dbpf $(PREFIX)$(CAM1):DataType 0                        # 0=UInt8, 1=UInt16
-dbpf $(PREFIX)$(CAM1):ImageMode 2                       # 0=Single, 1=Multiple, 2=Continuous
-dbpf $(PREFIX)$(CAM1):TriggerMode 5                     # 0=Free Run, 1=SyncIn1, 5=Fixed Rate
-#
-##dbpf $(PREFIX)$(CAM1):AcquirePeriod 1
-##dbpf $(PREFIX)$(CAM1):AcquireTime 0.1
-##dbpf $(PREFIX)$(CAM1):Gain 0
-#
-##dbpf $(PREFIX)$(CAM1):Acquire 1                         # Start the camera
-
-# ----------
-# Start autosave backups
-create_monitor_set("$(IOC).req", 5, "CAM=$(PREFIX)$(CAM1),IMG=$(PREFIX)$(IMG1)")
-
-# All IOCs should dump some common info after initial startup.
-< /reg/d/iocCommon/All/post_linux.cmd

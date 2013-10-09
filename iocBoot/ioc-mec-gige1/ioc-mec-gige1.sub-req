@@ -7,5 +7,5 @@ file gige-ioc.req
 
 file gige-camera.tpl-req
 {
-    { P = "MEC:GIGE", CAM = "CAM1", IMG = "IMAGE1" }
+    { P = "MEC:GIGE", CAM = "CAM1", IMG = "Image1" }
 }
