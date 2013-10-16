@@ -13,7 +13,6 @@ DB += evrPmc230.db
 DB += prosilica.db
 
 # Create and install plugin DB Files
-DB += pluginBinnedImage.db
 DB += pluginColorConvert.db
 DB += pluginFileMPEG.db
 DB += pluginHDF5.db
@@ -28,7 +27,6 @@ DB += pluginProcess.db
 DB += pluginROI.db
 DB += pluginStats.db
 DB += pluginTIFF.db
-DB += pluginThumbnail.db
 DB += pluginTransform.db
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db

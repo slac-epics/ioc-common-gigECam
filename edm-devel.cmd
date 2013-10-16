@@ -15,5 +15,7 @@ edm -x -eolc	\
 	-m "P=${CAM},R=:"	\
 	-m "HUTCH=${HUTCH}"	\
 	-m "PVLIST=${PVLIST}"	\
-	gigeScreens/liveImage.edl  &
+	areaDetectorScreens/prosilica.edl  &
+
+#	gigeScreens/liveImage.edl  \
 

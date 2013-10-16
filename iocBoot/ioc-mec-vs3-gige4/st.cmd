@@ -17,9 +17,8 @@ epicsEnvSet( "CAM",			"MEC:VS3:CAM4" )
 epicsEnvSet( "MODEL",		"MantaG145B" )
 
 # Choose which plugins to use from $(TOP)/setupScripts/$(PLUGINS).cmd 
-# Currently only one is commonPlugins.cmd
 # If you create a new one, please name it like xyzPlugins.cmd
-epicsEnvSet( "PLUGINS",		"commonPlugins" )
+epicsEnvSet( "PLUGINS",		"pcdsPlugins" )
 
 # PV prefix for EVR, if used
 epicsEnvSet( "EVR_ENABLED",	"#" )				# "" = YES,  "#" = NO
