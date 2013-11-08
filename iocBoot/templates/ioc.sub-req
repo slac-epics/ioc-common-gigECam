@@ -2,26 +2,38 @@
 # gigECam Autosave request file for $$IOCNAME
 #
 
-# Generate iocAdmin autosave request 
+# Each gigE IOC needs one of these
 file autosave_iocAdmin.tpl-req
 {
-        {
-                IOC             =       $$IOC_PV
-        }
+	{	IOC = "$$IOC_PV"	}
 }
 
-file gige-camera.tpl-req
+file prosilica_settings.req
 {
-    {   CAM = "$$CAM"  }
+    {   P = "$$CAM",	R = ":" 	}
+}
+
+file NDPluginBase_settings.req
+{
+    {   P = "$$CAM:",	R = "IMAGE1:" 	}
+    {   P = "$$CAM:",	R = "ROI1:" 	}
+}
+
+file NDStdArrays_settings.req
+{
+    {   P = "$$CAM:",	R = "IMAGE1:" 	}
+}
+
+file NDROI_settings.req
+{
+    {   P = "$$CAM:",	R = "ROI1:" 	}
 }
 
 $$LOOP(EVR)
 # Generate one set for each EVR
-file archive_pmc_evr.tpl-req
+file autosave_pmc_evr.tpl-req
 {
-	{
-		EVR = $$EVR_PV
-	}
+	{	EVR = "$$EVR_PV"	}
 }
 $$ENDLOOP(EVR)
 

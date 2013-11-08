@@ -3,25 +3,42 @@
 #
 
 # Each gigE IOC needs one of these
-file gige-ioc.archive
+file archive_iocAdmin.tpl-arch
 {
-        {
-                IOC             =       $$IOC_PV,
-        }
+	{	IOC = "$$IOC_PV"	}
 }
 
-file gige-camera.tpl-arch
+file archive_SR.tpl-arch
 {
-    {   CAM = "$$CAM"  }
+	{	IOC = "$$IOC_PV"	}
+}
+
+file prosilica.tpl-arch
+{
+    {   P = "$$CAM",	R = ":" 	}
+}
+
+file NDPluginBase.tpl-arch
+{
+    {   P = "$$CAM:",	R = "IMAGE1:" 	}
+    {   P = "$$CAM:",	R = "ROI1:" 	}
+}
+
+file NDStdArrays.tpl-arch
+{
+    {   P = "$$CAM:",	R = "IMAGE1:" 	}
+}
+
+file NDROI.tpl-arch
+{
+    {   P = "$$CAM:",	R = "ROI1:" 	}
 }
 
 $$LOOP(EVR)
 # Generate one set for each EVR
 file archive_pmc_evr.tpl-arch
 {
-	{
-		EVR = $$EVR_PV
-	}
+	{	EVR = "$$EVR_PV"	}
 }
 $$ENDLOOP(EVR)
 
