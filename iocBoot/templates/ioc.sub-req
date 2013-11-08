@@ -1,0 +1,27 @@
+#
+# gigECam Autosave request file for $$IOCNAME
+#
+
+# Generate iocAdmin autosave request 
+file autosave_iocAdmin.tpl-req
+{
+        {
+                IOC             =       $$IOC_PV
+        }
+}
+
+file gige-camera.tpl-req
+{
+    {   CAM = "$$CAM"  }
+}
+
+$$LOOP(EVR)
+# Generate one set for each EVR
+file archive_pmc_evr.tpl-req
+{
+	{
+		EVR = $$EVR_PV
+	}
+}
+$$ENDLOOP(EVR)
+

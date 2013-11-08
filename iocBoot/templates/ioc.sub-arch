@@ -1,0 +1,27 @@
+#
+# gigECam Archive file for $$IOCNAME
+#
+
+# Each gigE IOC needs one of these
+file gige-ioc.archive
+{
+        {
+                IOC             =       $$IOC_PV,
+        }
+}
+
+file gige-camera.tpl-arch
+{
+    {   CAM = "$$CAM"  }
+}
+
+$$LOOP(EVR)
+# Generate one set for each EVR
+file archive_pmc_evr.tpl-arch
+{
+	{
+		EVR = $$EVR_PV
+	}
+}
+$$ENDLOOP(EVR)
+

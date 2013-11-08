@@ -27,7 +27,7 @@ BUILD_FOR_HOST_ARCH =
 
 # If you don't want to install into $(TOP) then
 # define INSTALL_LOCATION here
-#INSTALL_LOCATION=<fullpathname>
+#INSTALL_LOCATION=$(IOC_APPL_TOP)
 
 STATIC_BUILD=NO
 SHARED_LIBRARIES=YES
