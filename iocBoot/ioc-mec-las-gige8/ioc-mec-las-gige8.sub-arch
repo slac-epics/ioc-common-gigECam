@@ -7,8 +7,9 @@ file gige-ioc.archive
     }
 }
 
-
-file gige-camera.tpl-arch
+# Bring in the pcds plugin archive pv's
+file pcdsPlugins.archive
 {
-    {   P = "MEC:LAS", CAM = "CAM8",  IMG = "IMAGE8" }
+    {   CAM = "MEC:LAS:CAM8"	}
 }
+

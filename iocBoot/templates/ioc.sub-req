@@ -13,20 +13,10 @@ file prosilica_settings.req
     {   P = "$$CAM",	R = ":" 	}
 }
 
-file NDPluginBase_settings.req
+# Bring in the pcds plugin autosave pv's
+file pcdsPlugins.req
 {
-    {   P = "$$CAM:",	R = "IMAGE1:" 	}
-    {   P = "$$CAM:",	R = "ROI1:" 	}
-}
-
-file NDStdArrays_settings.req
-{
-    {   P = "$$CAM:",	R = "IMAGE1:" 	}
-}
-
-file NDROI_settings.req
-{
-    {   P = "$$CAM:",	R = "ROI1:" 	}
+    {   CAM = "$$CAM"	}
 }
 
 $$LOOP(EVR)

@@ -14,7 +14,9 @@ file archive_pmc_evr.tpl-arch
 	}
 }
 
-file gige-camera.tpl-arch
+# Bring in the pcds plugin archive pv's
+file pcdsPlugins.archive
 {
-    {   P = "XPP:GIGE:", CAM = "01",  IMG = "Image1" }
+    {   CAM = "XPP:GIGE:01"	}
 }
+

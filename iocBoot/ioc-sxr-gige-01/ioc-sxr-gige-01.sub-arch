@@ -14,7 +14,9 @@ file gige-ioc.archive
 #	}
 #}
 
-file gige-camera.tpl-arch
+# Bring in the pcds plugin archive pv's
+file pcdsPlugins.archive
 {
-    {   P = "SXR:EXP:GIGE", CAM = "01",  IMG = "Image1" }
+    {   CAM = "SXR:EXP:GIGE:01"	}
 }
+

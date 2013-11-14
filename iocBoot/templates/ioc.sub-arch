@@ -18,20 +18,10 @@ file prosilica.tpl-arch
     {   P = "$$CAM",	R = ":" 	}
 }
 
-file NDPluginBase.tpl-arch
+# Bring in the pcds plugin archive pv's
+file pcdsPlugins.archive
 {
-    {   P = "$$CAM:",	R = "IMAGE1:" 	}
-    {   P = "$$CAM:",	R = "ROI1:" 	}
-}
-
-file NDStdArrays.tpl-arch
-{
-    {   P = "$$CAM:",	R = "IMAGE1:" 	}
-}
-
-file NDROI.tpl-arch
-{
-    {   P = "$$CAM:",	R = "ROI1:" 	}
+    {   CAM = "$$CAM"	}
 }
 
 $$LOOP(EVR)

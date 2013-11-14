@@ -7,8 +7,9 @@ file gige-ioc.archive
     }
 }
 
-
-file gige-camera.tpl-arch
+# Bring in the pcds plugin archive pv's
+file pcdsPlugins.archive
 {
-    {   P = "XCS:GIGE", CAM = "CAM:703:2",  IMG = "$(CAM):IMAGE" }
+    {   CAM = "XCS:GIGE:CAM:703:2"	}
 }
+

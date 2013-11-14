@@ -13,10 +13,10 @@ epicsEnvSet( "CAM_IP",		"gige-sxr-cam01" )
 # PV prefix for gigE camera
 epicsEnvSet( "CAM",			"SXR:EXP:GIGE:01" )
 
-# Choose camera model from $(TOP)/setupScripts/$(MODEL).env 
+# Choose camera model from setupScripts/$(MODEL).env 
 epicsEnvSet( "MODEL",		"MantaG201B" )
 
-# Choose which plugin's to use from $(TOP)/setupScripts/$(PLUGINS).cmd 
+# Choose which plugin's to use from setupScripts/$(PLUGINS).cmd 
 # If you create a new one, please name it like xyzPlugins.cmd
 epicsEnvSet( "PLUGINS",		"pcdsPlugins" )
 
@@ -28,7 +28,9 @@ epicsEnvSet( "EVR_PV",		"SXR:RXX:EVR:ZZ" )
 epicsEnvSet( "IOC_PV",		"SXR:IOC:GIGE:01"
 epicsEnvSet( "IOCSH_PS1",	"$(IOC)> " )
 
+cd $(TOP)
+
 ##############################################################
 # The rest of the startup script is the same for all gigE cameras
-< $(TOP)/setupScripts/template-st.cmd
+< setupScripts/template-st.cmd
 
