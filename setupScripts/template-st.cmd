@@ -15,6 +15,10 @@ gige_registerRecordDeviceDriver(pdbbase)
 # Configure and load a Prosilica camera
 < setupScripts/prosilica.cmd
 
+# Set asyn trace flags
+asynSetTraceMask(   "$(CAM_PORT)", $(TRACE_MASK) )
+asynSetTraceIOMask( "$(CAM_PORT)", $(TRACE_IO_MASK) )
+
 # Configure and load the plugins
 < setupScripts/$(PLUGINS).cmd
 
@@ -24,12 +28,14 @@ $(EVR_ENABLED) ErConfigure( 0, 0, 0, 0, 1 )
 $(EVR_ENABLED) dbLoadRecords( "db/evrPmc230.db",  "IOC=$(IOC_PV),EVR=$(EVR_PV),EVRFLNK=" )
 
 # Load soft ioc related record instances
+
 dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
+
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
 
 # Setup autosave
 set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
-set_requestfile_path( "autosave" )
+set_requestfile_path( "$(TOP)/autosave" )
 save_restoreSet_status_prefix( "$(IOC_PV):" )
 save_restoreSet_IncompleteSetsOk( 1 )
 save_restoreSet_DatedBackupFiles( 1 )
