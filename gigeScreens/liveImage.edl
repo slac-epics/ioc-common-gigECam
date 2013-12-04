@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 365
-y 49
+x 396
+y 56
 w 880
 h 540
 font "helvetica-medium-r-12.0"
@@ -115,7 +115,7 @@ h 480
 dataPvStr "$(CAM):IMG_OVER2:ArrayData"
 widthPvStr "$(CAM):IMG_OVER2:ArraySize0_RBV"
 heightPvStr "$(CAM):IMG_OVER2:ArraySize1_RBV"
-dataWidth 0
+dataWidth 3
 pvBasedDataSize 1
 nBitsPerPixel 8
 endObjectProperties
@@ -704,10 +704,10 @@ buttonLabel "IOC"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_soft.edl"
+  0 "iocScreens/ioc_soft.edl"
 }
 symbols {
-  0 "ioc=$(IOC)"
+  0 "IOC=$(IOC)"
 }
 endObjectProperties
 
@@ -776,7 +776,7 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Python Viewer"
 numCmds 1
 commandLabel {
-  0 "False Color Viewer"
+  0 "Color Viewer"
 }
 command {
   0 "gigeScreens/gigeViewer.sh --camerapv $(CAM) --instr $(HUTCH) --pvlist $(PVLIST)"
@@ -822,7 +822,7 @@ major 4
 minor 0
 release 0
 x 696
-y 152
+y 156
 w 80
 h 20
 fgColor index 25
@@ -846,7 +846,7 @@ major 4
 minor 0
 release 0
 x 784
-y 152
+y 156
 w 80
 h 20
 fgColor index 25
@@ -1005,7 +1005,7 @@ major 4
 minor 1
 release 0
 x 692
-y 180
+y 184
 w 76
 h 20
 font "helvetica-medium-r-12.0"
@@ -1025,7 +1025,7 @@ major 4
 minor 0
 release 0
 x 784
-y 180
+y 184
 w 44
 h 20
 fgColor index 25
@@ -1049,7 +1049,7 @@ major 4
 minor 0
 release 0
 x 828
-y 180
+y 184
 w 40
 h 20
 fgColor index 25
@@ -1115,6 +1115,29 @@ bgColor index 1
 useDisplayBg
 value {
   "Setup"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 748
+y 136
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 20
+bgColor index 0
+useDisplayBg
+visPv "$(CAM):AsynIO.CNCT"
+visMin "0"
+visMax "1"
+value {
+  "Disconnected"
 }
 endObjectProperties
 
