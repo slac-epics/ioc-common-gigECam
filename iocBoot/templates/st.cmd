@@ -26,6 +26,10 @@ epicsEnvSet( "MODEL",		"$$MODEL" )
 # If you create a new one, please name it like xyzPlugins.cmd
 epicsEnvSet( "PLUGINS",		"$$PLUGINS" )
 
+# Choose an HTTP port number for the camera's MPEG stream
+# All gigE camera's on the same host must have unique port numbers
+epicsEnvSet( "HTTP_PORT",	"$$HTTP_PORT" )
+
 # Setup asyn tracing if specified
 epicsEnvSet( "TRACE_MASK",    "$$IF(TRACE_MASK,$$TRACE_MASK,1)" )
 epicsEnvSet( "TRACE_IO_MASK", "$$IF(TRACE_IO_MASK,$$TRACE_IO_MASK,0)" )
@@ -64,9 +68,7 @@ $(EVR_ENABLED) ErConfigure( 0, 0, 0, 0, 1 )
 $(EVR_ENABLED) dbLoadRecords( "db/evrPmc230.db",  "IOC=$(IOC_PV),EVR=$(EVR_PV),EVRFLNK=" )
 
 # Load soft ioc related record instances
-
 dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
-
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
 
 # Setup autosave

@@ -5,11 +5,11 @@
 #	CAM			- PV Prefix for all camera related PV's
 #	N			- Plugin number, must be unique if more than one MJPG plugin
 #	PLUGIN_SRC	- Which port should this plugin get its data from
+#	HTTP_PORT	- Server HTTP port number
 
 # Configure the plugin
 # ffmpegServerConfigure( serverHttpPort )
-# Default server HTTP port is 8080
-ffmpegServerConfigure( 8080 )
+ffmpegServerConfigure( $(HTTP_PORT) )
 
 # ffmpegStreamConfigure( portName, queueSize, blockingCallbacks, NDArrayPort, NDArrayAddr, maxMemory )
 # Set maxMemory  to 0 for unlimited memory allocation
