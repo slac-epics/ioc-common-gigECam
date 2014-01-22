@@ -6,7 +6,7 @@ source /reg/g/pcds/setup/python25.sh
 pathmunge   /reg/common/package/qt/4.6.2/bin
 ldpathmunge /reg/common/package/qt/4.6.2/lib/x86_64-linux
 
-export EPICS_CA_MAX_ARRAY_BYTES=8644500
+export EPICS_CA_MAX_ARRAY_BYTES=20100100
 cd /reg/g/pcds/controls/pycaqt/pulnix6740.latest
 
 # Note: Must specify --instr, --pvlist, and either --camera or --camerapv
