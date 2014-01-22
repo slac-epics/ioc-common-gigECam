@@ -8,6 +8,5 @@
 #
 file iocSoft.db
 {
-	pattern
 	{ IOC = '$(IOC)'	}
 }
