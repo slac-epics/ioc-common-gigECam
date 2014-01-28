@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 396
-y 56
+x 353
+y 73
 w 880
 h 540
 font "helvetica-medium-r-12.0"
@@ -115,7 +115,7 @@ h 480
 dataPvStr "$(CAM):IMG_OVER2:ArrayData"
 widthPvStr "$(CAM):IMG_OVER2:ArraySize0_RBV"
 heightPvStr "$(CAM):IMG_OVER2:ArraySize1_RBV"
-dataWidth 3
+dataWidth 646
 pvBasedDataSize 1
 nBitsPerPixel 8
 endObjectProperties
@@ -137,25 +137,6 @@ botShadowColor index 11
 label "Exit"
 font "helvetica-medium-r-12.0"
 3d
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 732
-y 508
-w 140
-h 24
-controlPv "$(IOC):TOD"
-precision 1
-fgColor index 14
-fgAlarm
-bgColor index 12
-font "helvetica-medium-r-12.0"
-fontAlign "right"
 endObjectProperties
 
 # (Static Text)
@@ -475,7 +456,7 @@ minor 1
 release 0
 x 28
 y 0
-w 152
+w 196
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -484,28 +465,6 @@ bgColor index 56
 value {
   "Camera $(CAM)"
 }
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 784
-y 436
-w 80
-h 20
-controlPv "$(CAM):ArraySizeX_RBV"
-precision 1
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "courier-medium-r-12.0"
-fontAlign "center"
-lineWidth 1
-lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -525,28 +484,6 @@ useDisplayBg
 value {
   "Width"
 }
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 784
-y 460
-w 80
-h 20
-controlPv "$(CAM):ArraySizeY_RBV"
-precision 1
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "courier-medium-r-12.0"
-fontAlign "center"
-lineWidth 1
-lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -719,7 +656,7 @@ minor 2
 release 0
 x 28
 y 16
-w 152
+w 196
 h 20
 controlPv "$(CAM):Model_RBV"
 font "helvetica-medium-r-12.0"
@@ -1139,5 +1076,80 @@ visMax "1"
 value {
   "Disconnected"
 }
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 784
+y 436
+w 80
+h 20
+controlPv "$(CAM):ArraySizeX_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 784
+y 460
+w 80
+h 20
+controlPv "$(CAM):ArraySizeY_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 688
+y 512
+w 184
+h 20
+controlPv "$(IOC):TOD"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 12
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 

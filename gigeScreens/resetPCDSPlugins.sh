@@ -22,8 +22,8 @@ caput ${CAM}:IMAGE1:EnableCallbacks	1
 caput ${CAM}:ROI6:Name				IMG_OVER2
 caput ${CAM}:ROI6:NDArrayPort		CAM
 caput ${CAM}:ROI6:MinCallbackTime	0.2
-caput ${CAM}:ROI6:Scale				64.0
-#caput ${CAM}:ROI6:Scale				4.0
+#caput ${CAM}:ROI6:Scale				64.0
+caput ${CAM}:ROI6:Scale				4.0
 caput ${CAM}:ROI6:BinX				2
 caput ${CAM}:ROI6:BinY				2
 caput ${CAM}:ROI6:EnableX			1
@@ -35,7 +35,7 @@ caput ${CAM}:ROI6:EnableCallbacks	1
 caput ${CAM}:Over2:Name				IMG_OVER2
 caput ${CAM}:Over2:NDArrayPort		ROI6
 caput ${CAM}:Over2:EnableCallbacks	1
-caput ${CAM}:Over2:2:Use			1
+caput ${CAM}:Over2:2:Use			0
 caput ${CAM}:Over2:2:Shape			1
 caput ${CAM}:Over2:2:Green			1023
 

@@ -19,6 +19,11 @@ file pcdsPlugins.req
     {   CAM = "$$CAM"	}
 }
 
+file cross_settings.req
+{
+    {   P = "$$CAM",	R = ":" 	}
+}
+
 $$LOOP(EVR)
 # Generate one set for each EVR
 file autosave_pmc_evr.tpl-req
