@@ -8,6 +8,11 @@ file autosave_iocAdmin.tpl-req
 	{	IOC = "$$IOC_PV"	}
 }
 
+file ADBase_settings.req
+{
+    {   P = "$$CAM",	R = ":" 	}
+}
+
 file prosilica_settings.req
 {
     {   P = "$$CAM",	R = ":" 	}

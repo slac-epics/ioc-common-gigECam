@@ -13,6 +13,11 @@ file archive_SR.tpl-arch
 	{	IOC = "$$IOC_PV"	}
 }
 
+file ADBase.tpl-arch
+{
+    {   P = "$$CAM",	R = ":" 	}
+}
+
 file prosilica.tpl-arch
 {
     {   P = "$$CAM",	R = ":" 	}
