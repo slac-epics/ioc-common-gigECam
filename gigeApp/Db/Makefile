@@ -36,7 +36,6 @@ DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 # Archive files, templates, substitutions like this
 #
 ARCHIVE += gige-ioc.archive
-ARCHIVE += gige-camera.tpl-arch
 
 # Create and install plugin archive Files
 ARCHIVE += pluginColorConvert.archive
@@ -60,7 +59,6 @@ ARCHIVE += pluginTransform.archive
 # Autosave request files, templates, substitutions like this
 #
 REQ += gige-ioc.req
-REQ += gige-camera.tpl-req
 
 # Create and install plugin autosave Files
 REQ += pluginColorConvert.req

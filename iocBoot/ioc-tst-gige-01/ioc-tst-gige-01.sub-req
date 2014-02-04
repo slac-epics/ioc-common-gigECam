@@ -1,11 +1,29 @@
 # Autosave file for IOC
 
-file gige-ioc.req
+# Each gigE IOC needs one of these
+file autosave_iocAdmin.tpl-req
 {
     { IOC = "TST:IOC:GIGE:01" }
 }
 
-file gige-camera.tpl-req
+file ADBase_settings.req
 {
-    { P = "TST:GIGE:01", CAM = "CAM1", IMG = "Image1" }
+    { P = "TST:GIGE:01", R = ":"	}
 }
+
+file prosilica_settings.req
+{
+    { P = "TST:GIGE:01", R = ":"	}
+}
+
+# Bring in the pcds plugin autosave pv's
+file pcdsPlugins.req
+{
+    {   CAM = "TST:GIGE:01"	}
+}
+
+file cross_settings.req
+{
+    {   P = "TST:GIGE:01",	R = ":" 	}
+}
+
