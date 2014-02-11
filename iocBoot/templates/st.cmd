@@ -90,7 +90,6 @@ iocInit()
 # Enable callbacks
 dbpf $(CAM):ArrayCallbacks 1
 dbpf $(CAM):ColorMode $(IMAGE_COLORMODE)
-dbpf $(CAM):Image1:EnableCallbacks 1
 
 # Start acquiring images
 dbpf $(CAM):Acquire 1                         # Start the camera
