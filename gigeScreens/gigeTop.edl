@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 504
-y 73
+x 508
+y 97
 w 700
 h 508
 font "helvetica-medium-r-12.0"
@@ -277,7 +277,7 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 404
+x 300
 y 460
 w 88
 h 24
@@ -357,9 +357,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 296
+x 208
 y 460
-w 100
+w 84
 h 24
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -470,8 +470,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 160
-y 456
+x 124
+y 460
 w 76
 h 24
 fgColor index 14
@@ -502,9 +502,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 16
-y 456
-w 136
+x 4
+y 460
+w 116
 h 24
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -522,9 +522,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 500
+x 508
 y 460
-w 192
+w 188
 h 20
 controlPv "$(IOC):TOD"
 font "helvetica-medium-r-12.0"
@@ -1781,5 +1781,35 @@ useDisplayBg
 value {
   "Packets Resent"
 }
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 396
+y 460
+w 104
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 2
+botShadowColor index 12
+font "helvetica-medium-r-12.0"
+buttonLabel "Network Stats"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "areaDetectorScreens/prosilicaMore.edl"
+}
+menuLabel {
+  0 "Network Stats"
+}
+symbols {
+  0 "P=$(P),R=$(R)"
+}
+icon
 endObjectProperties
 
