@@ -89,7 +89,6 @@ iocInit()
 # TODO: Remove these dbpf calls if possible
 # Enable callbacks
 dbpf $(CAM):ArrayCallbacks 1
-dbpf $(CAM):ColorMode $(IMAGE_COLORMODE)
 
 # Start acquiring images
 dbpf $(CAM):Acquire 1                         # Start the camera
