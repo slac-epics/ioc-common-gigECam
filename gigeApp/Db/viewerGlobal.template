@@ -1,0 +1,83 @@
+#
+# Viewer Global Records
+#
+# These PV's are monitored by each viewer 
+# so none of these records need to FLNK to the viewers
+#
+
+#
+# Common ROI for all viewers
+# $(CAM):Viewers:ROI:MinX	- ROI X start
+# $(CAM):Viewers:ROI:MinY	- ROI Y start
+# $(CAM):Viewers:ROI:SizeX	- ROI X length
+# $(CAM):Viewers:ROI:SizeY	- ROI Y length
+
+record( longout, "$(CAM):Viewers:ROI:MinX")
+{
+	field( PINI, "YES"    )
+	field( LOPR, "0"    )
+	field( VAL,  "0"    )
+}
+
+record( longout, "$(CAM):Viewers:ROI:MinY")
+{
+	field( PINI, "YES"    )
+	field( LOPR, "0"    )
+	field( VAL,  "0"    )
+}
+
+record( longout, "$(CAM):Viewers:ROI:SizeX")
+{
+	field( PINI, "YES"    )
+	field( VAL,  "1000000"    )
+}
+
+record( longout, "$(CAM):Viewers:ROI:SizeY")
+{
+	field( PINI, "YES"    )
+	field( VAL,  "1000000"    )
+}
+
+record( longout, "$(CAM):Viewers:ThumbnailMaxX" )
+{
+	field( PINI, "YES"    )
+	field( VAL,  "174"    )
+}
+
+record( longout, "$(CAM):Viewers:ThumbnailMaxY" )
+{
+	field( PINI, "YES"    )
+	field( VAL,  "130"    )
+}
+
+###################################################################
+#  These records set the HOPR and LOPR values for the viewers     #
+#  position and size to the maximum for the camera                #
+###################################################################
+record( longin, "$(CAM):Viewers:ROI:MaxX" )
+{
+    field( INP,  "$(CAM):SizeX_RBV CP" )
+    field( FLNK, "$(CAM):Viewers:SetXHOPR.PROC PP" )
+}
+
+record( dfanout, "$(CAM):Viewers:SetXHOPR" )
+{
+    field( DOL,  "$(CAM):Viewers:ROI:MaxX NPP" )
+    field( OMSL, "closed_loop"    )
+    field( OUTA, "$(CAM):Viewers:ROI:MinX.HOPR NPP" )
+    field( OUTB, "$(CAM):Viewers:ROI:SizeX.HOPR NPP" )
+}
+
+record( longin, "$(CAM):Viewers:ROI:MaxY" )
+{
+    field( INP,  "$(CAM):SizeY_RBV CP" )
+    field( FLNK, "$(CAM):Viewers:SetYHOPR.PROC PP" )
+}
+
+record( dfanout, "$(CAM):Viewers:SetYHOPR" )
+{
+    field( DOL,  "$(CAM):Viewers:ROI:MaxY NPP" )
+    field( OMSL, "closed_loop"    )
+    field( OUTA, "$(CAM):Viewers:MinY.HOPR NPP" )
+    field( OUTB, "$(CAM):Viewers:SizeY.HOPR NPP" )
+}

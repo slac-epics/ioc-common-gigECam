@@ -6,11 +6,14 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
-DB += iocAdmin.db
 DB += evrPmc230.db
 
 # Create and install Camera DB Files
 DB += prosilica.db
+DB += viewerGlobal.template
+DB += viewerControls.template
+DB += colorViewer.db
+DB += monoViewer.db
 
 # Create and install plugin DB Files
 DB += pluginColorConvert.db
@@ -30,6 +33,7 @@ DB += pluginTIFF.db
 DB += pluginTransform.db
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
 
 #----------------------------------------------------
 # Create and install (or just install)
