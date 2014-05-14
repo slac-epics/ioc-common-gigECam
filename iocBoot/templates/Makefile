@@ -18,12 +18,6 @@ TARGETS = envPaths
 # Make sure these archive files are fully expanded
 USR_ARCHIVEFLAGS += -V
 
-# Install a copy of the executable for this IOC for later setuid setup
-install:	gige
-gige:		$(INSTALL_LOCATION_BIN)/$(ARCH)/gige
-	@echo "Installing setuid gige executable"
-	@$(INSTALL) -d -m 644 $< $(@D)
-
 #----------------------------------------------------
 # Create and install IOC archive file
 #

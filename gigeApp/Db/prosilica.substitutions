@@ -29,13 +29,10 @@ file prosilica.template
 	P=$(CAM),
 	R=:,
 	PORT=$(CAM_PORT),
+	ADDR=0,
+	TIMEOUT=1,
 	TRSCAN="1 second"
 	}
-}
-
-file viewerGlobal.template
-{
-	{	CAM='$(CAM)'	}
 }
 
 file cross.template

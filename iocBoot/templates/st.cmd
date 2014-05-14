@@ -1,8 +1,4 @@
 #!$$IOCTOP/bin/linux-x86_64/gige
-# Note: as of ioc/common/gigECam R1.11.0, the startup.cmd
-# file must use ./gige as the executable,
-# as that file is owned by root w/ setuid enabled,
-# allowing the prosilica driver to optimize network performance.
 
 # Run common startup commands for linux soft IOC's
 < /reg/d/iocCommon/All/pre_linux.cmd
@@ -17,6 +13,18 @@ epicsEnvSet("IOC_PV", "$$IOC_PV")
 epicsEnvSet("IOCTOP", "$$IOCTOP")
 epicsEnvSet("TOP", "$$TOP")
 
+# Network name or IP addr for gigE camera
+epicsEnvSet( "CAM_IP",		"$$CAM_IP" )
+
+# PV prefix for gigE camera
+epicsEnvSet( "CAM",			"$$CAM" )
+
+# Choose camera model from setupScripts/$(MODEL).env 
+epicsEnvSet( "MODEL",		"$$MODEL" )
+
+# Choose which plugin's to use from setupScripts/$(PLUGINS).cmd 
+# If you create a new one, please name it like xyzPlugins.cmd
+epicsEnvSet( "PLUGINS",		"$$PLUGINS" )
 
 # Choose an HTTP port number for the camera's MPEG stream
 # All gigE camera's on the same host must have unique port numbers
@@ -33,46 +41,26 @@ epicsEnvSet( "EVR_PV",	"" )
 cd( "$(IOCTOP)" )
 
 ##############################################################
+#
+# The remainder of the script should be common for all Prosilica gigE cameras
+#
 
 # Register all support components
 dbLoadDatabase( "dbd/gige.dbd" )
 gige_registerRecordDeviceDriver(pdbbase)
 
-$$LOOP(CAMERA)
-# Network name or IP addr for gigE camera
-epicsEnvSet( "CAM_IP",		"$$IP" )
-
-# PV prefix for gigE camera
-epicsEnvSet( "CAM",			"$$CAM" )
-
-# asyn port name for gigE camera
-epicsEnvSet( "CAM_PORT",	"CAM" )
-
-# Choose camera model from setupScripts/$(MODEL).env 
-epicsEnvSet( "MODEL",		"$$MODEL" )
-
 # Setup the environment for the specified gigE camera model
 < setupScripts/$(MODEL).env
 
-# Configure and load the base Prosilica camera
+# Configure and load a Prosilica camera
 < setupScripts/prosilica.cmd
-
-# Load the viewers
-$$IF(COLOR)
-< setupScripts/colorViewers.cmd
-$$ELSE(COLOR)
-< setupScripts/monoViewers.cmd
-$$ENDIF(COLOR)
-
-# Configure and load the plugins, if desired
-$$IF(PLUGINS)
-< setupScripts/$$PLUGINS.cmd
-$$ENDIF(PLUGINS)
-$$ENDLOOP(CAMERA)
 
 # Set asyn trace flags
 asynSetTraceMask(   "$(CAM_PORT)", $(TRACE_MASK) )
 asynSetTraceIOMask( "$(CAM_PORT)", $(TRACE_IO_MASK) )
+
+# Configure and load the plugins
+< setupScripts/$(PLUGINS).cmd
 
 # Initialize EVR
 $(EVR_ENABLED) ErDebugLevel( 0 )
@@ -80,7 +68,7 @@ $(EVR_ENABLED) ErConfigure( 0, 0, 0, 0, 1 )
 $(EVR_ENABLED) dbLoadRecords( "db/evrPmc230.db",  "IOC=$(IOC_PV),EVR=$(EVR_PV),EVRFLNK=" )
 
 # Load soft ioc related record instances
-dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )
+dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
 
 # Setup autosave
@@ -101,7 +89,6 @@ iocInit()
 # TODO: Remove these dbpf calls if possible
 # Enable callbacks
 dbpf $(CAM):ArrayCallbacks 1
-# dbpf $(CAM):ColorMode $(IMAGE_COLORMODE)
 
 # Start acquiring images
 dbpf $(CAM):Acquire 1                         # Start the camera
