@@ -29,10 +29,10 @@ file pcdsPlugins.archive
     {   CAM = "$$CAM"	}
 }
 
-file cross.tpl-arch
-{
-    {   P = "$$CAM",	R = ":" 	}
-}
+#file cross.tpl-arch
+#{
+#    {   P = "$$CAM",	R = ":" 	}
+#}
 
 $$LOOP(EVR)
 # Generate one set for each EVR

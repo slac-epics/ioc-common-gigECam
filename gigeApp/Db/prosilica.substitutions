@@ -35,11 +35,11 @@ file prosilica.template
 	}
 }
 
-file cross.template
-{
-	{
-	P=$(CAM),
-	R=:,
-	}
-}
+#file cross.template
+#{
+#	{
+#	P=$(CAM),
+#	R=:,
+#	}
+#}
 

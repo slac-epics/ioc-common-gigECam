@@ -30,7 +30,6 @@ gige_DBD += busySupport.dbd
 gige_DBD += sscan.dbd
 gige_DBD += ADSupport.dbd
 gige_DBD += simDetectorSupport.dbd
-gige_DBD += prosilicaApp.dbd
 gige_DBD += prosilicaSupport.dbd
 
 # ffmpegServer
