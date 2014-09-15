@@ -4,6 +4,7 @@ import mantaGiGE
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import QTimer, Qt, QPoint, QPointF, QSize, QRectF, QObject
 from PyQt4.QtGui import qApp
+from PyQt4.Qt import QColorDialog
 from options import Options
 import time
 from time import strftime as date
@@ -12,6 +13,7 @@ import pyca
 from Pv import Pv
 import Image
 import signal
+import socket # for getting hostname
 #from splash import SplashScreen
 
 ## ----------------------------------------------------------
@@ -53,13 +55,34 @@ import signal
 #caput IOC:MEC:LAS:GIGE02:SYSRESET 1
 #caput IOC:MEC:LAS:GIGE03:SYSRESET 1
 ## -----------------------------------------------------------------------------
-DEBUG = False
+DEBUG = True
 DEBUG_LEVEL_0 = 0x00
 DEBUG_LEVEL_0 = 0x01
 DEBUG_LEVEL_0 = 0x02
 DEBUG_LEVEL_0 = 0x04
 #DEBUG = DEBUG_LEVEL_0
 MAX_MOT = 7
+
+
+if DEBUG:
+    print "running on host", socket.gethostname()
+    print '''
+                                                  
+ #####  ###### #####  #    #  ####                
+ #    # #      #    # #    # #    #               
+ #    # #####  #####  #    # #                    
+ #    # #      #    # #    # #  ###               
+ #    # #      #    # #    # #    #               
+ #####  ###### #####   ####   ####                
+                                                  
+                                                  
+ ###### #    #   ##   #####  #      ###### #####  
+ #      ##   #  #  #  #    # #      #      #    # 
+ #####  # #  # #    # #####  #      #####  #    # 
+ #      #  # # ###### #    # #      #      #    # 
+ #      #   ## #    # #    # #      #      #    # 
+ ###### #    # #    # #####  ###### ###### #####  
+                                                  '''
 
 def signal_handler(signal, frame):
      print '\nShutdown application...'
@@ -220,6 +243,15 @@ class ViewerFrame(QtGui.QWidget):
     self.cpv['gain']     = str(int(self.gui.iS_gain.value()))
     self.cpv['bin_x']    = str(self.gui.lEBXY.text())
     self.cpv['bin_y']    = str(self.gui.lEBXY.text())
+
+    self.colors = [ Qt.red, Qt.yellow, Qt.green, Qt.blue ]
+    self.xpos = [None,None,None,None]
+    self.ypos = [None,None,None,None]
+    self.win_W = None
+    self.win_H = None
+    #self.winsize = [self.parent.width(),self.parent.height()]
+    self.markers = [None,None,None,None]
+    self.check_stack= []
     
     self.connect(self.rfshTimer, QtCore.SIGNAL("timeout()"), self.UpdateRate)
     self.connect(self.event, QtCore.SIGNAL("onImageUpdate"), self.onImageUpdate)
@@ -232,6 +264,65 @@ class ViewerFrame(QtGui.QWidget):
         self.parent.resizeEvent = self.setNewImageSize
         self.parent.installEventFilter(self)
 
+  def setCross(self,event):
+      # which radio button is selected
+      i = self.gui.getSelectedCross()
+      self.win_W = self.display_image.scaled_image.width() 
+      self.win_H = self.display_image.scaled_image.height() 
+      cross_X = float(event.x())/self.win_W
+      cross_Y = float(event.y())/self.win_H
+      if DEBUG:
+          print "cross",i,"is checked", event.x(), event.y()
+          print "float",cross_X, cross_Y
+          print "win", self.win_W, self.win_H
+      self.gui.xPos_val[i].setText("{:0.0f}".format(cross_X*self.win_W))
+      self.gui.yPos_val[i].setText("{:0.0f}".format(cross_Y*self.win_H))
+      self.xpos[i] = float(cross_X)
+      self.ypos[i] = float(cross_Y)
+
+  def drawCrosses(self,painter):  # this is in the wrong place, me thinks.
+      size = 10
+      self.win_W = self.display_image.scaled_image.width() 
+      self.win_H = self.display_image.scaled_image.height() 
+      for i in xrange(4):
+          if self.xpos[i]:
+              painter.setPen( QtGui.QPen(self.colors[i],1,Qt.SolidLine,Qt.RoundCap,Qt.RoundJoin) )
+              self.markers[i] = ( 
+                      painter.drawLine( self.win_W*self.xpos[i]     , self.win_H*self.ypos[i]-size, self.win_W*self.xpos[i]     , self.win_H*self.ypos[i]+size),
+                      painter.drawLine( self.win_W*self.xpos[i]-size, self.win_H*self.ypos[i]     , self.win_W*self.xpos[i]+size, self.win_H*self.ypos[i]     )
+                      )
+
+  def updateCrossPos(self,x,y):
+      #print "rescaling cross positions",x,y,self.winsize[0],self.winsize[1], float(x)/self.winsize[0]
+      #self.updateCrossSize(self.parent.width(),self.parent.height()) 
+      #self.winsize = [ int(x), int(y) ]
+      self.win_H = int(y)
+      self.win_W = int(x)
+      for i in xrange(4):
+          if self.xpos[i]:
+              self.gui.xPos_val[i].setText("{:0.0f}".format( self.xpos[i] * self.win_W)  )
+              self.gui.yPos_val[i].setText("{:0.0f}".format( self.ypos[i] * self.win_H)  )
+      self.gui.onCheckPress()
+
+  def updateMarkerXY(self):
+      '''restore cross positions on camera change
+      '''
+      for i in xrange(4):
+          if self.xpos[i]:
+              self.gui.xPos_val[i].setText("{:0.0f}".format(self.win_W*self.xpos[i]))
+              self.gui.yPos_val[i].setText("{:0.0f}".format(self.win_H*self.ypos[i]))
+          else:
+              self.gui.xPos_val[i].setText("")
+              self.gui.yPos_val[i].setText("")
+
+  def updateCrossPanel(self):
+      for i in xrange(16):
+          self.gui.check_box[i].setCheckState(0)
+      for i in self.check_stack:
+          self.gui.check_box[i].setCheckState(1)
+      self.gui.onCheckPress()
+
+
   def eventFilter(self, target, event):
         '''Create an event filter to capture mouse press signal over 
            the selected image witdget
@@ -241,7 +332,18 @@ class ViewerFrame(QtGui.QWidget):
         if(event.type()==QtCore.QEvent.MouseButtonPress):
             if event.buttons() & Qt.LeftButton:
                 #print 40*'-'
-                self.gui.cam_n = self.cam_n
+                # here is where to put the cross putting code
+                if self.gui.cam_n == self.cam_n:
+                    if DEBUG:
+                        print "this cam already selected", self.cam_n
+                        self.setCross(event)
+
+                    
+                else:
+                    self.gui.cam_n = self.cam_n
+                    if DEBUG:
+                        print "selecting cam", self.cam_n
+
                 #self.gui.cB_camera.setCurrentIndex(self.cam_n)
                 self.emit(QtCore.SIGNAL("setCameraCombo(int)"), self.cam_n)
                 if not self.camera_on:
@@ -617,10 +719,13 @@ class ViewerFrame(QtGui.QWidget):
                    QtCore.Qt.KeepAspectRatio,
                    QtCore.Qt.SmoothTransformation)
         self.display_image.update()
+        #this updates toooo fast, so the changes is only ever .9999 or 1.0001 sizes
+        self.updateCrossPos(self.display_image.scaled_image.width(),self.display_image.scaled_image.height()) 
       
   def setImageSize(self, newx, newy):
     self.x = newx
     self.y = newy
+    print "new size", newx, newy
 
     self.display_image.setImageSize()
     self.imageBuffer = mantaGiGE.pyCreateImageBuffer(self.display_image.image, 0)
@@ -676,11 +781,24 @@ class DisplayImage(QtGui.QWidget):
     if self.gui.dispUpdates == 0:
       return
     painter  = QtGui.QPainter(self)
-    painter.drawImage(0, 0, self.scaled_image)
+    #painter.drawImage(0, 0, self.scaled_image)
+
+    # new stuff for putting the crosses on
+    painter.setPen( QtGui.QPen(Qt.red,1,Qt.SolidLine,Qt.RoundCap,Qt.RoundJoin) )
+    #self.display_image.scaled_image = self.display_image.image.scaled(self.parent.width(), self.parent.height(), 
+                   #QtCore.Qt.KeepAspectRatio,
+                   #QtCore.Qt.SmoothTransformation)   
+    self.rectImage = QtCore.QRectF( 0,0,self.scaled_image.width(),self.scaled_image.height())
+    painter.drawImage( self.rectImage, self.scaled_image)
+    #print self.scaled_image.rect(), self.scaled_image.width(), self.scaled_image.height()
+    self.gui.drawCrosses(painter)
+    painter.setOpacity(1)
+
     self.paintevents += 1
 
     
-form_class, base_class = uic.loadUiType('ui/mviewer.ui')
+form_class, base_class = uic.loadUiType('ui/mviewer2.6.ui')
+#form_class, base_class = uic.loadUiType('ui/mviewer.ui')
 
 #class Viewer(QtGui.QWidget, form_class):
 class Viewer(QtGui.QMainWindow, form_class):    
@@ -754,8 +872,30 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.cB_onmot = [self.cB_onmot_1, self.cB_onmot_2, self.cB_onmot_3,
                         self.cB_onmot_4, self.cB_onmot_5, self.cB_onmot_6,
                         self.cB_onmot_7]
+
+        self.xPos_val = [self.X1Position, self.X2Position, self.X3Position, self.X4Position]
+
+        self.yPos_val = [self.Y1Position, self.Y2Position, self.Y3Position, self.Y4Position]
+
+        self.rd_cross = [self.Cross1, self.Cross2, self.Cross3, self.Cross4]
+
+        self.dist_val = [self.Distance1, self.Distance2]
+
+        self.from_val = [self.From1, self.From2]
+
+        self.check_box = [
+                self.checkBox11, self.checkBox12, self.checkBox13, self.checkBox14,
+                self.checkBox21, self.checkBox22, self.checkBox23, self.checkBox24,
+                self.checkBox31, self.checkBox32, self.checkBox33, self.checkBox34,
+                self.checkBox41, self.checkBox42, self.checkBox43, self.checkBox44,
+                ]
         
         self.tB_reset = [self.tB_reset_1, self.tB_reset_2]
+
+        self.lb_ImStats = [self.lb_minValdata, self.lb_maxValdata]
+
+        self.lb_ImStats[0].setText('n/a')
+        self.lb_ImStats[1].setText('n/a')
         
         for iMotor in range(MAX_MOT): 
             self.lb_limM[iMotor].setPixmap(self.limitoff)
@@ -764,6 +904,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.splashScreen.showMsg("Reading Camera File...")            
 
         self.n_cams = self.readPVListFile()
+
 
         if self.n_cams > len(self.w_Img):
             self.n_cams = len(self.w_Img)
@@ -783,6 +924,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         sig7   = QtCore.SIGNAL("stateChanged()")
         sig8   = QtCore.SIGNAL("setCameraCombo(int)")
         sig9   = QtCore.SIGNAL("topLevelChanged(bool)")
+        sig10  = QtCore.SIGNAL("released()")
         
         # Colormap controls: --------------------------------------
         #self.connect(self.cB_camera,    sig3, self.onCameraCombo)
@@ -807,6 +949,24 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.tB_reset_2,   sig0, self.resetIOC)
         self.connect(self.pB_save,      sig0, self.mytest)
         # --------------------------------------------------------
+        self.connect(self.checkBox11,   sig0, self.onCheckPress)
+        self.connect(self.checkBox12,   sig0, self.onCheckPress)
+        self.connect(self.checkBox13,   sig0, self.onCheckPress)
+        self.connect(self.checkBox14,   sig0, self.onCheckPress)
+        self.connect(self.checkBox21,   sig0, self.onCheckPress)
+        self.connect(self.checkBox22,   sig0, self.onCheckPress)
+        self.connect(self.checkBox23,   sig0, self.onCheckPress)
+        self.connect(self.checkBox24,   sig0, self.onCheckPress)
+        self.connect(self.checkBox31,   sig0, self.onCheckPress)
+        self.connect(self.checkBox32,   sig0, self.onCheckPress)
+        self.connect(self.checkBox33,   sig0, self.onCheckPress)
+        self.connect(self.checkBox34,   sig0, self.onCheckPress)
+        self.connect(self.checkBox41,   sig0, self.onCheckPress)
+        self.connect(self.checkBox42,   sig0, self.onCheckPress)
+        self.connect(self.checkBox43,   sig0, self.onCheckPress)
+        self.connect(self.checkBox44,   sig0, self.onCheckPress)
+        # --------------------------------------------------------
+        self.connect(self.colorButton,  sig10, self.handleButton)
         
         #print dir (self.w_Img_1)#.sizePolicy.setHeightForWidth(True)
         #print dir(self.dW_Img_1.sizePolicy.setHeightForWidth)
@@ -839,6 +999,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.splashScreen.finish(self)
 
         self.centerOnScreen()
+        self.setCameraCombo(0) # to update the selection indicator *
         self.show()
 
     def centerOnScreen(self):
@@ -846,6 +1007,19 @@ class Viewer(QtGui.QMainWindow, form_class):
         resolution = QtGui.QDesktopWidget().screenGeometry()
         self.move((resolution.width() / 2) - (self.frameSize().width() / 2),
                   (resolution.height() / 2) - (self.frameSize().height() / 2))
+
+    def getSelectedCross(self):
+      for i, cx in enumerate(self.rd_cross):
+          if cx.isChecked():
+              break
+      return i
+
+    def handleButton(self):
+        print "ubtton pressed!  Ican't even spell!"
+        i = self.getSelectedCross()
+        print "cross selected is", i
+        self.viewer[self.cam_n].colors[i] = QColorDialog().getColor( self.viewer[self.cam_n].colors[i] )
+        #print color
 
     def settoolTips(self):
         self.cB_on.setToolTip('Reconnect Camera')
@@ -872,11 +1046,28 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.lE_mr_5.setToolTip('Relative Positon\nNot implemented yet')
         self.lE_mr_6.setToolTip('Relative Positon\nNot implemented yet')
         self.lE_mr_7.setToolTip('Relative Positon\nNot implemented yet')
+        self.dW_Img_1.setToolTip('hold ALT to move this window')
+        self.dW_Img_2.setToolTip('hold ALT to move this window')
+        self.dW_Img_3.setToolTip('hold ALT to move this window')
+        self.dW_Img_4.setToolTip('hold ALT to move this window')
+        self.dW_Img_5.setToolTip('hold ALT to move this window')
+        self.dW_Img_6.setToolTip('hold ALT to move this window')
+        self.dW_Img_7.setToolTip('hold ALT to move this window')
+        self.dW_Img_8.setToolTip('hold ALT to move this window')
+
         
     def setCameraCombo(self, cam_n):
+# clear previous focus indication, if present
+        if self.idock[self.cB_camera.currentIndex()].windowTitle()[-1] == '*':
+            self.idock[self.cB_camera.currentIndex()].setWindowTitle( 
+                    self.idock[self.cB_camera.currentIndex()].windowTitle()[:-1] )
         self.cB_camera.setCurrentIndex(cam_n)
         self.getConfig(cam_n)
         self.onUpdateColorMap(cam_n)
+# set asterisk indication of window focus
+        self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
+        self.viewer[cam_n].updateMarkerXY()
+        self.viewer[cam_n].updateCrossPanel()
         
     def set_bin(self):
         bindex = int(self.lEBXY.text())
@@ -1000,6 +1191,76 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.lb_dispRate.setText('%.1f Hz' % dispRate)
             self.lb_dataRate.setText('%.1f Hz' % dataRate)
 
+    def onCheckPress(self):
+        # implement a stack to ensure that only 2 checkboxes are checked.
+        # dump the oldest (first) one, and append the new one to the end of the stack
+        # could be changed from 2 if more calculation boxes are added
+        newchecked = [ i for i,x in enumerate(self.check_box) if x.isChecked() ]
+        # now check if diagonal boxes are checked, and if so uncheck them
+        toremove = []
+        check_stack = list(self.viewer[self.cam_n].check_stack)
+        for s in newchecked:
+            if s in [0,5,10,15]:
+                toremove.append(s)
+                self.check_box[s].setCheckState(0)
+                if DEBUG:
+                    print "no measuring of distance to self."
+        for t in toremove:
+            newchecked.remove(t)
+        if set(newchecked) > set(check_stack):
+            # user has added another check
+            for s in newchecked:
+                if s not in check_stack:
+                    check_stack.append(s)
+            if len(check_stack) > 2:
+                self.check_box[check_stack[0]].setCheckState(0)
+                check_stack = check_stack[1:]
+        else:
+            # the user has unchecked a box, we have to remove it from the stack
+            for sc in check_stack:
+                if sc not in newchecked:
+                    check_stack.remove(sc)
+        self.viewer[self.cam_n].check_stack = list(check_stack)
+        #if DEBUG:
+            #print "checkbox pressed" , repr( check_stack )
+
+        # do calculation of distances
+        for i, sc in enumerate(check_stack):
+            #if DEBUG:
+                #print "begin calculation", sc
+            D, rel = self.calcMarkerDist(sc)
+            if D != None :
+                self.dist_val[i].setText("{:0.1f}".format( D ) )
+                self.from_val[i].setText("{:0.0f},{:0.0f}".format( rel[0]+1, rel[1]+1 ))
+            else:
+                self.dist_val[i].setText("")
+                self.from_val[i].setText("")
+                
+        if len(check_stack) < 2:
+            self.dist_val[1].setText("")
+            self.from_val[1].setText("")
+        if len(check_stack) < 1:
+            self.dist_val[0].setText("")
+            self.from_val[0].setText("")
+
+
+        return
+
+    def calcMarkerDist(self,sc):
+        translate = {
+             0:(0,0),    4:(0,1),    8:(0,2),   12:(0,3),
+             1:(1,0),    5:(1,1),    9:(1,2),   13:(1,3),
+             2:(2,0),    6:(2,1),   10:(2,2),   14:(2,3),
+             3:(3,0),    7:(3,1),   11:(3,2),   15:(3,3), }
+        x1 = self.xPos_val[ translate[ sc ][0] ].text()
+        x2 = self.xPos_val[ translate[ sc ][1] ].text()
+        y1 = self.yPos_val[ translate[ sc ][0] ].text()
+        y2 = self.yPos_val[ translate[ sc ][1] ].text()
+        D = None
+        if not '' in [x1,x2,y1,y2]:
+            D = math.sqrt( (float(x2)-float(x1))**2 + (float(y2)-float(y1))**2 )
+        return D, translate[sc]
+        
     def readPVListFile(self):
         ''' Reads camera.lst file, update camera combo, etc...
         # ---------------------------------------------------------------

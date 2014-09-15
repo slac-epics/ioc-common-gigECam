@@ -7,4 +7,6 @@ setenv PYTHONPATH /reg/g/pcds/pds/pyca:/reg/g/pcds/controls
 rehash
 
 ./mviewer.pyw $*
+#qmake --version
+#python -i
 
