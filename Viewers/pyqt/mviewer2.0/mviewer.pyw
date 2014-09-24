@@ -55,7 +55,7 @@ import socket # for getting hostname
 #caput IOC:MEC:LAS:GIGE02:SYSRESET 1
 #caput IOC:MEC:LAS:GIGE03:SYSRESET 1
 ## -----------------------------------------------------------------------------
-DEBUG = True
+DEBUG = False
 DEBUG_LEVEL_0 = 0x00
 DEBUG_LEVEL_0 = 0x01
 DEBUG_LEVEL_0 = 0x02
@@ -247,6 +247,8 @@ class ViewerFrame(QtGui.QWidget):
     self.colors = [ Qt.red, Qt.yellow, Qt.green, Qt.blue ]
     self.xpos = [None,None,None,None]
     self.ypos = [None,None,None,None]
+    self.showCross = [True, True, True, True]
+    self.lockCross = [False, False, False, False]
     self.win_W = None
     self.win_H = None
     #self.winsize = [self.parent.width(),self.parent.height()]
@@ -267,25 +269,30 @@ class ViewerFrame(QtGui.QWidget):
   def setCross(self,event):
       # which radio button is selected
       i = self.gui.getSelectedCross()
-      self.win_W = self.display_image.scaled_image.width() 
-      self.win_H = self.display_image.scaled_image.height() 
-      cross_X = float(event.x())/self.win_W
-      cross_Y = float(event.y())/self.win_H
-      if DEBUG:
-          print "cross",i,"is checked", event.x(), event.y()
-          print "float",cross_X, cross_Y
-          print "win", self.win_W, self.win_H
-      self.gui.xPos_val[i].setText("{:0.0f}".format(cross_X*self.win_W))
-      self.gui.yPos_val[i].setText("{:0.0f}".format(cross_Y*self.win_H))
-      self.xpos[i] = float(cross_X)
-      self.ypos[i] = float(cross_Y)
+      if self.lockCross[i]:
+          if DEBUG:
+              print "this cross is locked"
+      else:
+          self.win_W = self.display_image.scaled_image.width() 
+          self.win_H = self.display_image.scaled_image.height() 
+          cross_X = float(event.x())/self.win_W
+          cross_Y = float(event.y())/self.win_H
+          if DEBUG:
+              print "cross",i,"is checked", event.x(), event.y()
+              print "float",cross_X, cross_Y
+              print "win", self.win_W, self.win_H
+              print "show", self.showCross[i]
+          self.gui.xPos_val[i].setText("{:0.0f}".format(cross_X*self.win_W))
+          self.gui.yPos_val[i].setText("{:0.0f}".format(cross_Y*self.win_H))
+          self.xpos[i] = float(cross_X)
+          self.ypos[i] = float(cross_Y)
 
   def drawCrosses(self,painter):  # this is in the wrong place, me thinks.
       size = 10
       self.win_W = self.display_image.scaled_image.width() 
       self.win_H = self.display_image.scaled_image.height() 
       for i in xrange(4):
-          if self.xpos[i]:
+          if self.xpos[i] and self.ypos[i] and self.showCross[i]:
               painter.setPen( QtGui.QPen(self.colors[i],1,Qt.SolidLine,Qt.RoundCap,Qt.RoundJoin) )
               self.markers[i] = ( 
                       painter.drawLine( self.win_W*self.xpos[i]     , self.win_H*self.ypos[i]-size, self.win_W*self.xpos[i]     , self.win_H*self.ypos[i]+size),
@@ -336,8 +343,7 @@ class ViewerFrame(QtGui.QWidget):
                 if self.gui.cam_n == self.cam_n:
                     if DEBUG:
                         print "this cam already selected", self.cam_n
-                        self.setCross(event)
-
+                    self.setCross(event)
                     
                 else:
                     self.gui.cam_n = self.cam_n
@@ -725,7 +731,8 @@ class ViewerFrame(QtGui.QWidget):
   def setImageSize(self, newx, newy):
     self.x = newx
     self.y = newy
-    print "new size", newx, newy
+    if DEBUG:
+        print "new size", newx, newy
 
     self.display_image.setImageSize()
     self.imageBuffer = mantaGiGE.pyCreateImageBuffer(self.display_image.image, 0)
@@ -793,6 +800,7 @@ class DisplayImage(QtGui.QWidget):
     #print self.scaled_image.rect(), self.scaled_image.width(), self.scaled_image.height()
     self.gui.drawCrosses(painter)
     painter.setOpacity(1)
+
 
     self.paintevents += 1
 
@@ -966,7 +974,22 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.checkBox43,   sig0, self.onCheckPress)
         self.connect(self.checkBox44,   sig0, self.onCheckPress)
         # --------------------------------------------------------
-        self.connect(self.colorButton,  sig10, self.handleButton)
+        self.connect(self.colorButton,  sig10, self.handleColorButton)
+        self.connect(self.showHideCross,sig10, self.handleShowHide)
+        self.connect(self.Cross1,       sig10, self.handleRadio)
+        self.connect(self.Cross2,       sig10, self.handleRadio)
+        self.connect(self.Cross3,       sig10, self.handleRadio)
+        self.connect(self.Cross4,       sig10, self.handleRadio)
+        self.connect(self.lockCross,    sig10, self.handleLockCross)
+
+        self.connect(self.X1Position,   sig5, lambda: self.handleCrossText('X1'))
+        self.connect(self.X2Position,   sig5, lambda: self.handleCrossText('X2'))
+        self.connect(self.X3Position,   sig5, lambda: self.handleCrossText('X3'))
+        self.connect(self.X4Position,   sig5, lambda: self.handleCrossText('X4'))
+        self.connect(self.Y1Position,   sig5, lambda: self.handleCrossText('Y1'))
+        self.connect(self.Y2Position,   sig5, lambda: self.handleCrossText('Y2'))
+        self.connect(self.Y3Position,   sig5, lambda: self.handleCrossText('Y3'))
+        self.connect(self.Y4Position,   sig5, lambda: self.handleCrossText('Y4'))
         
         #print dir (self.w_Img_1)#.sizePolicy.setHeightForWidth(True)
         #print dir(self.dW_Img_1.sizePolicy.setHeightForWidth)
@@ -1014,12 +1037,60 @@ class Viewer(QtGui.QMainWindow, form_class):
               break
       return i
 
-    def handleButton(self):
-        print "ubtton pressed!  Ican't even spell!"
+    def getShowCross(self):
+        if DEBUG:
+            print "checked?", self.showHideCross.isChecked()
+        return self.showHideCross.isChecked()
+
+    def getLockCross(self):
+        if DEBUG:
+            print "locked?", self.lockCross.isChecked()
+        return self.lockCross.isChecked()
+
+
+    def handleShowHide(self):
         i = self.getSelectedCross()
-        print "cross selected is", i
+        self.viewer[self.cam_n].showCross[i] = self.getShowCross()
+
+    def handleLockCross(self):
+        i = self.getSelectedCross()
+        self.viewer[self.cam_n].lockCross[i] = self.getLockCross()
+
+
+    def handleColorButton(self):
+        i = self.getSelectedCross()
         self.viewer[self.cam_n].colors[i] = QColorDialog().getColor( self.viewer[self.cam_n].colors[i] )
-        #print color
+
+    def handleRadio(self):
+        i = self.getSelectedCross()
+        self.showHideCross.setChecked( self.viewer[self.cam_n].showCross[i] )
+        self.lockCross.setChecked( self.viewer[self.cam_n].lockCross[i] )
+
+    def handleCrossText(self,XY):
+        i = int(XY[1])-1
+        translate = {
+                'X1': self.X1Position, 'X2': self.X2Position, 'X3': self.X3Position, 'X4': self.X4Position,
+                'Y1': self.Y1Position, 'Y2': self.Y2Position, 'Y3': self.Y3Position, 'Y4': self.Y4Position,}
+
+        if DEBUG:
+            print "handling it!", XY, ":", int(translate[XY].text())
+
+        if self.viewer[self.cam_n].lockCross[i]:
+            if DEBUG:
+                print "it's locked"
+            if XY[0] == 'X':
+                translate[XY].setText("{:0.0f}".format( self.viewer[self.cam_n].xpos[i] * self.viewer[self.cam_n].win_W ) )
+            else:
+                translate[XY].setText("{:0.0f}".format( self.viewer[self.cam_n].ypos[i] * self.viewer[self.cam_n].win_W ) )
+        else:
+            if XY[0] == 'X':
+                self.viewer[self.cam_n].xpos[ i ] = float(translate[XY].text()) / self.viewer[self.cam_n].win_W
+            else:
+                self.viewer[self.cam_n].ypos[ i ] = float(translate[XY].text()) / self.viewer[self.cam_n].win_H
+
+        if DEBUG:
+            print self.viewer[self.cam_n].xpos
+            print self.viewer[self.cam_n].ypos
 
     def settoolTips(self):
         self.cB_on.setToolTip('Reconnect Camera')

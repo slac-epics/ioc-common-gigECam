@@ -2185,6 +2185,35 @@
             <string>Color...</string>
            </property>
           </widget>
+          <widget class="QCheckBox" name="showHideCross">
+           <property name="geometry">
+            <rect>
+             <x>350</x>
+             <y>50</y>
+             <width>55</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Show</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="lockCross">
+           <property name="geometry">
+            <rect>
+             <x>350</x>
+             <y>70</y>
+             <width>55</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Lock</string>
+           </property>
+          </widget>
          </widget>
         </widget>
        </item>
