@@ -244,7 +244,8 @@ class ViewerFrame(QtGui.QWidget):
     self.cpv['bin_x']    = str(self.gui.lEBXY.text())
     self.cpv['bin_y']    = str(self.gui.lEBXY.text())
 
-    self.colors = [ Qt.red, Qt.yellow, Qt.green, Qt.blue ]
+    self.colors = [ QtGui.QColor(255,0,0), QtGui.QColor(255,170,0), QtGui.QColor(0,170,0), QtGui.QColor(85,170,255) ]
+    #                            red                    orange                   green                  light blue
     self.xpos = [None,None,None,None]
     self.ypos = [None,None,None,None]
     self.showCross = [True, True, True, True]
@@ -329,6 +330,19 @@ class ViewerFrame(QtGui.QWidget):
           self.gui.check_box[i].setCheckState(1)
       self.gui.onCheckPress()
 
+
+  def updateLock(self):
+      i = self.gui.getSelectedCross()
+      self.gui.lockCross.setChecked( self.lockCross[i] )
+
+  def updateRdColors(self):
+      for i in xrange(4):
+          self.gui.rd_cross[i].setStyleSheet('background-color: rgb({0:0.0f},{1:0.0f},{2:0.0f})'.format( *self.colors[i].getRgb() ) )
+          #print i, self.colors[i].getRgb()
+          #if self.colors[i].lightnessF() < .2:
+              #self.gui.rd_cross[i].setStyleSheet('color: white')
+          #else:
+              #self.gui.rd_cross[i].setStyleSheet('color: black')
 
   def eventFilter(self, target, event):
         '''Create an event filter to capture mouse press signal over 
@@ -955,7 +969,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.pB_quit,      sig0, self.shutdown)
         self.connect(self.tB_reset_1,   sig0, self.resetIOC)
         self.connect(self.tB_reset_2,   sig0, self.resetIOC)
-        self.connect(self.pB_save,      sig0, self.mytest)
+        self.connect(self.pB_save,      sig0, lambda: self.mytest('save'))
+        self.connect(self.pB_elog,      sig0, lambda: self.mytest('elog'))
         # --------------------------------------------------------
         self.connect(self.checkBox11,   sig0, self.onCheckPress)
         self.connect(self.checkBox12,   sig0, self.onCheckPress)
@@ -1059,7 +1074,11 @@ class Viewer(QtGui.QMainWindow, form_class):
 
     def handleColorButton(self):
         i = self.getSelectedCross()
-        self.viewer[self.cam_n].colors[i] = QColorDialog().getColor( self.viewer[self.cam_n].colors[i] )
+        newcolor = QColorDialog().getColor( self.viewer[self.cam_n].colors[i] )
+        #print newcolor.getRgb(), newcolor.isValid()
+        if newcolor.isValid():
+            self.viewer[self.cam_n].colors[i]  = newcolor
+            self.viewer[self.cam_n].updateRdColors()
 
     def handleRadio(self):
         i = self.getSelectedCross()
@@ -1139,6 +1158,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
         self.viewer[cam_n].updateMarkerXY()
         self.viewer[cam_n].updateCrossPanel()
+        self.viewer[cam_n].updateLock()
+        self.viewer[cam_n].updateRdColors()
         
     def set_bin(self):
         bindex = int(self.lEBXY.text())
@@ -1685,7 +1706,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         #self.snd_cmd(0, reset)
         return True
         
-    def mytest(self):
+    def mytest(self, word):
+        print "{:s} does nothing".format(word)
         pass
 
 
