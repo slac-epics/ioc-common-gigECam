@@ -337,7 +337,7 @@ class ViewerFrame(QtGui.QWidget):
 
   def updateRdColors(self):
       for i in xrange(4):
-          self.gui.rd_cross[i].setStyleSheet('background-color: rgb({0:0.0f},{1:0.0f},{2:0.0f})'.format( *self.colors[i].getRgb() ) )
+          self.gui.rd_line[i].setStyleSheet('background-color: rgb({0:0.0f},{1:0.0f},{2:0.0f})'.format( *self.colors[i].getRgb() ) )
           #print i, self.colors[i].getRgb()
           #if self.colors[i].lightnessF() < .2:
               #self.gui.rd_cross[i].setStyleSheet('color: white')
@@ -900,6 +900,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.yPos_val = [self.Y1Position, self.Y2Position, self.Y3Position, self.Y4Position]
 
         self.rd_cross = [self.Cross1, self.Cross2, self.Cross3, self.Cross4]
+        self.rd_line  = [self.rd_line1, self.rd_line2, self.rd_line3, self.rd_line4]
 
         self.dist_val = [self.Distance1, self.Distance2]
 
