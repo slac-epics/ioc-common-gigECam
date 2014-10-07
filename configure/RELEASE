@@ -14,14 +14,14 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # ===============================================================
 # Example
 #AREADETECTOR_MODULE_VERSION	 = R1.9.1-0.10.0
-ADCORE_MODULE_VERSION        = R2.0-0.1.0
-ADPROSILICA_MODULE_VERSION   = R2.0-0.1.0
-ASYN_MODULE_VERSION          = R4.23-0.1.0
+ADCORE_MODULE_VERSION        = R2.0-0.5.0
+ADPROSILICA_MODULE_VERSION   = R2.0-0.4.0
+ASYN_MODULE_VERSION          = R4.23-0.2.0
 AUTOSAVE_MODULE_VERSION      = R5.1-0.1.0
-BUSY_MODULE_VERSION          = R1.6.0-0.5.0
+BUSY_MODULE_VERSION          = R1.6.0-0.7.0
 CALC_MODULE_VERSION          = R3.2-0.4.0
 EVENT_MODULE_VERSION         = R4.0.0-2.0.0
-FFMPEGSERVER_MODULE_VERSION  = R1.9-0.12.0
+FFMPEGSERVER_MODULE_VERSION  = R1.9-0.13.0
 IOCADMIN_MODULE_VERSION      = R3.0.0-2.0.1
 SSCAN_MODULE_VERSION         = R2.8.1-0.1.0
 
@@ -52,4 +52,5 @@ SSCAN        = $(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
 
 #AREA_DETECTOR= ~bhill/wa2/trunk/pcds/epics/modules/areaDetector/current
 #FFMPEGSERVER= ~bhill/wa2/trunk/pcds/epics/modules/ffmpegServer/current
+#ADPROSILICA  = ~bhill/wa2/trunk/pcds/epics/modules/ADProsilica/current
 
