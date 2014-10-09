@@ -1,5 +1,8 @@
 #!/bin/bash
+export EPICS_HOST_ARCH=linux-x86_64
 source /reg/g/pcds/setup/epicsenv-3.14.12.sh
+# TODO: Do we really need to unset PYTHONPATH?
+unset PYTHONPATH
 source /reg/g/pcds/setup/python25.sh
 
 # Add in the qt bin and lib paths

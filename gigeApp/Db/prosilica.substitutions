@@ -7,8 +7,6 @@ file ADBase.template
 	P=$(CAM),
 	R=:,
 	PORT=$(CAM_PORT),
-	ADDR=0,
-	TIMEOUT=1
 	}
 }
 
@@ -18,8 +16,6 @@ file NDFile.template
 	P=$(CAM),
 	R=:,
 	PORT=$(CAM_PORT),
-	ADDR=0,
-	TIMEOUT=1
 	}
 }
 
@@ -29,17 +25,7 @@ file prosilica.template
 	P=$(CAM),
 	R=:,
 	PORT=$(CAM_PORT),
-	ADDR=0,
-	TIMEOUT=1,
-	TRSCAN="1 second"
+	TRSCAN="Passive"
 	}
 }
-
-#file cross.template
-#{
-#	{
-#	P=$(CAM),
-#	R=:,
-#	}
-#}
 

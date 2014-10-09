@@ -19,7 +19,7 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
-title "$(CAM) Live Binned Image"
+title "$(CAM) Full Image"
 showGrid
 snapToGrid
 gridSize 4
@@ -112,12 +112,12 @@ x 4
 y 48
 w 676
 h 480
-dataPvStr "$(CAM):IMG_OVER2:ArrayData"
-widthPvStr "$(CAM):IMG_OVER2:ArraySize0_RBV"
-heightPvStr "$(CAM):IMG_OVER2:ArraySize1_RBV"
+dataPvStr "$(CAM):IMAGE1:ArrayData"
+widthPvStr "$(CAM):IMAGE1:ArraySize0_RBV"
+heightPvStr "$(CAM):IMAGE1:ArraySize1_RBV"
 dataWidth 646
 pvBasedDataSize 1
-nBitsPerPixel 8
+nBitsPerPixel 12
 endObjectProperties
 
 # (Exit Button)
@@ -686,7 +686,7 @@ x 792
 y 92
 w 76
 h 20
-controlPv "$(CAM):IMG_OVER2:ArrayRate_RBV"
+controlPv "$(CAM):IMAGE1:ArrayRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 16
@@ -906,7 +906,7 @@ x 776
 y 268
 w 64
 h 20
-controlPv "$(CAM):IMG_OVER2:MinCallbackTime"
+controlPv "$(CAM):IMAGE1:MinCallbackTime"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
