@@ -55,13 +55,14 @@ import socket # for getting hostname
 #caput IOC:MEC:LAS:GIGE02:SYSRESET 1
 #caput IOC:MEC:LAS:GIGE03:SYSRESET 1
 ## -----------------------------------------------------------------------------
-DEBUG = False
+DEBUG = True
 DEBUG_LEVEL_0 = 0x00
 DEBUG_LEVEL_0 = 0x01
 DEBUG_LEVEL_0 = 0x02
 DEBUG_LEVEL_0 = 0x04
 #DEBUG = DEBUG_LEVEL_0
 MAX_MOT = 7
+
 
 
 if DEBUG:
@@ -244,8 +245,8 @@ class ViewerFrame(QtGui.QWidget):
     self.cpv['bin_x']    = str(self.gui.lEBXY.text())
     self.cpv['bin_y']    = str(self.gui.lEBXY.text())
 
-    self.colors = [ QtGui.QColor(255,0,0), QtGui.QColor(255,170,0), QtGui.QColor(0,170,0), QtGui.QColor(85,170,255) ]
     #                            red                    orange                   green                  light blue
+    self.colors = [ QtGui.QColor(255,0,0), QtGui.QColor(255,170,0), QtGui.QColor(0,170,0), QtGui.QColor(85,170,255) ]
     self.xpos = [None,None,None,None]
     self.ypos = [None,None,None,None]
     self.showCross = [True, True, True, True]
@@ -354,7 +355,7 @@ class ViewerFrame(QtGui.QWidget):
             if event.buttons() & Qt.LeftButton:
                 #print 40*'-'
                 # here is where to put the cross putting code
-                if self.gui.cam_n == self.cam_n:
+                if self.gui.cam_n == self.cam_n and self.camera is not None:
                     if DEBUG:
                         print "this cam already selected", self.cam_n
                     self.setCross(event)
@@ -444,29 +445,57 @@ class ViewerFrame(QtGui.QWidget):
     self.binXPv     = self.disconnectPv(self.binXPv)
     self.binYPv     = self.disconnectPv(self.binYPv)
     
-    depth = caget(sCameraPv + ":ArraySize0_RBV", timeout)
-    
-    if depth == []:
-      print 'Connection ERROR: couldn\'t get depth'
-      self.clearCamGUI()
-      return False
-    elif depth == 3: # It's a color camera!
-      rowpvname = sCameraPv + ":ArraySize2_RBV"
-      colpvname = sCameraPv + ":ArraySize1_RBV"
-      self.isColor = True
-      self.gui.setSliderRangeMax(10) # 10 bits camera
-      self.gui.grayScale.setVisible(True)      
-    else: # Just B/W!
-      rowpvname = sCameraPv + ":ArraySize1_RBV"
-      colpvname = sCameraPv + ":ArraySize0_RBV"
-      self.isColor = False
+    self.ColorMode = caget(sCameraPv + ":ColorMode_RBV.RVAL", timeout)
+        
+    if self.ColorMode == 0: #'Mono': 
+      print 'here'
+      rowpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize0_RBV" #FIXME
       self.gui.setSliderRangeMax(8)  #  8 bits camera
       self.gui.grayScale.setVisible(False)
-    
+    elif self.ColorMode == 'Bayer':
+      rowpvname = sCameraPv + ":ArraySize2_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      self.gui.setSliderRangeMax(10) # 10 bits camera
+      self.gui.grayScale.setVisible(True)      
+    elif self.ColorMode == 'RGB1':
+      rowpvname = sCameraPv + ":ArraySize2_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      self.gui.setSliderRangeMax(10) # 10 bits camera
+      self.gui.grayScale.setVisible(True)      
+    elif self.ColorMode == 'RGB2':
+      rowpvname = sCameraPv + ":ArraySize2_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      self.gui.setSliderRangeMax(10) # 10 bits camera
+      self.gui.grayScale.setVisible(True)      
+    elif self.ColorMode == 'RGB3':
+      rowpvname = sCameraPv + ":ArraySize2_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      self.gui.setSliderRangeMax(10) # 10 bits camera
+      self.gui.grayScale.setVisible(True)      
+    elif self.ColorMode == 'YUV444':
+      rowpvname = sCameraPv + ":ArraySize2_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      self.gui.setSliderRangeMax(10) # 10 bits camera
+      self.gui.grayScale.setVisible(True)      
+    elif self.ColorMode == 'YUV422':
+      rowpvname = sCameraPv + ":ArraySize2_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      self.gui.setSliderRangeMax(10) # 10 bits camera
+      self.gui.grayScale.setVisible(True)      
+    elif self.ColorMode == 'YUV421':
+      rowpvname = sCameraPv + ":ArraySize2_RBV" #FIXME
+      colpvname = sCameraPv + ":ArraySize1_RBV" #FIXME
+      self.gui.setSliderRangeMax(10) # 10 bits camera
+      self.gui.grayScale.setVisible(True)      
+    else:
+      print 'Connection ERROR: couldn\'t get the ColorMode'
+      self.clearCamGUI()
+      return False        
+            
     self.camera     = self.connectPv(sCameraPv + ":ArrayData")
     self.rowPv      = self.connectPv(rowpvname)
     self.colPv      = self.connectPv(colpvname)
-    
     self.gainPv     = self.connectPv(sCAMPv + ":Gain_RBV")
     self.exposurePv = self.connectPv(sCAMPv + ":AcquireTime_RBV")
     self.binXPv     = self.connectPv(sCAMPv + ":BinX_RBV")
@@ -475,7 +504,7 @@ class ViewerFrame(QtGui.QWidget):
     if self.camera != None and self.rowPv != None and self.colPv != None\
          and self.gainPv != None and self.exposurePv != None and\
          self.binXPv != None and self.binYPv != None:
-      if self.isColor:
+      if self.ColorMode != 'Mono':
         self.camera.processor  = mantaGiGE.pyCreateColorImagePvCallbackFunc(self.imageBuffer)
       else:
         self.camera.processor  = mantaGiGE.pyCreateImagePvCallbackFunc(self.imageBuffer)
@@ -504,6 +533,8 @@ class ViewerFrame(QtGui.QWidget):
 
     if (DEBUG): self.dumpVARS()
     return self.camera_on
+  
+
   
   def dumpVARS(self):
     print 'PV Status                  : %s [CAM%d] -' % (str(self.gui.lCameraList[self.cam_n]), self.cam_n)
@@ -551,7 +582,9 @@ class ViewerFrame(QtGui.QWidget):
         self.binXPv     = self.disconnectPv(self.binXPv)
         self.binYPv     = self.disconnectPv(self.binYPv)
         self.clearCamGUI()
+        print "cam cleared"
       except:
+        print "cam NOT cleared, some exception:", sys.exc_info()[0]
         pass
       self.camera = None
 
@@ -798,7 +831,7 @@ class DisplayImage(QtGui.QWidget):
     self.image.fill(0)
     
   def paintEvent(self, event):
-    #print 'paintEvent', event
+    #print 'paintEvent', event, self.gui.cam_n
     if self.gui.dispUpdates == 0:
       return
     painter  = QtGui.QPainter(self)
@@ -819,7 +852,7 @@ class DisplayImage(QtGui.QWidget):
     self.paintevents += 1
 
     
-form_class, base_class = uic.loadUiType('ui/mviewer2.6.ui')
+form_class, base_class = uic.loadUiType('ui/mviewer2.7.ui')
 #form_class, base_class = uic.loadUiType('ui/mviewer.ui')
 
 #class Viewer(QtGui.QWidget, form_class):
@@ -917,6 +950,25 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         self.lb_ImStats = [self.lb_minValdata, self.lb_maxValdata]
 
+        self.timers = [self.Timer1, self.Timer2, self.Timer3, self.Timer4, 
+                self.Timer5, self.Timer6, self.Timer7,]
+
+        self.timerKeepers = 7 * [ QTimer(), ]
+
+        self.timerlabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4,
+                self.TimerLabel5, self.TimerLabel6, self.TimerLabel7,]
+
+        self.timerreset9 = [self.ResetTimer9h1, self.ResetTimer9h2, self.ResetTimer9h3, self.ResetTimer9h4,
+                self.ResetTimer9h5, self.ResetTimer9h6, self.ResetTimer9h7,]
+
+        self.timerclear = [self.TimerClear1, self.TimerClear2, self.TimerClear3, self.TimerClear4,
+                self.TimerClear5, self.TimerClear6, self.TimerClear7,]
+
+        self.timerreset1 = [self.ResetTimer1h1, self.ResetTimer1h2, self.ResetTimer1h3, self.ResetTimer1h4,
+                self.ResetTimer1h5, self.ResetTimer1h6, self.ResetTimer1h7,]
+
+        self.timerReferenceTime = 8*[None, ]
+
         self.lb_ImStats[0].setText('n/a')
         self.lb_ImStats[1].setText('n/a')
         
@@ -948,9 +1000,14 @@ class Viewer(QtGui.QMainWindow, form_class):
         sig8   = QtCore.SIGNAL("setCameraCombo(int)")
         sig9   = QtCore.SIGNAL("topLevelChanged(bool)")
         sig10  = QtCore.SIGNAL("released()")
+        sig11  = QtCore.SIGNAL("timeout()")
+
+        self.objc  , self.qsig  , self.sig0  , self.sig1  , self.sig2  , self.sig3  , self.sig4  , self.sig5  , self.sig6  , self.sig7  , self.sig8  , self.sig9  , self.sig10 , self.sig11 , = objc  , qsig  , sig0  , sig1  , sig2  , sig3  , sig4  , sig5  , sig6  , sig7  , sig8  , sig9  , sig10 , sig11 ,
+
         
         # Colormap controls: --------------------------------------
         #self.connect(self.cB_camera,    sig3, self.onCameraCombo)
+        self.connect(self.cB_camera,    sig3, self.updateCamCombo)
         self.connect(self.cBoxScale,    sig3, self.onComboBoxScaleIndexChanged)
         self.connect(self.rBColor_Cool, sig0, self.set_cool)
         self.connect(self.rBColor_Gray, sig0, self.set_gray)
@@ -1006,7 +1063,42 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.Y2Position,   sig5, lambda: self.handleCrossText('Y2'))
         self.connect(self.Y3Position,   sig5, lambda: self.handleCrossText('Y3'))
         self.connect(self.Y4Position,   sig5, lambda: self.handleCrossText('Y4'))
-        
+
+        self.connect(self.timerreset9[0], sig10, lambda: self.handleTimerReset(0,9) )
+        self.connect(self.timerreset1[0], sig10, lambda: self.handleTimerReset(0,1) )
+        self.connect( self.timerclear[0], sig10, lambda: self.handleTimerReset(0,0) )
+        self.connect(self.timerKeepers[0],sig11,      lambda: self.updateTimer(0) )
+
+        self.connect(self.timerreset9[1], sig10, lambda: self.handleTimerReset(1,9) )
+        self.connect(self.timerreset1[1], sig10, lambda: self.handleTimerReset(1,1) )
+        self.connect( self.timerclear[1], sig10, lambda: self.handleTimerReset(1,0) )
+        self.connect(self.timerKeepers[1],sig11,      lambda: self.updateTimer(1) )
+
+        self.connect(self.timerreset9[2], sig10, lambda: self.handleTimerReset(2,9) )
+        self.connect(self.timerreset1[2], sig10, lambda: self.handleTimerReset(2,1) )
+        self.connect( self.timerclear[2], sig10, lambda: self.handleTimerReset(2,0) )
+        self.connect(self.timerKeepers[2],sig11,      lambda: self.updateTimer(2) )
+
+        self.connect(self.timerreset9[3], sig10, lambda: self.handleTimerReset(3,9) )
+        self.connect(self.timerreset1[3], sig10, lambda: self.handleTimerReset(3,1) )
+        self.connect( self.timerclear[3], sig10, lambda: self.handleTimerReset(3,0) )
+        self.connect(self.timerKeepers[3],sig11,      lambda: self.updateTimer(3) )
+
+        self.connect(self.timerreset9[4], sig10, lambda: self.handleTimerReset(4,9) )
+        self.connect(self.timerreset1[4], sig10, lambda: self.handleTimerReset(4,1) )
+        self.connect( self.timerclear[4], sig10, lambda: self.handleTimerReset(4,0) )
+        self.connect(self.timerKeepers[4],sig11,      lambda: self.updateTimer(4) )
+
+        self.connect(self.timerreset9[5], sig10, lambda: self.handleTimerReset(5,9) )
+        self.connect(self.timerreset1[5], sig10, lambda: self.handleTimerReset(5,1) )
+        self.connect( self.timerclear[5], sig10, lambda: self.handleTimerReset(5,0) )
+        self.connect(self.timerKeepers[5],sig11,      lambda: self.updateTimer(5) )
+
+        self.connect(self.timerreset9[6], sig10, lambda: self.handleTimerReset(6,9) )
+        self.connect(self.timerreset1[6], sig10, lambda: self.handleTimerReset(6,1) )
+        self.connect( self.timerclear[6], sig10, lambda: self.handleTimerReset(6,0) )
+        self.connect(self.timerKeepers[6],sig11,      lambda: self.updateTimer(6) )
+
         #print dir (self.w_Img_1)#.sizePolicy.setHeightForWidth(True)
         #print dir(self.dW_Img_1.sizePolicy.setHeightForWidth)
         for iwdg in self.idock:
@@ -1014,6 +1106,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             iwdg.setWindowTitle('')
         self.lock = [QtCore.QReadWriteLock() for i in range(8)]
         self.splashScreen.showMsg("Loading Cameras...")            
+        refTime = int(time.time()) # throw away variable
         for i in range(self.n_cams):
             self.cam_n = i # update current camera
             self.idock[i].setEnabled(True)
@@ -1024,22 +1117,87 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.viewer[i] = ViewerFrame(self.w_Img[i], self)
                 self.viewer[i].onCameraSelect(i) # set camera pv and start display
                 self.onUpdateColorMap(i)
-                self.connect(self.viewer[i], sig6, self.onUpdateRate)
-                self.connect(self.viewer[i], sig8, self.setCameraCombo)
-                self.connect(self.idock[i],  sig9, self.centerDock)
+                self.connect(self.viewer[i], self.sig6, self.onUpdateRate)
+                self.connect(self.viewer[i], self.sig8, self.setCameraCombo)
+                self.connect(self.idock[i],  self.sig9, self.centerDock)
                 self.splashScreen.showMsg("Loading... %s as Cam[%d]" %\
                                                 (self.lCameraDesc[i], i))
+                self.setupTimer(i,refTime=refTime)
                 time.sleep(1)            
         self.cam_n = 0
         self.settoolTips()
+
+
+
 
         # Destroy Splash once all are loaded
         if self.splashScreen:
             self.splashScreen.finish(self)
 
         self.centerOnScreen()
-        self.setCameraCombo(0) # to update the selection indicator *
+        self.updateCamCombo() # to update the selection indicator *
         self.show()
+
+
+    def setupTimer(self, i,refTime=None,duration=9):
+        if DEBUG:
+            print "setup timer called", i
+        self.timerlabels[i].setEnabled(True)
+        self.timers[i].setEnabled(True)
+        self.timerreset9[i].setEnabled(True)
+        self.timerreset1[i].setEnabled(True)
+        self.timerclear[i].setEnabled(True)
+        self.timerlabels[i].setText( self.lCameraDesc[i] )
+        self.handleTimerReset(i,duration)
+        if not refTime:
+            refTime = time.time()
+        self.timerReferenceTime[i] = (refTime,duration*3600.)
+        self.timerKeepers[i].start(1000)
+
+    def handleTimerReset(self,cam_n, t):
+        if DEBUG:
+            print "timer reset", cam_n, t
+        #self.updateCamCombo()
+        self.timers[cam_n].setText("{:02.0f}:00:00".format(t))
+        self.timerReferenceTime[cam_n] = (time.time(),float(t)*3600.)
+        print "handleTimerReset", t, cam_n, self.viewer[cam_n]
+        if t > 0 and self.viewer[cam_n].camera is None :
+            print "reconnecting", cam_n
+            self.setCameraCombo(cam_n)
+            self.viewer[cam_n].onCameraSelect(cam_n)
+            self.viewer[cam_n].connectCamera( self.viewer[cam_n].cameraBase )
+            #self.onUpdateColorMap(cam_n)
+            self.viewer[cam_n].setColorMap()
+            self.connect(self.viewer[cam_n], self.sig6, self.onUpdateRate)
+            self.connect(self.viewer[cam_n], self.sig8, self.setCameraCombo)
+            self.updateCameraTitle(cam_n)
+        elif t == 0 and self.viewer[cam_n].camera is not None : 
+            print "clearing Cam", cam_n
+            self.setCameraCombo(cam_n)
+            self.viewer[cam_n].clear()
+
+    def updateTimer(self,cam_n):
+        if self.timers[cam_n].isEnabled() and self.timerReferenceTime[cam_n]:
+            ref, totalseconds = self.timerReferenceTime[cam_n]
+            endTime = ref+totalseconds
+            delta = int(endTime - time.time())
+            if delta > 0:
+                hours = delta / 3600
+                minutes = (delta % 3600) / 60
+                seconds = (delta % 3600) % 60
+                #if DEBUG:
+                #    print cam_n, ref, totalseconds, endTime, delta, hours, minutes, seconds
+                self.timers[cam_n].setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
+            else :
+                hours = 0
+                minutes = 0
+                seconds = 0
+                self.timers[cam_n].setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
+                if self.viewer[cam_n].camera is not None :
+                    self.setCameraCombo(cam_n)
+                    self.viewer[cam_n].clear()
+                #if DEBUG:
+                #    print "camera", cam_n, "should be disabled"
 
     def centerOnScreen(self):
         '''centerOnScreen() Centers the window on the screen.'''
@@ -1145,23 +1303,41 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.dW_Img_6.setToolTip('hold ALT to move this window')
         self.dW_Img_7.setToolTip('hold ALT to move this window')
         self.dW_Img_8.setToolTip('hold ALT to move this window')
+#        self.dW_Img_1.
+#        self.dW_Img_2.
+#        self.dW_Img_3.
+#        self.dW_Img_4.
+#        self.dW_Img_5.
+#        self.dW_Img_6.
+#        self.dW_Img_7.
+#        self.dW_Img_8.
 
+    def updateCamCombo(self):
+        #print "update cam combo called from main gui"
+        cam_n = self.cB_camera.currentIndex()
+        self.cam_n = cam_n
+        #self.setCameraCombo( cam_n )
+        self.updateCameraTitle(cam_n)
         
     def setCameraCombo(self, cam_n):
-# clear previous focus indication, if present
-        if self.idock[self.cB_camera.currentIndex()].windowTitle()[-1] == '*':
-            self.idock[self.cB_camera.currentIndex()].setWindowTitle( 
-                    self.idock[self.cB_camera.currentIndex()].windowTitle()[:-1] )
         self.cB_camera.setCurrentIndex(cam_n)
+        
+    def updateCameraTitle(self,cam_n):
+        # first clear any *'s from the titles
+        for i in xrange( self.cB_camera.count() ):
+            thisTitle = self.idock[i].windowTitle()
+            if len(thisTitle) > 0 and thisTitle[-1] == '*':
+                self.idock[i].setWindowTitle( self.idock[i].windowTitle()[:-1] )
+        # then put a * on the currently selected title
+        if len(self.idock[cam_n].windowTitle()) > 0:
+            self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
         self.getConfig(cam_n)
-        self.onUpdateColorMap(cam_n)
-# set asterisk indication of window focus
-        self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
+        #self.onUpdateColorMap(cam_n)
         self.viewer[cam_n].updateMarkerXY()
         self.viewer[cam_n].updateCrossPanel()
         self.viewer[cam_n].updateLock()
         self.viewer[cam_n].updateRdColors()
-        
+
     def set_bin(self):
         bindex = int(self.lEBXY.text())
         self.snd_cmd(self.cam_n, 'BinX', bindex)
@@ -1217,7 +1393,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 radiobutton.setChecked(True)
                 
     def onUpdateColorMap(self, cam_n):
-        #print 'onUpdateColorMap called'
+        print 'onUpdateColorMap called', cam_n
         if self.viewer[cam_n].colorMap != self.colormap[cam_n]:
             self.viewer[cam_n].colorMap = self.colormap[cam_n]
             self.viewer[cam_n].setColorMap()
@@ -1628,7 +1804,7 @@ class Viewer(QtGui.QMainWindow, form_class):
           f.close()
 
     def getConfig(self, cam_n):
-        #print 'getConfig called [CAM%d]' % self.cam_n
+        print 'getConfig called [CAM%d]' % self.cam_n
         cameraBase = str(self.lCameraList[cam_n])
         colormapsrb = {'jet' : self.rBColor_Jet,
                        'hsv' : self.rBColor_HSV,
@@ -1748,7 +1924,8 @@ class SplashScreen(QtGui.QSplashScreen):
 		QtGui.qApp.processEvents()		
 	
 	def loadImages(self):
-		self.splashLogo = QtGui.QPixmap('ui/LCLS_400.png')
+		#self.splashLogo = QtGui.QPixmap('ui/LCLS_400.png')
+		self.splashLogo = QtGui.QPixmap('ui/pcds-logo.gif')
 
 	def centerOnScreen(self):
 		'''centerOnScreen() Centers the window on the screen.'''
@@ -1809,4 +1986,5 @@ if __name__ == '__main__':
     gui = Viewer(app, cwd, options.instrument, camLstFname, cfgdir)#cwd, cams, cfgdir)
        
     sys.exit(app.exec_())
+
 
