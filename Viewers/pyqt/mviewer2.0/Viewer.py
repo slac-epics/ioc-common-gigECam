@@ -1,16 +1,14 @@
+import math
+import time
+import logging
 
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import QTimer, QObject #, Qt, QPoint, QPointF, QSize, QRectF, QObject
 from PyQt4.Qt import QColorDialog
-import math
-import time
 
 from utils import *
 from SplashScreen import SplashScreen
 from ViewerFrame import ViewerFrame
-
-DEBUG = False
-
 
 MAX_MOT = 7
 
@@ -305,8 +303,7 @@ class Viewer(QtGui.QMainWindow, form_class):
 
 
     def setupTimer(self, i,refTime=None,duration=9):
-        if DEBUG:
-            print "setup timer called", i
+        logging.debug( "setup timer called %i"% i )
         self.timerlabels[i].setEnabled(True)
         self.timers[i].setEnabled(True)
         self.timerreset9[i].setEnabled(True)
@@ -320,8 +317,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.timerKeepers[i].start(1000)
 
     def handleTimerReset(self,cam_n, t):
-        if DEBUG:
-            print "timer reset", cam_n, t
+        logging.debug( "timer reset %g %g", cam_n, t )
         #self.updateCamCombo()
         self.timers[cam_n].setText("{:02.0f}:00:00".format(t))
         self.timerReferenceTime[cam_n] = (time.time(),float(t)*3600.)
@@ -377,13 +373,11 @@ class Viewer(QtGui.QMainWindow, form_class):
       return i
 
     def getShowCross(self):
-        if DEBUG:
-            print "checked?", self.showHideCross.isChecked()
+        logging.debug( "checked? %s", self.showHideCross.isChecked() )
         return self.showHideCross.isChecked()
 
     def getLockCross(self):
-        if DEBUG:
-            print "locked?", self.lockCross.isChecked()
+        logging.debug( "locked? %s", self.lockCross.isChecked() )
         return self.lockCross.isChecked()
 
 
@@ -415,12 +409,10 @@ class Viewer(QtGui.QMainWindow, form_class):
                 'X1': self.X1Position, 'X2': self.X2Position, 'X3': self.X3Position, 'X4': self.X4Position,
                 'Y1': self.Y1Position, 'Y2': self.Y2Position, 'Y3': self.Y3Position, 'Y4': self.Y4Position,}
 
-        if DEBUG:
-            print "handling it!", XY, ":", int(translate[XY].text())
+        logging.debug( "handling it! %s : %g", XY,int(translate[XY].text()))
 
         if self.viewer[self.cam_n].lockCross[i]:
-            if DEBUG:
-                print "it's locked"
+            logging.debug( "it's locked %g", i )
             if XY[0] == 'X':
                 translate[XY].setText("{:0.0f}".format( self.viewer[self.cam_n].xpos[i] * self.viewer[self.cam_n].win_W ) )
             else:
@@ -431,9 +423,8 @@ class Viewer(QtGui.QMainWindow, form_class):
             else:
                 self.viewer[self.cam_n].ypos[ i ] = float(translate[XY].text()) / self.viewer[self.cam_n].win_H
 
-        if DEBUG:
-            print self.viewer[self.cam_n].xpos
-            print self.viewer[self.cam_n].ypos
+        logging.debug( self.viewer[self.cam_n].xpos )
+        logging.debug( self.viewer[self.cam_n].ypos )
 
     def settoolTips(self):
         self.pB_on.setToolTip('Reconnect Camera')
@@ -558,7 +549,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 radiobutton.setChecked(True)
                 
     def onUpdateColorMap(self, cam_n):
-        print 'onUpdateColorMap called', cam_n
+        logging.debug( 'onUpdateColorMap called %g', cam_n )
         if self.viewer[cam_n].colorMap != self.colormap[cam_n]:
             self.viewer[cam_n].colorMap = self.colormap[cam_n]
             self.viewer[cam_n].setColorMap()
@@ -638,8 +629,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             if s in [0,5,10,15]:
                 toremove.append(s)
                 self.check_box[s].setCheckState(0)
-                if DEBUG:
-                    print "no measuring of distance to self."
+                logging.debug( "no measuring of distance to self." )
         for t in toremove:
             newchecked.remove(t)
         if set(newchecked) > set(check_stack):
@@ -835,106 +825,6 @@ class Viewer(QtGui.QMainWindow, form_class):
             return 0
         return iCamera + 1
 
-#    def readPVListFile(self):
-##          self.lCameraList = []
-##          self.lCameraDesc = []
-##          self.lMotorList  = []
-##          self.lMotorDesc  = []
-##          self.basename    = list()
-##          self.ctrlname    = list()
-##          self.camtypes    = list()
-##          self.mottypes    = list()
-##          iCamera = -1
-##          iMotor  = -1        
-#        ''' Reads camera.lst file, update camera combo, etc...'''
-#        self.lCameraList = []
-#        self.lCameraDesc = []
-#        self.lMotorList  = []
-#        self.lMotorDesc  = []
-#        self.basename    = list()
-#        self.ctrlname    = list()
-#        self.camtypes    = list()
-#        self.mottypes    = list()
-#        iCamera = -1
-#        iMotor  = -1
-#        try:
-#          if (self.camerListFilename[0] == '/'):
-#            fnCameraList = self.camerListFilename
-#          else:
-#            fnCameraList = self.cwd + "/" + self.camerListFilename
-#          lCameraListLine = open( fnCameraList,"r").readlines()      
-#          self.lCameraList = []
-#          
-#          for line in lCameraListLine:
-#            line = line.lstrip()
-#            if not line:
-#                continue
-#            if line.startswith("#"):
-#              continue
-#            if not line.startswith("MM"):
-#                iCamera += 1
-#                self.cam_n = iCamera
-#    
-#                lsLine = line.split(",")
-#                if len(lsLine) < 2:
-#                    print throw("")
-#                
-#                sCameraPv = lsLine[1].strip()
-#                if len(lsLine) >= 4:
-#                  sCameraDesc = lsLine[3].strip().split('#')[0]
-#                else:
-#                  sCameraDesc = sCameraPv
-#                  
-#                self.lCameraList.append(sCameraPv)
-#                self.lCameraDesc.append(sCameraDesc)
-#            
-#                #self.cB_camera.addItem(sCameraDesc)
-#                comboLable = 'CAM[%d] %s' % (self.cam_n, sCameraPv)#.split(':')[-1])
-#                self.cB_camera.addItem(comboLable)
-#                
-#                self.camtypes.append(lsLine[0].strip())
-#    
-#                print 'Cam[%d] %s ' % (iCamera, sCameraDesc),
-#                if 'IMAGE' in sCameraPv:
-#                    self.ctrlname.append(sCameraPv.replace('IMAGE','CAM'))
-#                    self.basename.append(sCameraPv)
-#                    print 'Pv ',
-#                elif 'CAM' in sCameraPv:
-#                    self.ctrlname.append(sCameraPv)
-#                    self.basename.append(sCameraPv.replace('CAM','IMAGE'))
-#                    print 'Pv ',
-#                else:
-#                    print 'IP ',
-#                    print 'Using Vendor Libraries (not implemented yet)'
-#    
-#                print sCameraPv
-#            else: # now the motors in the lst file:
-#                iMotor += 1
-#                self.mot_n = iMotor
-#                
-#                lsLine = line.split(",")
-#                if len(lsLine) < 2:
-#                    print throw("")
-#                
-#                sMotorPv = lsLine[1].strip()
-#                if len(lsLine) >= 4:
-#                  sMotorDesc = lsLine[3].strip().split('#')[0]
-#                else:
-#                  sMotorDesc = sMotorPv
-#                  
-#                self.lMotorList.append(sMotorPv)
-#                self.lMotorDesc.append(sMotorDesc)
-#                #print sMotorPv, sMotorDesc        
-#                self.cB_onmot[iMotor].setText(sMotorPv)
-#                self.mottypes.append(lsLine[0].strip())
-#                
-#                print 'Mot[%d] %s ' % (iMotor, sMotorDesc), sMotorPv
-#        except:
-#            #import traceback
-#            #traceback.print_exc(file=sys.stdout)
-#            print '!! Failed to read motor pv list from \"%s\"' % fnCameraList
-#            return 0
-#        return iCamera + 1
             
     def snd_cmd(self, cam_n, pv, val):
         self.ca[cam_n].set_cmd(pv, val)
@@ -975,7 +865,7 @@ class Viewer(QtGui.QMainWindow, form_class):
           f.close()
 
     def getConfig(self, cam_n):
-        print 'getConfig called [CAM%d]' % self.cam_n
+        logging.debug( 'getConfig called [CAM%d]' , self.cam_n )
         cameraBase = str(self.lCameraList[cam_n])
         colormapsrb = {'jet' : self.rBColor_Jet,
                        'hsv' : self.rBColor_HSV,

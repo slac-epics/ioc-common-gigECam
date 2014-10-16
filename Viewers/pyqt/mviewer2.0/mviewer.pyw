@@ -1,12 +1,20 @@
 #! /bin/env python
 import sys, os
-from PyQt4 import QtGui 
-from options import Options
 import socket # for getting hostname
+import logging
+from options import Options
+
+from PyQt4 import QtGui 
+
+from Viewer import Viewer
 
 DEBUG = False
 
-from Viewer import Viewer
+if DEBUG:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.ERROR)
+
 
 ## ----------------------------------------------------------
 ## Working version (paiser):
@@ -48,19 +56,11 @@ from Viewer import Viewer
 #caput IOC:MEC:LAS:GIGE03:SYSRESET 1
 ## -----------------------------------------------------------------------------
 
-DEBUG = False
 
-DEBUG_LEVEL_0 = 0x00
-DEBUG_LEVEL_0 = 0x01
-DEBUG_LEVEL_0 = 0x02
-DEBUG_LEVEL_0 = 0x04
-
-#DEBUG = DEBUG_LEVEL_0
 
 
 
 if DEBUG:
-    print "running on host", socket.gethostname()
     print '''
                                                   
  #####  ###### #####  #    #  ####                
@@ -81,6 +81,7 @@ if DEBUG:
 
     
  
+logging.debug( "running on host %s", socket.gethostname() )
 
     
 

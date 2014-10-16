@@ -1,9 +1,10 @@
+import signal
+import logging
+
 import PyQt4.QtCore as QtCore
 import pyca
 from Pv import Pv
-import signal
 
-DEBUG = False
 
 def signal_handler(signal, frame):
      print '\nShutdown application...'
