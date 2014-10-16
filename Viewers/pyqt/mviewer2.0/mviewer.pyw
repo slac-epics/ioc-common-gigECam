@@ -8,12 +8,15 @@ from PyQt4 import QtGui
 
 from Viewer import Viewer
 
-DEBUG = False
+DEBUG = True
+
+logger=logging.getLogger('mviewer')
 
 if DEBUG:
-    logging.basicConfig(level=logging.DEBUG)
+    logger.setLevel(logging.DEBUG)
 else:
-    logging.basicConfig(level=logging.ERROR)
+    logger.setLevel(logging.ERROR)
+
 
 
 ## ----------------------------------------------------------

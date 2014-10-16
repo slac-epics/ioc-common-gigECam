@@ -10,6 +10,7 @@ import Image
 from DisplayImage import DisplayImage
 from utils import *
 
+logger = logging.getLogger('mviewer.ViewerFrame')
 
 
 class ViewerFrame(QtGui.QWidget):
@@ -84,16 +85,16 @@ class ViewerFrame(QtGui.QWidget):
       # which radio button is selected
       i = self.gui.getSelectedCross()
       if self.lockCross[i]:
-          logging.debug( "this cross is locked")
+          logger.debug( "this cross is locked")
       else:
           self.win_W = self.display_image.scaled_image.width() 
           self.win_H = self.display_image.scaled_image.height() 
           cross_X = float(event.x())/self.win_W
           cross_Y = float(event.y())/self.win_H
-          logging.debug( "cross %g is checked %g %g",i, event.x(), event.y() )
-          logging.debug( "float %g %g",cross_X, cross_Y )
-          logging.debug( "win %g %g", self.win_W, self.win_H )
-          logging.debug( "show %g", self.showCross[i] )
+          logger.debug( "cross %g is checked %g %g",i, event.x(), event.y() )
+          logger.debug( "float %g %g",cross_X, cross_Y )
+          logger.debug( "win %g %g", self.win_W, self.win_H )
+          logger.debug( "show %g", self.showCross[i] )
           self.gui.xPos_val[i].setText("{:0.0f}".format(cross_X*self.win_W))
           self.gui.yPos_val[i].setText("{:0.0f}".format(cross_Y*self.win_H))
           self.xpos[i] = float(cross_X)
@@ -166,13 +167,13 @@ class ViewerFrame(QtGui.QWidget):
                 #print 40*'-'
                 # here is where to put the cross putting code
                 if self.gui.cam_n == self.cam_n and self.camera is not None:
-                    logging.debug( "this cam already selected %g", self.cam_n )
+                    logger.debug( "this cam already selected %g", self.cam_n )
                     if self.gui.showHideCross.isChecked():
                         self.setCross(event)
                     
                 else:
                     self.gui.cam_n = self.cam_n
-                    logging.debug( "selecting cam %g", self.cam_n )
+                    logger.debug( "selecting cam %g", self.cam_n )
 
                 #self.gui.cB_camera.setCurrentIndex(self.cam_n)
                 self.emit(QtCore.SIGNAL("setCameraCombo(int)"), self.cam_n)
@@ -218,7 +219,7 @@ class ViewerFrame(QtGui.QWidget):
     return None
 
   def clearCamGUI(self):
-    logging.debug( 'clearCamGUI called' )
+    logger.debug( 'clearCamGUI called' )
     self.gui.idock[self.cam_n].setWindowTitle('')
     #self.gui.lb_on.setPixmap(self.gui.ledoff)
     #self.gui.cB_on.setChecked(False)
@@ -258,7 +259,7 @@ class ViewerFrame(QtGui.QWidget):
     depth = caget(sImagePv + ":ArraySize0_RBV", timeout)
     
     if depth == []:
-      logging.error( 'Connection ERROR: couldn\'t get depth')
+      logger.error( 'Connection ERROR: couldn\'t get depth')
       self.clearCamGUI()
       return False
     elif depth == 3: # It's a color camera!
@@ -311,7 +312,7 @@ class ViewerFrame(QtGui.QWidget):
     else:
         self.clearCamGUI()
 
-    if logging.getLogger().getEffectiveLevel() <= 20:
+    if logger.getEffectiveLevel() <= 20:
         self.dumpVARS()
     return self.camera_on
   
@@ -341,7 +342,7 @@ class ViewerFrame(QtGui.QWidget):
     if index < 0:
       return      
     if index >= len(self.gui.lCameraList):
-      logging.error( "index %d out of range (max: %d)" % (index, len(self.gui.lCameraList) - 1) )
+      logger.error( "index %d out of range (max: %d)" % (index, len(self.gui.lCameraList) - 1) )
       return            
     sCameraPv = str(self.gui.lCameraList[index])
     if sCameraPv == "":
@@ -370,28 +371,28 @@ class ViewerFrame(QtGui.QWidget):
     if exception is None:
       self.onSizeUpdate()
     else:
-      logging.error( "sizeCallback(): %-30s " % exception )
+      logger.error( "sizeCallback(): %-30s " % exception )
  
   # Note: this function is called by the CA library, from another thread
   def gainCallback(self, exception=None):
     if exception is None:
       self.onGainUpdate()
     else:
-      logging.error("gainCallback(): %-30s " % exception )
+      logger.error("gainCallback(): %-30s " % exception )
        
   # Note: this function is called by the CA library, from another thread
   def exposureCallback(self, exception=None):
     if exception is None:
       self.onExposureUpdate()
     else:
-      logging.error( "exposureCallback(): %-30s " % exception )
+      logger.error( "exposureCallback(): %-30s " % exception )
     
   # Note: this function is called by the CA library, from another thread
   def binXYCallback(self, exception=None):
     if exception is None:
       self.onBinXYUpdate()
     else:
-      logging.error( "binXYCallback(): %-30s " % exception )
+      logger.error( "binXYCallback(): %-30s " % exception )
       
   def onSizeUpdate(self):
     #print 'onSizeUpdate called'
@@ -467,7 +468,7 @@ class ViewerFrame(QtGui.QWidget):
       self.dataUpdates  += 1
       self.callInterval =  currentTime - self.lastImageUpdateDispTime
       if self.callInterval < self.lastImageProcessingTime:
-        logging.info( "Image update interval %.3f < Image Update Processing Time: %.3f" % 
+        logger.info( "Image update interval %.3f < Image Update Processing Time: %.3f" % 
           (callInterval, self.lastImageProcessingTime) )
         return      
       if self.callInterval < 1.0/self.displayRateMax:# throttle the display speed
@@ -477,7 +478,7 @@ class ViewerFrame(QtGui.QWidget):
       # Send out the signal to notify windows update (in the GUI thread)
       self.event.emit(QtCore.SIGNAL("onImageUpdate")) 
     else:
-      logging.error( "imagePvUpdateCallback(): %-30s " %(self.name), exception)
+      logger.error( "imagePvUpdateCallback(): %-30s " %(self.name), exception)
   
   def onImageUpdate(self):    
     #print 'onImageUpdate called', self.dataUpdates, self.dispUpdates
@@ -493,7 +494,7 @@ class ViewerFrame(QtGui.QWidget):
       self.dispUpdates += 1
       self.updateall()
     except Exception, e:
-      logging.error( 'updateImage: %s', e )
+      logger.error( 'updateImage: %s', e )
 
   def UpdateRate(self):
     
@@ -551,7 +552,7 @@ class ViewerFrame(QtGui.QWidget):
   def setImageSize(self, newx, newy):
     self.x = newx
     self.y = newy
-    logging.debug( "new size %g %g", newx, newy )
+    logger.debug( "new size %g %g", newx, newy )
 
     self.display_image.setImageSize()
     self.imageBuffer = mantaGiGE.pyCreateImageBuffer(self.display_image.image, 0)

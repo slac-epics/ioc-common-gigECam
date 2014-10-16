@@ -3,6 +3,7 @@ import logging
 from PyQt4 import QtGui, QtCore 
 from PyQt4.QtCore import Qt # , QObject #, Qt, QPoint, QPointF, QSize, QRectF, QObject
 
+logger = logging.getLogger('mviewer.DisplayManager')
 
 class DisplayImage(QtGui.QWidget):
   def __init__(self, parent, gui):

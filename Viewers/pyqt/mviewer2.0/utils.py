@@ -5,9 +5,10 @@ import PyQt4.QtCore as QtCore
 import pyca
 from Pv import Pv
 
+logger = logging.getLogger('mviewer.utils')
 
 def signal_handler(signal, frame):
-     print '\nShutdown application...'
+     logger.info( '\nShutdown application...')
      t = Viewer() # or the class that contains a clean close code
      t.shutdown()
      sys.exit(1)
@@ -21,9 +22,9 @@ def caput(pvname, value, timeout=1.0):
         pv.disconnect()
         #print 'caput', pvname, value
     except pyca.pyexc, e:
-        print 'pyca exception: %s' %(e)
+        logger.error( 'pyca exception: %s' %(e))
     except pyca.caexc, e:
-        print 'channel access exception: %s' %(e)
+        logger.error( 'channel access exception: %s' %(e))
         
 def caget(pvname, timeout=1.0):
     try:
@@ -35,10 +36,10 @@ def caget(pvname, timeout=1.0):
         #print 'caget', pvname, v
         return v
     except pyca.pyexc, e:
-        print 'pyca exception: %s' %(e)
+        logger.error( 'pyca exception: %s' %(e))
         return []
     except pyca.caexc, e:
-        print 'channel access exception: %s' %(e)
+        logger.error( 'channel access exception: %s' %(e))
         return []
         
 class cfginfo():

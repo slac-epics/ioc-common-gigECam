@@ -10,6 +10,8 @@ from utils import *
 from SplashScreen import SplashScreen
 from ViewerFrame import ViewerFrame
 
+logger = logging.getLogger('mviewer.Viewer')
+
 MAX_MOT = 7
 
 form_class, base_class = uic.loadUiType('ui/mviewer2.8.ui')
@@ -303,7 +305,7 @@ class Viewer(QtGui.QMainWindow, form_class):
 
 
     def setupTimer(self, i,refTime=None,duration=9):
-        logging.debug( "setup timer called %i"% i )
+        logger.debug( "setup timer called %i"% i )
         self.timerlabels[i].setEnabled(True)
         self.timers[i].setEnabled(True)
         self.timerreset9[i].setEnabled(True)
@@ -317,11 +319,11 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.timerKeepers[i].start(1000)
 
     def handleTimerReset(self,cam_n, t):
-        logging.debug( "timer reset %g %g", cam_n, t )
+        logger.debug( "timer reset %g %g", cam_n, t )
         #self.updateCamCombo()
         self.timers[cam_n].setText("{:02.0f}:00:00".format(t))
         self.timerReferenceTime[cam_n] = (time.time(),float(t)*3600.)
-        print "handleTimerReset", t, cam_n, self.viewer[cam_n]
+        logger.debug( "handleTimerReset %g %g %s", t, cam_n, self.viewer[cam_n] )
         if t > 0 and self.viewer[cam_n].camera is None :
             print "reconnecting", cam_n
             self.setCameraCombo(cam_n)
@@ -373,11 +375,11 @@ class Viewer(QtGui.QMainWindow, form_class):
       return i
 
     def getShowCross(self):
-        logging.debug( "checked? %s", self.showHideCross.isChecked() )
+        logger.debug( "checked? %s", self.showHideCross.isChecked() )
         return self.showHideCross.isChecked()
 
     def getLockCross(self):
-        logging.debug( "locked? %s", self.lockCross.isChecked() )
+        logger.debug( "locked? %s", self.lockCross.isChecked() )
         return self.lockCross.isChecked()
 
 
@@ -409,10 +411,10 @@ class Viewer(QtGui.QMainWindow, form_class):
                 'X1': self.X1Position, 'X2': self.X2Position, 'X3': self.X3Position, 'X4': self.X4Position,
                 'Y1': self.Y1Position, 'Y2': self.Y2Position, 'Y3': self.Y3Position, 'Y4': self.Y4Position,}
 
-        logging.debug( "handling it! %s : %g", XY,int(translate[XY].text()))
+        logger.debug( "handling it! %s : %g", XY,int(translate[XY].text()))
 
         if self.viewer[self.cam_n].lockCross[i]:
-            logging.debug( "it's locked %g", i )
+            logger.debug( "it's locked %g", i )
             if XY[0] == 'X':
                 translate[XY].setText("{:0.0f}".format( self.viewer[self.cam_n].xpos[i] * self.viewer[self.cam_n].win_W ) )
             else:
@@ -423,8 +425,8 @@ class Viewer(QtGui.QMainWindow, form_class):
             else:
                 self.viewer[self.cam_n].ypos[ i ] = float(translate[XY].text()) / self.viewer[self.cam_n].win_H
 
-        logging.debug( self.viewer[self.cam_n].xpos )
-        logging.debug( self.viewer[self.cam_n].ypos )
+        logger.debug( self.viewer[self.cam_n].xpos )
+        logger.debug( self.viewer[self.cam_n].ypos )
 
     def settoolTips(self):
         self.pB_on.setToolTip('Reconnect Camera')
@@ -549,7 +551,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 radiobutton.setChecked(True)
                 
     def onUpdateColorMap(self, cam_n):
-        logging.debug( 'onUpdateColorMap called %g', cam_n )
+        logger.debug( 'onUpdateColorMap called %g', cam_n )
         if self.viewer[cam_n].colorMap != self.colormap[cam_n]:
             self.viewer[cam_n].colorMap = self.colormap[cam_n]
             self.viewer[cam_n].setColorMap()
@@ -629,7 +631,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             if s in [0,5,10,15]:
                 toremove.append(s)
                 self.check_box[s].setCheckState(0)
-                logging.debug( "no measuring of distance to self." )
+                logger.debug( "no measuring of distance to self." )
         for t in toremove:
             newchecked.remove(t)
         if set(newchecked) > set(check_stack):
@@ -865,7 +867,7 @@ class Viewer(QtGui.QMainWindow, form_class):
           f.close()
 
     def getConfig(self, cam_n):
-        logging.debug( 'getConfig called [CAM%d]' , self.cam_n )
+        logger.debug( 'getConfig called [CAM%d]' , self.cam_n )
         cameraBase = str(self.lCameraList[cam_n])
         colormapsrb = {'jet' : self.rBColor_Jet,
                        'hsv' : self.rBColor_HSV,
