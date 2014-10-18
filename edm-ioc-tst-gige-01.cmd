@@ -2,11 +2,10 @@
 
 # Setup edm environment
 export EPICS_HOST_ARCH=linux-x86
-source /reg/g/pcds/setup/epicsenv-3.14.9.sh
-export EPICS_CA_MAX_ARRAY_BYTES=9000000
+source /reg/g/pcds/setup/epicsenv-3.14.12.sh
 
-export IOC_PV=TST:R40:IOC:18:GIGE:01
-export CAM=TST:GIGE1:CAM1
+export IOC_PV=TST:GIGE:IOC134
+export CAM=TST:GIGE1:CAM134
 export HUTCH=TST
 export PVLIST=tst.lst
 edm -x -eolc	\
