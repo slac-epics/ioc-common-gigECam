@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------
+# MultiViewer Description File
+# ---------------------------------------------------------------
+# Syntax:
+#   <TYPE>, <PVNAME|IOCNAME>, <DESC> # some_more_comments
+# Where:
+#   <Type>    : "GIG" -> GigE Cameras or
+#               "MMS" -> Motor or
+#               "IOC" -> Server name
+#   <PVNAME>  : Camera PV Name to display in the display
+#   <IOCNAME> : Server name associated to restart button
+#   <DESC>    : User Camera or Server description
+# Notes:
+#   PVNAME or IOCNAME are not case sensitive.
+#   Line can be commented out by starting with '#' character.
+# ---------------------------------------------------------------
+
+# CAMERA PV NAMES (located in the cfg file, 'CAM' variable):
+GIG, TST:GIGE:CAM134, B901 TST Camera 1 #on ioc-tst-cam01
+GIG, TST:GIGE:CAM134, B901 TST Camera 2 #on ioc-tst-cam01
+GIG, TST:GIGE:CAM134, B901 TST Camera 3 #on ioc-tst-cam01
+#GIG, TST:GIGE:CAM134, B901 TST Camera 4 #on ioc-tst-cam01
+#GIG, TST:GIGE:CAM134, B901 TST Camera 5 #on ioc-tst-cam01
+#GIG, TST:GIGE:CAM134, B901 TST Camera 6 #on ioc-tst-cam01
+#GIG, TST:GIGE:CAM134, B901 TST Camera 7 #on ioc-tst-cam01
+#GIG, TST:GIGE:CAM134, B901 TST Camera 8 #on ioc-tst-cam01
+
+# IOC PV NAMES (located in the cfg file, 'IOC_PV' variable): 
+IOC, TST:GIGE:IOC134, IOC1 #ioc PV name for restart cam1 in ioc-tst-cam01
+IOC, TST:GIGE:IOC135, IOC2 #ioc PV name for restart cam2 in ioc-tst-cam01
+#IOC, TST:GIGE:IOC134, IOC3 #ioc PV name for restart cam3 in ioc-tst-cam01
+#IOC, TST:GIGE:IOC134, IOC4 #ioc PV name for restart cam4 in ioc-tst-cam01
+#IOC, TST:GIGE:IOC134, IOC5 #ioc PV name for restart cam5 in ioc-tst-cam01
+#IOC, TST:GIGE:IOC134, IOC6 #ioc PV name for restart cam6 in ioc-tst-cam01
+#IOC, TST:GIGE:IOC134, IOC7 #ioc PV name for restart cam7 in ioc-tst-cam01
+#IOC, TST:GIGE:IOC134, IOC8 #ioc PV name for restart cam8 in ioc-tst-cam01
+
+# MOTOR PV NAMES:
+MMS, IOC:TST:PPK:MOT1, Pulse Picker motor 1 #installed in B901...
+MMS, IOC:TST:PPK:MOT2, Pulse Picker Trans X #installed in B901...
+MMS, IOC:TST:PPK:MOT3, Pulse Picker Trans Y #installed in B901...
+
+
+
