@@ -164,35 +164,22 @@ class ViewerFrame(QtGui.QWidget):
         '''
         if(event.type()==QtCore.QEvent.MouseButtonPress):
             if event.buttons() & Qt.LeftButton:
-                #print 40*'-'
-                # here is where to put the cross putting code
                 if self.gui.cam_n == self.cam_n and self.camera is not None:
                     logger.debug( "this cam already selected %g", self.cam_n )
                     if self.gui.showHideCross.isChecked():
                         self.setCross(event)
-                    
                 else:
                     self.gui.cam_n = self.cam_n
                     logger.debug( "selecting cam %g", self.cam_n )
+                    self.emit(QtCore.SIGNAL("setCameraCombo(int)"), self.cam_n)
 
-                #self.gui.cB_camera.setCurrentIndex(self.cam_n)
-                self.emit(QtCore.SIGNAL("setCameraCombo(int)"), self.cam_n)
                 if not self.camera_on:
                     self.connectDisplay()
                     self.onCameraSelect(self.cam_n)
-#                    if not self.camera_on:
-#                        self.gui.lb_on.setPixmap(self.gui.ledoff)
-#                    else:
-#                        self.gui.lb_on.setPixmap(self.gui.ledon)
                     self.onExposureUpdate()
                     self.onGainUpdate()
                     self.onBinXYUpdate()
-                    #self.gui.cB_on.setChecked(True)                    
-#                else:
-#                    self.gui.lb_on.setPixmap(self.gui.ledon)
-                    #self.gui.cB_on.setChecked(False)
                 self.updateall()
-                #print 40*'-'
                 return True
         return False
     

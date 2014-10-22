@@ -105,7 +105,12 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.checkBox31, self.checkBox32, self.checkBox33, self.checkBox34,
                 self.checkBox41, self.checkBox42, self.checkBox43, self.checkBox44,
                 ]
-        
+        self.colormapsrb = {'jet' : self.rBColor_Jet,
+                       'hsv' : self.rBColor_HSV,
+                       'cool': self.rBColor_Cool,
+                       'gray': self.rBColor_Gray,
+                       'hot' : self.rBColor_Hot}
+
         #self.tB_reset = [self.tB_reset_1, self.tB_reset_2]
 
         self.lb_ImStats = [self.lb_minValdata, self.lb_maxValdata]
@@ -300,7 +305,10 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.splashScreen.finish(self)
 
         self.centerOnScreen()
+
         self.setCameraCombo(0) # to update the selection indicator *
+        self.viewer[0].setColorMap()
+        self.updateCamCombo()
         self.show()
 
 
@@ -461,14 +469,6 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.dW_Img_6.setToolTip('hold ALT to move this window')
         self.dW_Img_7.setToolTip('hold ALT to move this window')
         self.dW_Img_8.setToolTip('hold ALT to move this window')
-#        self.dW_Img_1.
-#        self.dW_Img_2.
-#        self.dW_Img_3.
-#        self.dW_Img_4.
-#        self.dW_Img_5.
-#        self.dW_Img_6.
-#        self.dW_Img_7.
-#        self.dW_Img_8.
 
     def updateCamCombo(self):
         #print "update cam combo called from main gui"
@@ -476,9 +476,22 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.cam_n = cam_n
         #self.setCameraCombo( cam_n )
         self.updateCameraTitle(cam_n)
+        self.viewer[cam_n].updateMarkerXY()
+        self.viewer[cam_n].updateCrossPanel()
+        self.viewer[cam_n].updateLock()
+        self.viewer[cam_n].updateRdColors()
         
     def setCameraCombo(self, cam_n):
         self.cB_camera.setCurrentIndex(cam_n)
+        logger.debug('current camera is %g', cam_n)
+        logger.debug('camera colormap radio is %s', self.viewer[cam_n].colorMap)
+        cB_colormap = self.colormapsrb[self.viewer[cam_n].colorMap]
+        if not cB_colormap.isChecked():
+           cB_colormap.setChecked(True)
+        logger.debug('camera min slider is %g', self.viewer[cam_n].iRangeMin)
+        self.hSRngMin.setValue(self.viewer[cam_n].iRangeMin)
+        logger.debug('camera max slider is %g', self.viewer[cam_n].iRangeMax)
+        self.hSRngMax.setValue(self.viewer[cam_n].iRangeMax)
         
     def updateCameraTitle(self,cam_n):
         # first clear any *'s from the titles
@@ -490,11 +503,6 @@ class Viewer(QtGui.QMainWindow, form_class):
         if len(self.idock[cam_n].windowTitle()) > 0:
             self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
         self.getConfig(cam_n)
-        #self.onUpdateColorMap(cam_n)
-        self.viewer[cam_n].updateMarkerXY()
-        self.viewer[cam_n].updateCrossPanel()
-        self.viewer[cam_n].updateLock()
-        self.viewer[cam_n].updateRdColors()
 
     def set_bin(self):
         bindex = int(self.lEBXY.text())
@@ -502,6 +510,16 @@ class Viewer(QtGui.QMainWindow, form_class):
         time.sleep(1)  
         self.snd_cmd(self.cam_n, 'BinY', bindex)
         if self.cfg == None: self.dumpConfig(self.cam_n)
+        # some update needed here
+        logger.debug('no update done after set_bin')
+        logger.debug('please change the colormap for this camera to restore image %g', self.cam_n)
+#        currentcolormap = str(self.viewer[self.cam_n].colorMap) 
+#        if currentcolormap  == 'jet':
+#            self.set_cool()
+#        else:
+#            self.set_jet()
+#        # set it back
+#        self.colormapsrb[currentcolormap].setChecked(True)
         
     def set_expt(self):
         val = float(self.dS_expt.value())
@@ -869,11 +887,6 @@ class Viewer(QtGui.QMainWindow, form_class):
     def getConfig(self, cam_n):
         logger.debug( 'getConfig called [CAM%d]' , self.cam_n )
         cameraBase = str(self.lCameraList[cam_n])
-        colormapsrb = {'jet' : self.rBColor_Jet,
-                       'hsv' : self.rBColor_HSV,
-                       'cool': self.rBColor_Cool,
-                       'gray': self.rBColor_Gray,
-                       'hot' : self.rBColor_Hot}
         if cameraBase == "":
           return
         self.cfg = cfginfo()
@@ -907,7 +920,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 pass
             
             # set radiobuttons:
-            cB_colormap = colormapsrb[self.colormap[cam_n]]
+            cB_colormap = self.colormapsrb[self.colormap[cam_n]]
             if not cB_colormap.isChecked():
 #                   self.setImageColorMap(self.cam_n, 
 #                                         cB_colormap, self.colormap[cam_n])
