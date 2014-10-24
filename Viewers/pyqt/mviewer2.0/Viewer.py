@@ -1,6 +1,7 @@
 import math
 import time
 import logging
+import sys
 
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import QTimer, QObject #, Qt, QPoint, QPointF, QSize, QRectF, QObject
@@ -14,7 +15,7 @@ logger = logging.getLogger('mviewer.Viewer')
 
 MAX_MOT = 7
 
-form_class, base_class = uic.loadUiType('ui/mviewer2.8.ui')
+form_class, base_class = uic.loadUiType('ui/mviewer2.9.ui')
 
 class Viewer(QtGui.QMainWindow, form_class):    
     '''Display multiple gigE cameras in a single application'''
@@ -22,7 +23,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         super(Viewer, self).__init__(parent)
         #QtGui.QWidget.__init__(self)
         self.setupUi(self)
-        
+
         self.splashScreen = SplashScreen()
 #        self.setGeometry(QtCore.QRect(self.width()/2-10, self.height()/2-10,
 #                                      self.width()/2+10, self.height()/2+10))
@@ -132,6 +133,15 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.timerreset1 = [self.ResetTimer1h1, self.ResetTimer1h2, self.ResetTimer1h3, self.ResetTimer1h4,
                 self.ResetTimer1h5, self.ResetTimer1h6, self.ResetTimer1h7, self.ResetTimer1h8]
 
+        self.camPvs = [self.le_camPv_1, self.le_camPv_2, self.le_camPv_3, self.le_camPv_4,
+                       self.le_camPv_5, self.le_camPv_6, self.le_camPv_7, self.le_camPv_8 ]
+
+        self.iocPvs = [self.le_iocPv_1, self.le_iocPv_2, self.le_iocPv_3, self.le_iocPv_4,
+                       self.le_iocPv_5, self.le_iocPv_6, self.le_iocPv_7, self.le_iocPv_8 ]
+
+        self.cB_oncams = [self.cB_en_1, self.cB_en_2, self.cB_en_3, self.cB_en_4,
+                          self.cB_en_5, self.cB_en_6, self.cB_en_7, self.cB_en_8 ]
+
         self.timerReferenceTime = 8*[None, ]
 
         self.lb_ImStats[0].setText('n/a')
@@ -166,6 +176,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         sig9   = QtCore.SIGNAL("topLevelChanged(bool)")
         sig10  = QtCore.SIGNAL("released()")
         sig11  = QtCore.SIGNAL("timeout()")
+        sig12  = QtCore.SIGNAL("lostFocus()")
 
         self.objc  , self.qsig  , self.sig0  , self.sig1  , self.sig2  , self.sig3  , self.sig4  , self.sig5  , self.sig6  , self.sig7  , self.sig8  , self.sig9  , self.sig10 , self.sig11 , = objc  , qsig  , sig0  , sig1  , sig2  , sig3  , sig4  , sig5  , sig6  , sig7  , sig8  , sig9  , sig10 , sig11 ,
 
@@ -268,6 +279,56 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.timerreset1[7], sig10, lambda: self.handleTimerReset(7,1) )
         self.connect( self.timerclear[7], sig10, lambda: self.handleTimerReset(7,0) )
         self.connect(self.timerKeepers[7],sig11,      lambda: self.updateTimer(7) )
+        
+        # Lost focus: ----------------------------------------------------------
+        self.connect(self.camPvs[0], sig12, lambda: self.onUpdatePVListTab(0,0))
+        self.connect(self.camPvs[1], sig12, lambda: self.onUpdatePVListTab(1,0))
+        self.connect(self.camPvs[2], sig12, lambda: self.onUpdatePVListTab(2,0))
+        self.connect(self.camPvs[3], sig12, lambda: self.onUpdatePVListTab(3,0))
+        self.connect(self.camPvs[4], sig12, lambda: self.onUpdatePVListTab(4,0))
+        self.connect(self.camPvs[5], sig12, lambda: self.onUpdatePVListTab(5,0))
+        self.connect(self.camPvs[6], sig12, lambda: self.onUpdatePVListTab(6,0))
+        self.connect(self.camPvs[7], sig12, lambda: self.onUpdatePVListTab(7,0))
+
+        self.connect(self.iocPvs[0], sig12, lambda: self.onUpdatePVListTab(0,1))
+        self.connect(self.iocPvs[1], sig12, lambda: self.onUpdatePVListTab(1,1))
+        self.connect(self.iocPvs[2], sig12, lambda: self.onUpdatePVListTab(2,1))
+        self.connect(self.iocPvs[3], sig12, lambda: self.onUpdatePVListTab(3,1))
+        self.connect(self.iocPvs[4], sig12, lambda: self.onUpdatePVListTab(4,1))
+        self.connect(self.iocPvs[5], sig12, lambda: self.onUpdatePVListTab(5,1))
+        self.connect(self.iocPvs[6], sig12, lambda: self.onUpdatePVListTab(6,1))
+        self.connect(self.iocPvs[7], sig12, lambda: self.onUpdatePVListTab(7,1))
+        # ----------------------------------------------------------------------
+        
+        # Return pressed: ------------------------------------------------------
+        self.connect(self.camPvs[0], sig5, lambda: self.onUpdatePVListTab(0,0))
+        self.connect(self.camPvs[1], sig5, lambda: self.onUpdatePVListTab(1,0))
+        self.connect(self.camPvs[2], sig5, lambda: self.onUpdatePVListTab(2,0))
+        self.connect(self.camPvs[3], sig5, lambda: self.onUpdatePVListTab(3,0))
+        self.connect(self.camPvs[4], sig5, lambda: self.onUpdatePVListTab(4,0))
+        self.connect(self.camPvs[5], sig5, lambda: self.onUpdatePVListTab(5,0))
+        self.connect(self.camPvs[6], sig5, lambda: self.onUpdatePVListTab(6,0))
+        self.connect(self.camPvs[7], sig5, lambda: self.onUpdatePVListTab(7,0))
+
+        self.connect(self.iocPvs[0], sig5, lambda: self.onUpdatePVListTab(0,1))
+        self.connect(self.iocPvs[1], sig5, lambda: self.onUpdatePVListTab(1,1))
+        self.connect(self.iocPvs[2], sig5, lambda: self.onUpdatePVListTab(2,1))
+        self.connect(self.iocPvs[3], sig5, lambda: self.onUpdatePVListTab(3,1))
+        self.connect(self.iocPvs[4], sig5, lambda: self.onUpdatePVListTab(4,1))
+        self.connect(self.iocPvs[5], sig5, lambda: self.onUpdatePVListTab(5,1))
+        self.connect(self.iocPvs[6], sig5, lambda: self.onUpdatePVListTab(6,1))
+        self.connect(self.iocPvs[7], sig5, lambda: self.onUpdatePVListTab(7,1))
+        # ----------------------------------------------------------------------
+
+        self.connect(self.cB_oncams[0], sig0, lambda: self.onEnableCam(0))
+        self.connect(self.cB_oncams[1], sig0, lambda: self.onEnableCam(1))
+        self.connect(self.cB_oncams[2], sig0, lambda: self.onEnableCam(2))
+        self.connect(self.cB_oncams[3], sig0, lambda: self.onEnableCam(3))
+        self.connect(self.cB_oncams[4], sig0, lambda: self.onEnableCam(4))
+        self.connect(self.cB_oncams[5], sig0, lambda: self.onEnableCam(5))
+        self.connect(self.cB_oncams[6], sig0, lambda: self.onEnableCam(6))
+        self.connect(self.cB_oncams[7], sig0, lambda: self.onEnableCam(7))
+
 
         #print dir (self.w_Img_1)#.sizePolicy.setHeightForWidth(True)
         #print dir(self.dW_Img_1.sizePolicy.setHeightForWidth)
@@ -282,7 +343,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.idock[i].setEnabled(True)
             self.w_Img[i].setEnabled(True)
             if self.iocmod[i]:
-                self.ca[i] = CAComm(self.lock[i], self.ctrlname[i], self)
+                self.ca[i] = CAComm(self.lock[i], self.basename[i], self)
                 self.getConfig(i)
                 self.viewer[i] = ViewerFrame(self.w_Img[i], self)
                 self.viewer[i].onCameraSelect(i) # set camera pv and start display
@@ -310,7 +371,6 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.viewer[0].setColorMap()
         self.updateCamCombo()
         self.show()
-
 
     def setupTimer(self, i,refTime=None,duration=9):
         logger.debug( "setup timer called %i"% i )
@@ -705,7 +765,55 @@ class Viewer(QtGui.QMainWindow, form_class):
         if not '' in [x1,x2,y1,y2]:
             D = math.sqrt( (float(x2)-float(x1))**2 + (float(y2)-float(y1))**2 )
         return D, translate[sc]
+    
+    def onUpdatePVListTab(self, position, pvtype):
+        '''Check on changes in setup PVs Tab and update camera list'''
+        '''
+        self.lCameraList = []
+        self.lCameraDesc = []
+        self.lMotorList  = []
+        self.lMotorDesc  = []
+        self.lIOCList    = []
+        self.lIOCDesc    = []
+        self.basename    = list()
+        self.camtypes    = list()
+        self.mottypes    = list()
+        iCamera = -1
+        iMotor  = -1
+        iIOC    = -1
+        '''
+        campv, iocpv = (0, 1)
+        print self.camPvs[position].text(), self.basename[position], self.iocPvs[position].text(), self.lIOCList[position]
+        if pvtype is campv: 
+            if self.camPvs[position].text() != self.basename[position]: # if something is really changed, then act
+                self.onUpdateCamPv(position)
+        elif pvtype is iocpv:
+            if self.iocPvs[position].text() != self.lIOCList[position]: # if something is really changed, then act
+                self.onUpdateIocPv(position)
+        else:
+            return False
+        return True
+    
+    def onUpdateCamPv(self, position):
+        '''Update camera position settings with the new cam Pvs'''
+        # here should enter the new settings
+        print 'Updating CAM %d settings'% position
+        self.onEnableCam(position)
+
+    def onUpdateIocPv(self, position):
+        '''Update camera position settings with the new ioc Pvs'''
+        # here should enter the new settings
+        print 'Updating IOC_PV %d settings'% position
+        self.onEnableCam(position)
         
+    def onEnableCam(self, position):
+        '''Enable camera connection monitors and single viewer'''
+        if self.cB_oncams[position].isChecked():
+            print 'Connect CAM %d and monitors to specific location' % position
+        else:
+            print 'Disconnect CAM %d and monitors to specific location' % position
+        
+                
     def readPVListFile(self):
         ''' Reads camera.lst file, update camera combo, etc...
         # ---------------------------------------------------------------
@@ -732,7 +840,6 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.lIOCList    = []
         self.lIOCDesc    = []
         self.basename    = list()
-        self.ctrlname    = list()
         self.camtypes    = list()
         self.mottypes    = list()
         iCamera = -1
@@ -776,20 +883,6 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.camtypes.append(lsLine[0].strip())
     
                 print 'Cam[%d] %s ' % (iCamera, sCameraDesc),
-                '''
-                if 'IMAGE' in sCameraPv:
-                    self.ctrlname.append(sCameraPv.replace('IMAGE','CAM'))
-                    self.basename.append(sCameraPv)
-                    print 'Pv ',
-                elif 'CAM' in sCameraPv:
-                    self.ctrlname.append(sCameraPv)
-                    self.basename.append(sCameraPv.replace('CAM','IMAGE'))
-                    print 'Pv ',
-                else:
-                    print 'IP ',
-                    print 'Using Vendor Libraries (not implemented yet)'
-                '''    
-                self.ctrlname.append(sCameraPv)
                 self.basename.append(sCameraPv)
                 print 'Pv ',
     

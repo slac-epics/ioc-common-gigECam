@@ -298,6 +298,7 @@ class ViewerFrame(QtGui.QWidget):
       pyca.flush_io()
     else:
         self.clearCamGUI()
+        self.camera_on = False
 
     if logger.getEffectiveLevel() <= 20:
         self.dumpVARS()
