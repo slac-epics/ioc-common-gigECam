@@ -15,6 +15,42 @@ logger = logging.getLogger('mviewer.Viewer')
 
 MAX_MOT = 7
 
+form_class1, base_class1 = uic.loadUiType('ui/mvsetup1.0.ui')
+
+class SetupDialog(QtGui.QDialog, form_class1):    
+    '''Setup dialog to define PV names'''
+    def __init__(self, parent=None):
+        super(SetupDialog, self).__init__(parent)
+        self.setupUi(self)
+
+        self.camPvs = [self.le_camPv_1, self.le_camPv_2, self.le_camPv_3, self.le_camPv_4,
+                       self.le_camPv_5, self.le_camPv_6, self.le_camPv_7, self.le_camPv_8 ]
+
+        self.camDescs = [self.le_camDesc_1, self.le_camDesc_2, self.le_camDesc_3, self.le_camDesc_4,
+                       self.le_camDesc_5, self.le_camDesc_6, self.le_camDesc_7, self.le_camDesc_8 ]
+
+        self.iocPvs = [self.le_iocPv_1, self.le_iocPv_2, self.le_iocPv_3, self.le_iocPv_4,
+                       self.le_iocPv_5, self.le_iocPv_6, self.le_iocPv_7, self.le_iocPv_8 ]
+
+        self.cB_encams = [self.cB_en_c1, self.cB_en_c2, self.cB_en_c3, self.cB_en_c4,
+                          self.cB_en_c5, self.cB_en_c6, self.cB_en_c7, self.cB_en_c8 ]
+        
+        self.mmsPvs = [self.le_mmsPv_1, self.le_mmsPv_2, self.le_mmsPv_3, self.le_mmsPv_4,
+                       self.le_mmsPv_5, self.le_mmsPv_6, self.le_mmsPv_7, self.le_mmsPv_8 ]
+
+        self.mmsDescs = [self.le_mmsDesc_1, self.le_mmsDesc_2, self.le_mmsDesc_3, self.le_mmsDesc_4,
+                       self.le_mmsDesc_5, self.le_mmsDesc_6, self.le_mmsDesc_7, self.le_mmsDesc_8 ]
+
+        self.cB_enmmss = [self.cB_en_m1, self.cB_en_m2, self.cB_en_m3, self.cB_en_m4,
+                          self.cB_en_m5, self.cB_en_m6, self.cB_en_m7, self.cB_en_m8 ]
+
+    def getValues(self):
+        # enumerated elements order
+        cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
+        return [self.camPvs, self.camDescs, self.iocPvs, self.cB_encams,\
+                self.mmsPvs, self.mmsDescs, self.cB_enmmss]
+
+
 form_class, base_class = uic.loadUiType('ui/mviewer2.9.ui')
 
 class Viewer(QtGui.QMainWindow, form_class):    
@@ -141,11 +177,27 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         self.cB_oncams = [self.cB_en_1, self.cB_en_2, self.cB_en_3, self.cB_en_4,
                           self.cB_en_5, self.cB_en_6, self.cB_en_7, self.cB_en_8 ]
+        
+#        self.mmsPvs = [self.le_mmsPv_1, self.le_mmsPv_2, self.le_mmsPv_3, self.le_mmsPv_4,
+#                       self.le_mmsPv_5, self.le_mmsPv_6, self.le_mmsPv_7, self.le_mmsPv_8 ]
+        self.TimerLabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4, 
+                            self.TimerLabel5, self.TimerLabel6, self.TimerLabel7, self.TimerLabel8]
+        
+        self.X1Positions = 8 * ['',] ; self.Y1Positions = 8 * ['',]
+        self.X2Positions = 8 * ['',] ; self.Y2Positions = 8 * ['',]
+        self.X3Positions = 8 * ['',] ; self.Y3Positions = 8 * ['',]
+        self.X4Positions = 8 * ['',] ; self.Y4Positions = 8 * ['',]
 
+        self.ShowHideCrosses = 8 * [False,] ; self.LockCrosses = 8 * [False,]
+
+        self.checkBox21s = 8 * [False,] ; self.checkBox31s = 8 * [False,]; self.checkBox41s = 8 * [False,]
+        self.checkBox12s = 8 * [False,] ; self.checkBox32s = 8 * [False,]; self.checkBox42s = 8 * [False,]
+        self.checkBox13s = 8 * [False,] ; self.checkBox23s = 8 * [False,]; self.checkBox43s = 8 * [False,]
+        self.checkBox14s = 8 * [False,] ; self.checkBox24s = 8 * [False,]; self.checkBox34s = 8 * [False,]
+        
         self.timerReferenceTime = 8*[None, ]
 
-        self.lb_ImStats[0].setText('n/a')
-        self.lb_ImStats[1].setText('n/a')
+        self.lb_ImStats[0].setText('n/a') ; self.lb_ImStats[1].setText('n/a')
         
         for iMotor in range(MAX_MOT): 
             self.lb_limM[iMotor].setPixmap(self.limitoff)
@@ -205,6 +257,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.pB_resetioc,  sig0, self.resetIOC)
         self.connect(self.pB_save,      sig0, lambda: self.mytest('save'))
         self.connect(self.pB_elog,      sig0, lambda: self.mytest('elog'))
+        self.connect(self.pB_setup,     sig0, self.mvsetup)
         # --------------------------------------------------------
         self.connect(self.checkBox11,   sig0, self.onCheckPress)
         self.connect(self.checkBox12,   sig0, self.onCheckPress)
@@ -298,26 +351,44 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.iocPvs[5], sig12, lambda: self.onUpdatePVListTab(5,1))
         self.connect(self.iocPvs[6], sig12, lambda: self.onUpdatePVListTab(6,1))
         self.connect(self.iocPvs[7], sig12, lambda: self.onUpdatePVListTab(7,1))
+
+#        self.connect(self.mmsPvs[0], sig12, lambda: self.onUpdatePVListTab(0,2))
+#        self.connect(self.mmsPvs[1], sig12, lambda: self.onUpdatePVListTab(1,2))
+#        self.connect(self.mmsPvs[2], sig12, lambda: self.onUpdatePVListTab(2,2))
+#        self.connect(self.mmsPvs[3], sig12, lambda: self.onUpdatePVListTab(3,2))
+#        self.connect(self.mmsPvs[4], sig12, lambda: self.onUpdatePVListTab(4,2))
+#        self.connect(self.mmsPvs[5], sig12, lambda: self.onUpdatePVListTab(5,2))
+#        self.connect(self.mmsPvs[6], sig12, lambda: self.onUpdatePVListTab(6,2))
+#        self.connect(self.mmsPvs[7], sig12, lambda: self.onUpdatePVListTab(7,2))
         # ----------------------------------------------------------------------
         
         # Return pressed: ------------------------------------------------------
-        self.connect(self.camPvs[0], sig5, lambda: self.onUpdatePVListTab(0,0))
-        self.connect(self.camPvs[1], sig5, lambda: self.onUpdatePVListTab(1,0))
-        self.connect(self.camPvs[2], sig5, lambda: self.onUpdatePVListTab(2,0))
-        self.connect(self.camPvs[3], sig5, lambda: self.onUpdatePVListTab(3,0))
-        self.connect(self.camPvs[4], sig5, lambda: self.onUpdatePVListTab(4,0))
-        self.connect(self.camPvs[5], sig5, lambda: self.onUpdatePVListTab(5,0))
-        self.connect(self.camPvs[6], sig5, lambda: self.onUpdatePVListTab(6,0))
-        self.connect(self.camPvs[7], sig5, lambda: self.onUpdatePVListTab(7,0))
+        self.connect(self.camPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,0))
+        self.connect(self.camPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,0))
+        self.connect(self.camPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,0))
+        self.connect(self.camPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,0))
+        self.connect(self.camPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,0))
+        self.connect(self.camPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,0))
+        self.connect(self.camPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,0))
+        self.connect(self.camPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,0))
 
-        self.connect(self.iocPvs[0], sig5, lambda: self.onUpdatePVListTab(0,1))
-        self.connect(self.iocPvs[1], sig5, lambda: self.onUpdatePVListTab(1,1))
-        self.connect(self.iocPvs[2], sig5, lambda: self.onUpdatePVListTab(2,1))
-        self.connect(self.iocPvs[3], sig5, lambda: self.onUpdatePVListTab(3,1))
-        self.connect(self.iocPvs[4], sig5, lambda: self.onUpdatePVListTab(4,1))
-        self.connect(self.iocPvs[5], sig5, lambda: self.onUpdatePVListTab(5,1))
-        self.connect(self.iocPvs[6], sig5, lambda: self.onUpdatePVListTab(6,1))
-        self.connect(self.iocPvs[7], sig5, lambda: self.onUpdatePVListTab(7,1))
+        self.connect(self.iocPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,1))
+        self.connect(self.iocPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,1))
+        self.connect(self.iocPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,1))
+        self.connect(self.iocPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,1))
+        self.connect(self.iocPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,1))
+        self.connect(self.iocPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,1))
+        self.connect(self.iocPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,1))
+        self.connect(self.iocPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,1))
+
+#        self.connect(self.mmsPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,2))
+#        self.connect(self.mmsPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,2))
+#        self.connect(self.mmsPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,2))
+#        self.connect(self.mmsPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,2))
+#        self.connect(self.mmsPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,2))
+#        self.connect(self.mmsPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,2))
+#        self.connect(self.mmsPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,2))
+#        self.connect(self.mmsPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,2))
         # ----------------------------------------------------------------------
 
         self.connect(self.cB_oncams[0], sig0, lambda: self.onEnableCam(0))
@@ -344,7 +415,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.w_Img[i].setEnabled(True)
             if self.iocmod[i]:
                 self.ca[i] = CAComm(self.lock[i], self.basename[i], self)
-                self.getConfig(i)
+                #self.getConfig(i)
                 self.viewer[i] = ViewerFrame(self.w_Img[i], self)
                 self.viewer[i].onCameraSelect(i) # set camera pv and start display
                 self.onUpdateColorMap(i)
@@ -371,6 +442,20 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.viewer[0].setColorMap()
         self.updateCamCombo()
         self.show()
+
+    def mvsetup(self):
+        '''Opens a Dialog with list of Pvs that can be assigned by the user,
+           then save this list to camera.lst file.
+           TODO: maybe implement a set of setup list files to be recalled
+           by the user in the Setup Dialog.
+        '''
+        dlg = SetupDialog()
+        # enumerate the setupvals elements, according to Setup Dialog class 
+        # getValues method.
+        cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
+        if dlg.exec_():
+            self.setupvals = dlg.getValues()
+            self.dumpCamList() # write to camera.lst updated data.
 
     def setupTimer(self, i,refTime=None,duration=9):
         logger.debug( "setup timer called %i"% i )
@@ -569,7 +654,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.snd_cmd(self.cam_n, 'BinX', bindex)
         time.sleep(1)  
         self.snd_cmd(self.cam_n, 'BinY', bindex)
-        if self.cfg == None: self.dumpConfig(self.cam_n)
+        #if self.cfg == None: self.dumpConfig(self.cam_n)
         # some update needed here
         logger.debug('no update done after set_bin')
         logger.debug('please change the colormap for this camera to restore image %g', self.cam_n)
@@ -584,19 +669,19 @@ class Viewer(QtGui.QMainWindow, form_class):
     def set_expt(self):
         val = float(self.dS_expt.value())
         self.snd_cmd(self.cam_n, 'AcquireTime', val)
-        if self.cfg == None: self.dumpConfig(self.cam_n)
+        #if self.cfg == None: self.dumpConfig(self.cam_n)
     
     def set_gain(self):
         val = float(self.iS_gain.value())
         self.snd_cmd(self.cam_n, 'Gain', val)
-        if self.cfg == None: self.dumpConfig(self.cam_n)
+        #if self.cfg == None: self.dumpConfig(self.cam_n)
         
     def onComboBoxScaleIndexChanged(self, iNewIndex):
         #print 'onComboBoxScaleIndexChanged called'
         if self.viewer[self.cam_n]:
             self.viewer[self.cam_n].iScaleIndex = iNewIndex
             self.viewer[self.cam_n].setColorMap()
-            if self.cfg == None: self.dumpConfig(self.cam_n)
+            #if self.cfg == None: self.dumpConfig(self.cam_n)
         
     def set_cool(self):
         self.setImageColorMap(self.rBColor_Cool, 'cool')
@@ -782,7 +867,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         iMotor  = -1
         iIOC    = -1
         '''
-        campv, iocpv = (0, 1)
+        campv, iocpv, mmspv = (0, 1, 2)
         print self.camPvs[position].text(), self.basename[position], self.iocPvs[position].text(), self.lIOCList[position]
         if pvtype is campv: 
             if self.camPvs[position].text() != self.basename[position]: # if something is really changed, then act
@@ -790,6 +875,9 @@ class Viewer(QtGui.QMainWindow, form_class):
         elif pvtype is iocpv:
             if self.iocPvs[position].text() != self.lIOCList[position]: # if something is really changed, then act
                 self.onUpdateIocPv(position)
+        elif pvtype is mmspv:
+            if self.mmsPvs[position].text() != self.lMotorList[position]: # if something is really changed, then act
+                self.onUpdateMMSPv(position)
         else:
             return False
         return True
@@ -806,6 +894,12 @@ class Viewer(QtGui.QMainWindow, form_class):
         print 'Updating IOC_PV %d settings'% position
         self.onEnableCam(position)
         
+    def onUpdateMMSPv(self, position):
+        '''Update motor position settings with the new mms Pvs'''
+        # here should enter the new settings
+        print 'Updating MMS_PV %d settings'% position
+        print 'To be implemented...'
+
     def onEnableCam(self, position):
         '''Enable camera connection monitors and single viewer'''
         if self.cB_oncams[position].isChecked():
@@ -952,20 +1046,120 @@ class Viewer(QtGui.QMainWindow, form_class):
     def _cathreadstop(self):
         if self.ca[cam_n].isRunning():
             self.ca[cam_n].stop()
-                    
+    
+    def dumpCamList(self):
+        if self.setupvals == []:
+            return False
+        # enumerate
+        cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
+        # shortcuts
+        camPv = self.setupvals[cam]; camPvdesc = self.setupvals[camdesc]
+        iocPv = self.setupvals[ioc]; cen       = self.setupvals[cen]
+        mmsPv = self.setupvals[mms]; mmsPvdesc = self.setupvals[mmsdesc]
+        men   = self.setupvals[men]
+        
+        # assign to additional shortcuts
+        camPv1 = camPv[0].text(); camPvDesc1 = camPvdesc[0].text()
+        camPv2 = camPv[1].text(); camPvDesc2 = camPvdesc[1].text()
+        camPv3 = camPv[2].text(); camPvDesc3 = camPvdesc[2].text()
+        camPv4 = camPv[3].text(); camPvDesc4 = camPvdesc[3].text()
+        camPv5 = camPv[4].text(); camPvDesc5 = camPvdesc[4].text()
+        camPv6 = camPv[5].text(); camPvDesc6 = camPvdesc[5].text()
+        camPv7 = camPv[6].text(); camPvDesc7 = camPvdesc[6].text()
+        camPv8 = camPv[7].text(); camPvDesc8 = camPvdesc[7].text()
+        
+        iocPv1 = iocPv[0].text(); camEn1 = '' if cen[0].isChecked() else '#'
+        iocPv2 = iocPv[1].text(); camEn2 = '' if cen[1].isChecked() else '#'
+        iocPv3 = iocPv[2].text(); camEn3 = '' if cen[2].isChecked() else '#'
+        iocPv4 = iocPv[3].text(); camEn4 = '' if cen[3].isChecked() else '#'
+        iocPv5 = iocPv[4].text(); camEn5 = '' if cen[4].isChecked() else '#'
+        iocPv6 = iocPv[5].text(); camEn6 = '' if cen[5].isChecked() else '#'
+        iocPv7 = iocPv[6].text(); camEn7 = '' if cen[6].isChecked() else '#'
+        iocPv8 = iocPv[7].text(); camEn8 = '' if cen[7].isChecked() else '#'
+        
+        mmsPv1 = mmsPv[0].text(); mmsPvDesc1 = mmsPvdesc[0].text()
+        mmsPv2 = mmsPv[1].text(); mmsPvDesc2 = mmsPvdesc[1].text()
+        mmsPv3 = mmsPv[2].text(); mmsPvDesc3 = mmsPvdesc[2].text()
+        mmsPv4 = mmsPv[3].text(); mmsPvDesc4 = mmsPvdesc[3].text()
+        mmsPv5 = mmsPv[4].text(); mmsPvDesc5 = mmsPvdesc[4].text()
+        mmsPv6 = mmsPv[5].text(); mmsPvDesc6 = mmsPvdesc[5].text()
+        mmsPv7 = mmsPv[6].text(); mmsPvDesc7 = mmsPvdesc[6].text()
+        mmsPv8 = mmsPv[7].text(); mmsPvDesc8 = mmsPvdesc[7].text()
+        
+        mmsEn1 = '' if men[0].isChecked() else '#'
+        mmsEn2 = '' if men[1].isChecked() else '#'
+        mmsEn3 = '' if men[2].isChecked() else '#'
+        mmsEn4 = '' if men[3].isChecked() else '#'
+        mmsEn5 = '' if men[4].isChecked() else '#'
+        mmsEn6 = '' if men[5].isChecked() else '#'
+        mmsEn7 = '' if men[6].isChecked() else '#'
+        mmsEn8 = '' if men[7].isChecked() else '#'
+        
+        # Write to file cameras.lst
+        f = open(self.cfgdir + 'cameras.lst', "w")
+        f.write("\n")
+        f.write(''
+'# ---------------------------------------------------------------\n'
+'# MultiViewer Description File (Generated by Setup Dialog)\n'
+'# ---------------------------------------------------------------\n'
+'# Syntax:\n'
+'#   <TYPE>, <PVNAME|IOCNAME>, <DESC> # some_more_comments\n'
+'# Where:\n'
+'#   <Type>    : "GIG" -> GigE Cameras or\n'
+'#               "IOC" -> Server name\n'
+'#               "MMS" -> Motor or\n'
+'#   <PVNAME>  : Camera PV Name to display in the display\n'
+'#   <IOCNAME> : Server name associated to restart button\n'
+'#   <DESC>    : User Camera or Server description\n'
+'# Notes:\n'
+'#   PVNAME or IOCNAME are not case sensitive.\n'
+'#   Line can be commented out by starting with \'#\' character.\n'
+'# ---------------------------------------------------------------\n\n')
+        f.write('# CAMERA PV NAMES (located in the cfg file, \'CAM\' variable):\n')
+        f.write('%sGIG, %s, %s \t #\n' % (camEn1, camPv1, camPvDesc1))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn2, camPv2, camPvDesc2))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn3, camPv3, camPvDesc3))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn4, camPv4, camPvDesc4))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn5, camPv5, camPvDesc5))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn6, camPv6, camPvDesc6))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn7, camPv7, camPvDesc7))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn8, camPv8, camPvDesc8))
+        f.write('\n')
+        f.write('# IOC PV NAMES (located in the cfg file, \'IOC_PV\' variable):)\n')
+        f.write('%sIOC, %s, %s \t #\n' % (camEn1, iocPv1, camPvDesc1))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn2, iocPv2, camPvDesc2))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn3, iocPv3, camPvDesc3))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn4, iocPv4, camPvDesc4))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn5, iocPv5, camPvDesc5))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn6, iocPv6, camPvDesc6))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn7, iocPv7, camPvDesc7))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn8, iocPv8, camPvDesc8))
+        f.write('\n')
+        f.write('# MOTOR PV NAMES:\n')
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn1, mmsPv1, mmsPvDesc1))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn2, mmsPv2, mmsPvDesc2))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn3, mmsPv3, mmsPvDesc3))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn4, mmsPv4, mmsPvDesc4))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn5, mmsPv5, mmsPvDesc5))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn6, mmsPv6, mmsPvDesc6))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn7, mmsPv7, mmsPvDesc7))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn8, mmsPv8, mmsPvDesc8))
+        f.close()
+        
     def dumpConfig(self, cam_n):
-        #print 'dumpConfig called [CAM%d]' % self.cam_n
+        '''Dump the current camera gui settings in a config file located in the
+           ~/.mviewer directory under cameraPv filename.
+           Should be called when: 
+           1/ Change current camera settings (like click on the image)
+           2/ Change any setting (may not...necessary)
+           3/ Exit the program (by the quit button or closing the window)
+        '''
         cameraBase = str(self.lCameraList[cam_n])
         if cameraBase == "":
           return
         if self.viewer[cam_n].camera != None:
           f = open(self.cfgdir + cameraBase, "w")
-          display_image = self.viewer[cam_n].display_image
-          
-          f.write("exposure      " + str(float(self.dS_expt.value())) + "\n")
-          f.write("gain          " + str(int(self.iS_gain.value())) + "\n")
-          f.write("bin_x         " + str(self.lEBXY.text()) + "\n")
-          f.write("bin_y         " + str(self.lEBXY.text()) + "\n")
+          # Colormap:
           f.write("grayscale     " + str(int(self.grayScale.isChecked())) + "\n")
           f.write("colorscale    " + str(self.cBoxScale.currentText()) + "\n")
           f.write("colormin      " + self.lERngMin.text() + "\n")
@@ -975,23 +1169,53 @@ class Viewer(QtGui.QMainWindow, form_class):
           f.write("colormap_cool " + str(int(self.rBColor_Cool.isChecked())) + "\n")
           f.write("colormap_gray " + str(int(self.rBColor_Gray.isChecked())) + "\n")
           f.write("colormap_hot  " + str(int(self.rBColor_Hot.isChecked())) + "\n")
+          # Timer:
+          f.write("TimerLabel    " + self.TimerLabels[cam_n].text() + "\n")
+          # Crosses:
+          f.write("X1Position    " + self.X1Positions[cam_n] + "\n")
+          f.write("Y1Position    " + self.Y1Positions[cam_n] + "\n")
+          f.write("X2Position    " + self.X2Positions[cam_n] + "\n")
+          f.write("Y2Position    " + self.Y2Positions[cam_n] + "\n")
+          f.write("X3Position    " + self.X3Positions[cam_n] + "\n")
+          f.write("Y3Position    " + self.Y3Positions[cam_n] + "\n")
+          f.write("X4Position    " + self.X4Positions[cam_n] + "\n")
+          f.write("Y4Position    " + self.Y4Positions[cam_n] + "\n")
+          f.write("ShowHideCross " + self.ShowHideCrosses[cam_n] + "\n")
+          f.write("LockCross     " + self.LockCrosses[cam_n] + "\n")
+          
+          f.write("checkBox21    " + self.checkBox21s[cam_n] + "\n")
+          f.write("checkBox31    " + self.checkBox31s[cam_n] + "\n")
+          f.write("checkBox41    " + self.checkBox41s[cam_n] + "\n")
+          
+          f.write("checkBox12    " + self.checkBox12s[cam_n] + "\n")
+          f.write("checkBox32    " + self.checkBox32s[cam_n] + "\n")
+          f.write("checkBox42    " + self.checkBox42s[cam_n] + "\n")
+          
+          f.write("checkBox13    " + self.checkBox13s[cam_n] + "\n")
+          f.write("checkBox23    " + self.checkBox23s[cam_n] + "\n")
+          f.write("checkBox43    " + self.checkBox43s[cam_n] + "\n")
+          
+          f.write("checkBox14    " + self.checkBox14s[cam_n] + "\n")
+          f.write("checkBox24    " + self.checkBox24s[cam_n] + "\n")
+          f.write("checkBox34    " + self.checkBox34s[cam_n] + "\n")
+          
           f.close()
+          
 
     def getConfig(self, cam_n):
+        '''Retrieves the non EPICS variables and camera settings from the last
+            time the user call the program.
+            Should be called at the first time the camera is selected after 
+            program started.
+        '''
+        
         logger.debug( 'getConfig called [CAM%d]' , self.cam_n )
         cameraBase = str(self.lCameraList[cam_n])
         if cameraBase == "":
           return
         self.cfg = cfginfo()
         if self.cfg.read(self.cfgdir + cameraBase):
-            # functions that uses caput/caget:
-            if self.dS_expt.value() != float(self.cfg.exposure):
-                self.dS_expt.setValue(float(self.cfg.exposure))
-            if self.iS_gain.value() != int(self.cfg.gain):
-                self.iS_gain.setValue(int(self.cfg.gain))
-            # ---------------------------
-            self.lEBXY.setText(self.cfg.bin_x)
-            self.lEBXY.setText(self.cfg.bin_y)
+            # Colormap:
             self.iScaleIndex = self.cBoxScale.findText(self.cfg.colorscale)
             self.cBoxScale.setCurrentIndex(self.iScaleIndex)
             self.lERngMin.setText(self.cfg.colormin)
@@ -1011,8 +1235,6 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.colormap[cam_n] = 'hot'
             else:
                 pass
-            
-            # set radiobuttons:
             cB_colormap = self.colormapsrb[self.colormap[cam_n]]
             if not cB_colormap.isChecked():
 #                   self.setImageColorMap(self.cam_n, 
@@ -1021,6 +1243,37 @@ class Viewer(QtGui.QMainWindow, form_class):
                    cB_colormap.setChecked(True)
                    
             self.grayScale.setChecked(int(self.cfg.grayscale))
+            # Timer:
+            self.TimerLabel.setText(self.cfg.TimerLabel)
+            #Crosses:
+            self.X1Position.setText(self.cfg.X1Position)
+            self.Y1Position.setText(self.cfg.Y1Position)
+            self.X2Position.setText(self.cfg.X2Position)
+            self.Y2Position.setText(self.cfg.Y2Position)
+            self.X3Position.setText(self.cfg.X3Position)
+            self.Y3Position.setText(self.cfg.Y3Position)
+            self.X4Position.setText(self.cfg.X4Position)
+            self.Y4Position.setText(self.cfg.Y4Position)
+          
+            self.ShowHideCross.setChecked(int(self.cfg.ShowHideCross))
+            self.LockCross.setChecked(int(self.cfg.LockCross))
+          
+            self.checkBox21.setChecked(int(self.cfg.checkBox21))
+            self.checkBox31.setChecked(int(self.cfg.checkBox31))
+            self.checkBox41.setChecked(int(self.cfg.checkBox41))
+          
+            self.checkBox12.setChecked(int(self.cfg.checkBox12))
+            self.checkBox32.setChecked(int(self.cfg.checkBox32))
+            self.checkBox42.setChecked(int(self.cfg.checkBox42))
+          
+            self.checkBox13.setChecked(int(self.cfg.checkBox13))
+            self.checkBox23.setChecked(int(self.cfg.checkBox23))
+            self.checkBox43.setChecked(int(self.cfg.checkBox43))
+          
+            self.checkBox14.setChecked(int(self.cfg.checkBox14))
+            self.checkBox24.setChecked(int(self.cfg.checkBox24))
+            self.checkBox34.setChecked(int(self.cfg.checkBox34))
+
             #self.viewer[cam_n].updateall()
         else:
           pass

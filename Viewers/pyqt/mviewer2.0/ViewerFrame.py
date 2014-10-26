@@ -260,7 +260,7 @@ class ViewerFrame(QtGui.QWidget):
       colpvname = sImagePv + ":ArraySize0_RBV"
       self.isColor = False
       self.gui.setSliderRangeMax(8)  #  8 bits camera
-      self.gui.grayScale.setVisible(False)
+      self.gui.grayScale.setEnabled(False)
     self.camera     = self.connectPv(sImagePv + ":ArrayData")
     self.rowPv      = self.connectPv(rowpvname)
     self.colPv      = self.connectPv(colpvname)
