@@ -8,7 +8,7 @@ from PyQt4 import QtGui
 
 from Viewer import Viewer
 
-DEBUG = False
+DEBUG = True
 
 logger=logging.getLogger('mviewer')
 

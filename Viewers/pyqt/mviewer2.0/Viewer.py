@@ -51,7 +51,7 @@ class SetupDialog(QtGui.QDialog, form_class1):
                 self.mmsPvs, self.mmsDescs, self.cB_enmmss]
 
 
-form_class, base_class = uic.loadUiType('ui/mviewer2.9.ui')
+form_class, base_class = uic.loadUiType('ui/mviewer2.9.1.ui')
 
 class Viewer(QtGui.QMainWindow, form_class):    
     '''Display multiple gigE cameras in a single application'''
@@ -100,31 +100,14 @@ class Viewer(QtGui.QMainWindow, form_class):
         
         self.idock = [self.dW_Img_1,self.dW_Img_2,self.dW_Img_3,self.dW_Img_4,
                        self.dW_Img_5,self.dW_Img_6,self.dW_Img_7,self.dW_Img_8]
-        
-        self.lb_limM = [self.lb_limM_1, self.lb_limM_2, self.lb_limM_3,
-                        self.lb_limM_4, self.lb_limM_5, self.lb_limM_6,
-                        self.lb_limM_7]
-
-        self.lb_limP = [self.lb_limP_1, self.lb_limP_2, self.lb_limP_3,
-                        self.lb_limP_4, self.lb_limP_5, self.lb_limP_6,
-                        self.lb_limP_7]
-        
-        self.lE_mr = [self.lE_mr_1, self.lE_mr_2, self.lE_mr_3,
-                        self.lE_mr_4, self.lE_mr_5, self.lE_mr_6,
-                        self.lE_mr_7]
-
-        self.tB_mminus = [self.tB_mminus_1, self.tB_mminus_2, self.tB_mminus_3,
-                        self.tB_mminus_4, self.tB_mminus_5, self.tB_mminus_6,
-                        self.tB_mminus_7]
-
-        self.tB_mplus = [self.tB_mplus_1, self.tB_mplus_2, self.tB_mplus_3,
-                        self.tB_mplus_4, self.tB_mplus_5, self.tB_mplus_6,
-                        self.tB_mplus_7]  
-              
-        self.cB_onmot = [self.cB_onmot_1, self.cB_onmot_2, self.cB_onmot_3,
-                        self.cB_onmot_4, self.cB_onmot_5, self.cB_onmot_6,
-                        self.cB_onmot_7]
-
+        # Motors: --------------------------------------------------------------
+        self.lb_limM   = [self.lb_limM_1, self.lb_limM_2, self.lb_limM_3, self.lb_limM_4, self.lb_limM_5, self.lb_limM_6, self.lb_limM_7, self.lb_limM_8]
+        self.lb_limP   = [self.lb_limP_1, self.lb_limP_2, self.lb_limP_3, self.lb_limP_4, self.lb_limP_5, self.lb_limP_6, self.lb_limP_7, self.lb_limP_8]
+        self.lE_mr     = [self.lE_mr_1, self.lE_mr_2, self.lE_mr_3, self.lE_mr_4, self.lE_mr_5, self.lE_mr_6, self.lE_mr_7, self.lE_mr_8]
+        self.tB_mminus = [self.tB_mminus_1, self.tB_mminus_2, self.tB_mminus_3, self.tB_mminus_4, self.tB_mminus_5, self.tB_mminus_6, self.tB_mminus_7, self.tB_mminus_8]
+        self.tB_mplus  = [self.tB_mplus_1, self.tB_mplus_2, self.tB_mplus_3, self.tB_mplus_4, self.tB_mplus_5, self.tB_mplus_6, self.tB_mplus_7, self.tB_mplus_8]  
+        self.cB_onmot  = [self.cB_onmot_1, self.cB_onmot_2, self.cB_onmot_3, self.cB_onmot_4, self.cB_onmot_5, self.cB_onmot_6, self.cB_onmot_7, self.cB_onmot_8]
+        # ----------------------------------------------------------------------
         self.xPos_val = [self.X1Position, self.X2Position, self.X3Position, self.X4Position]
 
         self.yPos_val = [self.Y1Position, self.Y2Position, self.Y3Position, self.Y4Position]
@@ -152,50 +135,39 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         self.lb_ImStats = [self.lb_minValdata, self.lb_maxValdata]
 
-        self.timers = [self.Timer1, self.Timer2, self.Timer3, self.Timer4, 
-                self.Timer5, self.Timer6, self.Timer7, self.Timer8 ]
+#        self.timers = [self.Timer1, self.Timer2, self.Timer3, self.Timer4, 
+#                self.Timer5, self.Timer6, self.Timer7, self.Timer8 ]
+#
+#        self.timerKeepers = 8 * [ QTimer(), ]
 
-        self.timerKeepers = 8 * [ QTimer(), ]
+#        self.timerlabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4,
+#                self.TimerLabel5, self.TimerLabel6, self.TimerLabel7, self.TimerLabel8 ]
+#
+#        self.timerreset9 =  [self.ResetTimer9h1, self.ResetTimer9h2, self.ResetTimer9h3, self.ResetTimer9h4,
+#                self.ResetTimer9h5, self.ResetTimer9h6, self.ResetTimer9h7, self.ResetTimer9h8]
+#
+#        self.timerclear = [self.TimerClear1, self.TimerClear2, self.TimerClear3, self.TimerClear4,
+#                self.TimerClear5, self.TimerClear6, self.TimerClear7,self.TimerClear8]
+#
+#        self.timerreset1 = [self.ResetTimer1h1, self.ResetTimer1h2, self.ResetTimer1h3, self.ResetTimer1h4,
+#                self.ResetTimer1h5, self.ResetTimer1h6, self.ResetTimer1h7, self.ResetTimer1h8]
 
-        self.timerlabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4,
-                self.TimerLabel5, self.TimerLabel6, self.TimerLabel7, self.TimerLabel8 ]
-
-        self.timerreset9 =  [self.ResetTimer9h1, self.ResetTimer9h2, self.ResetTimer9h3, self.ResetTimer9h4,
-                self.ResetTimer9h5, self.ResetTimer9h6, self.ResetTimer9h7, self.ResetTimer9h8]
-
-        self.timerclear = [self.TimerClear1, self.TimerClear2, self.TimerClear3, self.TimerClear4,
-                self.TimerClear5, self.TimerClear6, self.TimerClear7,self.TimerClear8]
-
-        self.timerreset1 = [self.ResetTimer1h1, self.ResetTimer1h2, self.ResetTimer1h3, self.ResetTimer1h4,
-                self.ResetTimer1h5, self.ResetTimer1h6, self.ResetTimer1h7, self.ResetTimer1h8]
-
-        self.camPvs = [self.le_camPv_1, self.le_camPv_2, self.le_camPv_3, self.le_camPv_4,
-                       self.le_camPv_5, self.le_camPv_6, self.le_camPv_7, self.le_camPv_8 ]
-
-        self.iocPvs = [self.le_iocPv_1, self.le_iocPv_2, self.le_iocPv_3, self.le_iocPv_4,
-                       self.le_iocPv_5, self.le_iocPv_6, self.le_iocPv_7, self.le_iocPv_8 ]
-
-        self.cB_oncams = [self.cB_en_1, self.cB_en_2, self.cB_en_3, self.cB_en_4,
-                          self.cB_en_5, self.cB_en_6, self.cB_en_7, self.cB_en_8 ]
+#        self.camPvs = [self.le_camPv_1, self.le_camPv_2, self.le_camPv_3, self.le_camPv_4,
+#                       self.le_camPv_5, self.le_camPv_6, self.le_camPv_7, self.le_camPv_8 ]
+#
+#        self.iocPvs = [self.le_iocPv_1, self.le_iocPv_2, self.le_iocPv_3, self.le_iocPv_4,
+#                       self.le_iocPv_5, self.le_iocPv_6, self.le_iocPv_7, self.le_iocPv_8 ]
+#
+#        self.cB_oncams = [self.cB_en_1, self.cB_en_2, self.cB_en_3, self.cB_en_4,
+#                          self.cB_en_5, self.cB_en_6, self.cB_en_7, self.cB_en_8 ]
         
 #        self.mmsPvs = [self.le_mmsPv_1, self.le_mmsPv_2, self.le_mmsPv_3, self.le_mmsPv_4,
 #                       self.le_mmsPv_5, self.le_mmsPv_6, self.le_mmsPv_7, self.le_mmsPv_8 ]
-        self.TimerLabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4, 
-                            self.TimerLabel5, self.TimerLabel6, self.TimerLabel7, self.TimerLabel8]
+#        self.TimerLabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4, 
+#                            self.TimerLabel5, self.TimerLabel6, self.TimerLabel7, self.TimerLabel8]
         
-        self.X1Positions = 8 * ['',] ; self.Y1Positions = 8 * ['',]
-        self.X2Positions = 8 * ['',] ; self.Y2Positions = 8 * ['',]
-        self.X3Positions = 8 * ['',] ; self.Y3Positions = 8 * ['',]
-        self.X4Positions = 8 * ['',] ; self.Y4Positions = 8 * ['',]
 
-        self.ShowHideCrosses = 8 * [False,] ; self.LockCrosses = 8 * [False,]
-
-        self.checkBox21s = 8 * [False,] ; self.checkBox31s = 8 * [False,]; self.checkBox41s = 8 * [False,]
-        self.checkBox12s = 8 * [False,] ; self.checkBox32s = 8 * [False,]; self.checkBox42s = 8 * [False,]
-        self.checkBox13s = 8 * [False,] ; self.checkBox23s = 8 * [False,]; self.checkBox43s = 8 * [False,]
-        self.checkBox14s = 8 * [False,] ; self.checkBox24s = 8 * [False,]; self.checkBox34s = 8 * [False,]
-        
-        self.timerReferenceTime = 8*[None, ]
+#        self.timerReferenceTime = 8*[None, ]
 
         self.lb_ImStats[0].setText('n/a') ; self.lb_ImStats[1].setText('n/a')
         
@@ -292,65 +264,66 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.Y2Position,   sig5, lambda: self.handleCrossText('Y2'))
         self.connect(self.Y3Position,   sig5, lambda: self.handleCrossText('Y3'))
         self.connect(self.Y4Position,   sig5, lambda: self.handleCrossText('Y4'))
-       #
-        self.connect(self.timerreset9[0], sig10, lambda: self.handleTimerReset(0,9) )
-        self.connect(self.timerreset1[0], sig10, lambda: self.handleTimerReset(0,1) )
-        self.connect( self.timerclear[0], sig10, lambda: self.handleTimerReset(0,0) )
-        self.connect(self.timerKeepers[0],sig11,      lambda: self.updateTimer(0) )
-
-        self.connect(self.timerreset9[1], sig10, lambda: self.handleTimerReset(1,9) )
-        self.connect(self.timerreset1[1], sig10, lambda: self.handleTimerReset(1,1) )
-        self.connect( self.timerclear[1], sig10, lambda: self.handleTimerReset(1,0) )
-        self.connect(self.timerKeepers[1],sig11,      lambda: self.updateTimer(1) )
-
-        self.connect(self.timerreset9[2], sig10, lambda: self.handleTimerReset(2,9) )
-        self.connect(self.timerreset1[2], sig10, lambda: self.handleTimerReset(2,1) )
-        self.connect( self.timerclear[2], sig10, lambda: self.handleTimerReset(2,0) )
-        self.connect(self.timerKeepers[2],sig11,      lambda: self.updateTimer(2) )
-
-        self.connect(self.timerreset9[3], sig10, lambda: self.handleTimerReset(3,9) )
-        self.connect(self.timerreset1[3], sig10, lambda: self.handleTimerReset(3,1) )
-        self.connect( self.timerclear[3], sig10, lambda: self.handleTimerReset(3,0) )
-        self.connect(self.timerKeepers[3],sig11,      lambda: self.updateTimer(3) )
-
-        self.connect(self.timerreset9[4], sig10, lambda: self.handleTimerReset(4,9) )
-        self.connect(self.timerreset1[4], sig10, lambda: self.handleTimerReset(4,1) )
-        self.connect( self.timerclear[4], sig10, lambda: self.handleTimerReset(4,0) )
-        self.connect(self.timerKeepers[4],sig11,      lambda: self.updateTimer(4) )
-
-        self.connect(self.timerreset9[5], sig10, lambda: self.handleTimerReset(5,9) )
-        self.connect(self.timerreset1[5], sig10, lambda: self.handleTimerReset(5,1) )
-        self.connect( self.timerclear[5], sig10, lambda: self.handleTimerReset(5,0) )
-        self.connect(self.timerKeepers[5],sig11,      lambda: self.updateTimer(5) )
-
-        self.connect(self.timerreset9[6], sig10, lambda: self.handleTimerReset(6,9) )
-        self.connect(self.timerreset1[6], sig10, lambda: self.handleTimerReset(6,1) )
-        self.connect( self.timerclear[6], sig10, lambda: self.handleTimerReset(6,0) )
-        self.connect(self.timerKeepers[6],sig11,      lambda: self.updateTimer(6) )
-
-        self.connect(self.timerreset9[7], sig10, lambda: self.handleTimerReset(7,9) )
-        self.connect(self.timerreset1[7], sig10, lambda: self.handleTimerReset(7,1) )
-        self.connect( self.timerclear[7], sig10, lambda: self.handleTimerReset(7,0) )
-        self.connect(self.timerKeepers[7],sig11,      lambda: self.updateTimer(7) )
         
-        # Lost focus: ----------------------------------------------------------
-        self.connect(self.camPvs[0], sig12, lambda: self.onUpdatePVListTab(0,0))
-        self.connect(self.camPvs[1], sig12, lambda: self.onUpdatePVListTab(1,0))
-        self.connect(self.camPvs[2], sig12, lambda: self.onUpdatePVListTab(2,0))
-        self.connect(self.camPvs[3], sig12, lambda: self.onUpdatePVListTab(3,0))
-        self.connect(self.camPvs[4], sig12, lambda: self.onUpdatePVListTab(4,0))
-        self.connect(self.camPvs[5], sig12, lambda: self.onUpdatePVListTab(5,0))
-        self.connect(self.camPvs[6], sig12, lambda: self.onUpdatePVListTab(6,0))
-        self.connect(self.camPvs[7], sig12, lambda: self.onUpdatePVListTab(7,0))
-
-        self.connect(self.iocPvs[0], sig12, lambda: self.onUpdatePVListTab(0,1))
-        self.connect(self.iocPvs[1], sig12, lambda: self.onUpdatePVListTab(1,1))
-        self.connect(self.iocPvs[2], sig12, lambda: self.onUpdatePVListTab(2,1))
-        self.connect(self.iocPvs[3], sig12, lambda: self.onUpdatePVListTab(3,1))
-        self.connect(self.iocPvs[4], sig12, lambda: self.onUpdatePVListTab(4,1))
-        self.connect(self.iocPvs[5], sig12, lambda: self.onUpdatePVListTab(5,1))
-        self.connect(self.iocPvs[6], sig12, lambda: self.onUpdatePVListTab(6,1))
-        self.connect(self.iocPvs[7], sig12, lambda: self.onUpdatePVListTab(7,1))
+        # Those need to be set to the ViewerFrame signal
+        self.connect(self.ResetTimer9h, sig10, lambda: self.onhandleTimerReset(9))
+        self.connect(self.ResetTimer1h, sig10, lambda: self.onhandleTimerReset(1))
+        self.connect(self.TimerClear,   sig10, lambda: self.onhandleTimerReset(0))
+        self.connect(self.Timer,        sig11, self.onupdateTimer)
+#
+#        self.connect(self.timerreset9[1], sig10, lambda: self.handleTimerReset(1,9) )
+#        self.connect(self.timerreset1[1], sig10, lambda: self.handleTimerReset(1,1) )
+#        self.connect( self.timerclear[1], sig10, lambda: self.handleTimerReset(1,0) )
+#        self.connect(self.timerKeepers[1],sig11,      lambda: self.updateTimer(1) )
+#
+#        self.connect(self.timerreset9[2], sig10, lambda: self.handleTimerReset(2,9) )
+#        self.connect(self.timerreset1[2], sig10, lambda: self.handleTimerReset(2,1) )
+#        self.connect( self.timerclear[2], sig10, lambda: self.handleTimerReset(2,0) )
+#        self.connect(self.timerKeepers[2],sig11,      lambda: self.updateTimer(2) )
+#
+#        self.connect(self.timerreset9[3], sig10, lambda: self.handleTimerReset(3,9) )
+#        self.connect(self.timerreset1[3], sig10, lambda: self.handleTimerReset(3,1) )
+#        self.connect( self.timerclear[3], sig10, lambda: self.handleTimerReset(3,0) )
+#        self.connect(self.timerKeepers[3],sig11,      lambda: self.updateTimer(3) )
+#
+#        self.connect(self.timerreset9[4], sig10, lambda: self.handleTimerReset(4,9) )
+#        self.connect(self.timerreset1[4], sig10, lambda: self.handleTimerReset(4,1) )
+#        self.connect( self.timerclear[4], sig10, lambda: self.handleTimerReset(4,0) )
+#        self.connect(self.timerKeepers[4],sig11,      lambda: self.updateTimer(4) )
+#
+#        self.connect(self.timerreset9[5], sig10, lambda: self.handleTimerReset(5,9) )
+#        self.connect(self.timerreset1[5], sig10, lambda: self.handleTimerReset(5,1) )
+#        self.connect( self.timerclear[5], sig10, lambda: self.handleTimerReset(5,0) )
+#        self.connect(self.timerKeepers[5],sig11,      lambda: self.updateTimer(5) )
+#
+#        self.connect(self.timerreset9[6], sig10, lambda: self.handleTimerReset(6,9) )
+#        self.connect(self.timerreset1[6], sig10, lambda: self.handleTimerReset(6,1) )
+#        self.connect( self.timerclear[6], sig10, lambda: self.handleTimerReset(6,0) )
+#        self.connect(self.timerKeepers[6],sig11,      lambda: self.updateTimer(6) )
+#
+#        self.connect(self.timerreset9[7], sig10, lambda: self.handleTimerReset(7,9) )
+#        self.connect(self.timerreset1[7], sig10, lambda: self.handleTimerReset(7,1) )
+#        self.connect( self.timerclear[7], sig10, lambda: self.handleTimerReset(7,0) )
+#        self.connect(self.timerKeepers[7],sig11,      lambda: self.updateTimer(7) )
+        
+#        # Lost focus: ----------------------------------------------------------
+#        self.connect(self.camPvs[0], sig12, lambda: self.onUpdatePVListTab(0,0))
+#        self.connect(self.camPvs[1], sig12, lambda: self.onUpdatePVListTab(1,0))
+#        self.connect(self.camPvs[2], sig12, lambda: self.onUpdatePVListTab(2,0))
+#        self.connect(self.camPvs[3], sig12, lambda: self.onUpdatePVListTab(3,0))
+#        self.connect(self.camPvs[4], sig12, lambda: self.onUpdatePVListTab(4,0))
+#        self.connect(self.camPvs[5], sig12, lambda: self.onUpdatePVListTab(5,0))
+#        self.connect(self.camPvs[6], sig12, lambda: self.onUpdatePVListTab(6,0))
+#        self.connect(self.camPvs[7], sig12, lambda: self.onUpdatePVListTab(7,0))
+#
+#        self.connect(self.iocPvs[0], sig12, lambda: self.onUpdatePVListTab(0,1))
+#        self.connect(self.iocPvs[1], sig12, lambda: self.onUpdatePVListTab(1,1))
+#        self.connect(self.iocPvs[2], sig12, lambda: self.onUpdatePVListTab(2,1))
+#        self.connect(self.iocPvs[3], sig12, lambda: self.onUpdatePVListTab(3,1))
+#        self.connect(self.iocPvs[4], sig12, lambda: self.onUpdatePVListTab(4,1))
+#        self.connect(self.iocPvs[5], sig12, lambda: self.onUpdatePVListTab(5,1))
+#        self.connect(self.iocPvs[6], sig12, lambda: self.onUpdatePVListTab(6,1))
+#        self.connect(self.iocPvs[7], sig12, lambda: self.onUpdatePVListTab(7,1))
 
 #        self.connect(self.mmsPvs[0], sig12, lambda: self.onUpdatePVListTab(0,2))
 #        self.connect(self.mmsPvs[1], sig12, lambda: self.onUpdatePVListTab(1,2))
@@ -362,24 +335,24 @@ class Viewer(QtGui.QMainWindow, form_class):
 #        self.connect(self.mmsPvs[7], sig12, lambda: self.onUpdatePVListTab(7,2))
         # ----------------------------------------------------------------------
         
-        # Return pressed: ------------------------------------------------------
-        self.connect(self.camPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,0))
-        self.connect(self.camPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,0))
-        self.connect(self.camPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,0))
-        self.connect(self.camPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,0))
-        self.connect(self.camPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,0))
-        self.connect(self.camPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,0))
-        self.connect(self.camPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,0))
-        self.connect(self.camPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,0))
-
-        self.connect(self.iocPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,1))
-        self.connect(self.iocPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,1))
-        self.connect(self.iocPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,1))
-        self.connect(self.iocPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,1))
-        self.connect(self.iocPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,1))
-        self.connect(self.iocPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,1))
-        self.connect(self.iocPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,1))
-        self.connect(self.iocPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,1))
+#        # Return pressed: ------------------------------------------------------
+#        self.connect(self.camPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,0))
+#        self.connect(self.camPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,0))
+#        self.connect(self.camPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,0))
+#        self.connect(self.camPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,0))
+#        self.connect(self.camPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,0))
+#        self.connect(self.camPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,0))
+#        self.connect(self.camPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,0))
+#        self.connect(self.camPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,0))
+#
+#        self.connect(self.iocPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,1))
+#        self.connect(self.iocPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,1))
+#        self.connect(self.iocPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,1))
+#        self.connect(self.iocPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,1))
+#        self.connect(self.iocPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,1))
+#        self.connect(self.iocPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,1))
+#        self.connect(self.iocPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,1))
+#        self.connect(self.iocPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,1))
 
 #        self.connect(self.mmsPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,2))
 #        self.connect(self.mmsPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,2))
@@ -391,14 +364,14 @@ class Viewer(QtGui.QMainWindow, form_class):
 #        self.connect(self.mmsPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,2))
         # ----------------------------------------------------------------------
 
-        self.connect(self.cB_oncams[0], sig0, lambda: self.onEnableCam(0))
-        self.connect(self.cB_oncams[1], sig0, lambda: self.onEnableCam(1))
-        self.connect(self.cB_oncams[2], sig0, lambda: self.onEnableCam(2))
-        self.connect(self.cB_oncams[3], sig0, lambda: self.onEnableCam(3))
-        self.connect(self.cB_oncams[4], sig0, lambda: self.onEnableCam(4))
-        self.connect(self.cB_oncams[5], sig0, lambda: self.onEnableCam(5))
-        self.connect(self.cB_oncams[6], sig0, lambda: self.onEnableCam(6))
-        self.connect(self.cB_oncams[7], sig0, lambda: self.onEnableCam(7))
+#        self.connect(self.cB_oncams[0], sig0, lambda: self.onEnableCam(0))
+#        self.connect(self.cB_oncams[1], sig0, lambda: self.onEnableCam(1))
+#        self.connect(self.cB_oncams[2], sig0, lambda: self.onEnableCam(2))
+#        self.connect(self.cB_oncams[3], sig0, lambda: self.onEnableCam(3))
+#        self.connect(self.cB_oncams[4], sig0, lambda: self.onEnableCam(4))
+#        self.connect(self.cB_oncams[5], sig0, lambda: self.onEnableCam(5))
+#        self.connect(self.cB_oncams[6], sig0, lambda: self.onEnableCam(6))
+#        self.connect(self.cB_oncams[7], sig0, lambda: self.onEnableCam(7))
 
 
         #print dir (self.w_Img_1)#.sizePolicy.setHeightForWidth(True)
@@ -414,23 +387,24 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.idock[i].setEnabled(True)
             self.w_Img[i].setEnabled(True)
             if self.iocmod[i]:
-                self.ca[i] = CAComm(self.lock[i], self.basename[i], self)
-                #self.getConfig(i)
+                self.ca[i] = CAComm(self.lock[i], self.basename[i], self)                
                 self.viewer[i] = ViewerFrame(self.w_Img[i], self)
                 self.viewer[i].onCameraSelect(i) # set camera pv and start display
+                self.getConfig(i)
                 self.onUpdateColorMap(i)
                 self.connect(self.viewer[i], self.sig6, self.onUpdateRate)
                 self.connect(self.viewer[i], self.sig8, self.setCameraCombo)
                 self.connect(self.idock[i],  self.sig9, self.centerDock)
                 self.splashScreen.showMsg("Loading... %s as Cam[%d]" %\
                                                 (self.lCameraDesc[i], i))
-                self.setupTimer(i,refTime=refTime)
+#                self.setupTimer(i,refTime=refTime)
                 time.sleep(1)            
         self.cam_n = 0
         self.settoolTips()
+        
 
-
-
+#Problem with crosses not saving or be overwritten
+#uncomment '##' in "MM" and onupdateColorMap(...)
 
         # Destroy Splash once all are loaded
         if self.splashScreen:
@@ -440,8 +414,11 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         self.setCameraCombo(0) # to update the selection indicator *
         self.viewer[0].setColorMap()
+        
         self.updateCamCombo()
+        
         self.show()
+        
 
     def mvsetup(self):
         '''Opens a Dialog with list of Pvs that can be assigned by the user,
@@ -457,63 +434,72 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.setupvals = dlg.getValues()
             self.dumpCamList() # write to camera.lst updated data.
 
-    def setupTimer(self, i,refTime=None,duration=9):
-        logger.debug( "setup timer called %i"% i )
-        self.timerlabels[i].setEnabled(True)
-        self.timers[i].setEnabled(True)
-        self.timerreset9[i].setEnabled(True)
-        self.timerreset1[i].setEnabled(True)
-        self.timerclear[i].setEnabled(True)
-        self.timerlabels[i].setText( self.lCameraDesc[i] )
-        self.handleTimerReset(i,duration)
-        if not refTime:
-            refTime = time.time()
-        self.timerReferenceTime[i] = (refTime,duration*3600.)
-        self.timerKeepers[i].start(1000)
-
-    def handleTimerReset(self,cam_n, t):
-        logger.debug( "timer reset %g %g", cam_n, t )
-        #self.updateCamCombo()
-        self.timers[cam_n].setText("{:02.0f}:00:00".format(t))
-        self.timerReferenceTime[cam_n] = (time.time(),float(t)*3600.)
-        logger.debug( "handleTimerReset %g %g %s", t, cam_n, self.viewer[cam_n] )
-        if t > 0 and self.viewer[cam_n].camera is None :
-            print "reconnecting", cam_n
-            self.setCameraCombo(cam_n)
-            self.viewer[cam_n].onCameraSelect(cam_n)
-            self.viewer[cam_n].connectCamera( self.viewer[cam_n].cameraBase )
-            #self.onUpdateColorMap(cam_n)
-            self.viewer[cam_n].setColorMap()
-            self.connect(self.viewer[cam_n], self.sig6, self.onUpdateRate)
-            self.connect(self.viewer[cam_n], self.sig8, self.setCameraCombo)
-            self.updateCameraTitle(cam_n)
-        elif t == 0 and self.viewer[cam_n].camera is not None : 
-            print "clearing Cam", cam_n
-            self.setCameraCombo(cam_n)
-            self.viewer[cam_n].clear()
-
-    def updateTimer(self,cam_n):
-        if self.timers[cam_n].isEnabled() and self.timerReferenceTime[cam_n]:
-            ref, totalseconds = self.timerReferenceTime[cam_n]
-            endTime = ref+totalseconds
-            delta = int(endTime - time.time())
-            if delta > 0:
-                hours = delta / 3600
-                minutes = (delta % 3600) / 60
-                seconds = (delta % 3600) % 60
-                #if DEBUG:
-                #    print cam_n, ref, totalseconds, endTime, delta, hours, minutes, seconds
-                self.timers[cam_n].setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
-            else :
-                hours = 0
-                minutes = 0
-                seconds = 0
-                self.timers[cam_n].setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
-                if self.viewer[cam_n].camera is not None :
-                    self.setCameraCombo(cam_n)
-                    self.viewer[cam_n].clear()
-                #if DEBUG:
-                #    print "camera", cam_n, "should be disabled"
+#    def setupTimer(self, i,refTime=None,duration=9):
+#        logger.debug( "setup timer called %i"% i )
+#        self.timerlabels[i].setEnabled(True)
+#        self.timers[i].setEnabled(True)
+#        self.timerreset9[i].setEnabled(True)
+#        self.timerreset1[i].setEnabled(True)
+#        self.timerclear[i].setEnabled(True)
+#        self.timerlabels[i].setText( self.lCameraDesc[i] )
+#        self.handleTimerReset(i,duration)
+#        if not refTime:
+#            refTime = time.time()
+#        self.timerReferenceTime[i] = (refTime,duration*3600.)
+#        self.timerKeepers[i].start(1000)
+#
+    def onhandleTimerReset(self, t):
+        logger.debug("onhandleTimerReset %g", t)
+        pass
+        # send signal to ViewerFrame ??
+        
+#        logger.debug( "timer reset %g %g", cam_n, t )
+#        #self.updateCamCombo()
+#        self.timers[cam_n].setText("{:02.0f}:00:00".format(t))
+#        self.timerReferenceTime[cam_n] = (time.time(),float(t)*3600.)
+#        logger.debug( "handleTimerReset %g %g %s", t, cam_n, self.viewer[cam_n] )
+#        if t > 0 and self.viewer[cam_n].camera is None :
+#            print "reconnecting", cam_n
+#            self.setCameraCombo(cam_n)
+#            self.viewer[cam_n].onCameraSelect(cam_n)
+#            self.viewer[cam_n].connectCamera( self.viewer[cam_n].cameraBase )
+#            #self.onUpdateColorMap(cam_n)
+#            self.viewer[cam_n].setColorMap()
+#            self.connect(self.viewer[cam_n], self.sig6, self.onUpdateRate)
+#            self.connect(self.viewer[cam_n], self.sig8, self.setCameraCombo)
+#            self.updateCameraTitle(cam_n)
+#        elif t == 0 and self.viewer[cam_n].camera is not None : 
+#            print "clearing Cam", cam_n
+#            self.setCameraCombo(cam_n)
+#            self.viewer[cam_n].clear()
+#
+    def onupdateTimer(self):
+        logger.debug("onupdateTimer called")
+        pass
+        # send signal to ViewerFrame ??
+        
+        
+#        if self.timers[cam_n].isEnabled() and self.timerReferenceTime[cam_n]:
+#            ref, totalseconds = self.timerReferenceTime[cam_n]
+#            endTime = ref+totalseconds
+#            delta = int(endTime - time.time())
+#            if delta > 0:
+#                hours = delta / 3600
+#                minutes = (delta % 3600) / 60
+#                seconds = (delta % 3600) % 60
+#                #if DEBUG:
+#                #    print cam_n, ref, totalseconds, endTime, delta, hours, minutes, seconds
+#                self.timers[cam_n].setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
+#            else :
+#                hours = 0
+#                minutes = 0
+#                seconds = 0
+#                self.timers[cam_n].setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
+#                if self.viewer[cam_n].camera is not None :
+#                    self.setCameraCombo(cam_n)
+#                    self.viewer[cam_n].clear()
+#                #if DEBUG:
+#                #    print "camera", cam_n, "should be disabled"
 
     def centerOnScreen(self):
         '''centerOnScreen() Centers the window on the screen.'''
@@ -535,15 +521,15 @@ class Viewer(QtGui.QMainWindow, form_class):
         logger.debug( "locked? %s", self.lockCross.isChecked() )
         return self.lockCross.isChecked()
 
-
     def handleShowHide(self):
         i = self.getSelectedCross()
         self.viewer[self.cam_n].showCross[i] = self.getShowCross()
+        self.dumpConfig(self.cam_n)
 
     def handleLockCross(self):
         i = self.getSelectedCross()
         self.viewer[self.cam_n].lockCross[i] = self.getLockCross()
-
+        self.dumpConfig(self.cam_n)
 
     def handleColorButton(self):
         i = self.getSelectedCross()
@@ -552,11 +538,14 @@ class Viewer(QtGui.QMainWindow, form_class):
         if newcolor.isValid():
             self.viewer[self.cam_n].colors[i]  = newcolor
             self.viewer[self.cam_n].updateRdColors()
+            self.dumpConfig(self.cam_n)
 
     def handleRadio(self):
+        logger.debug( "handleRadio %s", self.cam_n)
         i = self.getSelectedCross()
         self.showHideCross.setChecked( self.viewer[self.cam_n].showCross[i] )
         self.lockCross.setChecked( self.viewer[self.cam_n].lockCross[i] )
+        self.dumpConfig(self.cam_n)
 
     def handleCrossText(self,XY):
         i = int(XY[1])-1
@@ -572,7 +561,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 translate[XY].setText("{:0.0f}".format( self.viewer[self.cam_n].xpos[i] * self.viewer[self.cam_n].win_W ) )
             else:
                 translate[XY].setText("{:0.0f}".format( self.viewer[self.cam_n].ypos[i] * self.viewer[self.cam_n].win_W ) )
-        else:
+        else:            
             if XY[0] == 'X':
                 self.viewer[self.cam_n].xpos[ i ] = float(translate[XY].text()) / self.viewer[self.cam_n].win_W
             else:
@@ -622,7 +611,9 @@ class Viewer(QtGui.QMainWindow, form_class):
         #self.setCameraCombo( cam_n )
         self.updateCameraTitle(cam_n)
         self.viewer[cam_n].updateMarkerXY()
+        
         self.viewer[cam_n].updateCrossPanel()
+        
         self.viewer[cam_n].updateLock()
         self.viewer[cam_n].updateRdColors()
         
@@ -708,7 +699,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 if not radiobutton.isChecked():
                    radiobutton.setChecked(True)
                 self.viewer[self.cam_n].setColorMap()
-                if self.cfg == None: self.dumpConfig(self.cam_n)
+                self.dumpConfig(self.cam_n)
         else:
             if not radiobutton.isChecked():
                 radiobutton.setChecked(True)
@@ -718,7 +709,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         if self.viewer[cam_n].colorMap != self.colormap[cam_n]:
             self.viewer[cam_n].colorMap = self.colormap[cam_n]
             self.viewer[cam_n].setColorMap()
-        if self.cfg == None: self.dumpConfig(cam_n)
+        self.dumpConfig(cam_n)
         
     def onSliderRangeMinChanged(self, newSliderValue):
         if self.viewer[self.cam_n]:        
@@ -728,7 +719,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.hSRngMax.setValue(newSliderValue)
             if self.viewer[self.cam_n].colorMap != None:
                 self.viewer[self.cam_n].setColorMap()
-                if self.cfg == None: self.dumpConfig(self.cam_n)
+                self.dumpConfig(self.cam_n)
 
     def onSliderRangeMaxChanged(self, newSliderValue):
         if self.viewer[self.cam_n]:
@@ -738,7 +729,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.hSRngMin.setValue(newSliderValue)
             if self.viewer[self.cam_n].colorMap != None:
                 self.viewer[self.cam_n].setColorMap()
-                if self.cfg == None: self.dumpConfig(self.cam_n)
+                self.dumpConfig(self.cam_n)
     
     def onRangeMinTextEnter(self):
         try:    value = int(self.lERngMin.text())
@@ -770,6 +761,7 @@ class Viewer(QtGui.QMainWindow, form_class):
     def onCheckGrayScale(self):
         status = int(self.grayScale.isChecked())
         self.viewer[self.cam_n].onCheckGrayUpdate(status)
+        self.dumpConfig(self.cam_n)
                 
     def onCameraCombo(self):
         if self.iocmod[self.cam_n] and self.viewer[self.cam_n]:
@@ -786,6 +778,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         # implement a stack to ensure that only 2 checkboxes are checked.
         # dump the oldest (first) one, and append the new one to the end of the stack
         # could be changed from 2 if more calculation boxes are added
+        
         newchecked = [ i for i,x in enumerate(self.check_box) if x.isChecked() ]
         # now check if diagonal boxes are checked, and if so uncheck them
         toremove = []
@@ -811,6 +804,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 if sc not in newchecked:
                     check_stack.remove(sc)
         self.viewer[self.cam_n].check_stack = list(check_stack)
+        
         #if DEBUG:
             #print "checkbox pressed" , repr( check_stack )
 
@@ -833,8 +827,8 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.dist_val[0].setText("")
             self.from_val[0].setText("")
 
-
-        return
+        self.dumpConfig(self.cam_n)
+        return True
 
     def calcMarkerDist(self,sc):
         translate = {
@@ -997,10 +991,11 @@ class Viewer(QtGui.QMainWindow, form_class):
                   
                 self.lMotorList.append(sMotorPv)
                 self.lMotorDesc.append(sMotorDesc)
-                #print sMotorPv, sMotorDesc        
+                #logger.debug( 'Motor PV>> %s Description>> %s', sMotorPv, sMotorDesc )
+                        
                 self.cB_onmot[iMotor].setText(sMotorPv)
+                self.cB_onmot[iMotor].setChecked(True)
                 self.mottypes.append(lsLine[0].strip())
-                
                 print 'Mot[%d] %s ' % (iMotor, sMotorDesc), sMotorPv
             elif line.startswith("IOC"):
                 iIOC += 1
@@ -1154,6 +1149,8 @@ class Viewer(QtGui.QMainWindow, form_class):
            2/ Change any setting (may not...necessary)
            3/ Exit the program (by the quit button or closing the window)
         '''
+        if self.cfg != None:
+            return False
         cameraBase = str(self.lCameraList[cam_n])
         if cameraBase == "":
           return
@@ -1170,34 +1167,70 @@ class Viewer(QtGui.QMainWindow, form_class):
           f.write("colormap_gray " + str(int(self.rBColor_Gray.isChecked())) + "\n")
           f.write("colormap_hot  " + str(int(self.rBColor_Hot.isChecked())) + "\n")
           # Timer:
-          f.write("TimerLabel    " + self.TimerLabels[cam_n].text() + "\n")
+          f.write("TimerLabel    " + self.TimerLabel.text() + "\n")
           # Crosses:
-          f.write("X1Position    " + self.X1Positions[cam_n] + "\n")
-          f.write("Y1Position    " + self.Y1Positions[cam_n] + "\n")
-          f.write("X2Position    " + self.X2Positions[cam_n] + "\n")
-          f.write("Y2Position    " + self.Y2Positions[cam_n] + "\n")
-          f.write("X3Position    " + self.X3Positions[cam_n] + "\n")
-          f.write("Y3Position    " + self.Y3Positions[cam_n] + "\n")
-          f.write("X4Position    " + self.X4Positions[cam_n] + "\n")
-          f.write("Y4Position    " + self.Y4Positions[cam_n] + "\n")
-          f.write("ShowHideCross " + self.ShowHideCrosses[cam_n] + "\n")
-          f.write("LockCross     " + self.LockCrosses[cam_n] + "\n")
+          f.write("cross1        " + str(int(self.Cross1.isChecked())) + "\n")
+          f.write("cross2        " + str(int(self.Cross2.isChecked())) + "\n")
+          f.write("cross3        " + str(int(self.Cross3.isChecked())) + "\n")
+          f.write("cross4        " + str(int(self.Cross4.isChecked())) + "\n")
           
-          f.write("checkBox21    " + self.checkBox21s[cam_n] + "\n")
-          f.write("checkBox31    " + self.checkBox31s[cam_n] + "\n")
-          f.write("checkBox41    " + self.checkBox41s[cam_n] + "\n")
+          f.write("X1Position    " + self.X1Position.text() + "\n")
+          f.write("Y1Position    " + self.Y1Position.text() + "\n")
+          f.write("X2Position    " + self.X2Position.text() + "\n")
+          f.write("Y2Position    " + self.Y2Position.text() + "\n")
+          f.write("X3Position    " + self.X3Position.text() + "\n")
+          f.write("Y3Position    " + self.Y3Position.text() + "\n")
+          f.write("X4Position    " + self.X4Position.text() + "\n")
+          f.write("Y4Position    " + self.Y4Position.text() + "\n")
           
-          f.write("checkBox12    " + self.checkBox12s[cam_n] + "\n")
-          f.write("checkBox32    " + self.checkBox32s[cam_n] + "\n")
-          f.write("checkBox42    " + self.checkBox42s[cam_n] + "\n")
+          f.write("ShowHideCross " + str(int(self.showHideCross.isChecked())) + "\n")
+          f.write("LockCross     " + str(int(self.lockCross.isChecked())) + "\n")
           
-          f.write("checkBox13    " + self.checkBox13s[cam_n] + "\n")
-          f.write("checkBox23    " + self.checkBox23s[cam_n] + "\n")
-          f.write("checkBox43    " + self.checkBox43s[cam_n] + "\n")
+          f.write("checkBox21    " + str(int(self.checkBox21.isChecked())) + "\n")
+          f.write("checkBox31    " + str(int(self.checkBox31.isChecked())) + "\n")
+          f.write("checkBox41    " + str(int(self.checkBox41.isChecked())) + "\n")
           
-          f.write("checkBox14    " + self.checkBox14s[cam_n] + "\n")
-          f.write("checkBox24    " + self.checkBox24s[cam_n] + "\n")
-          f.write("checkBox34    " + self.checkBox34s[cam_n] + "\n")
+          f.write("checkBox12    " + str(int(self.checkBox12.isChecked())) + "\n")
+          f.write("checkBox32    " + str(int(self.checkBox32.isChecked())) + "\n")
+          f.write("checkBox42    " + str(int(self.checkBox42.isChecked())) + "\n")
+          
+          f.write("checkBox13    " + str(int(self.checkBox13.isChecked())) + "\n")
+          f.write("checkBox23    " + str(int(self.checkBox23.isChecked())) + "\n")
+          f.write("checkBox43    " + str(int(self.checkBox43.isChecked())) + "\n")
+          
+          f.write("checkBox14    " + str(int(self.checkBox14.isChecked())) + "\n")
+          f.write("checkBox24    " + str(int(self.checkBox24.isChecked())) + "\n")
+          f.write("checkBox34    " + str(int(self.checkBox34.isChecked())) + "\n")
+          
+#          # Timer:
+#          f.write("TimerLabel    " + self.TimerLabels[cam_n].text() + "\n")
+#          # Crosses:
+#          f.write("X1Position    " + self.X1Positions[cam_n] + "\n")
+#          f.write("Y1Position    " + self.Y1Positions[cam_n] + "\n")
+#          f.write("X2Position    " + self.X2Positions[cam_n] + "\n")
+#          f.write("Y2Position    " + self.Y2Positions[cam_n] + "\n")
+#          f.write("X3Position    " + self.X3Positions[cam_n] + "\n")
+#          f.write("Y3Position    " + self.Y3Positions[cam_n] + "\n")
+#          f.write("X4Position    " + self.X4Positions[cam_n] + "\n")
+#          f.write("Y4Position    " + self.Y4Positions[cam_n] + "\n")
+#          f.write("ShowHideCross " + str(self.ShowHideCrosses[cam_n]) + "\n")
+#          f.write("LockCross     " + str(self.LockCrosses[cam_n]) + "\n")
+#          
+#          f.write("checkBox21    " + str(self.checkBox21s[cam_n]) + "\n")
+#          f.write("checkBox31    " + str(self.checkBox31s[cam_n]) + "\n")
+#          f.write("checkBox41    " + str(self.checkBox41s[cam_n]) + "\n")
+#          
+#          f.write("checkBox12    " + str(self.checkBox12s[cam_n]) + "\n")
+#          f.write("checkBox32    " + str(self.checkBox32s[cam_n]) + "\n")
+#          f.write("checkBox42    " + str(self.checkBox42s[cam_n]) + "\n")
+#          
+#          f.write("checkBox13    " + str(self.checkBox13s[cam_n]) + "\n")
+#          f.write("checkBox23    " + str(self.checkBox23s[cam_n]) + "\n")
+#          f.write("checkBox43    " + str(self.checkBox43s[cam_n]) + "\n")
+#          
+#          f.write("checkBox14    " + str(self.checkBox14s[cam_n]) + "\n")
+#          f.write("checkBox24    " + str(self.checkBox24s[cam_n]) + "\n")
+#          f.write("checkBox34    " + str(self.checkBox34s[cam_n]) + "\n")
           
           f.close()
           
@@ -1244,22 +1277,27 @@ class Viewer(QtGui.QMainWindow, form_class):
                    
             self.grayScale.setChecked(int(self.cfg.grayscale))
             # Timer:
-            self.TimerLabel.setText(self.cfg.TimerLabel)
+            self.TimerLabel.setText(' '.join(self.cfg.TimerLabel))
             #Crosses:
-            self.X1Position.setText(self.cfg.X1Position)
-            self.Y1Position.setText(self.cfg.Y1Position)
-            self.X2Position.setText(self.cfg.X2Position)
-            self.Y2Position.setText(self.cfg.Y2Position)
-            self.X3Position.setText(self.cfg.X3Position)
-            self.Y3Position.setText(self.cfg.Y3Position)
-            self.X4Position.setText(self.cfg.X4Position)
-            self.Y4Position.setText(self.cfg.Y4Position)
-          
-            self.ShowHideCross.setChecked(int(self.cfg.ShowHideCross))
-            self.LockCross.setChecked(int(self.cfg.LockCross))
+            self.Cross1.setChecked(int(self.cfg.cross1))
+            self.Cross2.setChecked(int(self.cfg.cross2))
+            self.Cross3.setChecked(int(self.cfg.cross3))
+            self.Cross4.setChecked(int(self.cfg.cross4))
+            
+            self.X1Position.setText(str(self.cfg.X1Position))
+            self.Y1Position.setText(str(self.cfg.Y1Position))
+            self.X2Position.setText(str(self.cfg.X2Position))
+            self.Y2Position.setText(str(self.cfg.Y2Position))
+            self.X3Position.setText(str(self.cfg.X3Position))
+            self.Y3Position.setText(str(self.cfg.Y3Position))
+            self.X4Position.setText(str(self.cfg.X4Position))
+            self.Y4Position.setText(str(self.cfg.Y4Position))
+            
+            self.showHideCross.setChecked(int(self.cfg.ShowHideCross))
+            self.lockCross.setChecked(int(self.cfg.LockCross))
           
             self.checkBox21.setChecked(int(self.cfg.checkBox21))
-            self.checkBox31.setChecked(int(self.cfg.checkBox31))
+            self.checkBox31.setChecked(int(self.cfg.checkBox31))            
             self.checkBox41.setChecked(int(self.cfg.checkBox41))
           
             self.checkBox12.setChecked(int(self.cfg.checkBox12))
