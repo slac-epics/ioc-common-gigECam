@@ -51,7 +51,7 @@ class ViewerFrame(QtGui.QWidget):
         self.event           = QObject()
         self.iScaleIndex     = False
         self.someundocked    = False
-        #self.colorMap        = None
+        self.colormapfile    = None
         self.colorMap        = 'gray'
         self.lastImageUpdateDispTime = 0
         self.lastImageProcessingTime = 0
@@ -64,12 +64,18 @@ class ViewerFrame(QtGui.QWidget):
         
         #                            red                    orange                   green                  light blue
         self.colors = [ QtGui.QColor(255,0,0), QtGui.QColor(255,170,0), QtGui.QColor(0,170,0), QtGui.QColor(85,170,255) ]
-        self.xpos = [None,None,None,None]
-        self.ypos = [None,None,None,None]
-        self.showCross = [True, True, True, True]
+#        self.xpos = [None,None,None,None]
+#        self.ypos = [None,None,None,None]
+        self.xpos = [0, 0, 0, 0]
+        self.ypos = [0, 0, 0, 0]
+
+        
+        #self.showCross = [True, True, True, True]
+        self.showCross = [False, False, False, False]
         self.lockCross = [False, False, False, False]
         self.win_W = None
         self.win_H = None
+
         #self.winsize = [self.parent.width(),self.parent.height()]
         self.markers = [None,None,None,None]
         self.check_stack= []
@@ -153,12 +159,26 @@ class ViewerFrame(QtGui.QWidget):
           self.parent.resizeEvent = self.setNewImageSize
           self.parent.installEventFilter(self)
     
-    def setCross(self,event):
+    def mouseMoveEvent(self, event):
+        print 'to be used to draw a cross while moving...'
+#        if not self.barrelPressed:
+#            return
+#        pos = event.pos()
+#        if pos.x() <= 0:
+#            pos.setX(1)
+#        if pos.y() >= self.height():
+#            pos.setY(self.height() - 1)
+#        rad = math.atan((float(self.rect().bottom()) - pos.y()) / pos.x())
+#        self.setAngle(QtCore.qRound(rad * 180 / 3.14159265))    
+    
+    
+    def setCross(self, event):
         # which radio button is selected
         i = self.gui.getSelectedCross()
         if self.lockCross[i]:
             logger.debug( "this cross is locked")
         else:
+            logger.debug( 'setCross called ViewerFrame prima %s %s', self.gui.X1Position.text(), self.gui.Y1Position.text() )
             self.win_W = self.display_image.scaled_image.width() 
             self.win_H = self.display_image.scaled_image.height() 
             cross_X = float(event.x())/self.win_W
@@ -171,8 +191,10 @@ class ViewerFrame(QtGui.QWidget):
             self.gui.yPos_val[i].setText("{:0.0f}".format(cross_Y*self.win_H))
             self.xpos[i] = float(cross_X)
             self.ypos[i] = float(cross_Y)
+            #self.gui.dumpConfig(self.cam_n)
+            logger.debug( 'setCross called ViewerFrame dopo %s %s', self.gui.X1Position.text(), self.gui.Y1Position.text() )
     
-    def drawCrosses(self,painter):  # this is in the wrong place, me thinks.
+    def drawCrosses(self, painter):  # this is in the wrong place, me thinks.
         size = 10
         self.win_W = self.display_image.scaled_image.width() 
         self.win_H = self.display_image.scaled_image.height() 
@@ -188,6 +210,8 @@ class ViewerFrame(QtGui.QWidget):
         #print "rescaling cross positions",x,y,self.winsize[0],self.winsize[1], float(x)/self.winsize[0]
         #self.updateCrossSize(self.parent.width(),self.parent.height()) 
         #self.winsize = [ int(x), int(y) ]
+        
+        logger.debug( 'onCheckPress called ViewerFrame %s %s', self.gui.X1Position.text(), self.gui.Y1Position.text() )
         self.win_H = int(y)
         self.win_W = int(x)
         for i in xrange(4):
@@ -215,9 +239,10 @@ class ViewerFrame(QtGui.QWidget):
         self.gui.onCheckPress()
     
     
-    def updateLock(self):
-        i = self.gui.getSelectedCross()
-        self.gui.lockCross.setChecked( self.lockCross[i] )
+#    def updateLock(self):
+#        i = self.gui.getSelectedCross()
+#        print 'THIS NEED TO BE FIXED!!!'
+#        #self.gui.cBlock_1.setChecked( self.lockCross[i] )
     
     def updateRdColors(self):
         for i in xrange(4):
@@ -230,32 +255,26 @@ class ViewerFrame(QtGui.QWidget):
     
     def eventFilter(self, target, event):
           '''Create an event filter to capture mouse press signal over 
-             the selected image witdget
-             Rigth button select new camera controls
+             the selected image widget
+             Right button select new camera controls
              Left button select previous camera controls
           '''
           if(event.type()==QtCore.QEvent.MouseButtonPress):
               if event.buttons() & Qt.LeftButton:
-                  if self.gui.cam_n == self.cam_n and self.camera is not None:
-                      logger.debug( "this cam already selected %g", self.cam_n )
-                      if self.gui.showHideCross.isChecked():
-                          self.setCross(event)
-                  else:
-                      self.gui.cam_n = self.cam_n
-                      logger.debug( "selecting cam %g", self.cam_n )
-                      self.emit(QtCore.SIGNAL("setCameraCombo(int)"), self.cam_n)
-    
-                  if not self.camera_on:
-                      self.connectDisplay()
-                      self.onCameraSelect(self.cam_n)
-                      self.onExposureUpdate()
-                      self.onGainUpdate()
-                      self.onBinXYUpdate()
+                  self.gui.dumpConfig(self.gui.cam_n) # save last camera params
+                  self.gui.cam_n = self.cam_n
+                  self.gui.getConfig(self.cam_n)      # get new camera params
+                  self.gui.setCameraCombo(self.cam_n)
+                  self.gui.updateCameraTitle(self.cam_n)
+                  if self.showHideCrosses():
+                      self.setCross(event)
                   self.updateall()
-                  self.gui.getConfig(self.cam_n)
                   return True
           return False
       
+    def showHideCrosses(self):
+        return self.showCross[0] | self.showCross[1] | self.showCross[2] | self.showCross[3]
+        
     def disconnectPv(self, pv):
       if pv != None:
         try:
@@ -305,7 +324,7 @@ class ViewerFrame(QtGui.QWidget):
       #self.setColorMap()
       
     def connectCamera(self, sCAMPv):#, index):
-      timeout = 5.0
+      timeout = 1.0
       #sCAMPv  = sCameraPv.replace('IMAGE', 'CAM')
       sImagePv = sCAMPv + ':IMAGE1'
       self.camera     = self.disconnectPv(self.camera)
@@ -327,13 +346,13 @@ class ViewerFrame(QtGui.QWidget):
         colpvname = sImagePv + ":ArraySize1_RBV"
         self.isColor = True
         self.gui.setSliderRangeMax(10) # 10 bits camera
-        self.gui.grayScale.setVisible(True)      
+        self.gui.cBgrayScale.setEnabled(True)      
       else: # Just B/W!
         rowpvname = sImagePv + ":ArraySize1_RBV"
         colpvname = sImagePv + ":ArraySize0_RBV"
         self.isColor = False
         self.gui.setSliderRangeMax(8)  #  8 bits camera
-        self.gui.grayScale.setEnabled(False)
+        self.gui.cBgrayScale.setEnabled(False)
       self.camera     = self.connectPv(sImagePv + ":ArrayData")
       self.rowPv      = self.connectPv(rowpvname)
       self.colPv      = self.connectPv(colpvname)
@@ -388,7 +407,7 @@ class ViewerFrame(QtGui.QWidget):
       print 'self.exposurePv            :', self.exposurePv
       print 'self.binXPv                :',     self.binXPv
       print 'self.binYPv                :',     self.binYPv
-      print 'self.colorMap              :',   self.colorMap
+      print 'self.colormapfile          :',   self.colormapfile
       print 'self.camera.monitor_cb     :',   self.imagePvUpdateCallback
       print 'self.rowPv.monitor_cb      :',   self.sizeCallback
       print 'self.colPv.monitor_cb      :',   self.sizeCallback
@@ -502,24 +521,24 @@ class ViewerFrame(QtGui.QWidget):
       except:
         pass    
     
-    def onColorMapUpdate(self):
-      #print "onColorMapUpdate() called"
-      try: #assume radiobuttons auto-exclusives
-          if   self.colorMap == 'jet':
-              self.gui.rBColor_Jet.setChecked(True)
-          elif self.colorMap == 'hsv':
-              self.gui.rBColor_HSV.setChecked(True)
-          elif self.colorMap == 'cool':
-              self.gui.rBColor_Cool.setChecked(True)
-          elif self.colorMap == 'gray':
-              self.gui.rBColor_Gray.setChecked(True)
-          elif self.colorMap == 'hot':
-              self.gui.rBColor_Hot.setChecked(True)
-          else:
-              pass
-          #print 'ColorMap updated'
-      except:
-        pass  
+#    def onColorMapUpdate(self):
+#      #print "onColorMapUpdate() called"
+#      try: #assume radiobuttons auto-exclusives
+#          if   self.colorMap == 'jet':
+#              self.gui.rBColor_Jet.setChecked(True)
+#          elif self.colorMap == 'hsv':
+#              self.gui.rBColor_HSV.setChecked(True)
+#          elif self.colorMap == 'cool':
+#              self.gui.rBColor_Cool.setChecked(True)
+#          elif self.colorMap == 'gray':
+#              self.gui.rBColor_Gray.setChecked(True)
+#          elif self.colorMap == 'hot':
+#              self.gui.rBColor_Hot.setChecked(True)
+#          else:
+#              pass
+#          #print 'ColorMap updated'
+#      except:
+#        pass  
     
     # Note: this function is called by the CA library, from another thread
     def imagePvUpdateCallback(self, exception=None):       
@@ -576,16 +595,28 @@ class ViewerFrame(QtGui.QWidget):
       self.lastDataUpdates = self.dataUpdates
       self.updateImage()
       
-    def setColorMap(self):
+    def setColorMap(self, colormapfile=None):
       #print 'setColorMap called [CAM%d] %s' % (self.cam_n, self.colorMap)
-      logger.debug( 'self.cam_n %s', self.cam_n)
-      logger.debug( 'setColorMap called %s', self.colorMap)
-      self.iScaleIndex = self.gui.iScaleIndex
-      if self.colorMap != "gray":
-        fnColorMap = self.gui.cwd + "/" + self.colorMap + ".txt"
-        mantaGiGE.pydspl_setup_color_map(self.imageBuffer, fnColorMap, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
+      #logger.debug( 'self.cam_n %s', self.cam_n)
+      logger.debug( 'ViewerFrame setColorMap called, new      %s', colormapfile)
+      logger.debug( 'ViewerFrame setColorMap called, current: %s', self.colormapfile)
+      ####self.iScaleIndex = self.gui.iScaleIndex
+      #logger.debug('setColorMap self.gui.cwd %s', self.gui.cwd)
+      #logger.debug('setColorMap self.colorMap %s', self.colorMap)
+      if self.colormapfile == colormapfile:
+          return False
+      
+      if colormapfile:
+          fnColorMap = self.gui.cwd + "/" + colormapfile
+          mantaGiGE.pydspl_setup_color_map(self.imageBuffer, fnColorMap, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
       else:
-        mantaGiGE.pydspl_setup_gray(self.imageBuffer, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
+          mantaGiGE.pydspl_setup_gray(self.imageBuffer, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
+      self.colormapfile = colormapfile
+#      if self.colorMap != "gray":
+#        fnColorMap = self.gui.cwd + "/" + self.colorMap + ".txt"
+#        mantaGiGE.pydspl_setup_color_map(self.imageBuffer, fnColorMap, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
+#      else:
+#        mantaGiGE.pydspl_setup_gray(self.imageBuffer, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
       
     #  def forceMinSize(self):
     #    self.gui.app.sendPostedEvents()
@@ -622,18 +653,18 @@ class ViewerFrame(QtGui.QWidget):
       if self.camera != None:
         if self.isColor:
           self.camera.processor  = mantaGiGE.pyCreateColorImagePvCallbackFunc(self.imageBuffer)
-          self.gui.grayScale.setVisible(True)
+          self.gui.cBgrayScale.setEnabled(True)
         else:
           self.camera.processor  = mantaGiGE.pyCreateImagePvCallbackFunc(self.imageBuffer)
-          self.gui.grayScale.setVisible(False)
-        mantaGiGE.pySetImageBufferGray(self.imageBuffer, self.gui.grayScale.isChecked())
+          self.gui.cBgrayScale.setEnabled(False)
+        mantaGiGE.pySetImageBufferGray(self.imageBuffer, self.gui.cBgrayScale.isChecked())
     
     def onCheckGrayUpdate(self, newval):
       mantaGiGE.pySetImageBufferGray(self.imageBuffer, newval)
-      if self.gui.cfg == None: self.gui.dumpConfig()
+      #if self.gui.cfg == None: self.gui.dumpConfig()
     
     def updateall(self):
-      #print 'updateall called', self.dataUpdates, self.dispUpdates
+      #logger.debug( "updateall called")
       self.display_image.setGeometry(QtCore.QRect(0, 0, self.parent.width(), self.parent.height()))
       self.display_image.scaled_image = self.display_image.image.scaled(self.parent.width(), self.parent.height(), 
                      QtCore.Qt.KeepAspectRatio,

@@ -16,8 +16,8 @@
 # ---------------------------------------------------------------
 
 # CAMERA PV NAMES (located in the cfg file, 'CAM' variable):
-GIG, TST:GIGE:CAM134, B901 TST Camera 1 #on ioc-tst-cam01
-#GIG, TST:GIGE:CAM134, B901 TST Camera 2 #on ioc-tst-cam01
+GIG, TST:GIGE:CAM134A, B901 TST Manta 1 #on ioc-tst-cam01
+GIG, TST:GIGE:CAM134B, B901 TST Prosilica 2 #on ioc-tst-cam01
 #GIG, TST:GIGE:CAM134, B901 TST Camera 3 #on ioc-tst-cam01
 #GIG, TST:GIGE:CAM134, B901 TST Camera 4 #on ioc-tst-cam01
 #GIG, TST:GIGE:CAM134, B901 TST Camera 5 #on ioc-tst-cam01
@@ -26,8 +26,8 @@ GIG, TST:GIGE:CAM134, B901 TST Camera 1 #on ioc-tst-cam01
 #GIG, TST:GIGE:CAM134, B901 TST Camera 8 #on ioc-tst-cam01
 
 # IOC PV NAMES (located in the cfg file, 'IOC_PV' variable): 
-IOC, TST:GIGE:IOC134, IOC1 #ioc PV name for restart cam1 in ioc-tst-cam01
-#IOC, TST:GIGE:IOC135, IOC2 #ioc PV name for restart cam2 in ioc-tst-cam01
+IOC, TST:GIGE:IOC134A, IOC1 #ioc PV name for restart cam1 in ioc-tst-cam01
+IOC, TST:GIGE:IOC134B, IOC2 #ioc PV name for restart cam2 in ioc-tst-cam01
 #IOC, TST:GIGE:IOC134, IOC3 #ioc PV name for restart cam3 in ioc-tst-cam01
 #IOC, TST:GIGE:IOC134, IOC4 #ioc PV name for restart cam4 in ioc-tst-cam01
 #IOC, TST:GIGE:IOC134, IOC5 #ioc PV name for restart cam5 in ioc-tst-cam01

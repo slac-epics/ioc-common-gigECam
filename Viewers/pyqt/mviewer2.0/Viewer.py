@@ -13,7 +13,18 @@ from ViewerFrame import ViewerFrame
 
 logger = logging.getLogger('mviewer.Viewer')
 
-MAX_MOT = 7
+'''
+TODO: 
+replace cameracombo for a lineEdit our label
+fix bin and caget put camonitor
+fix mutual exclusive check crosses maybe a third button ??
+Add save as in SetupDialog
+Fix Timers
+Explore possibility of use of mouseMoveEvent to draw continuously the cross
+
+'''
+
+
 
 form_class1, base_class1 = uic.loadUiType('ui/mvsetup1.0.ui')
 
@@ -72,9 +83,9 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.camerListFilename  = camLstFname
         self.cfgdir     = cfgdir
         self.cfg        = None
+        self.EnableDumpConfig = False
         self.iScaleIndex= False
-        self.ioc1       = None # server for cams 1-4
-        self.ioc2       = None # server for cams 5-8
+        
         
         #layout = 
         #layout = QtGui.QGridLayout(self)
@@ -86,7 +97,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.limiton   = QtGui.QPixmap('ui/led-red-16x16.png')
         self.viewer     = [None for i in range(8)]
         self.ca         = [None for i in range(8)]
-        self.colormap   = [None for i in range(8)]
+        #self.colormap   = [None for i in range(8)]
         self.camlabel   = [''   for i in range(8)]
         self.cam_n      = 0  # Default: controls starts by first camera
         self.mot_n      = 0  # motor index
@@ -94,6 +105,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.iocmod     = [True  for i in range(8)] # default: uses CA
         self.ipmod      = [False for i in range(8)]
         
+        self.ShowCross = [False, False, False, False]
+        self.LockCross = [False, False, False, False]
         
         self.w_Img = [self.w_Img_1, self.w_Img_2, self.w_Img_3, self.w_Img_4,
                       self.w_Img_5, self.w_Img_6, self.w_Img_7, self.w_Img_8]
@@ -112,7 +125,7 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         self.yPos_val = [self.Y1Position, self.Y2Position, self.Y3Position, self.Y4Position]
 
-        self.rd_cross = [self.Cross1, self.Cross2, self.Cross3, self.Cross4]
+        self.rd_cross = [self.cBcross_1, self.cBcross_2, self.cBcross_3, self.cBcross_4]
         self.rd_line  = [self.rd_line1, self.rd_line2, self.rd_line3, self.rd_line4]
 
         self.dist_val = [self.Distance1, self.Distance2]
@@ -125,13 +138,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.checkBox31, self.checkBox32, self.checkBox33, self.checkBox34,
                 self.checkBox41, self.checkBox42, self.checkBox43, self.checkBox44,
                 ]
-        self.colormapsrb = {'jet' : self.rBColor_Jet,
-                       'hsv' : self.rBColor_HSV,
-                       'cool': self.rBColor_Cool,
-                       'gray': self.rBColor_Gray,
-                       'hot' : self.rBColor_Hot}
-
-        #self.tB_reset = [self.tB_reset_1, self.tB_reset_2]
+        self.colormapsrb = {'jet' : self.rBColor_Jet, 'hsv' : self.rBColor_HSV, 'cool': self.rBColor_Cool, 'gray': self.rBColor_Gray, 'hot' : self.rBColor_Hot}
 
         self.lb_ImStats = [self.lb_minValdata, self.lb_maxValdata]
 
@@ -171,7 +178,7 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         self.lb_ImStats[0].setText('n/a') ; self.lb_ImStats[1].setText('n/a')
         
-        for iMotor in range(MAX_MOT): 
+        for iMotor in range(8): 
             self.lb_limM[iMotor].setPixmap(self.limitoff)
             self.lb_limP[iMotor].setPixmap(self.limitoff)
 
@@ -201,21 +208,23 @@ class Viewer(QtGui.QMainWindow, form_class):
         sig10  = QtCore.SIGNAL("released()")
         sig11  = QtCore.SIGNAL("timeout()")
         sig12  = QtCore.SIGNAL("lostFocus()")
+        sig13  = QtCore.SIGNAL("sliderReleased()")
 
         self.objc  , self.qsig  , self.sig0  , self.sig1  , self.sig2  , self.sig3  , self.sig4  , self.sig5  , self.sig6  , self.sig7  , self.sig8  , self.sig9  , self.sig10 , self.sig11 , = objc  , qsig  , sig0  , sig1  , sig2  , sig3  , sig4  , sig5  , sig6  , sig7  , sig8  , sig9  , sig10 , sig11 ,
 
         
         # Colormap controls: --------------------------------------
         #self.connect(self.cB_camera,    sig3, self.onCameraCombo)
-        self.connect(self.cB_camera,    sig3, self.updateCamCombo)
+        #self.connect(self.cB_camera,    sig3, self.updateCamCombo)
         self.connect(self.cBoxScale,    sig3, self.onComboBoxScaleIndexChanged)
         self.connect(self.rBColor_Cool, sig0, self.set_cool)
         self.connect(self.rBColor_Gray, sig0, self.set_gray)
         self.connect(self.rBColor_HSV,  sig0, self.set_hsv)
         self.connect(self.rBColor_Hot,  sig0, self.set_hot)
         self.connect(self.rBColor_Jet,  sig0, self.set_jet)
-        self.connect(self.hSRngMin,     sig2, self.onSliderRangeMinChanged )
+        self.connect(self.hSRngMin,     sig2, self.onSliderRangeMinChanged)
         self.connect(self.hSRngMax,     sig2, self.onSliderRangeMaxChanged)
+
         self.connect(self.lERngMin,     sig5, self.onRangeMinTextEnter )
         self.connect(self.lERngMax,     sig5, self.onRangeMaxTextEnter)
         # --------------------------------------------------------
@@ -224,7 +233,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.iS_gain,      sig2, self.set_gain)
         #self.connect(self.cB_on,        sig0, self.onCameraButton)
         self.connect(self.pB_on,        sig0, self.onCameraCombo)
-        self.connect(self.grayScale,    sig0, self.onCheckGrayScale)
+        self.connect(self.cBgrayScale,  sig0, self.onCheckGrayScale)
         self.connect(self.pB_quit,      sig0, self.shutdown)
         self.connect(self.pB_resetioc,  sig0, self.resetIOC)
         self.connect(self.pB_save,      sig0, lambda: self.mytest('save'))
@@ -249,12 +258,15 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.checkBox44,   sig0, self.onCheckPress)
         # --------------------------------------------------------
         self.connect(self.colorButton,  sig10, self.handleColorButton)
-        self.connect(self.showHideCross,sig10, self.handleShowHide)
-        self.connect(self.Cross1,       sig10, self.handleRadio)
-        self.connect(self.Cross2,       sig10, self.handleRadio)
-        self.connect(self.Cross3,       sig10, self.handleRadio)
-        self.connect(self.Cross4,       sig10, self.handleRadio)
-        self.connect(self.lockCross,    sig10, self.handleLockCross)
+        ###self.connect(self.showHideCross,sig10, self.handleShowHide)
+        self.connect(self.cBcross_1,   sig10, self.handleCross_1)
+        self.connect(self.cBcross_2,   sig10, self.handleCross_2)
+        self.connect(self.cBcross_3,   sig10, self.handleCross_3)
+        self.connect(self.cBcross_4,   sig10, self.handleCross_4)
+        self.connect(self.cBlock_1,    sig10, self.handleLockCrosses)
+        self.connect(self.cBlock_2,    sig10, self.handleLockCrosses)
+        self.connect(self.cBlock_3,    sig10, self.handleLockCrosses)
+        self.connect(self.cBlock_4,    sig10, self.handleLockCrosses)
 
         self.connect(self.X1Position,   sig5, lambda: self.handleCrossText('X1'))
         self.connect(self.X2Position,   sig5, lambda: self.handleCrossText('X2'))
@@ -305,73 +317,6 @@ class Viewer(QtGui.QMainWindow, form_class):
 #        self.connect(self.timerreset1[7], sig10, lambda: self.handleTimerReset(7,1) )
 #        self.connect( self.timerclear[7], sig10, lambda: self.handleTimerReset(7,0) )
 #        self.connect(self.timerKeepers[7],sig11,      lambda: self.updateTimer(7) )
-        
-#        # Lost focus: ----------------------------------------------------------
-#        self.connect(self.camPvs[0], sig12, lambda: self.onUpdatePVListTab(0,0))
-#        self.connect(self.camPvs[1], sig12, lambda: self.onUpdatePVListTab(1,0))
-#        self.connect(self.camPvs[2], sig12, lambda: self.onUpdatePVListTab(2,0))
-#        self.connect(self.camPvs[3], sig12, lambda: self.onUpdatePVListTab(3,0))
-#        self.connect(self.camPvs[4], sig12, lambda: self.onUpdatePVListTab(4,0))
-#        self.connect(self.camPvs[5], sig12, lambda: self.onUpdatePVListTab(5,0))
-#        self.connect(self.camPvs[6], sig12, lambda: self.onUpdatePVListTab(6,0))
-#        self.connect(self.camPvs[7], sig12, lambda: self.onUpdatePVListTab(7,0))
-#
-#        self.connect(self.iocPvs[0], sig12, lambda: self.onUpdatePVListTab(0,1))
-#        self.connect(self.iocPvs[1], sig12, lambda: self.onUpdatePVListTab(1,1))
-#        self.connect(self.iocPvs[2], sig12, lambda: self.onUpdatePVListTab(2,1))
-#        self.connect(self.iocPvs[3], sig12, lambda: self.onUpdatePVListTab(3,1))
-#        self.connect(self.iocPvs[4], sig12, lambda: self.onUpdatePVListTab(4,1))
-#        self.connect(self.iocPvs[5], sig12, lambda: self.onUpdatePVListTab(5,1))
-#        self.connect(self.iocPvs[6], sig12, lambda: self.onUpdatePVListTab(6,1))
-#        self.connect(self.iocPvs[7], sig12, lambda: self.onUpdatePVListTab(7,1))
-
-#        self.connect(self.mmsPvs[0], sig12, lambda: self.onUpdatePVListTab(0,2))
-#        self.connect(self.mmsPvs[1], sig12, lambda: self.onUpdatePVListTab(1,2))
-#        self.connect(self.mmsPvs[2], sig12, lambda: self.onUpdatePVListTab(2,2))
-#        self.connect(self.mmsPvs[3], sig12, lambda: self.onUpdatePVListTab(3,2))
-#        self.connect(self.mmsPvs[4], sig12, lambda: self.onUpdatePVListTab(4,2))
-#        self.connect(self.mmsPvs[5], sig12, lambda: self.onUpdatePVListTab(5,2))
-#        self.connect(self.mmsPvs[6], sig12, lambda: self.onUpdatePVListTab(6,2))
-#        self.connect(self.mmsPvs[7], sig12, lambda: self.onUpdatePVListTab(7,2))
-        # ----------------------------------------------------------------------
-        
-#        # Return pressed: ------------------------------------------------------
-#        self.connect(self.camPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,0))
-#        self.connect(self.camPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,0))
-#        self.connect(self.camPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,0))
-#        self.connect(self.camPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,0))
-#        self.connect(self.camPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,0))
-#        self.connect(self.camPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,0))
-#        self.connect(self.camPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,0))
-#        self.connect(self.camPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,0))
-#
-#        self.connect(self.iocPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,1))
-#        self.connect(self.iocPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,1))
-#        self.connect(self.iocPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,1))
-#        self.connect(self.iocPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,1))
-#        self.connect(self.iocPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,1))
-#        self.connect(self.iocPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,1))
-#        self.connect(self.iocPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,1))
-#        self.connect(self.iocPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,1))
-
-#        self.connect(self.mmsPvs[0], sig5,  lambda: self.onUpdatePVListTab(0,2))
-#        self.connect(self.mmsPvs[1], sig5,  lambda: self.onUpdatePVListTab(1,2))
-#        self.connect(self.mmsPvs[2], sig5,  lambda: self.onUpdatePVListTab(2,2))
-#        self.connect(self.mmsPvs[3], sig5,  lambda: self.onUpdatePVListTab(3,2))
-#        self.connect(self.mmsPvs[4], sig5,  lambda: self.onUpdatePVListTab(4,2))
-#        self.connect(self.mmsPvs[5], sig5,  lambda: self.onUpdatePVListTab(5,2))
-#        self.connect(self.mmsPvs[6], sig5,  lambda: self.onUpdatePVListTab(6,2))
-#        self.connect(self.mmsPvs[7], sig5,  lambda: self.onUpdatePVListTab(7,2))
-        # ----------------------------------------------------------------------
-
-#        self.connect(self.cB_oncams[0], sig0, lambda: self.onEnableCam(0))
-#        self.connect(self.cB_oncams[1], sig0, lambda: self.onEnableCam(1))
-#        self.connect(self.cB_oncams[2], sig0, lambda: self.onEnableCam(2))
-#        self.connect(self.cB_oncams[3], sig0, lambda: self.onEnableCam(3))
-#        self.connect(self.cB_oncams[4], sig0, lambda: self.onEnableCam(4))
-#        self.connect(self.cB_oncams[5], sig0, lambda: self.onEnableCam(5))
-#        self.connect(self.cB_oncams[6], sig0, lambda: self.onEnableCam(6))
-#        self.connect(self.cB_oncams[7], sig0, lambda: self.onEnableCam(7))
 
 
         #print dir (self.w_Img_1)#.sizePolicy.setHeightForWidth(True)
@@ -387,39 +332,42 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.idock[i].setEnabled(True)
             self.w_Img[i].setEnabled(True)
             if self.iocmod[i]:
-                self.ca[i] = CAComm(self.lock[i], self.basename[i], self)                
+                self.getConfig(i)
+                self.ca[i] = CAComm(self.lock[i], self.basename[i], self)
                 self.viewer[i] = ViewerFrame(self.w_Img[i], self)
                 self.viewer[i].onCameraSelect(i) # set camera pv and start display
-                self.getConfig(i)
-                self.onUpdateColorMap(i)
+                self.viewer[i].showCross = self.ShowCross
+                self.forceRefreshColorMap(i)
                 self.connect(self.viewer[i], self.sig6, self.onUpdateRate)
-                self.connect(self.viewer[i], self.sig8, self.setCameraCombo)
                 self.connect(self.idock[i],  self.sig9, self.centerDock)
-                self.splashScreen.showMsg("Loading... %s as Cam[%d]" %\
-                                                (self.lCameraDesc[i], i))
+                self.splashScreen.showMsg("Loading... %s as Cam[%d]" % (self.lCameraDesc[i], i))
 #                self.setupTimer(i,refTime=refTime)
-                time.sleep(1)            
+                #time.sleep(1)
         self.cam_n = 0
         self.settoolTips()
-        
-
-#Problem with crosses not saving or be overwritten
-#uncomment '##' in "MM" and onupdateColorMap(...)
 
         # Destroy Splash once all are loaded
         if self.splashScreen:
             self.splashScreen.finish(self)
 
         self.centerOnScreen()
-
-        self.setCameraCombo(0) # to update the selection indicator *
-        self.viewer[0].setColorMap()
+        self.getConfig(0)
+#        self.setCameraCombo(0) # to update the selection indicator *
+#        self.onComboBoxScaleIndexChanged()
+#        self.viewer[0].setColorMap(self.getColorMapRadioButton())
+#        self.updateCamCombo()
         
-        self.updateCamCombo()
-        
+        #time.sleep(1)
         self.show()
+        self.EnableDumpConfig = True
         
-
+    def forceRefreshColorMap(self, cam_n):
+        '''Workaround to force refreshing image with new colormap.'''
+        if self.viewer[cam_n]:
+            file1, file2 = self.getColorMapRadioButton(2)
+            self.viewer[cam_n].setColorMap(file1)
+            self.viewer[cam_n].setColorMap(file2)
+        
     def mvsetup(self):
         '''Opens a Dialog with list of Pvs that can be assigned by the user,
            then save this list to camera.lst file.
@@ -514,22 +462,61 @@ class Viewer(QtGui.QMainWindow, form_class):
       return i
 
     def getShowCross(self):
-        logger.debug( "checked? %s", self.showHideCross.isChecked() )
-        return self.showHideCross.isChecked()
+        logger.debug( "getShowCross" )
+        return [self.cBcross_1.isChecked(), self.cBcross_2.isChecked(), self.cBcross_3.isChecked(), self.cBcross_4.isChecked(), ]
 
     def getLockCross(self):
-        logger.debug( "locked? %s", self.lockCross.isChecked() )
-        return self.lockCross.isChecked()
+        logger.debug( "getLockCross" )
+        return [self.cBlock_1.isChecked(), self.cBlock_2.isChecked(), self.cBlock_3.isChecked(), self.cBlock_4.isChecked(), ]
+    
+    def getSpecificCrossValue(self):
+        logger.debug( "checked? %s", self.showHideCross.isChecked() )
+        if self.showHideCross.isChecked():
+            if   self.Cross1.isChecked():
+                X = 'X1' ; Y = 'Y1'
+            elif self.Cross2.isChecked():
+                X = 'X2' ; Y = 'Y2'
+            elif self.Cross3.isChecked():
+                X = 'X3' ; Y = 'Y3'
+            elif self.Cross4.isChecked():
+                X = 'X4' ; Y = 'Y4'
+            else:
+                X = False ; Y = False
+            return X, Y
+        return False, False
+
+    def getColorMapRadioButton(self, two=None):
+        '''Returns the filename associated to the color map radio button'''
+        logger.debug( "getColorMapRadioButton")
+        if   self.rBColor_Jet.isChecked():
+            colorfile = 'jet.txt'; otherfile = 'hot.txt'
+        elif self.rBColor_Hot.isChecked():
+            colorfile = 'hot.txt'; otherfile = 'hsv.txt'
+        elif self.rBColor_HSV.isChecked():
+            colorfile = 'hsv.txt'; otherfile = 'cool.txt'
+        elif self.rBColor_Cool.isChecked():
+            colorfile = 'cool.txt'; otherfile = 'jet.txt'
+        else: # gray is checked
+            colorfile =  None; otherfile = 'hot.txt'
+        if two:
+            return colorfile, otherfile
+        return colorfile
+    
+
+
+#    def getLockCross(self):
+#        logger.debug( "locked? %s", self.lockCross.isChecked() )
+#        return self.lockCross.isChecked()
 
     def handleShowHide(self):
+        logger.debug( "handleShowHide called %s %s", self.X1Position.text(), self.Y1Position.text() )
         i = self.getSelectedCross()
+        if self.getShowCross():
+            X, Y = self.getSpecificCrossValue()
+            if X and Y:
+                self.handleCrossText(X); self.handleCrossText(Y)
         self.viewer[self.cam_n].showCross[i] = self.getShowCross()
-        self.dumpConfig(self.cam_n)
-
-    def handleLockCross(self):
-        i = self.getSelectedCross()
-        self.viewer[self.cam_n].lockCross[i] = self.getLockCross()
-        self.dumpConfig(self.cam_n)
+        logger.debug( "handleShowHide called %s %s", self.getShowCross() )
 
     def handleColorButton(self):
         i = self.getSelectedCross()
@@ -538,16 +525,60 @@ class Viewer(QtGui.QMainWindow, form_class):
         if newcolor.isValid():
             self.viewer[self.cam_n].colors[i]  = newcolor
             self.viewer[self.cam_n].updateRdColors()
-            self.dumpConfig(self.cam_n)
 
-    def handleRadio(self):
-        logger.debug( "handleRadio %s", self.cam_n)
-        i = self.getSelectedCross()
-        self.showHideCross.setChecked( self.viewer[self.cam_n].showCross[i] )
-        self.lockCross.setChecked( self.viewer[self.cam_n].lockCross[i] )
-        self.dumpConfig(self.cam_n)
+    def handleCrosses(self):
+        ''' Handle crosses sends to ViewerFrame[cam_n] the current status 
+            of cross check boxes.''' 
+        logger.debug( "handleCrosses %s", self.cam_n)
+        
+        self.viewer[self.cam_n].showCross = self.getShowCross()
+    
+    def handleCross_1(self):
+        '''Mutual exclusive checkboxes'''
+        logger.debug( "handleCross_1 %s", self.cam_n)
+        self.cBcross_2.setChecked(False)
+        self.cBcross_3.setChecked(False)
+        self.cBcross_4.setChecked(False)
+        self.handleCrosses()
+        
+    def handleCross_2(self):
+        '''Mutual exclusive checkboxes'''
+        logger.debug( "handleCross_2 %s", self.cam_n)
+        self.cBcross_1.setChecked(False)
+        self.cBcross_3.setChecked(False)
+        self.cBcross_4.setChecked(False)
+        self.handleCrosses()
+        
+    def handleCross_3(self):
+        '''Mutual exclusive checkboxes'''
+        logger.debug( "handleCross_3 %s", self.cam_n)
+        self.cBcross_1.setChecked(False)
+        self.cBcross_2.setChecked(False)
+        self.cBcross_4.setChecked(False)
+        self.handleCrosses()
+        
+    def handleCross_4(self):
+        '''Mutual exclusive checkboxes'''
+        logger.debug( "handleCross_4 %s", self.cam_n)
+        self.cBcross_1.setChecked(False)
+        self.cBcross_2.setChecked(False)
+        self.cBcross_3.setChecked(False)
+        self.handleCrosses()
+    
+    def handleLockCrosses(self):
+        ''' Handle crosses sends to ViewerFrame[cam_n] the current status 
+            of lock cross check boxes.''' 
+        logger.debug( "handleLockCrosses %s", self.cam_n)
+        self.viewer[self.cam_n].lockCross = self.getLockCross()
+
+    def handleCrosses(self):
+        ''' Handle crosses sends to ViewerFrame[cam_n] the current status 
+            of crosses check boxes.''' 
+        logger.debug( "handleCrosses %s", self.cam_n)
+        self.viewer[self.cam_n].showCross = self.getShowCross()
 
     def handleCrossText(self,XY):
+        logger.debug(' handleCrossText %s', XY )
         i = int(XY[1])-1
         translate = {
                 'X1': self.X1Position, 'X2': self.X2Position, 'X3': self.X3Position, 'X4': self.X4Position,
@@ -604,30 +635,10 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.dW_Img_7.setToolTip('hold ALT to move this window')
         self.dW_Img_8.setToolTip('hold ALT to move this window')
 
-    def updateCamCombo(self):
-        #print "update cam combo called from main gui"
-        cam_n = self.cB_camera.currentIndex()
-        self.cam_n = cam_n
-        #self.setCameraCombo( cam_n )
-        self.updateCameraTitle(cam_n)
-        self.viewer[cam_n].updateMarkerXY()
-        
-        self.viewer[cam_n].updateCrossPanel()
-        
-        self.viewer[cam_n].updateLock()
-        self.viewer[cam_n].updateRdColors()
-        
     def setCameraCombo(self, cam_n):
+        '''Update all camera widgets with the current index'''
+        logger.debug('setCameraCombo current camera is %g', cam_n)
         self.cB_camera.setCurrentIndex(cam_n)
-        logger.debug('current camera is %g', cam_n)
-        logger.debug('camera colormap radio is %s', self.viewer[cam_n].colorMap)
-        cB_colormap = self.colormapsrb[self.viewer[cam_n].colorMap]
-        if not cB_colormap.isChecked():
-           cB_colormap.setChecked(True)
-        logger.debug('camera min slider is %g', self.viewer[cam_n].iRangeMin)
-        self.hSRngMin.setValue(self.viewer[cam_n].iRangeMin)
-        logger.debug('camera max slider is %g', self.viewer[cam_n].iRangeMax)
-        self.hSRngMax.setValue(self.viewer[cam_n].iRangeMax)
         
     def updateCameraTitle(self,cam_n):
         # first clear any *'s from the titles
@@ -638,78 +649,70 @@ class Viewer(QtGui.QMainWindow, form_class):
         # then put a * on the currently selected title
         if len(self.idock[cam_n].windowTitle()) > 0:
             self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
-        self.getConfig(cam_n)
+        
 
     def set_bin(self):
-        bindex = int(self.lEBXY.text())
-        self.snd_cmd(self.cam_n, 'BinX', bindex)
-        time.sleep(1)  
-        self.snd_cmd(self.cam_n, 'BinY', bindex)
-        #if self.cfg == None: self.dumpConfig(self.cam_n)
-        # some update needed here
-        logger.debug('no update done after set_bin')
-        logger.debug('please change the colormap for this camera to restore image %g', self.cam_n)
-#        currentcolormap = str(self.viewer[self.cam_n].colorMap) 
-#        if currentcolormap  == 'jet':
-#            self.set_cool()
-#        else:
-#            self.set_jet()
-#        # set it back
-#        self.colormapsrb[currentcolormap].setChecked(True)
+        print 'THIS MUST BE FIXED'
+        return False
+#        bindex = int(self.lEBXY.text())
+#        self.snd_cmd(self.cam_n, 'BinX', bindex)
+#        time.sleep(1)  
+#        self.snd_cmd(self.cam_n, 'BinY', bindex)
+#        #if self.cfg == None: self.dumpConfig(self.cam_n)
+#        # some update needed here
+#        logger.debug('no update done after set_bin')
+#        logger.debug('please change the colormap for this camera to restore image %g', self.cam_n)
+##        currentcolormap = str(self.viewer[self.cam_n].colorMap) 
+##        if currentcolormap  == 'jet':
+##            self.set_cool()
+##        else:
+##            self.set_jet()
+##        # set it back
+##        self.colormapsrb[currentcolormap].setChecked(True)
         
     def set_expt(self):
         val = float(self.dS_expt.value())
         self.snd_cmd(self.cam_n, 'AcquireTime', val)
-        #if self.cfg == None: self.dumpConfig(self.cam_n)
     
     def set_gain(self):
         val = float(self.iS_gain.value())
         self.snd_cmd(self.cam_n, 'Gain', val)
-        #if self.cfg == None: self.dumpConfig(self.cam_n)
         
-    def onComboBoxScaleIndexChanged(self, iNewIndex):
-        #print 'onComboBoxScaleIndexChanged called'
+    def onComboBoxScaleIndexChanged(self):
+        logger.debug('onComboBoxScaleIndexChanged called')
         if self.viewer[self.cam_n]:
-            self.viewer[self.cam_n].iScaleIndex = iNewIndex
-            self.viewer[self.cam_n].setColorMap()
-            #if self.cfg == None: self.dumpConfig(self.cam_n)
+            self.viewer[self.cam_n].iScaleIndex = int(self.cBoxScale.currentIndex())
+            self.viewer[self.cam_n].setColorMap(self.getColorMapRadioButton())
         
     def set_cool(self):
-        self.setImageColorMap(self.rBColor_Cool, 'cool')
+        self.setImageColorMap()
     
     def set_gray(self):
-        self.setImageColorMap(self.rBColor_Gray, 'gray')
+        self.setImageColorMap()
         
     def set_hsv(self):
-        self.setImageColorMap(self.rBColor_HSV, 'hsv')
+        self.setImageColorMap()
     
     def set_hot(self):
-        self.setImageColorMap(self.rBColor_Hot, 'hot')
+        self.setImageColorMap()
     
     def set_jet(self):
-        self.setImageColorMap(self.rBColor_Jet, 'jet')
+        self.setImageColorMap()
         
-    def setImageColorMap(self, radiobutton, colormap):
-        #print 'setImageColorMap called'
-        self.colormap[self.cam_n] = colormap
+    def setImageColorMap(self):
         if self.viewer[self.cam_n]:
-            #print 'viewer[%s] gui[%s]' % (self.viewer[cam_n].colorMap, self.colormap[cam_n])
-            if self.viewer[self.cam_n].colorMap != colormap:
-                self.viewer[self.cam_n].colorMap = colormap
-                if not radiobutton.isChecked():
-                   radiobutton.setChecked(True)
-                self.viewer[self.cam_n].setColorMap()
-                self.dumpConfig(self.cam_n)
-        else:
-            if not radiobutton.isChecked():
-                radiobutton.setChecked(True)
+            self.viewer[self.cam_n].setColorMap(self.getColorMapRadioButton())
                 
     def onUpdateColorMap(self, cam_n):
+        print 'WORKING ON THIS TOO...'
+        return False
+        
+        if self.cfg == None:
+            return False
         logger.debug( 'onUpdateColorMap called %g', cam_n )
         if self.viewer[cam_n].colorMap != self.colormap[cam_n]:
             self.viewer[cam_n].colorMap = self.colormap[cam_n]
-            self.viewer[cam_n].setColorMap()
-        self.dumpConfig(cam_n)
+            self.viewer[cam_n].setColorMap(self.getColorMapRadioButton())
         
     def onSliderRangeMinChanged(self, newSliderValue):
         if self.viewer[self.cam_n]:        
@@ -718,8 +721,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             if newSliderValue > self.viewer[self.cam_n].iRangeMax:
                 self.hSRngMax.setValue(newSliderValue)
             if self.viewer[self.cam_n].colorMap != None:
-                self.viewer[self.cam_n].setColorMap()
-                self.dumpConfig(self.cam_n)
+                self.viewer[self.cam_n].setColorMap(self.getColorMapRadioButton())
 
     def onSliderRangeMaxChanged(self, newSliderValue):
         if self.viewer[self.cam_n]:
@@ -728,9 +730,8 @@ class Viewer(QtGui.QMainWindow, form_class):
             if newSliderValue < self.viewer[self.cam_n].iRangeMin:
                 self.hSRngMin.setValue(newSliderValue)
             if self.viewer[self.cam_n].colorMap != None:
-                self.viewer[self.cam_n].setColorMap()
-                self.dumpConfig(self.cam_n)
-    
+                self.viewer[self.cam_n].setColorMap(self.getColorMapRadioButton())
+
     def onRangeMinTextEnter(self):
         try:    value = int(self.lERngMin.text())
         except: value = 0
@@ -759,9 +760,8 @@ class Viewer(QtGui.QMainWindow, form_class):
 #                self.viewer[self.cam_n].clear()
     
     def onCheckGrayScale(self):
-        status = int(self.grayScale.isChecked())
+        status = int(self.cBgrayScale.isChecked())
         self.viewer[self.cam_n].onCheckGrayUpdate(status)
-        self.dumpConfig(self.cam_n)
                 
     def onCameraCombo(self):
         if self.iocmod[self.cam_n] and self.viewer[self.cam_n]:
@@ -778,7 +778,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         # implement a stack to ensure that only 2 checkboxes are checked.
         # dump the oldest (first) one, and append the new one to the end of the stack
         # could be changed from 2 if more calculation boxes are added
-        
+        #logger.debug( 'onCheckPress called prima %s %s', self.X1Position.text(), self.Y1Position.text() )
         newchecked = [ i for i,x in enumerate(self.check_box) if x.isChecked() ]
         # now check if diagonal boxes are checked, and if so uncheck them
         toremove = []
@@ -826,8 +826,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         if len(check_stack) < 1:
             self.dist_val[0].setText("")
             self.from_val[0].setText("")
-
-        self.dumpConfig(self.cam_n)
+            
         return True
 
     def calcMarkerDist(self,sc):
@@ -844,37 +843,6 @@ class Viewer(QtGui.QMainWindow, form_class):
         if not '' in [x1,x2,y1,y2]:
             D = math.sqrt( (float(x2)-float(x1))**2 + (float(y2)-float(y1))**2 )
         return D, translate[sc]
-    
-    def onUpdatePVListTab(self, position, pvtype):
-        '''Check on changes in setup PVs Tab and update camera list'''
-        '''
-        self.lCameraList = []
-        self.lCameraDesc = []
-        self.lMotorList  = []
-        self.lMotorDesc  = []
-        self.lIOCList    = []
-        self.lIOCDesc    = []
-        self.basename    = list()
-        self.camtypes    = list()
-        self.mottypes    = list()
-        iCamera = -1
-        iMotor  = -1
-        iIOC    = -1
-        '''
-        campv, iocpv, mmspv = (0, 1, 2)
-        print self.camPvs[position].text(), self.basename[position], self.iocPvs[position].text(), self.lIOCList[position]
-        if pvtype is campv: 
-            if self.camPvs[position].text() != self.basename[position]: # if something is really changed, then act
-                self.onUpdateCamPv(position)
-        elif pvtype is iocpv:
-            if self.iocPvs[position].text() != self.lIOCList[position]: # if something is really changed, then act
-                self.onUpdateIocPv(position)
-        elif pvtype is mmspv:
-            if self.mmsPvs[position].text() != self.lMotorList[position]: # if something is really changed, then act
-                self.onUpdateMMSPv(position)
-        else:
-            return False
-        return True
     
     def onUpdateCamPv(self, position):
         '''Update camera position settings with the new cam Pvs'''
@@ -975,6 +943,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 print 'Pv ',
     
                 print sCameraPv                
+                
             elif line.startswith("MM"):
                 iMotor += 1
                 self.mot_n = iMotor
@@ -1149,89 +1118,55 @@ class Viewer(QtGui.QMainWindow, form_class):
            2/ Change any setting (may not...necessary)
            3/ Exit the program (by the quit button or closing the window)
         '''
-        if self.cfg != None:
+
+        if self.cfg != None or not self.EnableDumpConfig:
             return False
         cameraBase = str(self.lCameraList[cam_n])
         if cameraBase == "":
           return
+        
         if self.viewer[cam_n].camera != None:
-          f = open(self.cfgdir + cameraBase, "w")
-          # Colormap:
-          f.write("grayscale     " + str(int(self.grayScale.isChecked())) + "\n")
-          f.write("colorscale    " + str(self.cBoxScale.currentText()) + "\n")
-          f.write("colormin      " + self.lERngMin.text() + "\n")
-          f.write("colormax      " + self.lERngMax.text() + "\n")
-          f.write("colormap_jet  " + str(int(self.rBColor_Jet.isChecked())) + "\n")
-          f.write("colormap_hsv  " + str(int(self.rBColor_HSV.isChecked())) + "\n")
-          f.write("colormap_cool " + str(int(self.rBColor_Cool.isChecked())) + "\n")
-          f.write("colormap_gray " + str(int(self.rBColor_Gray.isChecked())) + "\n")
-          f.write("colormap_hot  " + str(int(self.rBColor_Hot.isChecked())) + "\n")
-          # Timer:
-          f.write("TimerLabel    " + self.TimerLabel.text() + "\n")
-          # Crosses:
-          f.write("cross1        " + str(int(self.Cross1.isChecked())) + "\n")
-          f.write("cross2        " + str(int(self.Cross2.isChecked())) + "\n")
-          f.write("cross3        " + str(int(self.Cross3.isChecked())) + "\n")
-          f.write("cross4        " + str(int(self.Cross4.isChecked())) + "\n")
-          
-          f.write("X1Position    " + self.X1Position.text() + "\n")
-          f.write("Y1Position    " + self.Y1Position.text() + "\n")
-          f.write("X2Position    " + self.X2Position.text() + "\n")
-          f.write("Y2Position    " + self.Y2Position.text() + "\n")
-          f.write("X3Position    " + self.X3Position.text() + "\n")
-          f.write("Y3Position    " + self.Y3Position.text() + "\n")
-          f.write("X4Position    " + self.X4Position.text() + "\n")
-          f.write("Y4Position    " + self.Y4Position.text() + "\n")
-          
-          f.write("ShowHideCross " + str(int(self.showHideCross.isChecked())) + "\n")
-          f.write("LockCross     " + str(int(self.lockCross.isChecked())) + "\n")
-          
-          f.write("checkBox21    " + str(int(self.checkBox21.isChecked())) + "\n")
-          f.write("checkBox31    " + str(int(self.checkBox31.isChecked())) + "\n")
-          f.write("checkBox41    " + str(int(self.checkBox41.isChecked())) + "\n")
-          
-          f.write("checkBox12    " + str(int(self.checkBox12.isChecked())) + "\n")
-          f.write("checkBox32    " + str(int(self.checkBox32.isChecked())) + "\n")
-          f.write("checkBox42    " + str(int(self.checkBox42.isChecked())) + "\n")
-          
-          f.write("checkBox13    " + str(int(self.checkBox13.isChecked())) + "\n")
-          f.write("checkBox23    " + str(int(self.checkBox23.isChecked())) + "\n")
-          f.write("checkBox43    " + str(int(self.checkBox43.isChecked())) + "\n")
-          
-          f.write("checkBox14    " + str(int(self.checkBox14.isChecked())) + "\n")
-          f.write("checkBox24    " + str(int(self.checkBox24.isChecked())) + "\n")
-          f.write("checkBox34    " + str(int(self.checkBox34.isChecked())) + "\n")
-          
-#          # Timer:
-#          f.write("TimerLabel    " + self.TimerLabels[cam_n].text() + "\n")
-#          # Crosses:
-#          f.write("X1Position    " + self.X1Positions[cam_n] + "\n")
-#          f.write("Y1Position    " + self.Y1Positions[cam_n] + "\n")
-#          f.write("X2Position    " + self.X2Positions[cam_n] + "\n")
-#          f.write("Y2Position    " + self.Y2Positions[cam_n] + "\n")
-#          f.write("X3Position    " + self.X3Positions[cam_n] + "\n")
-#          f.write("Y3Position    " + self.Y3Positions[cam_n] + "\n")
-#          f.write("X4Position    " + self.X4Positions[cam_n] + "\n")
-#          f.write("Y4Position    " + self.Y4Positions[cam_n] + "\n")
-#          f.write("ShowHideCross " + str(self.ShowHideCrosses[cam_n]) + "\n")
-#          f.write("LockCross     " + str(self.LockCrosses[cam_n]) + "\n")
-#          
-#          f.write("checkBox21    " + str(self.checkBox21s[cam_n]) + "\n")
-#          f.write("checkBox31    " + str(self.checkBox31s[cam_n]) + "\n")
-#          f.write("checkBox41    " + str(self.checkBox41s[cam_n]) + "\n")
-#          
-#          f.write("checkBox12    " + str(self.checkBox12s[cam_n]) + "\n")
-#          f.write("checkBox32    " + str(self.checkBox32s[cam_n]) + "\n")
-#          f.write("checkBox42    " + str(self.checkBox42s[cam_n]) + "\n")
-#          
-#          f.write("checkBox13    " + str(self.checkBox13s[cam_n]) + "\n")
-#          f.write("checkBox23    " + str(self.checkBox23s[cam_n]) + "\n")
-#          f.write("checkBox43    " + str(self.checkBox43s[cam_n]) + "\n")
-#          
-#          f.write("checkBox14    " + str(self.checkBox14s[cam_n]) + "\n")
-#          f.write("checkBox24    " + str(self.checkBox24s[cam_n]) + "\n")
-#          f.write("checkBox34    " + str(self.checkBox34s[cam_n]) + "\n")
-          
+          logger.debug('dumpConfig called')
+          f = open(self.cfgdir + cameraBase.lower().replace(':','_'), "w")
+          # Radio Buttons:
+          f.write("rBColor_Jet        " + str(int(self.rBColor_Jet.isChecked()))    + "\n")
+          f.write("rBColor_Hot        " + str(int(self.rBColor_Hot.isChecked()))    + "\n")
+          f.write("rBColor_HSV        " + str(int(self.rBColor_HSV.isChecked()))    + "\n")
+          f.write("rBColor_Gray       " + str(int(self.rBColor_Gray.isChecked()))   + "\n")
+          f.write("rBColor_Cool       " + str(int(self.rBColor_Cool.isChecked()))   + "\n")
+          # Combo Boxes:
+          f.write("cBoxScale          " + str(int(self.cBoxScale.currentIndex()))+ "\n")
+          # Check Boxes:
+          f.write("cBgrayScale        " + str(int(self.cBgrayScale.isChecked())) + "\n")
+          f.write("cBcross_1          " + str(int(self.cBcross_1.isChecked()))   + "\n")
+          f.write("cBcross_2          " + str(int(self.cBcross_2.isChecked()))   + "\n")
+          f.write("cBcross_3          " + str(int(self.cBcross_3.isChecked()))   + "\n")
+          f.write("cBcross_4          " + str(int(self.cBcross_4.isChecked()))   + "\n")
+          f.write("cBlock_1           " + str(int(self.cBlock_1.isChecked()))    + "\n")
+          f.write("cBlock_2           " + str(int(self.cBlock_2.isChecked()))    + "\n")
+          f.write("cBlock_3           " + str(int(self.cBlock_3.isChecked()))    + "\n")
+          f.write("cBlock_4           " + str(int(self.cBlock_4.isChecked()))    + "\n")
+          f.write("checkBox21         " + str(int(self.checkBox21.isChecked()))  + "\n")
+          f.write("checkBox23         " + str(int(self.checkBox23.isChecked()))  + "\n")
+          f.write("checkBox24         " + str(int(self.checkBox24.isChecked()))  + "\n")
+          f.write("checkBox31         " + str(int(self.checkBox31.isChecked()))  + "\n")
+          f.write("checkBox32         " + str(int(self.checkBox32.isChecked()))  + "\n")
+          f.write("checkBox34         " + str(int(self.checkBox34.isChecked()))  + "\n")
+          f.write("checkBox41         " + str(int(self.checkBox41.isChecked()))  + "\n")
+          f.write("checkBox42         " + str(int(self.checkBox42.isChecked()))  + "\n")
+          f.write("checkBox43         " + str(int(self.checkBox43.isChecked()))  + "\n")
+          # Line Edits:
+          f.write("lERngMin           " + self.lERngMin.text()                   + "\n")
+          f.write("lERngMax           " + self.lERngMax.text()                   + "\n")
+          f.write("TimerLabel         " + self.lCameraDesc[cam_n]                + "\n")
+          f.write("X1Position         " + self.X1Position.text()                 + "\n")
+          f.write("Y1Position         " + self.Y1Position.text()                 + "\n")
+          f.write("X2Position         " + self.X2Position.text()                 + "\n")
+          f.write("Y2Position         " + self.Y2Position.text()                 + "\n")
+          f.write("X3Position         " + self.X3Position.text()                 + "\n")
+          f.write("Y3Position         " + self.Y3Position.text()                 + "\n")
+          f.write("X4Position         " + self.X4Position.text()                 + "\n")
+          f.write("Y4Position         " + self.Y4Position.text()                 + "\n")
           f.close()
           
 
@@ -1241,49 +1176,44 @@ class Viewer(QtGui.QMainWindow, form_class):
             Should be called at the first time the camera is selected after 
             program started.
         '''
-        
         logger.debug( 'getConfig called [CAM%d]' , self.cam_n )
         cameraBase = str(self.lCameraList[cam_n])
         if cameraBase == "":
           return
         self.cfg = cfginfo()
-        if self.cfg.read(self.cfgdir + cameraBase):
-            # Colormap:
-            self.iScaleIndex = self.cBoxScale.findText(self.cfg.colorscale)
-            self.cBoxScale.setCurrentIndex(self.iScaleIndex)
-            self.lERngMin.setText(self.cfg.colormin)
-            self.onRangeMinTextEnter()
-            self.lERngMax.setText(self.cfg.colormax)
-            self.onRangeMaxTextEnter()
-            
-            if   int(self.cfg.colormap_jet):
-                self.colormap[cam_n] = 'jet'
-            elif int(self.cfg.colormap_hsv):
-                self.colormap[cam_n] = 'hsv'
-            elif int(self.cfg.colormap_cool):
-                self.colormap[cam_n] = 'cool'
-            elif int(self.cfg.colormap_gray):
-                self.colormap[cam_n] = 'gray'
-            elif int(self.cfg.colormap_hot):
-                self.colormap[cam_n] = 'hot'
-            else:
-                pass
-            cB_colormap = self.colormapsrb[self.colormap[cam_n]]
-            if not cB_colormap.isChecked():
-#                   self.setImageColorMap(self.cam_n, 
-#                                         cB_colormap, self.colormap[cam_n])
-                   self.setImageColorMap(cB_colormap, self.colormap[cam_n])
-                   cB_colormap.setChecked(True)
-                   
-            self.grayScale.setChecked(int(self.cfg.grayscale))
-            # Timer:
-            self.TimerLabel.setText(' '.join(self.cfg.TimerLabel))
-            #Crosses:
-            self.Cross1.setChecked(int(self.cfg.cross1))
-            self.Cross2.setChecked(int(self.cfg.cross2))
-            self.Cross3.setChecked(int(self.cfg.cross3))
-            self.Cross4.setChecked(int(self.cfg.cross4))
-            
+        if self.cfg.read(self.cfgdir + cameraBase.lower().replace(':','_')):
+            # Persistent Gui Widgets:
+            # Radio Buttons:
+            self.rBColor_Jet.setChecked(int(self.cfg.rBColor_Jet))
+            self.rBColor_Hot.setChecked(int(self.cfg.rBColor_Hot))
+            self.rBColor_HSV.setChecked(int(self.cfg.rBColor_HSV))
+            self.rBColor_Gray.setChecked(int(self.cfg.rBColor_Gray))
+            self.rBColor_Cool.setChecked(int(self.cfg.rBColor_Cool))
+            # Combo Boxes:
+            self.cBoxScale.setCurrentIndex(int(self.cfg.cBoxScale))
+            # Check Boxes:
+            self.cBgrayScale.setChecked(bool(self.cfg.cBgrayScale))
+            self.cBcross_1.setChecked(int(self.cfg.cBcross_1))
+            self.cBcross_2.setChecked(int(self.cfg.cBcross_2))
+            self.cBcross_3.setChecked(int(self.cfg.cBcross_3))
+            self.cBcross_4.setChecked(int(self.cfg.cBcross_4))
+            self.cBlock_1.setChecked(int(self.cfg.cBlock_1))
+            self.cBlock_2.setChecked(int(self.cfg.cBlock_2))
+            self.cBlock_3.setChecked(int(self.cfg.cBlock_3))
+            self.cBlock_4.setChecked(int(self.cfg.cBlock_4))
+            self.checkBox21.setChecked(int(self.cfg.checkBox21))
+            self.checkBox23.setChecked(int(self.cfg.checkBox23))
+            self.checkBox24.setChecked(int(self.cfg.checkBox24))
+            self.checkBox31.setChecked(int(self.cfg.checkBox31))
+            self.checkBox32.setChecked(int(self.cfg.checkBox32))
+            self.checkBox34.setChecked(int(self.cfg.checkBox34))
+            self.checkBox41.setChecked(int(self.cfg.checkBox41))
+            self.checkBox42.setChecked(int(self.cfg.checkBox42))
+            self.checkBox43.setChecked(int(self.cfg.checkBox43))
+            # Line Edits:
+            self.lERngMin.setText(str(self.cfg.lERngMin))
+            self.lERngMax.setText(str(self.cfg.lERngMax))
+            self.TimerLabel.setText(str(' '.join(self.cfg.TimerLabel)))
             self.X1Position.setText(str(self.cfg.X1Position))
             self.Y1Position.setText(str(self.cfg.Y1Position))
             self.X2Position.setText(str(self.cfg.X2Position))
@@ -1293,35 +1223,18 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.X4Position.setText(str(self.cfg.X4Position))
             self.Y4Position.setText(str(self.cfg.Y4Position))
             
-            self.showHideCross.setChecked(int(self.cfg.ShowHideCross))
-            self.lockCross.setChecked(int(self.cfg.LockCross))
-          
-            self.checkBox21.setChecked(int(self.cfg.checkBox21))
-            self.checkBox31.setChecked(int(self.cfg.checkBox31))            
-            self.checkBox41.setChecked(int(self.cfg.checkBox41))
-          
-            self.checkBox12.setChecked(int(self.cfg.checkBox12))
-            self.checkBox32.setChecked(int(self.cfg.checkBox32))
-            self.checkBox42.setChecked(int(self.cfg.checkBox42))
-          
-            self.checkBox13.setChecked(int(self.cfg.checkBox13))
-            self.checkBox23.setChecked(int(self.cfg.checkBox23))
-            self.checkBox43.setChecked(int(self.cfg.checkBox43))
-          
-            self.checkBox14.setChecked(int(self.cfg.checkBox14))
-            self.checkBox24.setChecked(int(self.cfg.checkBox24))
-            self.checkBox34.setChecked(int(self.cfg.checkBox34))
+            self.onRangeMinTextEnter()
+            self.onRangeMaxTextEnter()
 
-            #self.viewer[cam_n].updateall()
         else:
           pass
-          #self.dumpConfig(cam_n)
         self.cfg = None
         
     def shutdown(self):
         for i in range(8):
             if self.viewer[i]:
                 self.viewer[i].clear()
+        time.sleep(1) # needed to avoi core dump
         self.close()
         
     def centerDock(self, floating=False):
