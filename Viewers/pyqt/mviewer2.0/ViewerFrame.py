@@ -83,17 +83,17 @@ class ViewerFrame(QtGui.QWidget):
         self.connect(self.rfshTimer,          QtCore.SIGNAL("timeout()"),          self.UpdateRate)
         self.connect(self.event,              QtCore.SIGNAL("onImageUpdate"),      self.onImageUpdate)
         
-#        self.connect(self.gui.ResetTimer9, QtCore.SIGNAL("released()"), lambda: self.handleTimerReset(9))
-#        self.connect(self.gui.ResetTimer1h,QtCore.SIGNAL("released()"), lambda: self.handleTimerReset(1))
-#        self.connect(self.gui.TimerClear,  QtCore.SIGNAL("released()"), lambda: self.handleTimerReset(0))
+        self.connect(self.gui.ResetTimer9h, QtCore.SIGNAL("released()"), lambda: self.handleTimerReset(9))
+        self.connect(self.gui.ResetTimer1h, QtCore.SIGNAL("released()"), lambda: self.handleTimerReset(1))
+        self.connect(self.gui.TimerClear,   QtCore.SIGNAL("released()"), lambda: self.handleTimerReset(0))
         
-        self.connect(self.timerKeeper,        QtCore.SIGNAL("timeout()"),  lambda: self.updateTimer)
+        self.connect(self.timerKeeper,        QtCore.SIGNAL("timeout()"),  self.updateTimer)
         
         self.connectDisplay()
         self.setupTimer()
 
     def setupTimer(self, refTime=None, duration=9):
-        logger.debug( "setup timer called" )
+        logger.debug( "setup timer called {:}".format(self.cam_n ))
         self.gui.TimerLabel.setEnabled(True)
         self.gui.Timer.setEnabled(True)
         self.gui.ResetTimer9h.setEnabled(True)
@@ -124,8 +124,8 @@ class ViewerFrame(QtGui.QWidget):
             print "clearing Cam", self.cam_n
 #            self.viewer[cam_n].clear()
 
-    def updateTimer(self, cam_n):
-        logger.debug( "updateTimer %s", cam_n )
+    def updateTimer(self):
+        #logger.debug( "updateTimer %s %s", self.cam_n, self.gui.cam_n )
         if self.gui.Timer.isEnabled() and self.timerReferenceTime:
             ref, totalseconds = self.timerReferenceTime
             endTime = ref + totalseconds
@@ -136,12 +136,14 @@ class ViewerFrame(QtGui.QWidget):
                 seconds = (delta % 3600) % 60
                 #if DEBUG:
                 #    print cam_n, ref, totalseconds, endTime, delta, hours, minutes, seconds
-                self.gui.Timer.setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
+                if self.gui.cam_n == self.cam_n:
+                    self.gui.Timer.setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
             else :
                 hours = 0
                 minutes = 0
                 seconds = 0
-                self.gui.Timer.setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
+                if self.gui.cam_n == self.cam_n:
+                    self.gui.Timer.setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
                 self.clear()
 #                if self.viewer[cam_n].camera is not None :
 #                    self.viewer[cam_n].clear()
