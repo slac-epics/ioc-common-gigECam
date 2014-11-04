@@ -114,17 +114,14 @@ class ViewerFrame(QtGui.QWidget):
         #logger.debug( "handleTimerReset %g %g %s", t, cam_n, self.viewer[cam_n] )
         if t > 0 and self.camera is None :
             print "reconnecting", self.cam_n
-#            self.setCameraCombo(cam_n)
 #            self.viewer[cam_n].onCameraSelect(cam_n)
 #            self.viewer[cam_n].connectCamera( self.viewer[cam_n].cameraBase )
 #            #self.onUpdateColorMap(cam_n)
 #            self.viewer[cam_n].setColorMap()
 #            self.connect(self.viewer[cam_n], self.sig6, self.onUpdateRate)
-#            self.connect(self.viewer[cam_n], self.sig8, self.setCameraCombo)
 #            self.updateCameraTitle(cam_n)
         elif t == 0 and self.camera is not None : 
             print "clearing Cam", self.cam_n
-#            self.setCameraCombo(cam_n)
 #            self.viewer[cam_n].clear()
 
     def updateTimer(self, cam_n):
@@ -147,7 +144,6 @@ class ViewerFrame(QtGui.QWidget):
                 self.gui.Timer.setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
                 self.clear()
 #                if self.viewer[cam_n].camera is not None :
-#                    self.setCameraCombo(cam_n)
 #                    self.viewer[cam_n].clear()
 #                #if DEBUG:
 #                #    print "camera", cam_n, "should be disabled"
@@ -158,7 +154,15 @@ class ViewerFrame(QtGui.QWidget):
           self.imageBuffer = mantaGiGE.pyCreateImageBuffer(self.display_image.image, 0) # For storing the image PV value
           self.parent.resizeEvent = self.setNewImageSize
           self.parent.installEventFilter(self)
-    
+          
+    def disconnectDisplay(self):
+          self.parent.removeEventFilter(self)
+          self.clear()
+#          self.imageBuffer
+#          self.display_image
+          
+          
+        
     def mouseMoveEvent(self, event):
         print 'to be used to draw a cross while moving...'
 #        if not self.barrelPressed:
@@ -264,7 +268,6 @@ class ViewerFrame(QtGui.QWidget):
                   self.gui.dumpConfig(self.gui.cam_n) # save last camera params
                   self.gui.cam_n = self.cam_n
                   self.gui.getConfig(self.cam_n)      # get new camera params
-                  self.gui.setCameraCombo(self.cam_n)
                   self.gui.updateCameraTitle(self.cam_n)
                   if self.showHideCrosses():
                       self.setCross(event)
@@ -324,6 +327,7 @@ class ViewerFrame(QtGui.QWidget):
       #self.setColorMap()
       
     def connectCamera(self, sCAMPv):#, index):
+      logger.info( "connectCamera called")
       timeout = 1.0
       #sCAMPv  = sCameraPv.replace('IMAGE', 'CAM')
       sImagePv = sCAMPv + ':IMAGE1'
@@ -365,9 +369,11 @@ class ViewerFrame(QtGui.QWidget):
            and self.gainPv != None and self.exposurePv != None and\
            self.binXPv != None and self.binYPv != None:
         if self.isColor:
-          self.camera.processor  = mantaGiGE.pyCreateColorImagePvCallbackFunc(self.imageBuffer)
+            logger.info( "camera.processor isColor")
+            self.camera.processor  = mantaGiGE.pyCreateColorImagePvCallbackFunc(self.imageBuffer)
         else:
-          self.camera.processor  = mantaGiGE.pyCreateImagePvCallbackFunc(self.imageBuffer)
+            logger.info( "camera.processor Black&White")
+            self.camera.processor  = mantaGiGE.pyCreateImagePvCallbackFunc(self.imageBuffer)
         self.camera.monitor_cb      = self.imagePvUpdateCallback
         self.rowPv.monitor_cb       = self.sizeCallback
         self.colPv.monitor_cb       = self.sizeCallback
@@ -394,6 +400,7 @@ class ViewerFrame(QtGui.QWidget):
     
       if logger.getEffectiveLevel() <= 20:
           self.dumpVARS()
+      logger.info( "connectCamera done. Camera is %d", self.camera_on)    
       return self.camera_on
     
     def dumpVARS(self):
@@ -542,7 +549,7 @@ class ViewerFrame(QtGui.QWidget):
     
     # Note: this function is called by the CA library, from another thread
     def imagePvUpdateCallback(self, exception=None):       
-      #print 'imagePvUpdateCallback called', self.dataUpdates
+      print 'imagePvUpdateCallback called', self.dataUpdates
       if exception is None:
         currentTime       =  time.time()
         self.dataUpdates  += 1

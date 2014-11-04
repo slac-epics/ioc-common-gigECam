@@ -1,6 +1,6 @@
 import signal
 import logging
-
+import commands
 import PyQt4.QtCore as QtCore
 import pyca
 from Pv import Pv
@@ -41,6 +41,9 @@ def caget(pvname, timeout=1.0):
     except pyca.caexc, e:
         logger.error( 'channel access exception: %s' %(e))
         return []
+        
+
+
         
 class cfginfo():
     def __init__(self):
@@ -121,3 +124,18 @@ class CAComm(QtCore.QThread):
         target = self.ctrlname + ':' + pv
         val = caget(target)
         return val
+    
+    # My dirty work until get fixed pyca:
+    def get(pvname):
+        status, output = commands.getstatusoutput("caget %s" % pvname)
+        if status != 0:
+            print 'ERROR:', output
+            return None
+        return ''.join(output.split()[1:])
+    
+    def put(pvname_value):
+        status, output = commands.getstatusoutput("caput %s" % pvname_value)
+        if status != 0:
+            print 'ERROR:', output.split('found.')[0] + 'found.'
+            return None
+        return True    

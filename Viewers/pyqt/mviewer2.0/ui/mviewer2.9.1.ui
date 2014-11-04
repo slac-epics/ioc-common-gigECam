@@ -329,7 +329,7 @@
          <item row="0" column="0">
           <widget class="QGroupBox" name="gB_camera">
            <property name="title">
-            <string>Camera</string>
+            <string>Camera and Timer</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_16">
             <item row="1" column="0">
@@ -402,7 +402,127 @@
             <item row="0" column="0">
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
-               <widget class="QComboBox" name="cB_camera"/>
+               <widget class="QLabel" name="TimerLabel">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>135</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color:white;
+</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>Cam Name 1</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="Timer">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>65</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>65</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Monospace</family>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color:white;
+</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>Timer 1</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="ResetTimer9h">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>35</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>35</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>9h</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="ResetTimer1h">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>35</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>35</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>1h</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="TimerClear">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>35</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>35</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>clear</string>
+                </property>
+               </widget>
               </item>
               <item>
                <spacer name="horizontalSpacer_47">
@@ -412,7 +532,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>40</width>
-                  <height>20</height>
+                  <height>15</height>
                  </size>
                 </property>
                </spacer>
@@ -429,48 +549,7 @@
            </layout>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QGroupBox" name="groupBox_2">
-           <property name="title">
-            <string>Image Data</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_14">
-            <item row="0" column="0">
-             <layout class="QHBoxLayout" name="horizontalLayout_19">
-              <item>
-               <widget class="QLabel" name="lb_minVal">
-                <property name="text">
-                 <string>minVal:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="lb_minValdata">
-                <property name="text">
-                 <string>----</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="lb_maxVal">
-                <property name="text">
-                 <string>maxVal:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="lb_maxValdata">
-                <property name="text">
-                 <string>----</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QGroupBox" name="gB_colormap">
            <property name="enabled">
             <bool>true</bool>
@@ -730,7 +809,7 @@
            </layout>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QGroupBox" name="gB_Exposure">
            <property name="title">
             <string>Exposure</string>
@@ -859,6 +938,47 @@
            </layout>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>Image Data</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_14">
+            <item row="0" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <item>
+               <widget class="QLabel" name="lb_minVal">
+                <property name="text">
+                 <string>minVal:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lb_minValdata">
+                <property name="text">
+                 <string>----</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lb_maxVal">
+                <property name="text">
+                 <string>maxVal:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lb_maxValdata">
+                <property name="text">
+                 <string>----</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -866,12 +986,12 @@
        <widget class="QGroupBox" name="AlignmentMotors_and_Crosses">
         <property name="maximumSize">
          <size>
-          <width>437</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="title">
-         <string>Crosses, Timers and Motors</string>
+         <string>Crosses and Motors</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_9">
          <item row="0" column="0">
@@ -881,7 +1001,7 @@
            </property>
            <widget class="QWidget" name="Crosses">
             <attribute name="title">
-             <string>Crosses and Timer</string>
+             <string>Crosses</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_19">
              <item row="0" column="0">
@@ -975,7 +1095,6 @@
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
-                <zorder>cBlock_1</zorder>
                </widget>
                <widget class="QLineEdit" name="Y3Position">
                 <property name="geometry">
@@ -1289,6 +1408,12 @@
              </item>
              <item row="1" column="0">
               <widget class="QGroupBox" name="groupBox_3">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>160</height>
+                </size>
+               </property>
                <property name="title">
                 <string>Distances</string>
                </property>
@@ -1828,177 +1953,6 @@
                  <set>Qt::AlignBottom|Qt::AlignHCenter</set>
                 </property>
                </widget>
-               <zorder>Distance1Label</zorder>
-               <zorder>Distance1</zorder>
-               <zorder>From1Label</zorder>
-               <zorder>From1</zorder>
-               <zorder>Distance2Label</zorder>
-               <zorder>Distance2</zorder>
-               <zorder>From2Label</zorder>
-               <zorder>From2</zorder>
-               <zorder>label_11</zorder>
-               <zorder>label_9</zorder>
-               <zorder>checkBox33</zorder>
-               <zorder>checkBox14</zorder>
-               <zorder>checkBox11</zorder>
-               <zorder>checkBox23</zorder>
-               <zorder>checkBox34</zorder>
-               <zorder>checkBox12</zorder>
-               <zorder>checkBox13</zorder>
-               <zorder>checkBox24</zorder>
-               <zorder>checkBox21</zorder>
-               <zorder>checkBox22</zorder>
-               <zorder>checkBox31</zorder>
-               <zorder>checkBox32</zorder>
-               <zorder>checkBox44</zorder>
-               <zorder>checkBox41</zorder>
-               <zorder>checkBox42</zorder>
-               <zorder>checkBox43</zorder>
-               <zorder>label_10</zorder>
-               <zorder>label_12</zorder>
-               <zorder>label_13</zorder>
-               <zorder>label_14</zorder>
-               <zorder>label_15</zorder>
-               <zorder>label_16</zorder>
-               <zorder>groupBox_4</zorder>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QGroupBox" name="groupBox_5">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>55</height>
-                </size>
-               </property>
-               <property name="title">
-                <string>Timer</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_13">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="TimerLabel">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>135</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">background-color:white;
-</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::Box</enum>
-                  </property>
-                  <property name="text">
-                   <string>Cam Name 1</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLabel" name="Timer">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>65</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>65</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <family>Monospace</family>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">background-color:white;
-</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::Box</enum>
-                  </property>
-                  <property name="text">
-                   <string>Timer 1</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QPushButton" name="ResetTimer9h">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>35</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>35</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>9h</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <widget class="QPushButton" name="ResetTimer1h">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>35</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>35</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>1h</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="4">
-                 <widget class="QPushButton" name="TimerClear">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>45</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>45</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>clear</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
               </widget>
              </item>
             </layout>
@@ -2834,8 +2788,6 @@
      </layout>
     </item>
    </layout>
-   <zorder>frame</zorder>
-   <zorder>groupBox_4</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

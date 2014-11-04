@@ -1,7 +1,7 @@
 import math
 import time
 import logging
-import sys
+import sys, os
 
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import QTimer, QObject #, Qt, QPoint, QPointF, QSize, QRectF, QObject
@@ -42,7 +42,7 @@ class SetupDialog(QtGui.QDialog, form_class1):
 
         self.iocPvs = [self.le_iocPv_1, self.le_iocPv_2, self.le_iocPv_3, self.le_iocPv_4,
                        self.le_iocPv_5, self.le_iocPv_6, self.le_iocPv_7, self.le_iocPv_8 ]
-
+        
         self.cB_encams = [self.cB_en_c1, self.cB_en_c2, self.cB_en_c3, self.cB_en_c4,
                           self.cB_en_c5, self.cB_en_c6, self.cB_en_c7, self.cB_en_c8 ]
         
@@ -54,14 +54,197 @@ class SetupDialog(QtGui.QDialog, form_class1):
 
         self.cB_enmmss = [self.cB_en_m1, self.cB_en_m2, self.cB_en_m3, self.cB_en_m4,
                           self.cB_en_m5, self.cB_en_m6, self.cB_en_m7, self.cB_en_m8 ]
-
+                
+        self.setupvals = [self.camPvs, self.camDescs, self.iocPvs, self.cB_encams,\
+                          self.mmsPvs, self.mmsDescs, self.cB_enmmss]
+        self.filename = None
+        self.connect(self.pB_saveas, QtCore.SIGNAL("clicked()"), self.saveas)
+        self.connect(self.pB_load,   QtCore.SIGNAL("clicked()"), self.load)
+        self.connect(self.pB_clear,  QtCore.SIGNAL("clicked()"), self.clearall)
+        
     def getValues(self):
         # enumerated elements order
         cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
-        return [self.camPvs, self.camDescs, self.iocPvs, self.cB_encams,\
-                self.mmsPvs, self.mmsDescs, self.cB_enmmss]
+        return self.setupvals
+        
+    def load(self):
+        '''Load values from file'''
+        logger.debug("SetupDialog load called")
+        self.filename = QtGui.QFileDialog.getOpenFileName(self, 'Open Camera Pvs File', os.getenv('HOME') + '/.mviewer', '*.lst')
+        self.readCamList(self.filename)
+        
+    def saveas(self):
+        '''Save values to specific file'''
+        logger.debug("SetupDialog saveas called")
+        self.filename = QtGui.QFileDialog.getSaveFileName(self, 'Save Camera Pvs File as', os.getenv('HOME') + '/.mviewer', '*.lst')
+        if self.filename[-4:] != '.lst':
+            self.filename += '.lst'
+        self.setupvals = self.getValues()
+        self.dumpCamList(self.filename) # write to camera.lst updated data.        
+        #f.close()
+        
+    def clearall(self):
+        '''Clear all fields'''
+        self.all_le = self.camPvs + self.camDescs + self.iocPvs + self.mmsPvs + self.mmsDescs
+        self.all_cB = self.cB_encams + self.cB_enmmss
+        for w in self.all_le:
+            w.clear()
+        for c in self.all_cB:
+            c.setChecked(False)
+        self.filename = None
+            
+    def dumpCamList(self, filename):
+        '''Writes camera Pvs parameters in user assigned filename'''
+        if self.setupvals == []:
+            return False
+        # enumerate
+        cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
+        # shortcuts
+        camPv = self.setupvals[cam]; camPvdesc = self.setupvals[camdesc]
+        iocPv = self.setupvals[ioc]; cen       = self.setupvals[cen]
+        mmsPv = self.setupvals[mms]; mmsPvdesc = self.setupvals[mmsdesc]
+        men   = self.setupvals[men]
+        
+        # assign to additional shortcuts
+        camPv1 = camPv[0].text(); camPvDesc1 = camPvdesc[0].text()
+        camPv2 = camPv[1].text(); camPvDesc2 = camPvdesc[1].text()
+        camPv3 = camPv[2].text(); camPvDesc3 = camPvdesc[2].text()
+        camPv4 = camPv[3].text(); camPvDesc4 = camPvdesc[3].text()
+        camPv5 = camPv[4].text(); camPvDesc5 = camPvdesc[4].text()
+        camPv6 = camPv[5].text(); camPvDesc6 = camPvdesc[5].text()
+        camPv7 = camPv[6].text(); camPvDesc7 = camPvdesc[6].text()
+        camPv8 = camPv[7].text(); camPvDesc8 = camPvdesc[7].text()
+        
+        iocPv1 = iocPv[0].text(); camEn1 = '' if cen[0].isChecked() else '#'
+        iocPv2 = iocPv[1].text(); camEn2 = '' if cen[1].isChecked() else '#'
+        iocPv3 = iocPv[2].text(); camEn3 = '' if cen[2].isChecked() else '#'
+        iocPv4 = iocPv[3].text(); camEn4 = '' if cen[3].isChecked() else '#'
+        iocPv5 = iocPv[4].text(); camEn5 = '' if cen[4].isChecked() else '#'
+        iocPv6 = iocPv[5].text(); camEn6 = '' if cen[5].isChecked() else '#'
+        iocPv7 = iocPv[6].text(); camEn7 = '' if cen[6].isChecked() else '#'
+        iocPv8 = iocPv[7].text(); camEn8 = '' if cen[7].isChecked() else '#'
+        
+        mmsPv1 = mmsPv[0].text(); mmsPvDesc1 = mmsPvdesc[0].text()
+        mmsPv2 = mmsPv[1].text(); mmsPvDesc2 = mmsPvdesc[1].text()
+        mmsPv3 = mmsPv[2].text(); mmsPvDesc3 = mmsPvdesc[2].text()
+        mmsPv4 = mmsPv[3].text(); mmsPvDesc4 = mmsPvdesc[3].text()
+        mmsPv5 = mmsPv[4].text(); mmsPvDesc5 = mmsPvdesc[4].text()
+        mmsPv6 = mmsPv[5].text(); mmsPvDesc6 = mmsPvdesc[5].text()
+        mmsPv7 = mmsPv[6].text(); mmsPvDesc7 = mmsPvdesc[6].text()
+        mmsPv8 = mmsPv[7].text(); mmsPvDesc8 = mmsPvdesc[7].text()
+        
+        mmsEn1 = '' if men[0].isChecked() else '#'
+        mmsEn2 = '' if men[1].isChecked() else '#'
+        mmsEn3 = '' if men[2].isChecked() else '#'
+        mmsEn4 = '' if men[3].isChecked() else '#'
+        mmsEn5 = '' if men[4].isChecked() else '#'
+        mmsEn6 = '' if men[5].isChecked() else '#'
+        mmsEn7 = '' if men[6].isChecked() else '#'
+        mmsEn8 = '' if men[7].isChecked() else '#'
+        
+        # Write to file cameras.lst
+        f = open(filename, "w")
+        f.write("\n")
+        f.write(''
+'# ---------------------------------------------------------------\n'
+'# MultiViewer Description File (Generated by Setup Dialog)\n'
+'# ---------------------------------------------------------------\n'
+'# Syntax:\n'
+'#   <TYPE>, <PVNAME|IOCNAME>, <DESC> # some_more_comments\n'
+'# Where:\n'
+'#   <Type>    : "GIG" -> GigE Cameras or\n'
+'#               "IOC" -> Server name\n'
+'#               "MMS" -> Motor or\n'
+'#   <PVNAME>  : Camera PV Name to display in the display\n'
+'#   <IOCNAME> : Server name associated to restart button\n'
+'#   <DESC>    : User Camera or Server description\n'
+'# Notes:\n'
+'#   PVNAME or IOCNAME are not case sensitive.\n'
+'#   Line can be commented out by starting with \'#\' character.\n'
+'# ---------------------------------------------------------------\n\n')
+        f.write('# CAMERA PV NAMES (located in the cfg file, \'CAM\' variable):\n')
+        f.write('%sGIG, %s, %s \t #\n' % (camEn1, camPv1, camPvDesc1))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn2, camPv2, camPvDesc2))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn3, camPv3, camPvDesc3))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn4, camPv4, camPvDesc4))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn5, camPv5, camPvDesc5))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn6, camPv6, camPvDesc6))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn7, camPv7, camPvDesc7))
+        f.write('%sGIG, %s, %s \t #\n' % (camEn8, camPv8, camPvDesc8))
+        f.write('\n')
+        f.write('# IOC PV NAMES (located in the cfg file, \'IOC_PV\' variable):)\n')
+        f.write('%sIOC, %s, %s \t #\n' % (camEn1, iocPv1, camPvDesc1))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn2, iocPv2, camPvDesc2))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn3, iocPv3, camPvDesc3))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn4, iocPv4, camPvDesc4))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn5, iocPv5, camPvDesc5))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn6, iocPv6, camPvDesc6))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn7, iocPv7, camPvDesc7))
+        f.write('%sIOC, %s, %s \t #\n' % (camEn8, iocPv8, camPvDesc8))
+        f.write('\n')
+        f.write('# MOTOR PV NAMES:\n')
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn1, mmsPv1, mmsPvDesc1))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn2, mmsPv2, mmsPvDesc2))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn3, mmsPv3, mmsPvDesc3))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn4, mmsPv4, mmsPvDesc4))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn5, mmsPv5, mmsPvDesc5))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn6, mmsPv6, mmsPvDesc6))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn7, mmsPv7, mmsPvDesc7))
+        f.write('%sMMS, %s, %s \t #\n' % (mmsEn8, mmsPv8, mmsPvDesc8))
+        f.close()
+        
+        
+    def readCamList(self, filename):
+        '''Reads camera.lst file, update camera combo, etc...'''
+        # shortcuts
+        camPv = self.camPvs;    camPvDesc = self.camDescs
+        iocPv = self.iocPvs;    camEn     = self.cB_encams
+        mmsPv = self.mmsPvs;    mmsPvDesc = self.mmsDescs
+        mmsEn = self.cB_enmmss;
 
-
+        pvlist = open(filename,"r").readlines()
+        
+        camEnVal     = False
+        camPvVal     = ''
+        camPvDescVal = ''
+        iocPvVal     = ''
+        mmsEnVal     = False
+        mmsPvVal     = ''
+        mmsPvDescVal = ''
+        
+        i = 0; j = 0; k = 0
+        
+        for line in pvlist:
+            line = line.lstrip()
+            if not line:
+                continue
+            if 'GIG' in line[0:5] and ',' in line[0:5]:
+                if i > 7: continue
+                if line.startswith("#"): 
+                    camEnVal = False
+                else: 
+                    camEnVal = True 
+                camPvVal = line.split(",")[1].strip()
+                camPvDescVal = line.split(",")[2].strip().split('#')[0].rstrip()
+                camEn[i].setChecked(camEnVal); camPv[i].setText(camPvVal), camPvDesc[i].setText(camPvDescVal)
+                i += 1
+            elif 'IOC' in line[0:5] and ',' in line[0:5]:
+                if j > 7: continue
+                iocPvVal = line.split(",")[1].strip()
+                iocPv[j].setText(iocPvVal)
+                j += 1
+            elif 'MMS' in line[0:5] and ',' in line[0:5]:
+                if k > 7: continue
+                if line.startswith("#"): 
+                    mmsEnVal = False
+                else: 
+                    mmsEnVal = True
+                mmsPvVal = line.split(",")[1].strip()
+                mmsPvDescVal = line.split(",")[2].strip().split('#')[0].rstrip()
+                mmsEn[k].setChecked(mmsEnVal); mmsPv[k].setText(mmsPvVal), mmsPvDesc[k].setText(mmsPvDescVal)
+                k += 1 
+        return True
+    
 form_class, base_class = uic.loadUiType('ui/mviewer2.9.1.ui')
 
 class Viewer(QtGui.QMainWindow, form_class):    
@@ -71,10 +254,10 @@ class Viewer(QtGui.QMainWindow, form_class):
         #QtGui.QWidget.__init__(self)
         self.setupUi(self)
 
-        self.splashScreen = SplashScreen()
+        #self.splashScreen = SplashScreen()
 #        self.setGeometry(QtCore.QRect(self.width()/2-10, self.height()/2-10,
 #                                      self.width()/2+10, self.height()/2+10))
-        self.splashScreen.showMsg("Starting Aplication...")
+        #self.splashScreen.showMsg("Starting Aplication...")
         #time.sleep(0.5)
 
         self.app        = app
@@ -142,47 +325,13 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         self.lb_ImStats = [self.lb_minValdata, self.lb_maxValdata]
 
-#        self.timers = [self.Timer1, self.Timer2, self.Timer3, self.Timer4, 
-#                self.Timer5, self.Timer6, self.Timer7, self.Timer8 ]
-#
-#        self.timerKeepers = 8 * [ QTimer(), ]
-
-#        self.timerlabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4,
-#                self.TimerLabel5, self.TimerLabel6, self.TimerLabel7, self.TimerLabel8 ]
-#
-#        self.timerreset9 =  [self.ResetTimer9h1, self.ResetTimer9h2, self.ResetTimer9h3, self.ResetTimer9h4,
-#                self.ResetTimer9h5, self.ResetTimer9h6, self.ResetTimer9h7, self.ResetTimer9h8]
-#
-#        self.timerclear = [self.TimerClear1, self.TimerClear2, self.TimerClear3, self.TimerClear4,
-#                self.TimerClear5, self.TimerClear6, self.TimerClear7,self.TimerClear8]
-#
-#        self.timerreset1 = [self.ResetTimer1h1, self.ResetTimer1h2, self.ResetTimer1h3, self.ResetTimer1h4,
-#                self.ResetTimer1h5, self.ResetTimer1h6, self.ResetTimer1h7, self.ResetTimer1h8]
-
-#        self.camPvs = [self.le_camPv_1, self.le_camPv_2, self.le_camPv_3, self.le_camPv_4,
-#                       self.le_camPv_5, self.le_camPv_6, self.le_camPv_7, self.le_camPv_8 ]
-#
-#        self.iocPvs = [self.le_iocPv_1, self.le_iocPv_2, self.le_iocPv_3, self.le_iocPv_4,
-#                       self.le_iocPv_5, self.le_iocPv_6, self.le_iocPv_7, self.le_iocPv_8 ]
-#
-#        self.cB_oncams = [self.cB_en_1, self.cB_en_2, self.cB_en_3, self.cB_en_4,
-#                          self.cB_en_5, self.cB_en_6, self.cB_en_7, self.cB_en_8 ]
-        
-#        self.mmsPvs = [self.le_mmsPv_1, self.le_mmsPv_2, self.le_mmsPv_3, self.le_mmsPv_4,
-#                       self.le_mmsPv_5, self.le_mmsPv_6, self.le_mmsPv_7, self.le_mmsPv_8 ]
-#        self.TimerLabels = [self.TimerLabel1, self.TimerLabel2, self.TimerLabel3, self.TimerLabel4, 
-#                            self.TimerLabel5, self.TimerLabel6, self.TimerLabel7, self.TimerLabel8]
-        
-
-#        self.timerReferenceTime = 8*[None, ]
-
         self.lb_ImStats[0].setText('n/a') ; self.lb_ImStats[1].setText('n/a')
         
         for iMotor in range(8): 
             self.lb_limM[iMotor].setPixmap(self.limitoff)
             self.lb_limP[iMotor].setPixmap(self.limitoff)
 
-        self.splashScreen.showMsg("Reading Camera File...")            
+        #self.splashScreen.showMsg("Reading Camera File...")            
 
         self.n_cams = self.readPVListFile()
 
@@ -203,19 +352,13 @@ class Viewer(QtGui.QMainWindow, form_class):
         sig5   = QtCore.SIGNAL("returnPressed()")
         sig6   = QtCore.SIGNAL("onUpdateRate(int, float, float)")
         sig7   = QtCore.SIGNAL("stateChanged()")
-        sig8   = QtCore.SIGNAL("setCameraCombo(int)")
         sig9   = QtCore.SIGNAL("topLevelChanged(bool)")
         sig10  = QtCore.SIGNAL("released()")
         sig11  = QtCore.SIGNAL("timeout()")
         sig12  = QtCore.SIGNAL("lostFocus()")
         sig13  = QtCore.SIGNAL("sliderReleased()")
 
-        self.objc  , self.qsig  , self.sig0  , self.sig1  , self.sig2  , self.sig3  , self.sig4  , self.sig5  , self.sig6  , self.sig7  , self.sig8  , self.sig9  , self.sig10 , self.sig11 , = objc  , qsig  , sig0  , sig1  , sig2  , sig3  , sig4  , sig5  , sig6  , sig7  , sig8  , sig9  , sig10 , sig11 ,
-
-        
         # Colormap controls: --------------------------------------
-        #self.connect(self.cB_camera,    sig3, self.onCameraCombo)
-        #self.connect(self.cB_camera,    sig3, self.updateCamCombo)
         self.connect(self.cBoxScale,    sig3, self.onComboBoxScaleIndexChanged)
         self.connect(self.rBColor_Cool, sig0, self.set_cool)
         self.connect(self.rBColor_Gray, sig0, self.set_gray)
@@ -232,7 +375,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.dS_expt,      sig1, self.set_expt)
         self.connect(self.iS_gain,      sig2, self.set_gain)
         #self.connect(self.cB_on,        sig0, self.onCameraButton)
-        self.connect(self.pB_on,        sig0, self.onCameraCombo)
+        self.connect(self.pB_on,        sig0, self.onCamera)
         self.connect(self.cBgrayScale,  sig0, self.onCheckGrayScale)
         self.connect(self.pB_quit,      sig0, self.shutdown)
         self.connect(self.pB_resetioc,  sig0, self.resetIOC)
@@ -321,12 +464,84 @@ class Viewer(QtGui.QMainWindow, form_class):
 
         #print dir (self.w_Img_1)#.sizePolicy.setHeightForWidth(True)
         #print dir(self.dW_Img_1.sizePolicy.setHeightForWidth)
+        
+##        self.splashScreen.showMsg("Reading Camera File...")
+##        for iwdg in self.idock:
+##            iwdg.setEnabled(False)
+##            iwdg.setWindowTitle('')
+##        self.lock = [QtCore.QReadWriteLock() for i in range(8)]
+##        self.splashScreen.showMsg("Loading Cameras...")            
+##        refTime = int(time.time()) # throw away variable
+##        for i in range(self.n_cams):
+##            self.cam_n = i # update current camera
+##            self.idock[i].setEnabled(True)
+##            self.w_Img[i].setEnabled(True)
+##            if self.iocmod[i]:
+##                self.getConfig(i)
+##                self.ca[i] = CAComm(self.lock[i], self.basename[i], self)
+##                self.viewer[i] = ViewerFrame(self.w_Img[i], self)
+##                self.viewer[i].onCameraSelect(i) # set camera pv and start display
+##                self.viewer[i].showCross = self.ShowCross
+##                self.forceRefreshColorMap(i)
+##                self.connect(self.viewer[i], sig6, self.onUpdateRate)
+##                self.connect(self.idock[i],  sig9, self.centerDock)
+##                self.splashScreen.showMsg("Loading... %s as Cam[%d]" % (self.lCameraDesc[i], i))
+###                self.setupTimer(i,refTime=refTime)
+##                #time.sleep(1)
+##        self.cam_n = 0
+        
+        self.loadEverything()
+        self.settoolTips()
+
+##        # Destroy Splash once all are loaded
+##        if self.splashScreen:
+##            self.splashScreen.finish(self)
+
+##        self.getConfig(0)
+#        self.onComboBoxScaleIndexChanged()
+#        self.viewer[0].setColorMap(self.getColorMapRadioButton())
+#        self.updateCamCombo()
+        
+        #time.sleep(1)
+        self.centerOnScreen()
+        self.show()
+        self.EnableDumpConfig = True
+        
+    def unloadEverything(self):
+        logger.debug("unloadEverything called")
+        for iwdg in self.idock:
+            iwdg.setEnabled(False)
+            iwdg.setWindowTitle('')
+        self.lock = [None for i in range(8)]
+        refTime = None
+        for i in range(self.n_cams):
+            self.cam_n = i # update current camera
+            self.idock[i].setEnabled(False)
+            self.w_Img[i].setEnabled(False)
+            self.w_Img[i].setStyleSheet('background-image: ./ui/blue.png')
+            if self.iocmod[i]:
+                self.dumpConfig(i)
+                self.disconnect(self.idock[i],  QtCore.SIGNAL("topLevelChanged(bool)"), self.centerDock)
+                self.disconnect(self.viewer[i], QtCore.SIGNAL("onUpdateRate(int, float, float)"), self.onUpdateRate)
+                self.viewer[i].disconnectDisplay()
+                self.ca[i] = None
+                self.viewer[i] = None
+        self.cam_n = 0
+        #self.w_Img_2.
+        self.repaint()
+        
+    def loadEverything(self):
+        logger.debug("loadEverything called")
+        splashScreen = SplashScreen()
+        splashScreen.showMsg("Reading Camera File..."); time.sleep(0.5)
         for iwdg in self.idock:
             iwdg.setEnabled(False)
             iwdg.setWindowTitle('')
         self.lock = [QtCore.QReadWriteLock() for i in range(8)]
-        self.splashScreen.showMsg("Loading Cameras...")            
+        splashScreen.showMsg("Loading Cameras...")            
         refTime = int(time.time()) # throw away variable
+        #for i in range(8):
+        #    self.w_Img[i].setStyleSheet("QWidget { background: 'blue' }")
         for i in range(self.n_cams):
             self.cam_n = i # update current camera
             self.idock[i].setEnabled(True)
@@ -338,29 +553,17 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.viewer[i].onCameraSelect(i) # set camera pv and start display
                 self.viewer[i].showCross = self.ShowCross
                 self.forceRefreshColorMap(i)
-                self.connect(self.viewer[i], self.sig6, self.onUpdateRate)
-                self.connect(self.idock[i],  self.sig9, self.centerDock)
-                self.splashScreen.showMsg("Loading... %s as Cam[%d]" % (self.lCameraDesc[i], i))
-#                self.setupTimer(i,refTime=refTime)
-                #time.sleep(1)
+                self.connect(self.viewer[i], QtCore.SIGNAL("onUpdateRate(int, float, float)"), self.onUpdateRate)
+                self.connect(self.idock[i],  QtCore.SIGNAL("topLevelChanged(bool)"), self.centerDock)
+                splashScreen.showMsg("Loading... %s as Cam[%d]" % (self.lCameraDesc[i], i))
+                #self.setupTimer(i,refTime=refTime)
+                time.sleep(0.5)
         self.cam_n = 0
-        self.settoolTips()
-
         # Destroy Splash once all are loaded
-        if self.splashScreen:
-            self.splashScreen.finish(self)
-
-        self.centerOnScreen()
+        if splashScreen:
+            splashScreen.finish(self)
         self.getConfig(0)
-#        self.setCameraCombo(0) # to update the selection indicator *
-#        self.onComboBoxScaleIndexChanged()
-#        self.viewer[0].setColorMap(self.getColorMapRadioButton())
-#        self.updateCamCombo()
-        
-        #time.sleep(1)
-        self.show()
-        self.EnableDumpConfig = True
-        
+
     def forceRefreshColorMap(self, cam_n):
         '''Workaround to force refreshing image with new colormap.'''
         if self.viewer[cam_n]:
@@ -379,8 +582,23 @@ class Viewer(QtGui.QMainWindow, form_class):
         # getValues method.
         cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
         if dlg.exec_():
-            self.setupvals = dlg.getValues()
-            self.dumpCamList() # write to camera.lst updated data.
+            self.unloadEverything()
+            filename  = dlg.filename
+            if filename != None:
+                self.n_cams = self.readPVListFile(filename)
+            if self.n_cams > len(self.w_Img):
+                self.n_cams = len(self.w_Img)
+            if not self.n_cams:
+                print 'Not Cameras selected'
+                sys.exit(1)
+                
+            print '>>>>>>>>>>>>>>>> need to connect monitors for image....'
+            self.loadEverything()
+            print "Loaded loadEverything!"
+            
+            
+            #self.setupvals = dlg.getValues()
+            #self.dumpCamList() # write to camera.lst updated data.
 
 #    def setupTimer(self, i,refTime=None,duration=9):
 #        logger.debug( "setup timer called %i"% i )
@@ -408,17 +626,14 @@ class Viewer(QtGui.QMainWindow, form_class):
 #        logger.debug( "handleTimerReset %g %g %s", t, cam_n, self.viewer[cam_n] )
 #        if t > 0 and self.viewer[cam_n].camera is None :
 #            print "reconnecting", cam_n
-#            self.setCameraCombo(cam_n)
 #            self.viewer[cam_n].onCameraSelect(cam_n)
 #            self.viewer[cam_n].connectCamera( self.viewer[cam_n].cameraBase )
 #            #self.onUpdateColorMap(cam_n)
 #            self.viewer[cam_n].setColorMap()
 #            self.connect(self.viewer[cam_n], self.sig6, self.onUpdateRate)
-#            self.connect(self.viewer[cam_n], self.sig8, self.setCameraCombo)
 #            self.updateCameraTitle(cam_n)
 #        elif t == 0 and self.viewer[cam_n].camera is not None : 
 #            print "clearing Cam", cam_n
-#            self.setCameraCombo(cam_n)
 #            self.viewer[cam_n].clear()
 #
     def onupdateTimer(self):
@@ -444,7 +659,6 @@ class Viewer(QtGui.QMainWindow, form_class):
 #                seconds = 0
 #                self.timers[cam_n].setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
 #                if self.viewer[cam_n].camera is not None :
-#                    self.setCameraCombo(cam_n)
 #                    self.viewer[cam_n].clear()
 #                #if DEBUG:
 #                #    print "camera", cam_n, "should be disabled"
@@ -634,22 +848,17 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.dW_Img_6.setToolTip('hold ALT to move this window')
         self.dW_Img_7.setToolTip('hold ALT to move this window')
         self.dW_Img_8.setToolTip('hold ALT to move this window')
-
-    def setCameraCombo(self, cam_n):
-        '''Update all camera widgets with the current index'''
-        logger.debug('setCameraCombo current camera is %g', cam_n)
-        self.cB_camera.setCurrentIndex(cam_n)
         
     def updateCameraTitle(self,cam_n):
+        '''Clear and set current camera selected with "*" character'''
         # first clear any *'s from the titles
-        for i in xrange( self.cB_camera.count() ):
+        for i in range(self.n_cams):
             thisTitle = self.idock[i].windowTitle()
             if len(thisTitle) > 0 and thisTitle[-1] == '*':
                 self.idock[i].setWindowTitle( self.idock[i].windowTitle()[:-1] )
         # then put a * on the currently selected title
         if len(self.idock[cam_n].windowTitle()) > 0:
             self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
-        
 
     def set_bin(self):
         print 'THIS MUST BE FIXED'
@@ -752,22 +961,14 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.hSRngMax.setMaximum((     1 << maxbits) - 1)
         self.hSRngMax.setTickInterval((1 << maxbits) / 4)
         
-#    def onCameraButton(self):
-#        if self.cB_on.isChecked():
-#            self.onCameraCombo()
-#        else:
-#            if self.viewer[self.cam_n]:
-#                self.viewer[self.cam_n].clear()
-    
     def onCheckGrayScale(self):
         status = int(self.cBgrayScale.isChecked())
         self.viewer[self.cam_n].onCheckGrayUpdate(status)
                 
-    def onCameraCombo(self):
+    def onCamera(self):
         if self.iocmod[self.cam_n] and self.viewer[self.cam_n]:
             self.viewer[self.cam_n].onCameraSelect(self.cam_n)
-            self.onSliderRangeMaxChanged(int(self.lERngMax.text())) #self.cfg.colormax
-            
+
     def onUpdateRate(self, cam_n, dispRate, dataRate): 
         if self.cam_n == cam_n:
             #print 'onUpdateRate[%d][%d]' % (self.cam_n, cam_n), dispRate, dataRate
@@ -870,7 +1071,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             print 'Disconnect CAM %d and monitors to specific location' % position
         
                 
-    def readPVListFile(self):
+    def readPVListFile(self, filename=None):
         ''' Reads camera.lst file, update camera combo, etc...
         # ---------------------------------------------------------------
         # MultiViewer Description File
@@ -902,10 +1103,13 @@ class Viewer(QtGui.QMainWindow, form_class):
         iMotor  = -1
         iIOC    = -1
         try:
-          if (self.camerListFilename[0] == '/'):
-            fnCameraList = self.camerListFilename
+          if filename != None:
+              fnCameraList = filename
           else:
-            fnCameraList = self.cwd + "/" + self.camerListFilename
+            if (self.camerListFilename[0] == '/'):
+              fnCameraList = self.camerListFilename
+            else:
+              fnCameraList = self.cwd + "/" + self.camerListFilename
           lCameraListLine = open( fnCameraList,"r").readlines()      
           self.lCameraList = []
           
@@ -931,11 +1135,6 @@ class Viewer(QtGui.QMainWindow, form_class):
                   
                 self.lCameraList.append(sCameraPv)
                 self.lCameraDesc.append(sCameraDesc)
-            
-                #self.cB_camera.addItem(sCameraDesc)
-                comboLable = 'CAM[%d] %s' % (self.cam_n, sCameraPv)#.split(':')[-1])
-                self.cB_camera.addItem(comboLable)
-                
                 self.camtypes.append(lsLine[0].strip())
     
                 print 'Cam[%d] %s ' % (iCamera, sCameraDesc),
@@ -1011,104 +1210,104 @@ class Viewer(QtGui.QMainWindow, form_class):
         if self.ca[cam_n].isRunning():
             self.ca[cam_n].stop()
     
-    def dumpCamList(self):
-        if self.setupvals == []:
-            return False
-        # enumerate
-        cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
-        # shortcuts
-        camPv = self.setupvals[cam]; camPvdesc = self.setupvals[camdesc]
-        iocPv = self.setupvals[ioc]; cen       = self.setupvals[cen]
-        mmsPv = self.setupvals[mms]; mmsPvdesc = self.setupvals[mmsdesc]
-        men   = self.setupvals[men]
-        
-        # assign to additional shortcuts
-        camPv1 = camPv[0].text(); camPvDesc1 = camPvdesc[0].text()
-        camPv2 = camPv[1].text(); camPvDesc2 = camPvdesc[1].text()
-        camPv3 = camPv[2].text(); camPvDesc3 = camPvdesc[2].text()
-        camPv4 = camPv[3].text(); camPvDesc4 = camPvdesc[3].text()
-        camPv5 = camPv[4].text(); camPvDesc5 = camPvdesc[4].text()
-        camPv6 = camPv[5].text(); camPvDesc6 = camPvdesc[5].text()
-        camPv7 = camPv[6].text(); camPvDesc7 = camPvdesc[6].text()
-        camPv8 = camPv[7].text(); camPvDesc8 = camPvdesc[7].text()
-        
-        iocPv1 = iocPv[0].text(); camEn1 = '' if cen[0].isChecked() else '#'
-        iocPv2 = iocPv[1].text(); camEn2 = '' if cen[1].isChecked() else '#'
-        iocPv3 = iocPv[2].text(); camEn3 = '' if cen[2].isChecked() else '#'
-        iocPv4 = iocPv[3].text(); camEn4 = '' if cen[3].isChecked() else '#'
-        iocPv5 = iocPv[4].text(); camEn5 = '' if cen[4].isChecked() else '#'
-        iocPv6 = iocPv[5].text(); camEn6 = '' if cen[5].isChecked() else '#'
-        iocPv7 = iocPv[6].text(); camEn7 = '' if cen[6].isChecked() else '#'
-        iocPv8 = iocPv[7].text(); camEn8 = '' if cen[7].isChecked() else '#'
-        
-        mmsPv1 = mmsPv[0].text(); mmsPvDesc1 = mmsPvdesc[0].text()
-        mmsPv2 = mmsPv[1].text(); mmsPvDesc2 = mmsPvdesc[1].text()
-        mmsPv3 = mmsPv[2].text(); mmsPvDesc3 = mmsPvdesc[2].text()
-        mmsPv4 = mmsPv[3].text(); mmsPvDesc4 = mmsPvdesc[3].text()
-        mmsPv5 = mmsPv[4].text(); mmsPvDesc5 = mmsPvdesc[4].text()
-        mmsPv6 = mmsPv[5].text(); mmsPvDesc6 = mmsPvdesc[5].text()
-        mmsPv7 = mmsPv[6].text(); mmsPvDesc7 = mmsPvdesc[6].text()
-        mmsPv8 = mmsPv[7].text(); mmsPvDesc8 = mmsPvdesc[7].text()
-        
-        mmsEn1 = '' if men[0].isChecked() else '#'
-        mmsEn2 = '' if men[1].isChecked() else '#'
-        mmsEn3 = '' if men[2].isChecked() else '#'
-        mmsEn4 = '' if men[3].isChecked() else '#'
-        mmsEn5 = '' if men[4].isChecked() else '#'
-        mmsEn6 = '' if men[5].isChecked() else '#'
-        mmsEn7 = '' if men[6].isChecked() else '#'
-        mmsEn8 = '' if men[7].isChecked() else '#'
-        
-        # Write to file cameras.lst
-        f = open(self.cfgdir + 'cameras.lst', "w")
-        f.write("\n")
-        f.write(''
-'# ---------------------------------------------------------------\n'
-'# MultiViewer Description File (Generated by Setup Dialog)\n'
-'# ---------------------------------------------------------------\n'
-'# Syntax:\n'
-'#   <TYPE>, <PVNAME|IOCNAME>, <DESC> # some_more_comments\n'
-'# Where:\n'
-'#   <Type>    : "GIG" -> GigE Cameras or\n'
-'#               "IOC" -> Server name\n'
-'#               "MMS" -> Motor or\n'
-'#   <PVNAME>  : Camera PV Name to display in the display\n'
-'#   <IOCNAME> : Server name associated to restart button\n'
-'#   <DESC>    : User Camera or Server description\n'
-'# Notes:\n'
-'#   PVNAME or IOCNAME are not case sensitive.\n'
-'#   Line can be commented out by starting with \'#\' character.\n'
-'# ---------------------------------------------------------------\n\n')
-        f.write('# CAMERA PV NAMES (located in the cfg file, \'CAM\' variable):\n')
-        f.write('%sGIG, %s, %s \t #\n' % (camEn1, camPv1, camPvDesc1))
-        f.write('%sGIG, %s, %s \t #\n' % (camEn2, camPv2, camPvDesc2))
-        f.write('%sGIG, %s, %s \t #\n' % (camEn3, camPv3, camPvDesc3))
-        f.write('%sGIG, %s, %s \t #\n' % (camEn4, camPv4, camPvDesc4))
-        f.write('%sGIG, %s, %s \t #\n' % (camEn5, camPv5, camPvDesc5))
-        f.write('%sGIG, %s, %s \t #\n' % (camEn6, camPv6, camPvDesc6))
-        f.write('%sGIG, %s, %s \t #\n' % (camEn7, camPv7, camPvDesc7))
-        f.write('%sGIG, %s, %s \t #\n' % (camEn8, camPv8, camPvDesc8))
-        f.write('\n')
-        f.write('# IOC PV NAMES (located in the cfg file, \'IOC_PV\' variable):)\n')
-        f.write('%sIOC, %s, %s \t #\n' % (camEn1, iocPv1, camPvDesc1))
-        f.write('%sIOC, %s, %s \t #\n' % (camEn2, iocPv2, camPvDesc2))
-        f.write('%sIOC, %s, %s \t #\n' % (camEn3, iocPv3, camPvDesc3))
-        f.write('%sIOC, %s, %s \t #\n' % (camEn4, iocPv4, camPvDesc4))
-        f.write('%sIOC, %s, %s \t #\n' % (camEn5, iocPv5, camPvDesc5))
-        f.write('%sIOC, %s, %s \t #\n' % (camEn6, iocPv6, camPvDesc6))
-        f.write('%sIOC, %s, %s \t #\n' % (camEn7, iocPv7, camPvDesc7))
-        f.write('%sIOC, %s, %s \t #\n' % (camEn8, iocPv8, camPvDesc8))
-        f.write('\n')
-        f.write('# MOTOR PV NAMES:\n')
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn1, mmsPv1, mmsPvDesc1))
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn2, mmsPv2, mmsPvDesc2))
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn3, mmsPv3, mmsPvDesc3))
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn4, mmsPv4, mmsPvDesc4))
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn5, mmsPv5, mmsPvDesc5))
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn6, mmsPv6, mmsPvDesc6))
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn7, mmsPv7, mmsPvDesc7))
-        f.write('%sMMS, %s, %s \t #\n' % (mmsEn8, mmsPv8, mmsPvDesc8))
-        f.close()
+#    def dumpCamList(self):
+#        if self.setupvals == []:
+#            return False
+#        # enumerate
+#        cam, camdesc, ioc, cen, mms, mmsdesc, men = (0,1,2,3,4,5,6)
+#        # shortcuts
+#        camPv = self.setupvals[cam]; camPvdesc = self.setupvals[camdesc]
+#        iocPv = self.setupvals[ioc]; cen       = self.setupvals[cen]
+#        mmsPv = self.setupvals[mms]; mmsPvdesc = self.setupvals[mmsdesc]
+#        men   = self.setupvals[men]
+#        
+#        # assign to additional shortcuts
+#        camPv1 = camPv[0].text(); camPvDesc1 = camPvdesc[0].text()
+#        camPv2 = camPv[1].text(); camPvDesc2 = camPvdesc[1].text()
+#        camPv3 = camPv[2].text(); camPvDesc3 = camPvdesc[2].text()
+#        camPv4 = camPv[3].text(); camPvDesc4 = camPvdesc[3].text()
+#        camPv5 = camPv[4].text(); camPvDesc5 = camPvdesc[4].text()
+#        camPv6 = camPv[5].text(); camPvDesc6 = camPvdesc[5].text()
+#        camPv7 = camPv[6].text(); camPvDesc7 = camPvdesc[6].text()
+#        camPv8 = camPv[7].text(); camPvDesc8 = camPvdesc[7].text()
+#        
+#        iocPv1 = iocPv[0].text(); camEn1 = '' if cen[0].isChecked() else '#'
+#        iocPv2 = iocPv[1].text(); camEn2 = '' if cen[1].isChecked() else '#'
+#        iocPv3 = iocPv[2].text(); camEn3 = '' if cen[2].isChecked() else '#'
+#        iocPv4 = iocPv[3].text(); camEn4 = '' if cen[3].isChecked() else '#'
+#        iocPv5 = iocPv[4].text(); camEn5 = '' if cen[4].isChecked() else '#'
+#        iocPv6 = iocPv[5].text(); camEn6 = '' if cen[5].isChecked() else '#'
+#        iocPv7 = iocPv[6].text(); camEn7 = '' if cen[6].isChecked() else '#'
+#        iocPv8 = iocPv[7].text(); camEn8 = '' if cen[7].isChecked() else '#'
+#        
+#        mmsPv1 = mmsPv[0].text(); mmsPvDesc1 = mmsPvdesc[0].text()
+#        mmsPv2 = mmsPv[1].text(); mmsPvDesc2 = mmsPvdesc[1].text()
+#        mmsPv3 = mmsPv[2].text(); mmsPvDesc3 = mmsPvdesc[2].text()
+#        mmsPv4 = mmsPv[3].text(); mmsPvDesc4 = mmsPvdesc[3].text()
+#        mmsPv5 = mmsPv[4].text(); mmsPvDesc5 = mmsPvdesc[4].text()
+#        mmsPv6 = mmsPv[5].text(); mmsPvDesc6 = mmsPvdesc[5].text()
+#        mmsPv7 = mmsPv[6].text(); mmsPvDesc7 = mmsPvdesc[6].text()
+#        mmsPv8 = mmsPv[7].text(); mmsPvDesc8 = mmsPvdesc[7].text()
+#        
+#        mmsEn1 = '' if men[0].isChecked() else '#'
+#        mmsEn2 = '' if men[1].isChecked() else '#'
+#        mmsEn3 = '' if men[2].isChecked() else '#'
+#        mmsEn4 = '' if men[3].isChecked() else '#'
+#        mmsEn5 = '' if men[4].isChecked() else '#'
+#        mmsEn6 = '' if men[5].isChecked() else '#'
+#        mmsEn7 = '' if men[6].isChecked() else '#'
+#        mmsEn8 = '' if men[7].isChecked() else '#'
+#        
+#        # Write to file cameras.lst
+#        f = open(self.cfgdir + 'cameras.lst', "w")
+#        f.write("\n")
+#        f.write(''
+#'# ---------------------------------------------------------------\n'
+#'# MultiViewer Description File (Generated by Setup Dialog)\n'
+#'# ---------------------------------------------------------------\n'
+#'# Syntax:\n'
+#'#   <TYPE>, <PVNAME|IOCNAME>, <DESC> # some_more_comments\n'
+#'# Where:\n'
+#'#   <Type>    : "GIG" -> GigE Cameras or\n'
+#'#               "IOC" -> Server name\n'
+#'#               "MMS" -> Motor or\n'
+#'#   <PVNAME>  : Camera PV Name to display in the display\n'
+#'#   <IOCNAME> : Server name associated to restart button\n'
+#'#   <DESC>    : User Camera or Server description\n'
+#'# Notes:\n'
+#'#   PVNAME or IOCNAME are not case sensitive.\n'
+#'#   Line can be commented out by starting with \'#\' character.\n'
+#'# ---------------------------------------------------------------\n\n')
+#        f.write('# CAMERA PV NAMES (located in the cfg file, \'CAM\' variable):\n')
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn1, camPv1, camPvDesc1))
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn2, camPv2, camPvDesc2))
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn3, camPv3, camPvDesc3))
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn4, camPv4, camPvDesc4))
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn5, camPv5, camPvDesc5))
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn6, camPv6, camPvDesc6))
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn7, camPv7, camPvDesc7))
+#        f.write('%sGIG, %s, %s \t #\n' % (camEn8, camPv8, camPvDesc8))
+#        f.write('\n')
+#        f.write('# IOC PV NAMES (located in the cfg file, \'IOC_PV\' variable):)\n')
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn1, iocPv1, camPvDesc1))
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn2, iocPv2, camPvDesc2))
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn3, iocPv3, camPvDesc3))
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn4, iocPv4, camPvDesc4))
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn5, iocPv5, camPvDesc5))
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn6, iocPv6, camPvDesc6))
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn7, iocPv7, camPvDesc7))
+#        f.write('%sIOC, %s, %s \t #\n' % (camEn8, iocPv8, camPvDesc8))
+#        f.write('\n')
+#        f.write('# MOTOR PV NAMES:\n')
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn1, mmsPv1, mmsPvDesc1))
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn2, mmsPv2, mmsPvDesc2))
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn3, mmsPv3, mmsPvDesc3))
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn4, mmsPv4, mmsPvDesc4))
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn5, mmsPv5, mmsPvDesc5))
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn6, mmsPv6, mmsPvDesc6))
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn7, mmsPv7, mmsPvDesc7))
+#        f.write('%sMMS, %s, %s \t #\n' % (mmsEn8, mmsPv8, mmsPvDesc8))
+#        f.close()
         
     def dumpConfig(self, cam_n):
         '''Dump the current camera gui settings in a config file located in the
@@ -1123,51 +1322,51 @@ class Viewer(QtGui.QMainWindow, form_class):
             return False
         cameraBase = str(self.lCameraList[cam_n])
         if cameraBase == "":
-          return
-        
-        if self.viewer[cam_n].camera != None:
-          logger.debug('dumpConfig called')
-          f = open(self.cfgdir + cameraBase.lower().replace(':','_'), "w")
-          # Radio Buttons:
-          f.write("rBColor_Jet        " + str(int(self.rBColor_Jet.isChecked()))    + "\n")
-          f.write("rBColor_Hot        " + str(int(self.rBColor_Hot.isChecked()))    + "\n")
-          f.write("rBColor_HSV        " + str(int(self.rBColor_HSV.isChecked()))    + "\n")
-          f.write("rBColor_Gray       " + str(int(self.rBColor_Gray.isChecked()))   + "\n")
-          f.write("rBColor_Cool       " + str(int(self.rBColor_Cool.isChecked()))   + "\n")
-          # Combo Boxes:
-          f.write("cBoxScale          " + str(int(self.cBoxScale.currentIndex()))+ "\n")
-          # Check Boxes:
-          f.write("cBgrayScale        " + str(int(self.cBgrayScale.isChecked())) + "\n")
-          f.write("cBcross_1          " + str(int(self.cBcross_1.isChecked()))   + "\n")
-          f.write("cBcross_2          " + str(int(self.cBcross_2.isChecked()))   + "\n")
-          f.write("cBcross_3          " + str(int(self.cBcross_3.isChecked()))   + "\n")
-          f.write("cBcross_4          " + str(int(self.cBcross_4.isChecked()))   + "\n")
-          f.write("cBlock_1           " + str(int(self.cBlock_1.isChecked()))    + "\n")
-          f.write("cBlock_2           " + str(int(self.cBlock_2.isChecked()))    + "\n")
-          f.write("cBlock_3           " + str(int(self.cBlock_3.isChecked()))    + "\n")
-          f.write("cBlock_4           " + str(int(self.cBlock_4.isChecked()))    + "\n")
-          f.write("checkBox21         " + str(int(self.checkBox21.isChecked()))  + "\n")
-          f.write("checkBox23         " + str(int(self.checkBox23.isChecked()))  + "\n")
-          f.write("checkBox24         " + str(int(self.checkBox24.isChecked()))  + "\n")
-          f.write("checkBox31         " + str(int(self.checkBox31.isChecked()))  + "\n")
-          f.write("checkBox32         " + str(int(self.checkBox32.isChecked()))  + "\n")
-          f.write("checkBox34         " + str(int(self.checkBox34.isChecked()))  + "\n")
-          f.write("checkBox41         " + str(int(self.checkBox41.isChecked()))  + "\n")
-          f.write("checkBox42         " + str(int(self.checkBox42.isChecked()))  + "\n")
-          f.write("checkBox43         " + str(int(self.checkBox43.isChecked()))  + "\n")
-          # Line Edits:
-          f.write("lERngMin           " + self.lERngMin.text()                   + "\n")
-          f.write("lERngMax           " + self.lERngMax.text()                   + "\n")
-          f.write("TimerLabel         " + self.lCameraDesc[cam_n]                + "\n")
-          f.write("X1Position         " + self.X1Position.text()                 + "\n")
-          f.write("Y1Position         " + self.Y1Position.text()                 + "\n")
-          f.write("X2Position         " + self.X2Position.text()                 + "\n")
-          f.write("Y2Position         " + self.Y2Position.text()                 + "\n")
-          f.write("X3Position         " + self.X3Position.text()                 + "\n")
-          f.write("Y3Position         " + self.Y3Position.text()                 + "\n")
-          f.write("X4Position         " + self.X4Position.text()                 + "\n")
-          f.write("Y4Position         " + self.Y4Position.text()                 + "\n")
-          f.close()
+            return
+        if self.viewer[cam_n] != None:
+            if self.viewer[cam_n].camera != None:
+                logger.debug('dumpConfig called')
+                f = open(self.cfgdir + cameraBase.lower().replace(':','_'), "w")
+                # Radio Buttons:
+                f.write("rBColor_Jet        " + str(int(self.rBColor_Jet.isChecked()))    + "\n")
+                f.write("rBColor_Hot        " + str(int(self.rBColor_Hot.isChecked()))    + "\n")
+                f.write("rBColor_HSV        " + str(int(self.rBColor_HSV.isChecked()))    + "\n")
+                f.write("rBColor_Gray       " + str(int(self.rBColor_Gray.isChecked()))   + "\n")
+                f.write("rBColor_Cool       " + str(int(self.rBColor_Cool.isChecked()))   + "\n")
+                # Combo Boxes:
+                f.write("cBoxScale          " + str(int(self.cBoxScale.currentIndex()))+ "\n")
+                # Check Boxes:
+                f.write("cBgrayScale        " + str(int(self.cBgrayScale.isChecked())) + "\n")
+                f.write("cBcross_1          " + str(int(self.cBcross_1.isChecked()))   + "\n")
+                f.write("cBcross_2          " + str(int(self.cBcross_2.isChecked()))   + "\n")
+                f.write("cBcross_3          " + str(int(self.cBcross_3.isChecked()))   + "\n")
+                f.write("cBcross_4          " + str(int(self.cBcross_4.isChecked()))   + "\n")
+                f.write("cBlock_1           " + str(int(self.cBlock_1.isChecked()))    + "\n")
+                f.write("cBlock_2           " + str(int(self.cBlock_2.isChecked()))    + "\n")
+                f.write("cBlock_3           " + str(int(self.cBlock_3.isChecked()))    + "\n")
+                f.write("cBlock_4           " + str(int(self.cBlock_4.isChecked()))    + "\n")
+                f.write("checkBox21         " + str(int(self.checkBox21.isChecked()))  + "\n")
+                f.write("checkBox23         " + str(int(self.checkBox23.isChecked()))  + "\n")
+                f.write("checkBox24         " + str(int(self.checkBox24.isChecked()))  + "\n")
+                f.write("checkBox31         " + str(int(self.checkBox31.isChecked()))  + "\n")
+                f.write("checkBox32         " + str(int(self.checkBox32.isChecked()))  + "\n")
+                f.write("checkBox34         " + str(int(self.checkBox34.isChecked()))  + "\n")
+                f.write("checkBox41         " + str(int(self.checkBox41.isChecked()))  + "\n")
+                f.write("checkBox42         " + str(int(self.checkBox42.isChecked()))  + "\n")
+                f.write("checkBox43         " + str(int(self.checkBox43.isChecked()))  + "\n")
+                # Line Edits:
+                f.write("lERngMin           " + self.lERngMin.text()                   + "\n")
+                f.write("lERngMax           " + self.lERngMax.text()                   + "\n")
+                f.write("TimerLabel         " + self.lCameraDesc[cam_n]                + "\n")
+                f.write("X1Position         " + self.X1Position.text()                 + "\n")
+                f.write("Y1Position         " + self.Y1Position.text()                 + "\n")
+                f.write("X2Position         " + self.X2Position.text()                 + "\n")
+                f.write("Y2Position         " + self.Y2Position.text()                 + "\n")
+                f.write("X3Position         " + self.X3Position.text()                 + "\n")
+                f.write("Y3Position         " + self.Y3Position.text()                 + "\n")
+                f.write("X4Position         " + self.X4Position.text()                 + "\n")
+                f.write("Y4Position         " + self.Y4Position.text()                 + "\n")
+                f.close()
           
 
     def getConfig(self, cam_n):
@@ -1231,10 +1430,11 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.cfg = None
         
     def shutdown(self):
-        for i in range(8):
+        print 'len(self.viewer)', len(self.viewer)
+        for i in range(len(self.viewer)):
             if self.viewer[i]:
                 self.viewer[i].clear()
-        time.sleep(1) # needed to avoi core dump
+        time.sleep(1) # needed to avoid core dump
         self.close()
         
     def centerDock(self, floating=False):

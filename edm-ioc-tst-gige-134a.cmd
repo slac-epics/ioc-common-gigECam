@@ -4,8 +4,8 @@
 export EPICS_HOST_ARCH=linux-x86
 source /reg/g/pcds/setup/epicsenv-3.14.12.sh
 
-export IOC_PV=TST:GIGE:IOC134
-export CAM_PV=TST:GIGE:CAM134
+export IOC_PV=TST:GIGE:IOC134A
+export CAM_PV=TST:GIGE:CAM134A
 export HUTCH=TST
 export PVLIST=tst.lst
 edm -x -eolc	\
