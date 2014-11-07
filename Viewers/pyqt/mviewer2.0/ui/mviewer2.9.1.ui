@@ -933,6 +933,13 @@
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="QPushButton" name="pB_setExpGain">
+                <property name="text">
+                 <string>Set</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
            </layout>

@@ -9,7 +9,7 @@ from PyQt4.Qt import QColorDialog
 
 from utils import *
 from SplashScreen import SplashScreen
-from ViewerFrame import ViewerFrame
+from ViewerFrame import ViewerFrame, Glob
 
 logger = logging.getLogger('mviewer.Viewer')
 
@@ -371,9 +371,11 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.lERngMin,     sig5, self.onRangeMinTextEnter )
         self.connect(self.lERngMax,     sig5, self.onRangeMaxTextEnter)
         # --------------------------------------------------------
+        # Control Pvs:
         self.connect(self.lEBXY,        sig5, self.set_bin)
         self.connect(self.dS_expt,      sig1, self.set_expt)
         self.connect(self.iS_gain,      sig2, self.set_gain)
+        self.connect(self.pB_setExpGain,sig0, self.set_expgain)
         #self.connect(self.cB_on,        sig0, self.onCameraButton)
         self.connect(self.pB_on,        sig0, self.onCamera)
         self.connect(self.cBgrayScale,  sig0, self.onCheckGrayScale)
@@ -480,7 +482,6 @@ class Viewer(QtGui.QMainWindow, form_class):
 ##                self.getConfig(i)
 ##                self.ca[i] = CAComm(self.lock[i], self.basename[i], self)
 ##                self.viewer[i] = ViewerFrame(self.w_Img[i], self)
-##                self.viewer[i].onCameraSelect(i) # set camera pv and start display
 ##                self.viewer[i].showCross = self.ShowCross
 ##                self.forceRefreshColorMap(i)
 ##                self.connect(self.viewer[i], sig6, self.onUpdateRate)
@@ -550,7 +551,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.getConfig(i)
                 self.ca[i] = CAComm(self.lock[i], self.basename[i], self)
                 self.viewer[i] = ViewerFrame(self.w_Img[i], self)
-                self.viewer[i].onCameraSelect(i) # set camera pv and start display
+                self.viewer[i].connectCamera()
                 self.viewer[i].showCross = self.ShowCross
                 self.forceRefreshColorMap(i)
                 self.connect(self.viewer[i], QtCore.SIGNAL("onUpdateRate(int, float, float)"), self.onUpdateRate)
@@ -626,7 +627,6 @@ class Viewer(QtGui.QMainWindow, form_class):
 #        logger.debug( "handleTimerReset %g %g %s", t, cam_n, self.viewer[cam_n] )
 #        if t > 0 and self.viewer[cam_n].camera is None :
 #            print "reconnecting", cam_n
-#            self.viewer[cam_n].onCameraSelect(cam_n)
 #            self.viewer[cam_n].connectCamera( self.viewer[cam_n].cameraBase )
 #            #self.onUpdateColorMap(cam_n)
 #            self.viewer[cam_n].setColorMap()
@@ -861,32 +861,33 @@ class Viewer(QtGui.QMainWindow, form_class):
             self.idock[cam_n].setWindowTitle( self.idock[cam_n].windowTitle() + "*" )
 
     def set_bin(self):
-        print 'THIS MUST BE FIXED'
-        return False
-#        bindex = int(self.lEBXY.text())
-#        self.snd_cmd(self.cam_n, 'BinX', bindex)
-#        time.sleep(1)  
-#        self.snd_cmd(self.cam_n, 'BinY', bindex)
-#        #if self.cfg == None: self.dumpConfig(self.cam_n)
-#        # some update needed here
-#        logger.debug('no update done after set_bin')
-#        logger.debug('please change the colormap for this camera to restore image %g', self.cam_n)
-##        currentcolormap = str(self.viewer[self.cam_n].colorMap) 
-##        if currentcolormap  == 'jet':
-##            self.set_cool()
-##        else:
-##            self.set_jet()
-##        # set it back
-##        self.colormapsrb[currentcolormap].setChecked(True)
-        
+        if self.viewer[self.cam_n]:
+            self.viewer[self.cam_n].controlling = True # gives the widget control to user
+            self.viewer[self.cam_n].pvput(self.viewer[self.cam_n].Pv_BinX, int(self.lEBXY.text()))
+            self.viewer[self.cam_n].pvput(self.viewer[self.cam_n].Pv_BinY, int(self.lEBXY.text()))
+            self.viewer[self.cam_n].controlling = False # release the control
+            
     def set_expt(self):
-        val = float(self.dS_expt.value())
-        self.snd_cmd(self.cam_n, 'AcquireTime', val)
+        return False
+        if self.viewer[self.cam_n]:
+            self.viewer[self.cam_n].controlling = True # gives the widget control to user
+            self.viewer[self.cam_n].pvput(self.viewer[self.cam_n].Pv_Exposure, float(self.dS_expt.value()))
+            self.viewer[self.cam_n].controlling = False # release the control
     
     def set_gain(self):
-        val = float(self.iS_gain.value())
-        self.snd_cmd(self.cam_n, 'Gain', val)
-        
+        return False
+        if self.viewer[self.cam_n]:
+            self.viewer[self.cam_n].controlling = True # gives the widget control to user
+            self.viewer[self.cam_n].pvput(self.viewer[self.cam_n].Pv_Gain, int(self.iS_gain.value()))
+            self.viewer[self.cam_n].controlling = False # release the control
+             
+    def set_expgain(self):
+        if self.viewer[self.cam_n]:
+            self.viewer[self.cam_n].controlling = True # gives the widget control to user
+            self.viewer[self.cam_n].pvput(self.viewer[self.cam_n].Pv_Exposure, float(self.dS_expt.value()))
+            self.viewer[self.cam_n].pvput(self.viewer[self.cam_n].Pv_Gain, int(self.iS_gain.value()))
+            self.viewer[self.cam_n].controlling = False # release the control
+
     def onComboBoxScaleIndexChanged(self):
         logger.debug('onComboBoxScaleIndexChanged called')
         if self.viewer[self.cam_n]:
@@ -967,7 +968,7 @@ class Viewer(QtGui.QMainWindow, form_class):
                 
     def onCamera(self):
         if self.iocmod[self.cam_n] and self.viewer[self.cam_n]:
-            self.viewer[self.cam_n].onCameraSelect(self.cam_n)
+            self.viewer[self.cam_n].connectCamera()
 
     def onUpdateRate(self, cam_n, dispRate, dataRate): 
         if self.cam_n == cam_n:
@@ -1324,7 +1325,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         if cameraBase == "":
             return
         if self.viewer[cam_n] != None:
-            if self.viewer[cam_n].camera != None:
+            if self.viewer[cam_n].Pv_ArrayData[Glob.pv] != None:
                 logger.debug('dumpConfig called')
                 f = open(self.cfgdir + cameraBase.lower().replace(':','_'), "w")
                 # Radio Buttons:
@@ -1433,8 +1434,7 @@ class Viewer(QtGui.QMainWindow, form_class):
         print 'len(self.viewer)', len(self.viewer)
         for i in range(len(self.viewer)):
             if self.viewer[i]:
-                self.viewer[i].clear()
-        time.sleep(1) # needed to avoid core dump
+                self.viewer[i].disconnectCamera()
         self.close()
         
     def centerDock(self, floating=False):

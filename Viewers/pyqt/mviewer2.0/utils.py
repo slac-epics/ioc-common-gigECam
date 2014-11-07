@@ -13,7 +13,7 @@ def signal_handler(signal, frame):
      t.shutdown()
      sys.exit(1)
     
-def caput(pvname, value, timeout=1.0):
+def caput(pvname, value, timeout=2.0):
     try:
         pv = Pv(pvname)
         pv.connect(timeout)
@@ -26,7 +26,7 @@ def caput(pvname, value, timeout=1.0):
     except pyca.caexc, e:
         logger.error( 'channel access exception: %s' %(e))
         
-def caget(pvname, timeout=1.0):
+def caget(pvname, timeout=2.0):
     try:
         pv = Pv(pvname)
         pv.connect(timeout)
