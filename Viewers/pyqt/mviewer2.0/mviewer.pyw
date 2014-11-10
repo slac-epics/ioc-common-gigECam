@@ -12,6 +12,12 @@ DEBUG = True
 
 logger=logging.getLogger('mviewer')
 
+if len(logging.root.handlers) == 0:
+    logger_console_handler = logging.StreamHandler()
+    logger_console_handler.setFormatter( logging.Formatter("LOG %(name)s %(levelno)s: %(message)s") )
+    logger.addHandler( logger_console_handler )
+
+
 if DEBUG:
     logger.setLevel(logging.DEBUG)
 else:
@@ -87,7 +93,8 @@ if DEBUG:
         8888888888888  888"Y88888888888P" 888 "Y8888  "Y88888 
                                                           
 '''
-logging.debug( "running on host %s", socket.gethostname() )
+logger.debug( "running on host %s", socket.gethostname() )
+logger.debug( "python version: %s", sys.version )
 
     
 
