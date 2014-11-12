@@ -7,6 +7,9 @@ from Pv import Pv
 
 logger = logging.getLogger('mviewer.utils')
 
+class GlobCounter():
+    counts=0
+
 def signal_handler(signal, frame):
      logger.info( '\nShutdown application...')
      t = Viewer() # or the class that contains a clean close code

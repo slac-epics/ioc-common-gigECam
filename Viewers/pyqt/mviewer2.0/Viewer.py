@@ -15,11 +15,7 @@ logger = logging.getLogger('mviewer.Viewer')
 
 '''
 TODO: 
-replace cameracombo for a lineEdit our label
-fix bin and caget put camonitor
-fix mutual exclusive check crosses maybe a third button ??
 Add save as in SetupDialog
-Fix Timers
 Explore possibility of use of mouseMoveEvent to draw continuously the cross
 
 '''
@@ -273,7 +269,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         #layout = 
         #layout = QtGui.QGridLayout(self)
         #self.setLayout(layout)
-        
+        self.iRangeMin = 0
+        self.iRangeMax = 255
         self.ledoff     = QtGui.QPixmap('ui/led-off-22x22.png')
         self.ledon      = QtGui.QPixmap('ui/led-red-22x22.png')
         self.limitoff  = QtGui.QPixmap('ui/led-off-16x16.png')
@@ -367,6 +364,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         self.connect(self.rBColor_Jet,  sig0, self.set_jet)
         self.connect(self.hSRngMin,     sig2, self.onSliderRangeMinChanged)
         self.connect(self.hSRngMax,     sig2, self.onSliderRangeMaxChanged)
+        #self.connect(self.hSRngMin,     sig13, self.onSliderRangeMinChanged)
+        #self.connect(self.hSRngMax,     sig13, self.onSliderRangeMaxChanged)
 
         self.connect(self.lERngMin,     sig5, self.onRangeMinTextEnter )
         self.connect(self.lERngMax,     sig5, self.onRangeMaxTextEnter)
@@ -553,12 +552,11 @@ class Viewer(QtGui.QMainWindow, form_class):
                 self.viewer[i] = ViewerFrame(self.w_Img[i], self)
                 self.viewer[i].connectCamera()
                 self.viewer[i].showCross = self.ShowCross
-                self.forceRefreshColorMap(i)
                 self.connect(self.viewer[i], QtCore.SIGNAL("onUpdateRate(int, float, float)"), self.onUpdateRate)
                 self.connect(self.idock[i],  QtCore.SIGNAL("topLevelChanged(bool)"), self.centerDock)
                 splashScreen.showMsg("Loading... %s as Cam[%d]" % (self.lCameraDesc[i], i))
-                #self.setupTimer(i,refTime=refTime)
                 time.sleep(0.5)
+                self.forceRefreshColorMap(i)
         self.cam_n = 0
         # Destroy Splash once all are loaded
         if splashScreen:
@@ -926,19 +924,19 @@ class Viewer(QtGui.QMainWindow, form_class):
         
     def onSliderRangeMinChanged(self, newSliderValue):
         if self.viewer[self.cam_n]:        
-            self.lERngMin.setText(str(newSliderValue))
-            self.viewer[self.cam_n].iRangeMin = newSliderValue
-            if newSliderValue > self.viewer[self.cam_n].iRangeMax:
-                self.hSRngMax.setValue(newSliderValue)
+            self.iRangeMin = newSliderValue
+            self.lERngMin.setText(str(self.iRangeMin))
+            if self.iRangeMin > self.iRangeMax:
+                self.hSRngMax.setValue(self.iRangeMin)
             if self.viewer[self.cam_n].colorMap != None:
                 self.viewer[self.cam_n].setColorMap(self.getColorMapRadioButton())
 
     def onSliderRangeMaxChanged(self, newSliderValue):
         if self.viewer[self.cam_n]:
-            self.lERngMax.setText(str(newSliderValue))
-            self.viewer[self.cam_n].iRangeMax = newSliderValue
-            if newSliderValue < self.viewer[self.cam_n].iRangeMin:
-                self.hSRngMin.setValue(newSliderValue)
+            self.iRangeMax = newSliderValue
+            self.lERngMax.setText(str(self.iRangeMax))
+            if self.iRangeMax < self.iRangeMin:
+                self.hSRngMin.setValue(self.iRangeMax)
             if self.viewer[self.cam_n].colorMap != None:
                 self.viewer[self.cam_n].setColorMap(self.getColorMapRadioButton())
 
@@ -968,7 +966,9 @@ class Viewer(QtGui.QMainWindow, form_class):
                 
     def onCamera(self):
         if self.iocmod[self.cam_n] and self.viewer[self.cam_n]:
-            self.viewer[self.cam_n].connectCamera()
+            #self.viewer[self.cam_n].connectCamera() # FIXME: not working yet
+            pass
+            
 
     def onUpdateRate(self, cam_n, dispRate, dataRate): 
         if self.cam_n == cam_n:
@@ -1326,7 +1326,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             return
         if self.viewer[cam_n] != None:
             if self.viewer[cam_n].Pv_ArrayData[Glob.pv] != None:
-                logger.debug('dumpConfig called')
+                #logger.debug('dumpConfig called')
                 f = open(self.cfgdir + cameraBase.lower().replace(':','_'), "w")
                 # Radio Buttons:
                 f.write("rBColor_Jet        " + str(int(self.rBColor_Jet.isChecked()))    + "\n")
@@ -1376,7 +1376,7 @@ class Viewer(QtGui.QMainWindow, form_class):
             Should be called at the first time the camera is selected after 
             program started.
         '''
-        logger.debug( 'getConfig called [CAM%d]' , self.cam_n )
+        #logger.debug( 'getConfig called [CAM%d]' , self.cam_n )
         cameraBase = str(self.lCameraList[cam_n])
         if cameraBase == "":
           return
@@ -1435,6 +1435,8 @@ class Viewer(QtGui.QMainWindow, form_class):
         for i in range(len(self.viewer)):
             if self.viewer[i]:
                 self.viewer[i].disconnectCamera()
+        #time.sleep(5)
+        # FIXME: make sure that all thread are finished before close the app
         self.close()
         
     def centerDock(self, floating=False):

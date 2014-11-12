@@ -9,6 +9,7 @@ import Image
 
 from DisplayImage import DisplayImage
 from utils import *
+from utils import GlobCounter
 
 logger = logging.getLogger('mviewer.ViewerFrame')
 
@@ -19,6 +20,7 @@ if len(logging.root.handlers) == 0:
 
 class Glob():
     pv, name = [0, 1]
+    
     
 class ViewerFrame(QtGui.QWidget):
     def __init__(self, parent, gui):
@@ -33,8 +35,6 @@ class ViewerFrame(QtGui.QWidget):
         self.x = 175
         self.y = 132
         
-        self.iRangeMin       = 0
-        self.iRangeMax       = 255#1023
         self.cam_n           = self.gui.cam_n
 
         self.display_image   = None
@@ -47,7 +47,7 @@ class ViewerFrame(QtGui.QWidget):
         self.lastDataUpdates = 0
         self.camera_on       = False
         self.event           = QObject()
-        self.iScaleIndex     = False
+        #self.iScaleIndex     = False
         self.colormapfile    = None
         self.colorMap        = 'gray'
         self.lastImageUpdateDispTime = 0
@@ -160,7 +160,9 @@ class ViewerFrame(QtGui.QWidget):
                 seconds = 0
                 if self.gui.cam_n == self.cam_n:
                     self.gui.Timer.setText("{:02.0f}:{:02.0f}:{:02.0f}".format(hours,minutes,seconds))
-                self.clear()
+                if self.camera_on:
+                    self.disconnectCamera()
+#                self.clear()
 #                if self.viewer[cam_n].camera is not None :
 #                    self.setCameraCombo(cam_n)
 #                    self.viewer[cam_n].clear()
@@ -176,7 +178,8 @@ class ViewerFrame(QtGui.QWidget):
           
     def disconnectDisplay(self):
           self.parent.removeEventFilter(self)
-          self.disconnectCamera()
+          if self.camera_on:
+              self.disconnectCamera()
 
     def mouseMoveEvent(self, event):
         print 'to be used to draw a cross while moving...'
@@ -294,7 +297,9 @@ class ViewerFrame(QtGui.QWidget):
         return self.showCross[0] | self.showCross[1] | self.showCross[2] | self.showCross[3]
 
     def connectCamera(self):
-        logger.debug( "connectCamera called")
+        logger.debug( "connectCamera called %d called" % self.cam_n)
+        GlobCounter.counts +=1
+        print 'GlobCounter %d' % GlobCounter.counts
         self.disconnectPvs()
         if self.connectPvs():
             # Setup the callbacks:
@@ -332,12 +337,16 @@ class ViewerFrame(QtGui.QWidget):
         return self.camera_on
 
     def disconnectCamera(self):
-        logger.debug( "disconnectCamera called")
+        if self.camera_on:
+            return False
+        logger.debug( "disconnectCamera called - camera %d" % self.cam_n)
         self.disconnectPvs()
         self.gui.idock[self.cam_n].setWindowTitle('')
         self.gui.lb_dispRate.setText("-") 
         self.rfshTimer.stop()
-        self.camera_on = False 
+        time.sleep(1)
+        self.camera_on = False
+        return True 
 
 
 #    def onColorMapUpdate(self):
@@ -411,28 +420,16 @@ class ViewerFrame(QtGui.QWidget):
       self.updateImage()
       
     def setColorMap(self, colormapfile=None):
-      #print 'setColorMap called [CAM%d] %s' % (self.cam_n, self.colorMap)
-      #logger.debug( 'self.cam_n %s', self.cam_n)
-      #logger.debug( 'ViewerFrame setColorMap called, new      %s', colormapfile)
-      #logger.debug( 'ViewerFrame setColorMap called, current: %s', self.colormapfile)
-      ####self.iScaleIndex = self.gui.iScaleIndex
-      #logger.debug('setColorMap self.gui.cwd %s', self.gui.cwd)
-      #logger.debug('setColorMap self.colorMap %s', self.colorMap)
-      if self.colormapfile == colormapfile:
-          return False
-      
+      #logger.debug( 'ViewerFrame setColorMap called %d, new      %s' % (self.cam_n, colormapfile))
+      #logger.debug( 'ViewerFrame setColorMap called %d, current: %s' % (self.cam_n, self.colormapfile))
+
       if colormapfile:
           fnColorMap = self.gui.cwd + "/" + colormapfile
-          mantaGiGE.pydspl_setup_color_map(self.imageBuffer, fnColorMap, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
+          mantaGiGE.pydspl_setup_color_map(self.imageBuffer, fnColorMap, self.gui.iRangeMin, self.gui.iRangeMax, self.gui.iScaleIndex)
       else:
-          mantaGiGE.pydspl_setup_gray(self.imageBuffer, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
+          mantaGiGE.pydspl_setup_gray(self.imageBuffer, self.gui.iRangeMin, self.gui.iRangeMax, self.gui.iScaleIndex)
       self.colormapfile = colormapfile
-#      if self.colorMap != "gray":
-#        fnColorMap = self.gui.cwd + "/" + self.colorMap + ".txt"
-#        mantaGiGE.pydspl_setup_color_map(self.imageBuffer, fnColorMap, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
-#      else:
-#        mantaGiGE.pydspl_setup_gray(self.imageBuffer, self.iRangeMin, self.iRangeMax, self.iScaleIndex)
-      
+
     #  def forceMinSize(self):
     #    self.gui.app.sendPostedEvents()
     #    self.gui.resize(100, 100)
@@ -540,6 +537,7 @@ class ViewerFrame(QtGui.QWidget):
     
     def connectPvs(self):
         logger.debug( "connectPvs called")
+        
         # Monitor Pvs:
         if not self.connectPv(self.Pv_Gain_RBV):
             return False
@@ -594,10 +592,11 @@ class ViewerFrame(QtGui.QWidget):
                 pvobj[Glob.pv].connect(timeout)
                 pvobj[Glob.pv].get(False, timeout)
                 self.connectedPvs.append(pvobj) # needed later for disconnect all on exit
-                logger.debug('[  OK  ] %s %s' % (pvobj[Glob.name], pvobj[Glob.pv]))
+                #logger.debug('%d [  OK  ] %s %s' % (i, pvobj[Glob.name], pvobj[Glob.pv]))
+                print '%d [  OK  ] %s %s' % (i, pvobj[Glob.name], pvobj[Glob.pv])
                 return True
             except:
-                logger.debug('[ FAIL ] %s %s' % (pvobj[Glob.name], repr(pvobj[Glob.pv])))
+                logger.debug('%d [ FAIL ] %s %s' % (i, pvobj[Glob.name], repr(pvobj[Glob.pv])))
                 logger.error('ERROR: Couldn\'t get %s . Retrying %g/%g...',  pvobj[Glob.name], i, nretries)
         pvobj[Glob.pv] = None
         return False
@@ -611,7 +610,7 @@ class ViewerFrame(QtGui.QWidget):
 
     def disconnectPvs(self):
         '''Disconnects all pvs that are in the connectedPvs list'''
-        logger.debug('disconnectPvs called')
+        logger.debug('disconnectPvs called - camera %d' % self.cam_n)
         for pv_item in self.connectedPvs:
             oldpv = pv_item[Glob.pv]
 #            logger.debug('Pv %s was    %s' % (pv_item[Glob.name], str(pv_item[Glob.pv])))

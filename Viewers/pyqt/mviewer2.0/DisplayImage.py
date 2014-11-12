@@ -8,7 +8,6 @@ logger = logging.getLogger('mviewer.DisplayManager')
 class DisplayImage(QtGui.QWidget):
   def __init__(self, parent, gui):
     QtGui.QWidget.__init__(self, parent)
-    #print 'DisplayImage called'
     self.gui          = gui
     self.parent       = parent
     size              = QtCore.QSize(self.pWidth(), self.pHeight())
@@ -46,6 +45,4 @@ class DisplayImage(QtGui.QWidget):
     #print self.scaled_image.rect(), self.scaled_image.width(), self.scaled_image.height()
     self.gui.drawCrosses(painter)
     painter.setOpacity(1)
-
-
     self.paintevents += 1

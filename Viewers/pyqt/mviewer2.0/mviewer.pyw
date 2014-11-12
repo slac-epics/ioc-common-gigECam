@@ -147,5 +147,6 @@ if __name__ == '__main__':
     gui = Viewer(app, cwd, options.instrument, camLstFname, cfgdir)#cwd, cams, cfgdir)
        
     sys.exit(app.exec_())
+    
 
 
