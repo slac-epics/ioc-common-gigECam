@@ -22,8 +22,8 @@ file pcdsPlugins.req
     {   CAM = "TST:GIGE:01"	}
 }
 
-#file cross_settings.req
-#{
-#    {   P = "TST:GIGE:01",	R = ":" 	}
-#}
+file cross.tpl-req
+{
+    {   P = "TST:GIGE:01",	R = ":" 	}
+}
 

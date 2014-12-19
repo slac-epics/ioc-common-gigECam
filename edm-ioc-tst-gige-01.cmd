@@ -4,13 +4,13 @@
 export EPICS_HOST_ARCH=linux-x86
 source /reg/g/pcds/setup/epicsenv-3.14.12.sh
 
-export IOC_PV=TST:GIGE:IOC134
-export CAM=TST:GIGE1:CAM134
+export IOC_PV=TST:IOC:GIGE:01
+export CAM=TST:GIGE:01
 export HUTCH=TST
 export PVLIST=tst.lst
 edm -x -eolc	\
 	-m "IOC=${IOC_PV}"	\
-	-m "CAM=${CAM}"		\
+	-m "CAM=${CAM}"	\
 	-m "P=${CAM},R=:"	\
 	-m "HUTCH=${HUTCH}"	\
 	-m "PVLIST=${PVLIST}"	\

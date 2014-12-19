@@ -11,7 +11,7 @@ epicsEnvSet( "LOCATION",	"Laser Room AMO GigE Cams" )
 epicsEnvSet( "CAM_IP",		"192.168.0.101" )
 
 # PV prefix for gigE camera
-epicsEnvSet( "CAM",			"TST:GIGE:01:CAM1" )
+epicsEnvSet( "CAM",			"TST:GIGE:01" )
 
 # Choose camera model from setupScripts/$(MODEL).env 
 epicsEnvSet( "MODEL",		"MantaG046B" )
