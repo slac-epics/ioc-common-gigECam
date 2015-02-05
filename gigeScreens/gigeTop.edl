@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1924
-y 1311
+x 1936
+y 1383
 w 700
 h 594
 font "helvetica-medium-r-12.0"
@@ -145,36 +145,6 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 252
-y 8
-w 100
-h 24
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 13
-font "helvetica-medium-r-12.0"
-buttonLabel "Live Image"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "gigeScreens/fullImage.edl"
-}
-setPosition {
-  0 "parentWindow"
-}
-symbols {
-  0 "CAM=$(CAM),IOC=$(IOC)"
-}
-icon
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
 x 576
 y 8
 w 48
@@ -240,7 +210,7 @@ commandLabel {
   0 "Color Viewer"
 }
 command {
-  0 "gigeScreens/gigeViewer.sh --camerapv $(CAM) --instr $(HUTCH) --pvlist $(PVLIST) &"
+  0 "/reg/g/pcds/pyps/config/$(HUTCH)/camviewer.sh --camerapv $(CAM) --instr $(HUTCH) --pvlist /reg/g/pcds/pyps/config/$(HUTCH)/camviewer.cfg &"
 }
 endObjectProperties
 
@@ -2917,5 +2887,172 @@ useDisplayBg
 value {
   "Bayer Conversion"
 }
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 204
+y 8
+w 152
+h 24
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 204
+y 8
+w 152
+h 24
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 204
+y 8
+w 152
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 13
+font "helvetica-medium-r-12.0"
+buttonLabel "640x480x16bit viewer"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADStreamScreens/640x480x16Viewer.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMG_OVER2"
+}
+icon
+endObjectProperties
+
+endGroup
+
+visPv "CALC\\\{A!=B&&C=16\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMG_OVER2:BitsPerPixel_RBV)"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 204
+y 8
+w 152
+h 24
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 204
+y 8
+w 152
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 13
+font "helvetica-medium-r-12.0"
+buttonLabel "640x480x8bit viewer"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADStreamScreens/640x480x8Viewer.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMG_OVER2"
+}
+icon
+endObjectProperties
+
+endGroup
+
+visPv "CALC\\\{A!=B&&C=8\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMG_OVER2:BitsPerPixel_RBV)"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 204
+y 8
+w 152
+h 24
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 204
+y 8
+w 152
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 13
+font "helvetica-medium-r-12.0"
+buttonLabel "512x512x16bit viewer"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADStreamScreens/512x512x16Viewer.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMG_OVER2"
+}
+icon
+endObjectProperties
+
+endGroup
+
+visPv "CALC\\\{A=B&&C=16\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMG_OVER2:BitsPerPixel_RBV)"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 

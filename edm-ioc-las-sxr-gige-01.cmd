@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # Setup edm environment
-export EPICS_HOST_ARCH=linux-x86
-source /reg/g/pcds/setup/epicsenv-3.14.9.sh
-export EPICS_CA_MAX_ARRAY_BYTES=9000000
+#export EPICS_HOST_ARCH=linux-x86
+#source /reg/g/pcds/setup/epicsenv-3.14.9.sh
+source /reg/g/pcds/setup/epicsenv-3.14.12.sh
 
 export IOC_PV=LAS:IOC:GIGE:SXR:01
 export CAM=LAS:GIGE:SXR:01

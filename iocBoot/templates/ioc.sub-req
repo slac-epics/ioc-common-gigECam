@@ -24,7 +24,7 @@ file pcdsPlugins.req
     {   CAM = "$$CAM"	}
 }
 
-file cross_settings.req
+file cross.tpl-req
 {
     {   P = "$$CAM",	R = ":" 	}
 }
