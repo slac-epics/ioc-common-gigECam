@@ -567,7 +567,7 @@ buttonLabel "-"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ADStreamScreens/thumbnail.edl"
+  0 "gigeScreens/thumbnail.edl"
 }
 closeAction {
   0 1
@@ -722,7 +722,7 @@ commandLabel {
   0 "Color Viewer"
 }
 command {
-  0 "/reg/g/pcds/pyps/config/$(HUTCH)/camviewer.sh --camerapv $(CAM) --instr $(HUTCH) --pvlist /reg/g/pcds/pyps/config/$(HUTCH)/camviewer.cfg"
+  0 "gigeScreens/gigeViewer.sh --camerapv $(CAM) --instr $(HUTCH) --pvlist $(PVLIST)"
 }
 endObjectProperties
 
