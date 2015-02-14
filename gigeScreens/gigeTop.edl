@@ -2985,14 +2985,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A!=B&&C=16\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A!=B&&C=16\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
@@ -3035,14 +3035,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A!=B&&C=14\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A!=B&&C=14\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
@@ -3085,14 +3085,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A!=B&&C=12\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A!=B&&C=12\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
@@ -3135,14 +3135,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A!=B&&C=8\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A!=B&&C=8\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
@@ -3185,14 +3185,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A=B&&C=16\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A=B&&C=16\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
@@ -3235,14 +3235,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A=B&&C=14\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A=B&&C=14\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
@@ -3285,14 +3285,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A=B&&C=12\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A=B&&C=12\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
@@ -3335,14 +3335,14 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=$(IMAGE)"
+  0 "CAM=$(CAM),IOC=$(IOC),IMAGE=IMAGE2"
 }
 icon
 endObjectProperties
 
 endGroup
 
-visPv "CALC\\\{A=B&&C=8\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):$(IMAGE):BitsPerPixel_RBV)"
+visPv "CALC\\\{A=B&&C=8\}($(CAM):ArraySizeX_RBV,$(CAM):ArraySizeY_RBV,$(CAM):IMAGE2:BitsPerPixel_RBV)"
 visMin "1"
 visMax "2"
 endObjectProperties
