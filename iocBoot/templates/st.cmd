@@ -68,7 +68,7 @@ $(EVR_ENABLED) ErConfigure( 0, 0, 0, 0, 1 )
 $(EVR_ENABLED) dbLoadRecords( "db/evrPmc230.db",  "IOC=$(IOC_PV),EVR=$(EVR_PV),EVRFLNK=" )
 
 # Load soft ioc related record instances
-dbLoadRecords( "db/iocAdmin.db",			"IOC=$(IOC_PV)" )
+dbLoadRecords( "db/iocSoft.db",			"IOC=$(IOC_PV)" )
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
 
 # Setup autosave
