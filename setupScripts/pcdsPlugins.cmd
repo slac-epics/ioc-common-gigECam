@@ -34,8 +34,9 @@ epicsEnvSet( "N", "2" )
 # Set it to get data from it's overlay plugin
 epicsEnvSet( "PLUGIN_SRC", "Over2" )
 epicsEnvSet( "IMAGE_NAME", "IMG_OVER2" )
-epicsEnvSet( "IMAGE_FTVL", "CHAR" )
-epicsEnvSet( "IMAGE_TYPE", "Int8" )
+# Commented out so we use the default data type for IMG_OVER2
+# epicsEnvSet( "IMAGE_FTVL", "CHAR" )
+# epicsEnvSet( "IMAGE_TYPE", "Int8" )
 < setupScripts/pluginImage.cmd
 
 ########## Thumbnail image plugin ############

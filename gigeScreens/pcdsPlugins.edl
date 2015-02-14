@@ -40,7 +40,7 @@ bgColor index 0
 topShadowColor index 1
 botShadowColor index 13
 displaySource "file"
-file "areaDetectorScreens/commonPlugins.edl"
+file "gigeScreens/areaDetectorScreens/commonPlugins.edl"
 numDsps 0
 noScroll
 endObjectProperties
@@ -626,7 +626,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "areaDetectorScreens/NDStdArrays.edl"
+  0 "gigeScreens/areaDetectorScreens/NDStdArrays.edl"
 }
 menuLabel {
   0 "IMAGE1:"
@@ -656,7 +656,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "areaDetectorScreens/NDROI.edl"
+  0 "gigeScreens/areaDetectorScreens/NDROI.edl"
 }
 menuLabel {
   0 "ROI5:"
@@ -949,7 +949,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ffmpegScreens/ffmpegStream.edl"
+  0 "gigeScreens/ffmpegScreens/ffmpegStream.edl"
 }
 menuLabel {
   0 "MJPG1:"
@@ -1196,7 +1196,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "areaDetectorScreens/NDStdArrays.edl"
+  0 "gigeScreens/areaDetectorScreens/NDStdArrays.edl"
 }
 menuLabel {
   0 "IMG_OVER2:"
@@ -1444,7 +1444,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "areaDetectorScreens/NDROI.edl"
+  0 "gigeScreens/areaDetectorScreens/NDROI.edl"
 }
 menuLabel {
   0 "ROI6:"
@@ -1691,7 +1691,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "areaDetectorScreens/NDStdArrays.edl"
+  0 "gigeScreens/areaDetectorScreens/NDStdArrays.edl"
 }
 menuLabel {
   0 "THUMBNAIL:"
@@ -1939,7 +1939,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "areaDetectorScreens/NDROI.edl"
+  0 "gigeScreens/areaDetectorScreens/NDROI.edl"
 }
 menuLabel {
   0 "ROI7:"
@@ -2187,7 +2187,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ffmpegScreens/ffmpegFile.edl"
+  0 "gigeScreens/ffmpegScreens/ffmpegFile.edl"
 }
 menuLabel {
   0 "FMPG1:"
@@ -2480,7 +2480,7 @@ buttonLabel "More"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "areaDetectorScreens/NDOverlay.edl"
+  0 "gigeScreens/areaDetectorScreens/NDOverlay.edl"
 }
 menuLabel {
   0 "Over2:"
