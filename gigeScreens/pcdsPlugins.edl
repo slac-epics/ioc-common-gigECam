@@ -40,7 +40,7 @@ bgColor index 0
 topShadowColor index 1
 botShadowColor index 13
 displaySource "file"
-file "gigeScreens/areaDetectorScreens/commonPlugins.edl"
+file "gigeScreens/ADStreamScreens/commonPlugins.edl"
 numDsps 0
 noScroll
 endObjectProperties
