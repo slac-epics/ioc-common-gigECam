@@ -12,19 +12,18 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # Define the version of modules needed by
 # IOC apps or other Support apps
 # ===============================================================
-# Example
-#AREADETECTOR_MODULE_VERSION	 = R1.9.1-0.10.0
 ADCORE_MODULE_VERSION        = R2.1-0.3.0
 ADSTREAM_MODULE_VERSION      = R0.8.0
 ADPROSILICA_MODULE_VERSION   = R2.1-0.4.0
 ASYN_MODULE_VERSION          = R4.23-0.4.0
-AUTOSAVE_MODULE_VERSION      = R5.1-0.2.0
+AUTOSAVE_MODULE_VERSION      = R5.1-0.3.0
 BUSY_MODULE_VERSION          = R1.6.0-0.9.0
 CALC_MODULE_VERSION          = R3.2-0.4.0
-EVENT_MODULE_VERSION         = R4.0.0-2.8.0
-FFMPEGSERVER_MODULE_VERSION  = R1.9-0.17.0
-IOCADMIN_MODULE_VERSION      = R3.0.0-2.0.1
+EVENT2_MODULE_VERSION        = R4.0.0-2.10.0
+#FFMPEGSERVER_MODULE_VERSION  = R1.9-0.17.0
+IOCADMIN_MODULE_VERSION      = R3.0.0-2.0.2
 SSCAN_MODULE_VERSION         = R2.8.1-0.1.0
+TIMESTAMPFIFO_MODULE_VERSION = R0.8.0
 
 # ============================================================
 # External Support module path definitions
@@ -46,14 +45,18 @@ ASYN         = $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 AUTOSAVE     = $(EPICS_MODULES)/autosave/$(AUTOSAVE_MODULE_VERSION)
 BUSY         = $(EPICS_MODULES)/busy/$(BUSY_MODULE_VERSION)
 CALC         = $(EPICS_MODULES)/calc/$(CALC_MODULE_VERSION)
-EVENT        = $(EPICS_MODULES)/event/$(EVENT_MODULE_VERSION)
-FFMPEGSERVER = $(EPICS_MODULES)/ffmpegServer/$(FFMPEGSERVER_MODULE_VERSION)
+EVENT2       = $(EPICS_MODULES)/event2/$(EVENT2_MODULE_VERSION)
+#FFMPEGSERVER = $(EPICS_MODULES)/ffmpegServer/$(FFMPEGSERVER_MODULE_VERSION)
 IOCADMIN     = $(EPICS_MODULES)/iocAdmin/$(IOCADMIN_MODULE_VERSION)
 SSCAN        = $(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
+TIMESTAMPFIFO= $(EPICS_MODULES)/timeStampFifo/$(TIMESTAMPFIFO_MODULE_VERSION)
 
-#FFMPEGSERVER= /reg/neh/home/bhill/wa2/trunk/pcds/epics/modules/ffmpegServer/current
-#ASYN  = /reg/neh/home/bhill/wa2/trunk/pcds/epics/modules/asyn/current
-#ADCORE  = /reg/neh/home/bhill/wa2/trunk/pcds/epics/modules/ADCore/current
-#ADSTREAM  = /reg/neh/home/bhill/wa2/trunk/pcds/epics/modules/ADStream/current
-#ADPROSILICA  = /reg/neh/home/bhill/wa2/trunk/pcds/epics/modules/ADProsilica/current
+#MY_MODULES=/reg/neh/home/bhill/wa2/trunk/pcds/epics/modules
+#MY_MODULES=/afs/slac/u/ey/bhill/wa4/trunk/pcds/epics/modules
+#FFMPEGSERVER= $(MY_MODULES)/ffmpegServer/current
+#ASYN  = $(MY_MODULES)/asyn/current
+#EVENT2  = $(MY_MODULES)/event2/current
+#ADCORE  = $(MY_MODULES)/ADCore/current
+#ADSTREAM  = $(MY_MODULES)/ADStream/current
+#ADPROSILICA  = $(MY_MODULES)/ADProsilica/current
 

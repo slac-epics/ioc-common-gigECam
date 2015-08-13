@@ -24,15 +24,15 @@ file pluginOverlay.archive
 	{	N	=	2	}
 }
 
-file pluginFileMPEG.archive
-{
-	{	N	=	1	}
-}
+#file pluginFileMPEG.archive
+#{
+#	{	N	=	1	}
+#}
 
-file pluginMJPG.archive
-{
-	{	N	=	1	}
-}
+#file pluginMJPG.archive
+#{
+#	{	N	=	1	}
+#}
 
 file pluginStats.archive
 {

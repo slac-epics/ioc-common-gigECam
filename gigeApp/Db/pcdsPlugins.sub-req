@@ -24,15 +24,15 @@ file pluginOverlay.req
 	{	N	=	2	}
 }
 
-file pluginFileMPEG.req
-{
-	{	N	=	1	}
-}
+#file pluginFileMPEG.req
+#{
+#	{	N	=	1	}
+#}
 
-file pluginMJPG.req
-{
-	{	N	=	1	}
-}
+#file pluginMJPG.req
+#{
+#	{	N	=	1	}
+#}
 
 file pluginStats.req
 {

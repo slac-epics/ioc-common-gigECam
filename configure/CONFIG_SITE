@@ -18,6 +18,9 @@ CROSS_COMPILER_TARGET_ARCHS     =
 ifeq '$(EPICS_HOST_ARCH)' 'linux-x86_64'
 CROSS_COMPILER_TARGET_ARCHS    +=  linux-x86
 endif
+ifeq '$(EPICS_HOST_ARCH)' 'rhel6-x86_64'
+CROSS_COMPILER_TARGET_ARCHS    +=  linuxRT_glibc-x86_64
+endif
 
 # If you do NOT want to build for the host architecture,
 # clear BUILD_FOR_HOST_ARCH
@@ -34,5 +37,5 @@ endif
 # define INSTALL_LOCATION here
 
 # Settings for static and shared build options
-STATIC_BUILD=NO
+STATIC_BUILD=YES
 SHARED_LIBRARIES=YES

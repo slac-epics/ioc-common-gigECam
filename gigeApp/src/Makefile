@@ -34,7 +34,10 @@ gige_DBD += simDetectorSupport.dbd
 gige_DBD += prosilicaSupport.dbd
 
 # ffmpegServer
-gige_DBD += ffmpegServer.dbd
+#gige_DBD += ffmpegServer.dbd
+
+# ADCore timeStamp provider
+gige_DBD += timeStampFifo.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 gige_SRCS += gige_registerRecordDeviceDriver.cpp
@@ -81,19 +84,22 @@ gige_LIBS += ca
 gige_LIBS += Com
 gige_LIBS += PvAPI
 gige_LIBS += sz
-gige_SYS_LIBS += X11
+#gige_SYS_LIBS += X11
 gige_SYS_LIBS += xml2
 gige_SYS_LIBS += tiff
 gige_SYS_LIBS += jpeg
 gige_SYS_LIBS += z
 
 # ffmpegServer
-gige_LIBS += avcodec
-gige_LIBS += avdevice
-gige_LIBS += avformat
-gige_LIBS += avutil
-gige_LIBS += ffmpegServer
-gige_LIBS += swscale
+#gige_LIBS += avcodec
+#gige_LIBS += avdevice
+#gige_LIBS += avformat
+#gige_LIBS += avutil
+#gige_LIBS += ffmpegServer
+#gige_LIBS += swscale
+
+# ADCore Timestamp provider
+gige_LIBS += timeStampFifo
 
 gige_LIBS += $(EPICS_BASE_IOC_LIBS)
 

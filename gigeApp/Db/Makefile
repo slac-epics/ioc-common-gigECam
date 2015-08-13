@@ -6,19 +6,18 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
-DB += evrPmc230.db
 
 # Create and install Camera DB Files
 DB += prosilica.db
 
 # Create and install plugin DB Files
 DB += pluginColorConvert.db
-DB += pluginFileMPEG.db
+#DB += pluginFileMPEG.db
 DB += pluginHDF5.db
 DB += pluginImage.db
 DB += pluginJPEG.db
 DB += pluginMagick.db
-DB += pluginMJPG.db
+#DB += pluginMJPG.db
 DB += pluginNetCDF.db
 DB += pluginNexus.db
 DB += pluginOverlay.db
@@ -29,7 +28,10 @@ DB += pluginTIFF.db
 DB += pluginTransform.db
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+DB_INSTALLS += $(EVENT2)/db/evrPmc230.db
+DB_INSTALLS += $(EVENT2)/db/evrSLAC.db
 DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
+DB_INSTALLS += $(TIMESTAMPFIFO)/db/timeStampFifo.template
 
 #----------------------------------------------------
 # Create and install (or just install)
@@ -39,11 +41,11 @@ ARCHIVE += gige-ioc.archive
 
 # Create and install plugin archive Files
 ARCHIVE += pluginColorConvert.archive
-ARCHIVE += pluginFileMPEG.archive
+#ARCHIVE += pluginFileMPEG.archive
 ARCHIVE += pluginHDF5.archive
 ARCHIVE += pluginImage.archive
 ARCHIVE += pluginJPEG.archive
-ARCHIVE += pluginMJPG.archive
+#ARCHIVE += pluginMJPG.archive
 ARCHIVE += pluginMagick.archive
 ARCHIVE += pluginNetCDF.archive
 ARCHIVE += pluginNexus.archive
@@ -63,11 +65,11 @@ REQ += gige-ioc.req
 
 # Create and install plugin autosave Files
 REQ += pluginColorConvert.req
-REQ += pluginFileMPEG.req
+#REQ += pluginFileMPEG.req
 REQ += pluginHDF5.req
 REQ += pluginImage.req
 REQ += pluginJPEG.req
-REQ += pluginMJPG.req
+#REQ += pluginMJPG.req
 REQ += pluginMagick.req
 REQ += pluginNetCDF.req
 REQ += pluginNexus.req
