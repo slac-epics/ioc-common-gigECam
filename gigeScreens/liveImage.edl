@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1939
-y 468
+x 4
+y 1102
 w 880
 h 540
 font "helvetica-medium-r-12.0"
@@ -1162,5 +1162,27 @@ useHexPrefix
 newPos
 objType "monitors"
 noExecuteClipMask
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 448
+y 8
+w 92
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "Reset Cam"
+numCmds 1
+command {
+  0 "python /reg/g/pcds/package/epics/3.14/ioc/amo/gigECam/R1.0.2/SetUpScripts/RegularGigeCam.py $(CAM)"
+}
 endObjectProperties
 
