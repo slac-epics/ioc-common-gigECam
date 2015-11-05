@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 4
-y 1102
+x 2631
+y 2605
 w 880
 h 540
 font "helvetica-medium-r-12.0"
@@ -632,7 +632,7 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 764
+x 760
 y 8
 w 48
 h 24
@@ -719,10 +719,10 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Python Viewer"
 numCmds 1
 commandLabel {
-  0 "Color Viewer"
+  0 "PYTHON VIEWER"
 }
 command {
-  0 "/reg/g/pcds/pyps/config/$(HUTCH)/camviewer.sh --camerapv $(CAM) --instr $(HUTCH) --pvlist /reg/g/pcds/pyps/config/$(HUTCH)/camviewer.cfg"
+  0 "/reg/g/pcds/pyps/config/sxr/camviewer.sh"
 }
 endObjectProperties
 
@@ -823,31 +823,6 @@ bgColor index 1
 useDisplayBg
 value {
   "Plugins"
-}
-endObjectProperties
-
-# (Shell Command)
-object shellCmdClass
-beginObjectProperties
-major 4
-minor 3
-release 0
-x 552
-y 8
-w 92
-h 24
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 14
-font "helvetica-medium-r-12.0"
-buttonLabel "MPEG Stream"
-numCmds 1
-commandLabel {
-  0 "View MPEG stream in browser"
-}
-command {
-  0 "firefox --no-remote `caget -t -S $(CAM):MJPG1:MJPG_URL_RBV`"
 }
 endObjectProperties
 
@@ -1030,7 +1005,7 @@ buttonLabel "Setup"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "prosilicaScreens/prosilica.edl"
+  0 "gigeScreens/prosilicaScreens/prosilica.edl"
 }
 symbols {
   0 "CAM=$(CAM),P=$(CAM),R=:,IOC=$(IOC)"
@@ -1170,7 +1145,7 @@ beginObjectProperties
 major 4
 minor 3
 release 0
-x 448
+x 552
 y 8
 w 92
 h 24
@@ -1182,7 +1157,7 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Reset Cam"
 numCmds 1
 command {
-  0 "python /reg/g/pcds/package/epics/3.14/ioc/amo/gigECam/R1.0.2/SetUpScripts/RegularGigeCam.py $(CAM)"
+  0 "python /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R1.20.0/gigeScripts/SetupGigeCam.py $(CAM)"
 }
 endObjectProperties
 
