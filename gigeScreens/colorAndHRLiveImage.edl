@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2633
-y 2631
+x 2458
+y 2497
 w 880
-h 540
+h 600
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -32,9 +32,9 @@ major 4
 minor 0
 release 0
 x 0
-y 0
+y 4
 w 876
-h 40
+h 100
 lineColor index 56
 fill
 fillColor index 56
@@ -115,7 +115,7 @@ h 480
 dataPvStr "$(CAM):IMG_OVER2:ArrayData"
 widthPvStr "$(CAM):IMG_OVER2:ArraySize0_RBV"
 heightPvStr "$(CAM):IMG_OVER2:ArraySize1_RBV"
-dataWidth 646
+dataWidth 3
 pvBasedDataSize 1
 nBitsPerPixel 8
 endObjectProperties
@@ -567,7 +567,7 @@ buttonLabel "-"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ADStreamScreens/thumbnail.edl"
+  0 "gigeScreens/ADStreamScreens/thumbnail.edl"
 }
 closeAction {
   0 1
@@ -645,7 +645,7 @@ buttonLabel "IOC"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocScreens/ioc_soft.edl"
+  0 "gigeScreens/iocScreens/ioc_soft.edl"
 }
 symbols {
   0 "IOC=$(IOC)"
@@ -719,7 +719,7 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Python Viewer"
 numCmds 1
 commandLabel {
-  0 "PYTHON VIEWER"
+  0 "Color Viewer"
 }
 command {
   0 "/reg/g/pcds/pyps/config/sxr/camviewer.sh"
@@ -1145,6 +1145,50 @@ beginObjectProperties
 major 4
 minor 3
 release 0
+x 24
+y 548
+w 168
+h 44
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "Hi-Res Mode"
+numCmds 1
+command {
+  0 "python /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R1.20.0/gigeScripts/HRAndColorGigeCam.py $(CAM)"
+}
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 216
+y 548
+w 192
+h 44
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "Low-Res Mode"
+numCmds 1
+command {
+  0 "python gigeScripts/HRAndColorGigeLowRes.py $(CAM)"
+}
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 3
+release 0
 x 552
 y 8
 w 92
@@ -1156,6 +1200,9 @@ botShadowColor index 14
 font "helvetica-medium-r-12.0"
 buttonLabel "Reset Cam"
 numCmds 1
+commandLabel {
+  0 "Reset Camera PVs"
+}
 command {
   0 "python gigeScripts/SetupGigeCam.py $(CAM)"
 }
