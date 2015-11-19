@@ -19,7 +19,8 @@ gige_DBD += base.dbd
 gige_DBD += iocAdmin.dbd
 gige_DBD += autosaveSupport.dbd
 
-# EVR
+# Timing and EVR
+gige_DBD += diagTimer.dbd
 gige_DBD += evrSupport.dbd
 gige_DBD += devMrfEr.dbd
 
@@ -51,7 +52,8 @@ gige_SRCS_DEFAULT += gigeMain.cpp
 gige_LIBS += autosave
 gige_LIBS += devIocStats
 
-# EVR
+# Timing and EVR
+gige_LIBS += diagTimer
 gige_LIBS += evrSupport
 gige_LIBS += devMrfEr
 gige_LIBS += drvMrf

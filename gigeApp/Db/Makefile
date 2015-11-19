@@ -63,6 +63,8 @@ ARCHIVE += cross.tpl-arch
 #
 REQ += gige-ioc.req
 
+REQ += $(EVENT2)/autosave/eventCodeDelays.req
+
 # Create and install plugin autosave Files
 REQ += pluginColorConvert.req
 #REQ += pluginFileMPEG.req
