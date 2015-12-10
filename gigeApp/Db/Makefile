@@ -56,6 +56,8 @@ ARCHIVE += pluginStats.archive
 ARCHIVE += pluginTIFF.archive
 ARCHIVE += pluginTransform.archive
 ARCHIVE += cross.tpl-arch
+ARCHIVE += archive_evr_PMC.archive
+ARCHIVE += archive_evr_SLAC.archive
 
 #----------------------------------------------------
 # Create and install (or just install)
@@ -82,6 +84,8 @@ REQ += pluginStats.req
 REQ += pluginTIFF.req
 REQ += pluginTransform.req
 REQ += cross.tpl-req
+REQ += autosave_evr_PMC.req
+REQ += autosave_evr_SLAC.req
 
 # These must be after the individual plugins
 ARCHIVE += pcdsPlugins.archive

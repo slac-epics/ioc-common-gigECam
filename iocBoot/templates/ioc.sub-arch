@@ -35,10 +35,8 @@ file cross.tpl-arch
 }
 
 $$LOOP(EVR)
-# Generate one set for each EVR
-file archive_pmc_evr.tpl-arch
+file archive_evr_$$TYPE.archive
 {
-	{	EVR = "$$EVR_PV"	}
+	{ EVR = "$$NAME" }
 }
 $$ENDLOOP(EVR)
-

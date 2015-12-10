@@ -34,9 +34,11 @@ epicsEnvSet( "HTTP_PORT",	"$$HTTP_PORT" )
 epicsEnvSet( "TRACE_MASK",    "$$IF(TRACE_MASK,$$TRACE_MASK,1)" )
 epicsEnvSet( "TRACE_IO_MASK", "$$IF(TRACE_IO_MASK,$$TRACE_IO_MASK,0)" )
 
-# EVR not supported yet
-epicsEnvSet( "EVR_ENABLED",	"#" )
-epicsEnvSet( "EVR_PV",	"" )
+# EVR parameters
+epicsEnvSet("EVRID_PMC",  "1")
+epicsEnvSet("EVRID_SLAC", "15")
+epicsEnvSet("EVRDB_PMC",  "db/evrPmc230.db")
+epicsEnvSet("EVRDB_SLAC", "db/evrSLAC.db")
 
 cd( "$(IOCTOP)" )
 
@@ -62,10 +64,12 @@ asynSetTraceIOMask( "$(CAM_PORT)", 0, $(TRACE_IO_MASK) )
 # Configure and load the plugins
 < setupScripts/$(PLUGINS).cmd
 
+$$LOOP(EVR)
 # Initialize EVR
-$(EVR_ENABLED) ErDebugLevel( 0 )
-$(EVR_ENABLED) ErConfigure( 0, 0, 0, 0, 1 )
-$(EVR_ENABLED) dbLoadRecords( "db/evrPmc230.db",  "IOC=$(IOC_PV),EVR=$(EVR_PV),EVRFLNK=" )
+ErDebugLevel( 0 )
+ErConfigure( 0, 0, 0, 0, $(EVRID_$$TYPE) )
+dbLoadRecords( "$(EVRDB_$$TYPE)",  "IOC=$(IOC_PV),EVR=$$NAME,CARD=$$INDEX$$LOOP(CAMERA)$$IF(TRIG),IP$$(TRIG)E=Enabled$$ENDIF(TRIG)$$ENDLOOP(CAMERA),EVRFLNK=" )
+$$ENDLOOP(EVR)
 
 # Load soft ioc related record instances
 dbLoadRecords( "db/iocSoft.db",			"IOC=$(IOC_PV)" )
