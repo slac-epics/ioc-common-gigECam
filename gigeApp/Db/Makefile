@@ -10,22 +10,10 @@ include $(TOP)/configure/CONFIG
 # Create and install Camera DB Files
 DB += prosilica.db
 
-# Create and install plugin DB Files
-DB += pluginColorConvert.db
-#DB += pluginFileMPEG.db
-DB += pluginHDF5.db
-DB += pluginImage.db
-DB += pluginJPEG.db
-DB += pluginMagick.db
-#DB += pluginMJPG.db
-DB += pluginNetCDF.db
-DB += pluginNexus.db
-DB += pluginOverlay.db
-DB += pluginProcess.db
-DB += pluginROI.db
-DB += pluginStats.db
-DB += pluginTIFF.db
-DB += pluginTransform.db
+# Prosilica cameras need to have their custom db and env files installed
+PR_MODELS := $(wildcard $(ADPROSILICA)/db/*.env)
+DB_INSTALLS += $(PR_MODELS)
+DB_INSTALLS += $(subst .env,.template,$(PR_MODELS))
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 DB_INSTALLS += $(EVENT2)/db/evrPmc230.db
@@ -33,28 +21,19 @@ DB_INSTALLS += $(EVENT2)/db/evrSLAC.db
 DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
 DB_INSTALLS += $(TIMESTAMPFIFO)/db/timeStampFifo.template
 
+# Install ADStream db files
+DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.db)
+
+# Install ADStream cmd scripts
+DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.cmd)
+
 #----------------------------------------------------
 # Create and install (or just install)
 # Archive files, templates, substitutions like this
 #
 ARCHIVE += gige-ioc.archive
 
-# Create and install plugin archive Files
-ARCHIVE += pluginColorConvert.archive
-#ARCHIVE += pluginFileMPEG.archive
-ARCHIVE += pluginHDF5.archive
-ARCHIVE += pluginImage.archive
-ARCHIVE += pluginJPEG.archive
-#ARCHIVE += pluginMJPG.archive
-ARCHIVE += pluginMagick.archive
-ARCHIVE += pluginNetCDF.archive
-ARCHIVE += pluginNexus.archive
-ARCHIVE += pluginOverlay.archive
-ARCHIVE += pluginProcess.archive
-ARCHIVE += pluginROI.archive
-ARCHIVE += pluginStats.archive
-ARCHIVE += pluginTIFF.archive
-ARCHIVE += pluginTransform.archive
+# Create and install archive Files
 ARCHIVE += cross.tpl-arch
 ARCHIVE += archive_evr_PMC.archive
 ARCHIVE += archive_evr_SLAC.archive
@@ -67,29 +46,10 @@ REQ += gige-ioc.req
 
 REQ += $(EVENT2)/autosave/eventCodeDelays.req
 
-# Create and install plugin autosave Files
-REQ += pluginColorConvert.req
-#REQ += pluginFileMPEG.req
-REQ += pluginHDF5.req
-REQ += pluginImage.req
-REQ += pluginJPEG.req
-#REQ += pluginMJPG.req
-REQ += pluginMagick.req
-REQ += pluginNetCDF.req
-REQ += pluginNexus.req
-REQ += pluginOverlay.req
-REQ += pluginProcess.req
-REQ += pluginROI.req
-REQ += pluginStats.req
-REQ += pluginTIFF.req
-REQ += pluginTransform.req
+# Create and install autosave Files
 REQ += cross.tpl-req
 REQ += autosave_evr_PMC.req
 REQ += autosave_evr_SLAC.req
-
-# These must be after the individual plugins
-ARCHIVE += pcdsPlugins.archive
-REQ 	+= pcdsPlugins.req
 
 include $(TOP)/configure/RULES
 #----------------------------------------
