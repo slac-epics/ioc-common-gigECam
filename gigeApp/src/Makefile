@@ -33,6 +33,7 @@ gige_DBD += ADSupport.dbd
 gige_DBD += commonDriverSupport.dbd
 gige_DBD += simDetectorSupport.dbd
 gige_DBD += prosilicaSupport.dbd
+gige_DBD += aravisCameraSupport.dbd
 
 # ffmpegServer
 #gige_DBD += ffmpegServer.dbd
@@ -62,7 +63,6 @@ gige_LIBS_Linux += mrfApi
 # areaDetector
 gige_LIBS += calc
 gige_LIBS += busy
-gige_LIBS += prosilica
 gige_LIBS += NDPlugin
 # GraphicsMagick not supported in areaDetector 1.9 for RHEL due to compiler issues
 #gige_LIBS += NDFileMagick
@@ -92,13 +92,25 @@ gige_SYS_LIBS += tiff
 gige_SYS_LIBS += jpeg
 gige_SYS_LIBS += z
 
+# Prosilica camera libs
+gige_LIBS += prosilica
+
+# aravis camera libs
+gige_LIBS += aravisCamera
+gige_LIBS += aravis-0.4
+gige_LIBS += gobject-2.0
+gige_LIBS += glib-2.0
+gige_LIBS += gthread-2.0
+gige_LIBS += gio-2.0
+#gige_LIBS += gmodule-2.0
+
 # ffmpegServer
-#gige_LIBS += avcodec
 #gige_LIBS += avdevice
-#gige_LIBS += avformat
-#gige_LIBS += avutil
 #gige_LIBS += ffmpegServer
 #gige_LIBS += swscale
+#gige_LIBS += avformat
+#gige_LIBS += avcodec
+#gige_LIBS += avutil
 
 # ADCore Timestamp provider
 gige_LIBS += timeStampFifo

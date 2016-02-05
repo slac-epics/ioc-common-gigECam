@@ -9,6 +9,12 @@ include $(TOP)/configure/CONFIG
 
 # Create and install Camera DB Files
 DB += prosilica.db
+DB += aravis.db
+
+# Aravis cameras need to have their custom db and env files installed
+ARV_MODELS := $(wildcard $(ARAVISGIGE)/db/*.env)
+DB_INSTALLS += $(ARV_MODELS)
+DB_INSTALLS += $(subst .env,.template,$(ARV_MODELS))
 
 # Prosilica cameras need to have their custom db and env files installed
 PR_MODELS := $(wildcard $(ADPROSILICA)/db/*.env)

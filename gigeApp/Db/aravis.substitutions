@@ -1,0 +1,29 @@
+#
+# Standard aravis.substitutions
+#
+
+file NDFile.template
+{
+	{
+	P=$(CAM),
+	R=:,
+	PORT=$(CAM_PORT),
+	}
+}
+
+file aravisCamera.template
+{
+	{
+	P=$(CAM),
+	R=:,
+	PORT=$(CAM_PORT),
+	}
+}
+
+file cross.template
+{
+	{
+	P=$(CAM),
+	R=:,
+	}
+}
