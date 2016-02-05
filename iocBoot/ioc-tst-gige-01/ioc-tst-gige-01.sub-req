@@ -16,12 +16,6 @@ file prosilica_settings.req
     { P = "TST:GIGE:01", R = ":"	}
 }
 
-# Bring in the pcds plugin autosave pv's
-file pcdsPlugins.req
-{
-    {   CAM = "TST:GIGE:01"	}
-}
-
 file cross.tpl-req
 {
     {   P = "TST:GIGE:01",	R = ":" 	}

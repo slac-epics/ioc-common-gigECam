@@ -13,10 +13,10 @@ epicsEnvSet( "CAM_IP",		"192.168.0.101" )
 # PV prefix for gigE camera
 epicsEnvSet( "CAM",			"TST:GIGE:01" )
 
-# Choose camera model from setupScripts/$(MODEL).env 
+# Choose camera model from db/$(MODEL).env 
 epicsEnvSet( "MODEL",		"MantaG046B" )
 
-# Choose which plugins to use from setupScripts/$(PLUGINS).cmd 
+# Choose which plugins to use from db/$(PLUGINS).cmd 
 # If you create a new one, please name it like xyzPlugins.cmd
 epicsEnvSet( "PLUGINS",		"pcdsPlugins" )
 

@@ -7,13 +7,6 @@ file gige-ioc.archive
     }
 }
 
-# Bring in the pcds plugin archive pv's
-file pcdsPlugins.archive
-{
-    {   CAM = "TST:GIGE:01"	}
-}
-
-
 file cross.tpl-arch
 {
     {   P = "TST:GIGE:01",	R = ":" 	}
