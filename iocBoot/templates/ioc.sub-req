@@ -10,28 +10,22 @@ file autosave_iocAdmin.tpl-req
 
 file ADBase_settings.req
 {
-    {   P = "$$CAM",	R = ":" 	}
+    {   P = "$$CAM_PV",	R = ":" 	}
 }
 
 file prosilica_settings.req
 {
-    {   P = "$$CAM",	R = ":" 	}
-}
-
-# Bring in the pcds plugin autosave pv's
-file pcdsPlugins.req
-{
-    {   CAM = "$$CAM"	}
+    {   P = "$$CAM_PV",	R = ":" 	}
 }
 
 file cross.tpl-req
 {
-    {   P = "$$CAM",	R = ":" 	}
+    {   P = "$$CAM_PV",	R = ":" 	}
 }
 
-$$LOOP(EVR)
-file autosave_evr_$$TYPE.req
+$$IF(EVR)
+file autosave_evr_$$EVR_TYPE.req
 {
-	{ EVR = "$$NAME" }
+	{ EVR = "$$EVR_PV" }
 }
-$$ENDLOOP(EVR)
+$$ENDIF(EVR)

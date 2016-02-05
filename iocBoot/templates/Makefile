@@ -6,8 +6,9 @@ TOP = $(IOC_APPL_TOP)
 endif
 
 include $(TOP)/configure/CONFIG
-ifndef ARCH
-ARCH = linux-x86_64
+ARCH = $$TARGET_ARCH
+ifeq (,$(ARCH))
+$(error TARGET_ARCH not defined in cfg file!)
 endif
 
 INSTALL_LOCATION = ../..

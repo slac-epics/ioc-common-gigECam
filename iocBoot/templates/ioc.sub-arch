@@ -15,28 +15,22 @@ file archive_SR.tpl-arch
 
 file ADBase.tpl-arch
 {
-    {   P = "$$CAM",	R = ":" 	}
+    {   P = "$$CAM_PV",	R = ":" 	}
 }
 
 file prosilica.tpl-arch
 {
-    {   P = "$$CAM",	R = ":" 	}
-}
-
-# Bring in the pcds plugin archive pv's
-file pcdsPlugins.archive
-{
-    {   CAM = "$$CAM"	}
+    {   P = "$$CAM_PV",	R = ":" 	}
 }
 
 file cross.tpl-arch
 {
-    {   P = "$$CAM",	R = ":" 	}
+    {   P = "$$CAM_PV",	R = ":" 	}
 }
 
-$$LOOP(EVR)
-file archive_evr_$$TYPE.archive
+$$IF(EVR)
+file archive_evr_$$EVR_TYPE.archive
 {
-	{ EVR = "$$NAME" }
+	{ EVR = "$$EVR_PV" }
 }
-$$ENDLOOP(EVR)
+$$ENDIF(EVR)
