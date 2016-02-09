@@ -22,10 +22,11 @@ file NDFile.template
 file prosilica.template
 {
 	{
-	P=$(CAM),
-	R=:,
-	PORT=$(CAM_PORT),
-	TRSCAN="Passive"
+	P			= $(CAM),
+	R			= :,
+	PORT		= $(CAM_PORT),
+	CAM_DLY_RBV	= $(TRIG_PV):BW_TDES
+	TRSCAN	 	= "Passive"
 	}
 }
 

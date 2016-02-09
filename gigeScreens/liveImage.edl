@@ -722,7 +722,7 @@ commandLabel {
   0 "PYTHON VIEWER"
 }
 command {
-  0 "/reg/g/pcds/pyps/config/$(HUTCH)/camviewer.sh"
+  0 "configSiteTop/$(HUTCH)/camviewer.sh"
 }
 endObjectProperties
 

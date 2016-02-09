@@ -14,9 +14,10 @@ file NDFile.template
 file aravisCamera.template
 {
 	{
-	P=$(CAM),
-	R=:,
-	PORT=$(CAM_PORT),
+	P			= $(CAM),
+	R			= :,
+	PORT		= $(CAM_PORT),
+	CAM_DLY_RBV	= $(TRIG_PV):BW_TDES
 	}
 }
 

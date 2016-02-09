@@ -6,6 +6,7 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
+DB += timeStampEventCode.db
 
 # Create and install Camera DB Files
 DB += prosilica.db

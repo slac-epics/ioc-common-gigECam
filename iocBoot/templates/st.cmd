@@ -70,8 +70,11 @@ $$ENDIF(NO_ST_CMD_DELAY)
 # Load the camera model specific template
 dbLoadRecords( db/$(MODEL).template, "P=$(CAM_PV),R=:,PORT=$(CAM_PORT)" )
 
+$$IF(EVR_PV)
 # Load timestamp plugin
-dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(EVR_PV):EVENT1CTRL.ENM,DLY_PV=$(CAM_PV):TSS_Delay" )
+dbLoadRecords( "db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(EVR_PV):EVENT1CTRL.ENM" )
+dbLoadRecords( "db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_DLY_PV=$(TRIG_PV):BW_TDES" )
+$$ENDIF(EVR_PV)
 
 # Load history records
 $$IF(BLD_SRC)
@@ -99,6 +102,8 @@ $$LOOP(VIEWER)
 < db/$$(NAME)Viewer.cmd
 $$ENDLOOP(VIEWER)
 
+# < db/pcdsPlugins.cmd
+
 # Configure and load the selected plugins, if any
 $$LOOP(PLUGIN)
 epicsEnvSet( "N",            "$$IF(NUM,$$NUM,1)" )
@@ -106,8 +111,8 @@ epicsEnvSet( "PLUGIN_SRC",   "$$IF(SRC,$$SRC,CAM)" )
 < db/plugin$$(NAME).cmd
 $$ENDLOOP(PLUGIN)
 
-# Configure and load BLD plugin
 $$LOOP(BLD)
+# Configure and load BLD plugin
 epicsEnvSet( "N",            "$$CALC{INDEX+1}" )
 epicsEnvSet( "PLUGIN_SRC",   "CAM" )
 < db/pluginBldSpectrometer.cmd
@@ -118,10 +123,12 @@ $$ELSE(NO_ST_CMD_DELAY)
 epicsThreadSleep $(ST_CMD_DELAYS)
 $$ENDIF(NO_ST_CMD_DELAY)
 
+$$IF(EVR_PV)
 # Configure the EVR
 ErDebugLevel( 0 )
 ErConfigure( $(EVR_CARD), 0, 0, 0, $(EVRID) )
 dbLoadRecords( "$(EVRDB)", "IOC=$(IOC_PV),EVR=$(EVR_PV),CARD=$(EVR_CARD),$$IF(TRIG)IP$$(TRIG)E=Enabled,$$ENDIF(TRIG)$$LOOP(EXTRA_TRIG)IP$$(TRIG)E=Enabled,$$ENDLOOP(EXTRA_TRIG)" )
+$$ENDIF(EVR_PV)
 
 # Load soft ioc related record instances
 dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )
@@ -176,7 +183,7 @@ $$ENDIF(NO_ST_CMD_DELAY)
 
 # TODO: Remove these dbpf calls if possible
 # Enable callbacks
-# dbpf $(CAM_PV):ArrayCallbacks 1
+dbpf $(CAM_PV):ArrayCallbacks 1
 
 $$IF(AUTO_START)
 dbpf $(CAM_PV):Acquire $$AUTO_START
