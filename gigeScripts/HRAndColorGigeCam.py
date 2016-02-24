@@ -17,8 +17,8 @@ for j in range(1, length):
 	caput(camName+":SizeY", 1456)         # script which uses a lower res cam
 
 #The following lines set the Frame Rate and Resolution of the camera
-	caput(camName+":AcquireTime",0.60)
-	caput(camName+":AcquirePeriod",0.033)
+	caput(camName+":AcquireTime",0.033)
+	caput(camName+":AcquirePeriod",1.0)
 	caput(camName+":BinX", 1)
 	caput(camName+":BinY", 1)
 

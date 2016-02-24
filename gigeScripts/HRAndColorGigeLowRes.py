@@ -17,8 +17,8 @@ for j in range(1, length):
 	
 #The following lines set the Frame Rate and Resolution of the camera
 
-	caput(camName+":AcquireTime",0.20)
-	caput(camName+":AcquirePeriod",0.033)
+	caput(camName+":AcquireTime",0.033)
+	caput(camName+":AcquirePeriod",0.2)
 	caput(camName+":BinX", 2)
 	caput(camName+":BinY", 2)
 
