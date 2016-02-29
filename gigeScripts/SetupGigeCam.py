@@ -1,4 +1,4 @@
-# Sets up gige camera PVs to values that have been shown to produce images after
+psd# Sets up gige camera PVs to values that have been shown to produce images after
 # running. Only the PCDS plugins are modified, while the common plugins are left
 # untouched.
 
@@ -135,5 +135,13 @@ setupPlugin("THUMBNAIL", "ROI7", 1)
 
 ## ROI7
 setupPlugin("ROI7", "CAM", 1, thumbnail_frame_rate)
+
+# Setup Color settings if it is a color cam
+if "COL" in camName:
+	setupPlugin("CC1", "CAM", 1)	
+	setupPlugin("CC2", "CAM", 1)
+	setupPlugin("IMAGE1", "CC1", 1)
+	setupPlugin("IMG_OVER2", "CC2", 1)
+	
 
 print "Reset complete"
