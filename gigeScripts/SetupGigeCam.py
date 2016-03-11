@@ -1,8 +1,8 @@
-psd# Sets up gige camera PVs to values that have been shown to produce images after
+# Sets up gige camera PVs to values that have been shown to produce images after
 # running. Only the PCDS plugins are modified, while the common plugins are left
 # untouched.
 
-from Pv import Pv
+from psp.Pv import Pv
 import sys
 
 # caput is defined identically but with a timeout value of 10.0 instead of 2.0
@@ -10,9 +10,7 @@ import sys
 # before completion. Try & excepts were also placed just to confirm that 10.0
 # was a long enough wait time.
 def caput(PVName, val):
-    '''
-    Same definition of caput but with a connect timeout of 10.0
-    '''
+    """ Same definition of caput but with a connect timeout of 10.0 """
     pv = Pv(PVName)
 
     try:
