@@ -2,6 +2,11 @@
 # running. Only the PCDS plugins are modified, while the common plugins are left
 # untouched.
 
+
+
+# TO DO: Turn this into a paramterized version of what it already is. Use a
+# config file that loops through all the paramters
+
 from psp.Pv import Pv
 import sys
 
@@ -17,15 +22,19 @@ def caput(PVName, val):
         pv.connect(timeout=10.0)
     except pyca.caexc, e:
         print "Channel access exception:", e
+        print PVName
     except pyca.pyexc, e:
         print "Pyca exception:", e
+        print PVName
     
     try:        
         pv.put(value=val, timeout=10.0)
     except pyca.caexc, e:
         print "Channel access exception:", e
+        print PVName
     except pyca.pyexc, e:
         print "Pyca exception:", e
+        print PVName
 
     pv.disconnect()
 
@@ -33,6 +42,10 @@ if sys.argv[1]:
     camName = sys.argv[1]
 else:
     camName = raw_input("Enter the name of the gige cam: ")
+
+    # Paramterize the image sizes
+    # Frame rate can stay
+    # Parameterize image_mode, trigger mode.
 
 image_size_X = 1388             # Num Pixels in X
 image_size_Y = 1038             # Num Pixels in Y
@@ -95,8 +108,7 @@ caput(camName+":MinX", 0)
 caput(camName+":MinY", 0)       
 caput(camName+":BinX", 1)       
 caput(camName+":BinY", 1)       
-caput(camName+":ArraySizeX_RBV", image_size_X) 
-caput(camName+":ArraySizeY_RBV", image_size_Y)  
+ 
 caput(camName+":SizeX", image_size_X)
 caput(camName+":SizeY", image_size_Y)
 caput(camName+":ImageMode", image_mode)
