@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 54
-y 102
+x 969
+y 1319
 w 880
 h 600
 font "helvetica-medium-r-12.0"
@@ -34,7 +34,7 @@ release 0
 x 0
 y 4
 w 876
-h 100
+h 36
 lineColor index 56
 fill
 fillColor index 56
@@ -115,7 +115,7 @@ h 480
 dataPvStr "$(CAM):IMG_OVER2:ArrayData"
 widthPvStr "$(CAM):IMG_OVER2:ArraySize0_RBV"
 heightPvStr "$(CAM):IMG_OVER2:ArraySize1_RBV"
-dataWidth 3
+dataWidth 1388
 pvBasedDataSize 1
 nBitsPerPixel 8
 endObjectProperties
@@ -302,8 +302,8 @@ minor 1
 release 1
 x 696
 y 360
-w 42
-h 20
+w 30
+h 16
 font "helvetica-medium-r-14.0"
 fontAlign "center"
 fgColor index 14
@@ -323,8 +323,8 @@ minor 1
 release 1
 x 696
 y 384
-w 29
-h 18
+w 22
+h 14
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -1145,28 +1145,6 @@ beginObjectProperties
 major 4
 minor 3
 release 0
-x 24
-y 548
-w 168
-h 44
-fgColor index 14
-bgColor index 0
-topShadowColor index 0
-botShadowColor index 14
-font "helvetica-medium-r-12.0"
-buttonLabel "Hi-Res Mode"
-numCmds 1
-command {
-  0 "python /reg/g/pcds/package/epics/3.14/ioc/common/gigECam/R1.20.0/gigeScripts/HRAndColorGigeCam.py $(CAM)"
-}
-endObjectProperties
-
-# (Shell Command)
-object shellCmdClass
-beginObjectProperties
-major 4
-minor 3
-release 0
 x 216
 y 548
 w 192
@@ -1179,7 +1157,7 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Low-Res Mode"
 numCmds 1
 command {
-  0 "python gigeScripts/HRAndColorGigeLowRes.py $(CAM)"
+  0 "./gigeScripts/SetupGigeCam.sh $(CAM) --LR -z"
 }
 endObjectProperties
 
@@ -1204,7 +1182,29 @@ commandLabel {
   0 "Reset Camera PVs"
 }
 command {
-  0 "python gigeScripts/SetupGigeCam.py $(CAM)"
+  0 "./gigeScripts/SetupGigeCam.sh $(CAM) -v -z"
+}
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 24
+y 548
+w 168
+h 44
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "Hi-Res Mode"
+numCmds 1
+command {
+  0 "./gigeScripts/SetupGigeCam.sh $(CAM) --HR -v"
 }
 endObjectProperties
 
