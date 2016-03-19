@@ -27,7 +27,7 @@ Options:
 General quick setup for the gigECams. To create a new configuration just create
 a new cfg file in the configurations folder and then run the 
 """
-
+import pyca
 import os.path
 from psp.Pv import Pv
 from ConfigParser import SafeConfigParser
@@ -36,6 +36,7 @@ from docopt import docopt
 from sys import exit
 from os import system
 
+
 # caput is defined identically but with a timeout value of 10.0 instead of 2.0
 # The default setting of 2.0 seconds was too short, causing the script to fail
 # before completion. Try & excepts were also placed just to confirm that 10.0
@@ -43,25 +44,8 @@ from os import system
 def caput(PVName, val):
 	""" Same definition of caput but with a connect timeout of 10.0 """
 	pv = Pv(PVName)
-
-	try:
-		pv.connect(timeout=10.0)
-	except pyca.caexc, e:
-		print "Channel access exception:", e
-		print PVName
-	except pyca.pyexc, e:
-		print "Pyca exception:", e
-		print PVName
-	
-	try:		
-		pv.put(value=val, timeout=10.0)
-	except pyca.caexc, e:
-		print "Channel access exception:", e
-		print PVName
-	except pyca.pyexc, e:
-		print "Pyca exception:", e
-		print PVName
-
+	pv.connect(timeout=10.0)
+	pv.put(value=val, timeout=10.0)
 	pv.disconnect()
 
 def SetupGigeCamera(camName, config, verbose, zenity):
@@ -84,12 +68,12 @@ def SetupGigeCamera(camName, config, verbose, zenity):
 	if not parser: return
 
 	# Perform the caputs
-	nFailedCaputs, failedCaputs = runCaputs(parser, camName, verbose, zenity)
+	nFailedCaputs, failedCaputs, nCaputs = runCaputs(parser, camName, verbose, zenity)
 
 	# Display any failures
 	print "\nSetup complete for {0}".format(camName)
 	if nFailedCaputs > 0:
-		print "\nNumber of failed caputs: {0}".format(nFailedCaputs)
+		print "\nNumber of failed caputs: {0} / {1}".format(nFailedCaputs, nCaputs)
 		print "PVs that failed:"
 		pprint(failedCaputs)
 	if zenity: system('zenity --info --text="Completed Setup"')
@@ -102,35 +86,37 @@ def runCaputs(parser, camName, verbose, zenity):
 	# Error checking
 	nFailedCaputs = 0
 	failedCaputs = []
+	nCaputs = 0
 
 	for plugin in parser.sections():
 		if verbose: print "\nPlugin: {0}".format(plugin)
 
-		if plugin == "CAM": 
-			for (FIELD, VAL) in parser.items(plugin):
-				full_PV = camName + ":" + FIELD
-				if verbose: print "Applying {0} to {1}".format(VAL, full_PV) 
-				try: caput(full_PV, VAL)
-				except:
-					print "Failed to apply {0} to {1}".format(VAL, full_PV)
-					print "Skipping {0}".format(full_PV)
-					nFailedCaputs += 1
-					failedCaputs.append(full_PV)
-					continue
+		if plugin == "CAM": base_PV = camName
+		else: base_PV = camName + ":" + plugin
 
-		else:
-			for (FIELD, VAL) in parser.items(plugin):
-				full_PV = camName + ":" + plugin + ":" + FIELD
-				if verbose: print "Applying {0} to {1}".format(VAL, full_PV) 
-				try: caput(full_PV, VAL)
-				except:
-					print "Failed to apply {0} to {1}".format(VAL, full_PV)
-					print "Skipping {0}".format(full_PV)
-					nFailedCaputs += 1
-					failedCaputs.append(full_PV)
-					continue
+		for (FIELD, VAL) in parser.items(plugin):
+			nCaputs += 1
+			full_PV = base_PV + ":" + FIELD
 
-	return nFailedCaputs, failedCaputs
+			# Try to cast as a float or int first
+			if "." in VAL:
+				try: VAL = float(VAL)
+				except: pass
+			else:
+				try: VAL = int(VAL)
+				except: pass
+
+			if verbose: print "Applying {0} to {1}".format(VAL, full_PV) 
+			try: caput(full_PV, VAL)
+			except Exception, e:
+				print "Failed to apply {0} to {1}".format(VAL, full_PV)
+				print "Error: {0}".format(str(e))
+				print "Skipping {0}".format(full_PV)
+				nFailedCaputs += 1
+				failedCaputs.append([full_PV, VAL, type(VAL)])
+				continue
+
+	return nFailedCaputs, failedCaputs, nCaputs
 
 def getParser(config, verbose, zenity):
 	""" 
@@ -178,7 +164,7 @@ def parsePVArguments(PVArguments):
 	""" Parses PV input arguments and returns a set of cam PVs """
 	camPVs = set()
 	if '-' in PVArguments[0]:
-	    basePV = PVArguments[0].split('-')[0][:-2]
+		basePV = PVArguments[0].split('-')[0][:-2]
 	else:
 		basePV = PVArguments[0][:-2]
 
@@ -216,7 +202,6 @@ def parsePVArguments(PVArguments):
 if __name__ == "__main__":
 	# Parse docopt inputs
 	arguments = docopt(__doc__)
-	print arguments
 	PVArguments = arguments["<PV>"]
 	camPVs = parsePVArguments(PVArguments)
 	if arguments["--verbose"] or arguments["-v"]: verbose = True
