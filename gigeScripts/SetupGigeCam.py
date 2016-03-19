@@ -52,17 +52,6 @@ def SetupGigeCamera(camName, config, verbose, zenity):
 	"""
 	Function that loops through the config file and caputs the vals into the PVs
 	"""
-
-	# Make sure the file exists
-	if verbose: print "Checking config file"
-	if not os.path.isfile(config):
-		config = config[0:2] + config[14:]
-		if not os.path.isfile(config):
-			if zenity:
-				system("zenity --error --text='Error: Failed to read config'")
-			print "Failed to read from configuration file."
-			return
-
 	# Create parser object and try to read from it	
 	parser = getParser(config, verbose, zenity)
 	if not parser: return
@@ -109,7 +98,7 @@ def runCaputs(parser, camName, verbose, zenity):
 			if verbose: print "Applying {0} to {1}".format(VAL, full_PV) 
 			try: caput(full_PV, VAL)
 			except Exception, e:
-				print "Failed to apply {0} to {1}".format(VAL, full_PV)
+				print "\nFailed to apply {0} to {1}".format(VAL, full_PV)
 				print "Error: {0}".format(str(e))
 				print "Skipping {0}".format(full_PV)
 				nFailedCaputs += 1
@@ -140,7 +129,7 @@ def getParser(config, verbose, zenity):
 	
 	return parser
 
-def getConfig(PV, HR, LR):
+def getConfig(PV, HR, LR, verbose):
 	""" Returns a path to a config file based on the PV """
 	hutch = PV[:3]
 	if hutch.lower() == "sxr" or hutch.lower() == "amo":
@@ -156,8 +145,15 @@ def getConfig(PV, HR, LR):
 		if ":hr:" in PV.lower() : hr = "_hr"
 		else: hr = ""
 	
-		config = "./gigeScripts/configurations/gige_"+hutch+hr+col+".cfg"
+	config = "./gigeScripts/configurations/gige_"+hutch+hr+col+".cfg"
 	
+	# Make sure the file exists
+	if verbose: print "Checking config file"
+	while not os.path.isfile(config):
+		config = config[0:2] + config[14:]   #Get rid of gigeScripts/
+		if not os.path.isfile(config):
+			config = "./gigeScripts/configurations/gige_SXD"+hr+col+".cfg"
+
 	return config
 
 def parsePVArguments(PVArguments):
@@ -197,8 +193,6 @@ def parsePVArguments(PVArguments):
 	camPVs.sort()
 	return camPVs
 
-
-
 if __name__ == "__main__":
 	# Parse docopt inputs
 	arguments = docopt(__doc__)
@@ -212,7 +206,7 @@ if __name__ == "__main__":
 	# Get a config
 	if arguments["--config"]: 
 		config = "./gigeScripts/configurations/" + arguments["--config"]
-	else: config = getConfig(camPVs[0], arguments["--HR"], arguments["--LR"])
+	else: config = getConfig(camPVs[0], arguments["--HR"], arguments["--LR"], verbose)
 	if verbose: print "Using config file: {0}".format(config)
 	
 	# Set up each camera
