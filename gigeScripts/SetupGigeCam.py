@@ -135,17 +135,21 @@ def getConfig(PV, HR, LR, verbose):
 	if hutch.lower() == "sxr" or hutch.lower() == "amo":
 		hutch = "SXD"
 	
+	col = ""
+	hr = ""
+	mode = ""
+
 	if HR:
-		config = "./gigeScripts/configurations/gige_"+hutch+"_HRMode.cfg"
+		mode = "_HRMode"
 	elif LR:
-		config = "./gigeScripts/configurations/gige_"+hutch+"_LRMode.cfg"
+		mode = "_LRMode"
 	else:
 		if ":col:" in PV.lower(): col = "_col"
 		else: col = ""
 		if ":hr:" in PV.lower() : hr = "_hr"
 		else: hr = ""
 	
-	config = "./gigeScripts/configurations/gige_"+hutch+hr+col+".cfg"
+	config = "./gigeScripts/configurations/gige_"+hutch+hr+col+mode+".cfg"
 	
 	# Make sure the file exists
 	if verbose: print "Checking config file"
