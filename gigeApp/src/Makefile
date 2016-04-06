@@ -106,6 +106,8 @@ gige_LIBS += sz
 gige_SYS_LIBS += tiff
 gige_SYS_LIBS += jpeg
 gige_SYS_LIBS += z
+#gige_SYS_LIBS += bz2
+#gige_SYS_LIBS += selinux
 gige_SYS_LIBS += pthread
 gige_SYS_LIBS += rt
 gige_SYS_LIBS += readline
@@ -117,6 +119,7 @@ gige_LIBS += swscale
 gige_LIBS += avformat
 gige_LIBS += avcodec
 gige_LIBS += avutil
+#gige_LIBS += bz2
 
 gige_LIBS += $(EPICS_BASE_IOC_LIBS)
 

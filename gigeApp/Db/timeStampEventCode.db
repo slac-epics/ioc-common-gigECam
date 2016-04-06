@@ -55,17 +55,6 @@ record( calcout, "$(CAM):ExpectedDelay_Calc" )
     field( OUT,  "$(TSDLY_PV=$(CAM):TSS:ExpectedDelay) PP MS" )
 }
 
-# Required macros:
-#	BEAM_EC			- PV to set beam timing event code
-#record( dfanout, "$(CAM):EdtBeamEventCodeFanout" )
-#{
-#	field( DOL,  "$(CAM):EdtBeamEventCode CPP MS" )
-#    field( OMSL, "closed_loop")
-#    field( OUTA, "$(BEAM_EC) PP MS" )
-#    field( OUTB, "$(CAM):TSS_SETEC PP MS" )
-#}
-
-
 record( ao, "$(CAM):Def120HzTrigDelay" )
 {
     field( DESC, "Default trigger delay" )

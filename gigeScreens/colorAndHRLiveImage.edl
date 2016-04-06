@@ -567,7 +567,7 @@ buttonLabel "-"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "gigeScreens/ADStreamScreens/thumbnail.edl"
+  0 "ADStreamScreens/thumbnail.edl"
 }
 closeAction {
   0 1
@@ -645,7 +645,7 @@ buttonLabel "IOC"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "gigeScreens/iocScreens/ioc_soft.edl"
+  0 "iocScreens/ioc_soft.edl"
 }
 symbols {
   0 "IOC=$(IOC)"
@@ -722,7 +722,7 @@ commandLabel {
   0 "Color Viewer"
 }
 command {
-  0 "configSiteTop/$(HUTCH)/camviewer.sh"
+  0 "ADStreamScreens/camviewer.sh $(HUTCH) --camerapv $(CAM):IMG_OVER2 &"
 }
 endObjectProperties
 
@@ -745,7 +745,7 @@ buttonLabel "Plugins"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "gigeScreens/pcdsPlugins.edl"
+  0 "ADStreamScreens/pcdsPlugins.edl"
 }
 symbols {
   0 "CAM=$(CAM),P=$(CAM):,IOC=$(IOC)"
@@ -1005,7 +1005,7 @@ buttonLabel "Setup"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "gigeScreens/prosilicaScreens/prosilica.edl"
+  0 "prosilicaScreens/prosilica.edl"
 }
 symbols {
   0 "CAM=$(CAM),P=$(CAM),R=:,IOC=$(IOC)"

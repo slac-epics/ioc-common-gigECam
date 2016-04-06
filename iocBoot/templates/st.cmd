@@ -37,6 +37,7 @@ epicsEnvSet( "TRIG_PV",      "$$(EVR_PV):TRIG$$TRIG" )
 epicsEnvSet( "MODEL",        "$$MODEL" )
 epicsEnvSet( "HTTP_PORT",    "$$IF(HTTP_PORT,$$HTTP_PORT,7800)" )
 epicsEnvSet( "MJPG_PORT",    "$$IF(MJPG_PORT,$$MJPG_PORT,8081)" )
+epicsEnvSet( "ARV_DEBUG",    "$$IF(ARV_DEBUG,$$ARV_DEBUG,0)" )
 
 # Diagnostic settings
 epicsEnvSet( "ST_CMD_DELAYS",		"$$IF(ST_CMD_DELAYS,$$ST_CMD_DELAYS,1)" )
@@ -60,6 +61,9 @@ epicsEnvSet( "CAM_TYPE", "$$IF(CAM_TYPE,$$CAM_TYPE,prosilica)" )
 # Set asyn trace flags
 asynSetTraceMask(   "$(CAM_PORT)", 0, $(CAM_TRACE_MASK) )
 asynSetTraceIOMask( "$(CAM_PORT)", 0, $(CAM_TRACE_IO_MASK) )
+$$IF(USE_TRACE_FILES)
+asynSetTraceFile(	"$(CAM_PORT)",		0, "$(IOC_DATA)/$(IOC)/$(CAM_PORT).log" )
+$$ENDIF(USE_TRACE_FILES)
 
 $$IF(NO_ST_CMD_DELAY)
 $$ELSE(NO_ST_CMD_DELAY)
@@ -68,12 +72,12 @@ epicsThreadSleep $(ST_CMD_DELAYS)
 $$ENDIF(NO_ST_CMD_DELAY)
 
 # Load the camera model specific template
-dbLoadRecords( db/$(MODEL).template, "P=$(CAM_PV),R=:,PORT=$(CAM_PORT)" )
+dbLoadRecords( db/$(MODEL).template, "P=$(CAM_PV),R=:,PORT=$(CAM_PORT),TYPE=$(CAM_TYPE)" )
 
 $$IF(EVR_PV)
 # Load timestamp plugin
-dbLoadRecords( "db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(EVR_PV):EVENT1CTRL.ENM" )
-dbLoadRecords( "db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_DLY_PV=$(TRIG_PV):BW_TDES" )
+dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):EdtBeamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
+dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_DLY_PV=$(TRIG_PV):BW_TDES" )
 $$ENDIF(EVR_PV)
 
 # Load history records
@@ -90,21 +94,26 @@ $$ENDIF(NO_ST_CMD_DELAY)
 # May be overridden by $(PLUGINS).cmd
 epicsEnvSet( "PLUGIN_SRC", "$(CAM_PORT)" )
 epicsEnvSet( "N", "1" )
-epicsEnvSet( "QSIZE", "5" )
+epicsEnvSet( "QSIZE", "10" )
 
-# Configure and load any desired datastreams
-$$LOOP(DATASTREAM)
+# Configure and load any image streams
+$$LOOP(STREAM)
+epicsEnvSet( "IMAGE_NAME",   "$$IF(IMAGE_NAME,$$IMAGE_NAME,IMAGE1)" )
 < db/$$(NAME)Stream.cmd
-$$ENDLOOP(DATASTREAM)
+$$ENDLOOP(STREAM)
 
 # Configure and load any desired viewers
 $$LOOP(VIEWER)
+epicsEnvSet( "IMAGE_NAME",   "$$IF(IMAGE_NAME,$$IMAGE_NAME,IMAGE1)" )
 < db/$$(NAME)Viewer.cmd
 $$ENDLOOP(VIEWER)
 
-# < db/pcdsPlugins.cmd
+# Configure and load plugin sets
+$$IF(PLUGINS)
+< db/$$(PLUGINS).cmd
+$$ENDIF(PLUGINS)
 
-# Configure and load the selected plugins, if any
+# Configure and load selected plugins, if any
 $$LOOP(PLUGIN)
 epicsEnvSet( "N",            "$$IF(NUM,$$NUM,1)" )
 epicsEnvSet( "PLUGIN_SRC",   "$$IF(SRC,$$SRC,CAM)" )
@@ -125,8 +134,8 @@ $$ENDIF(NO_ST_CMD_DELAY)
 
 $$IF(EVR_PV)
 # Configure the EVR
-ErDebugLevel( 0 )
-ErConfigure( $(EVR_CARD), 0, 0, 0, $(EVRID) )
+ErDebugLevel( $$IF(ErDebug,$$ErDebug,0) )
+ErConfigure( $(EVR_CARD), 0, 0, 0, $(EVRID_$$EVR_TYPE) )
 dbLoadRecords( "$(EVRDB)", "IOC=$(IOC_PV),EVR=$(EVR_PV),CARD=$(EVR_CARD),$$IF(TRIG)IP$$(TRIG)E=Enabled,$$ENDIF(TRIG)$$LOOP(EXTRA_TRIG)IP$$(TRIG)E=Enabled,$$ENDLOOP(EXTRA_TRIG)" )
 $$ENDIF(EVR_PV)
 
@@ -183,7 +192,7 @@ $$ENDIF(NO_ST_CMD_DELAY)
 
 # TODO: Remove these dbpf calls if possible
 # Enable callbacks
-dbpf $(CAM_PV):ArrayCallbacks 1
+#dbpf $(CAM_PV):ArrayCallbacks 1
 
 $$IF(AUTO_START)
 dbpf $(CAM_PV):Acquire $$AUTO_START
