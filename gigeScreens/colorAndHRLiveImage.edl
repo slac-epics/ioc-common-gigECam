@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 386
-y 1304
+x 52
+y 76
 w 880
 h 600
 font "helvetica-medium-r-12.0"
@@ -31,9 +31,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 0
+x 4
 y 4
-w 876
+w 872
 h 36
 lineColor index 56
 fill
@@ -302,8 +302,8 @@ minor 1
 release 1
 x 696
 y 360
-w 30
-h 16
+w 42
+h 20
 font "helvetica-medium-r-14.0"
 fontAlign "center"
 fgColor index 14
@@ -323,8 +323,8 @@ minor 1
 release 1
 x 696
 y 384
-w 22
-h 14
+w 29
+h 18
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -459,7 +459,7 @@ major 4
 minor 1
 release 1
 x 28
-y 0
+y 4
 w 196
 h 20
 font "helvetica-medium-r-12.0"
@@ -554,8 +554,8 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 0
-y 0
+x 4
+y 4
 w 20
 h 20
 fgColor index 14
@@ -659,7 +659,7 @@ major 4
 minor 7
 release 0
 x 28
-y 16
+y 20
 w 196
 h 20
 controlPv "$(CAM):Model_RBV"

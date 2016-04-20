@@ -1,4 +1,4 @@
-# New gigECam Setup Script that uses config parser
+# gigECam Setup Script
 """
 SetupGigeCam.py
 
@@ -36,11 +36,9 @@ from docopt import docopt
 from sys import exit
 from os import system
 
-
 # caput is defined identically but with a timeout value of 10.0 instead of 2.0
 # The default setting of 2.0 seconds was too short, causing the script to fail
-# before completion. Try & excepts were also placed just to confirm that 10.0
-# was a long enough wait time.
+# before completion.
 def caput(PVName, val):
 	""" Same definition of caput but with a connect timeout of 10.0 """
 	pv = Pv(PVName)
@@ -55,10 +53,8 @@ def SetupGigeCamera(camName, config, verbose, zenity):
 	# Create parser object and try to read from it	
 	parser = getParser(config, verbose, zenity)
 	if not parser: return
-
 	# Perform the caputs
 	nFailedCaputs, failedCaputs, nCaputs = runCaputs(parser, camName, verbose, zenity)
-
 	# Display any failures
 	print "\nSetup complete for {0}".format(camName)
 	if nFailedCaputs > 0:
@@ -76,17 +72,13 @@ def runCaputs(parser, camName, verbose, zenity):
 	nFailedCaputs = 0
 	failedCaputs = []
 	nCaputs = 0
-
 	for plugin in parser.sections():
 		if verbose: print "\nPlugin: {0}".format(plugin)
-
 		if plugin == "CAM": base_PV = camName
 		else: base_PV = camName + ":" + plugin
-
 		for (FIELD, VAL) in parser.items(plugin):
 			nCaputs += 1
 			full_PV = base_PV + ":" + FIELD
-
 			# Try to cast as a float or int first
 			if "." in VAL:
 				try: VAL = float(VAL)
@@ -94,7 +86,6 @@ def runCaputs(parser, camName, verbose, zenity):
 			else:
 				try: VAL = int(VAL)
 				except: pass
-
 			if verbose: print "Applying {0} to {1}".format(VAL, full_PV) 
 			try: caput(full_PV, VAL)
 			except Exception, e:
@@ -104,7 +95,6 @@ def runCaputs(parser, camName, verbose, zenity):
 				nFailedCaputs += 1
 				failedCaputs.append([full_PV, VAL, type(VAL)])
 				continue
-
 	return nFailedCaputs, failedCaputs, nCaputs
 
 def getParser(config, verbose, zenity):
@@ -125,8 +115,7 @@ def getParser(config, verbose, zenity):
 		if zenity:
 			system("zenity --error --text='Error: Failed to read config'")
 		print "Failed to read from configuration file."
-		return None
-	
+		return None	
 	return parser
 
 def getConfig(PV, HR, LR, verbose):
@@ -134,11 +123,9 @@ def getConfig(PV, HR, LR, verbose):
 	hutch = PV[:3]
 	if hutch.lower() == "sxr" or hutch.lower() == "amo":
 		hutch = "SXD"
-	
 	col = ""
 	hr = ""
 	mode = ""
-
 	if HR:
 		mode = "_HRMode"
 	elif LR:
@@ -147,17 +134,14 @@ def getConfig(PV, HR, LR, verbose):
 		if ":col:" in PV.lower(): col = "_col"
 		else: col = ""
 		if ":hr:" in PV.lower() : hr = "_hr"
-		else: hr = ""
-	
+		else: hr = ""	
 	config = "./gigeScripts/configurations/gige_"+hutch+hr+col+mode+".cfg"
-	
 	# Make sure the file exists
 	if verbose: print "Checking config file"
 	while not os.path.isfile(config):
 		config = config[0:2] + config[14:]   #Get rid of gigeScripts/
 		if not os.path.isfile(config):
 			config = "./gigeScripts/configurations/gige_SXD"+hr+col+".cfg"
-
 	return config
 
 def parsePVArguments(PVArguments):
@@ -167,32 +151,22 @@ def parsePVArguments(PVArguments):
 		basePV = PVArguments[0].split('-')[0][:-2]
 	else:
 		basePV = PVArguments[0][:-2]
-
 	for arg in PVArguments:
 		try:
-
 			if '-' in arg:
 				splitArgs = arg.split('-')
-
 				if splitArgs[0][:-2] == basePV: camPVs.add(splitArgs[0])
-
 				start = int(splitArgs[0][-2:])
 				end = int(splitArgs[1])
-
 				while start <= end:
 					camPVs.add(basePV + "%02d"%start)
 					start += 1
- 
 			elif len(arg) > 3:
 				if arg[:-2] == basePV: camPVs.add(arg)
-			
 			elif len(arg) < 3:
 				camPVs.add(basePV + "%02d"%int(arg))
-			
 			else: pass
-				
 		except: pass
-			
 	camPVs = list(camPVs)
 	camPVs.sort()
 	return camPVs
@@ -200,19 +174,18 @@ def parsePVArguments(PVArguments):
 if __name__ == "__main__":
 	# Parse docopt inputs
 	arguments = docopt(__doc__)
-	PVArguments = arguments["<PV>"]
-	camPVs = parsePVArguments(PVArguments)
+        PVArguments = arguments["<PV>"]
+        try: camPVs = parsePVArguments(PVArguments)
+        except: exit("Error: Incorrect inputted arguments.")
 	if arguments["--verbose"] or arguments["-v"]: verbose = True
 	else: verbose = False
 	if arguments["--zenity"] or arguments["-z"]: zenity = True
 	else: zenity = False
-	
 	# Get a config
 	if arguments["--config"]: 
 		config = "./gigeScripts/configurations/" + arguments["--config"]
 	else: config = getConfig(camPVs[0], arguments["--HR"], arguments["--LR"], verbose)
 	if verbose: print "Using config file: {0}".format(config)
-	
 	# Set up each camera
 	for camName in camPVs:
 		print "Setting up {0}".format(camName)

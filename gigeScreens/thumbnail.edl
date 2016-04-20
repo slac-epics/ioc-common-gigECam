@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1924
-y 1630
+x 52
+y 76
 w 174
 h 146
 font "helvetica-medium-r-12.0"
@@ -64,17 +64,11 @@ numDsps 1
 displayFileName {
   0 "gigeScreens/liveImage.edl"
 }
-closeAction {
-  0 1
-}
 setPosition {
   0 "parentWindow"
 }
 symbols {
   0 "CAM=$(CAM),IOC=$(IOC)"
-}
-closeDisplay {
-  0 1
 }
 endObjectProperties
 
@@ -86,8 +80,8 @@ minor 1
 release 1
 x 16
 y 0
-w 44
-h 14
+w 57
+h 18
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 7
