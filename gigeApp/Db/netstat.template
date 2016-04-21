@@ -32,7 +32,7 @@
 #              
 #             The interface eth0 has IF_NUM of 1, eth1 has IF_NUM of 2 and so on.
 #             
-#  IF_FUNC    0 for TX rate, 1 for RX rate (in Mbps)
+#  IF_FUNC    0 for TX rate, 1 for RX rate (in MBps)
 #  INIT_FUNC  Only one of the records should have the INIT_FUNC defined to
 #             the string "subNetstatInit". All other records must have an
 #             empty string "". The subNetstatInit routine spawns a thread
@@ -41,13 +41,39 @@
 #
 #==============================================================================
 
-record(sub, "$(P):$(IF)")
+record(sub, "$(P):$(IF):RX")
 {
-    field(INAM, "$(INIT_FUNC)")
+    field(INAM, "subNetstatInit")
     field(SNAM, "subNetstat")
     field(SCAN, "2 second")
-    field(A, "$(IF_NUM)")
-    field(B, "$(IF_FUNC)")
-    field(EGU, "Mbps")
+    field(A, 	"$(IF_NUM)")
+    field(B, 	"1")
+    field(EGU,  "MBps")
+	field(PREC, "2")
+	field(LOLO, "0")
+	field(LLSV, "MAJOR")
+	field(HIGH, "100" )
+	field(HSV,  "MINOR" )
+	field(HIHI, "120" )
+	field(HSV,  "MAJOR" )
+	info(autosaveFields, "HIGH HIHI HSV HSV LLSV LSV LOLO LOW PREC" )
+}
+
+record(sub, "$(P):$(IF):TX")
+{
+    field(INAM, "subNetstatInit")
+    field(SNAM, "subNetstat")
+    field(SCAN, "2 second")
+    field(A, 	"$(IF_NUM)")
+    field(B, 	"0")
+    field(EGU,  "MBps")
+	field(PREC, "2")
+	field(LOLO, "0")
+	field(LLSV, "MAJOR")
+	field(HIGH, "100" )
+	field(HSV,  "MINOR" )
+	field(HIHI, "120" )
+	field(HSV,  "MAJOR" )
+	info(autosaveFields, "HIGH HIHI HSV HSV LLSV LSV LOLO LOW PREC" )
 }
 

@@ -18,6 +18,7 @@ DBD += gige.dbd
 gige_DBD += base.dbd
 gige_DBD += iocAdmin.dbd
 gige_DBD += autosaveSupport.dbd
+gige_DBD += netstat.dbd
 
 # Timing and EVR
 gige_DBD += diagTimer.dbd
@@ -44,6 +45,7 @@ gige_DBD += timeStampFifo.dbd
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 gige_SRCS += gige_registerRecordDeviceDriver.cpp
 gige_SRCS_DEFAULT += gigeMain.cpp
+gige_SRCS_DEFAULT += netstat.c
 
 # Add locally compiled object code
 #gige_SRCS += dbSubExample.c
