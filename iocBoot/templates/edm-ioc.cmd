@@ -13,8 +13,10 @@ source $SETUP_SITE_TOP/epicsenv-cur.sh
 export EVR_PV=$$IF(EVR_PV,$$EVR_PV,NoEvr)
 export IOC_PV=$$IOC_PV
 export CAM=$$CAM_PV
-export TRIG_CH=$$IF(TRIG,$$TRIG,0)
+export TRIG_CH=$$IF(EVR_TRIG,$$EVR_TRIG,0)
 export HUTCH=$$HUTCH
+
+export IF=$$IF(NET_IF,$$NET_IF,ETH0)
 
 pushd ${EPICS_SITE_TOP}-dev/screens/edm/${HUTCH}/current
 edm -x -eolc	\
@@ -24,5 +26,6 @@ edm -x -eolc	\
 	-m "CH=${TRIG_CH}"	\
 	-m "P=${CAM},R=:"	\
 	-m "HUTCH=${HUTCH}"	\
+	-m "IF=${IF}"		\
 	gigeScreens/gigeTop.edl  &
 

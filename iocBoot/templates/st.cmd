@@ -32,12 +32,14 @@ epicsEnvSet( "EVR_DEBUG",    "$$IF(EVR_DEBUG,$$EVR_DEBUG,0)" )
 epicsEnvSet( "CAM_IP",       "$$CAM_IP" )
 epicsEnvSet( "CAM_PV",       "$$CAM_PV" )
 epicsEnvSet( "CAM_PORT",     "$$IF(PORT,$$PORT,CAM)" )
-epicsEnvSet( "TRIG_NUM",     "$$TRIG" )
-epicsEnvSet( "TRIG_PV",      "$$(EVR_PV):TRIG$$TRIG" )
+epicsEnvSet( "TRIG_PV",      "$$(EVR_PV):TRIG$$IF(EVR_TRIG,$$EVR_TRIG,0)" )
 epicsEnvSet( "MODEL",        "$$MODEL" )
 epicsEnvSet( "HTTP_PORT",    "$$IF(HTTP_PORT,$$HTTP_PORT,7800)" )
-epicsEnvSet( "MJPG_PORT",    "$$IF(MJPG_PORT,$$MJPG_PORT,8081)" )
-epicsEnvSet( "ARV_DEBUG",    "$$IF(ARV_DEBUG,$$ARV_DEBUG,0)" )
+$$IF(ARV_DEBUG)
+epicsEnvSet( "ARV_DEBUG",    "$$ARV_DEBUG" )
+$$ELSE(ARV_DEBUG)
+epicsEnvSet( "ARV_DEBUG",    "genicam:1,device:1,chunk:1,dom:1,evaluator:1,stream_thread:1,interface:1,misc:1" )
+$$ENDIF(ARV_DEBUG)
 
 # Diagnostic settings
 epicsEnvSet( "ST_CMD_DELAYS",		"$$IF(ST_CMD_DELAYS,$$ST_CMD_DELAYS,1)" )
@@ -47,6 +49,9 @@ epicsEnvSet( "CAM_TRACE_IO_MASK",	"$$IF(CAM_TRACE_IO,$$CAM_TRACE_IO,0)" )
 # Register all support components
 dbLoadDatabase( "dbd/gige.dbd" )
 gige_registerRecordDeviceDriver(pdbbase)
+
+# Bump up scanOnce queue size for evr invariant timing
+scanOnceSetQueueSize( $$IF(SCAN_ONCE_QUEUE_SIZE,$$SCAN_ONCE_QUEUE_SIZE,2000) )
 
 # Set iocsh debug variables
 var DEBUG_TS_FIFO 1
@@ -76,8 +81,8 @@ dbLoadRecords( db/$(MODEL).template, "P=$(CAM_PV),R=:,PORT=$(CAM_PORT),TYPE=$(CA
 
 $$IF(EVR_PV)
 # Load timestamp plugin
-dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):EdtBeamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
-dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_DLY_PV=$(TRIG_PV):BW_TDES" )
+dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
+dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),CAM_DLY_RBV=$(TRIG_PV):BW_TDES" )
 $$ENDIF(EVR_PV)
 
 # Load history records
@@ -136,8 +141,11 @@ $$IF(EVR_PV)
 # Configure the EVR
 ErDebugLevel( $$IF(ErDebug,$$ErDebug,0) )
 ErConfigure( $(EVR_CARD), 0, 0, 0, $(EVRID_$$EVR_TYPE) )
-dbLoadRecords( "$(EVRDB)", "IOC=$(IOC_PV),EVR=$(EVR_PV),CARD=$(EVR_CARD),$$IF(TRIG)IP$$(TRIG)E=Enabled,$$ENDIF(TRIG)$$LOOP(EXTRA_TRIG)IP$$(TRIG)E=Enabled,$$ENDLOOP(EXTRA_TRIG)" )
+dbLoadRecords( "$(EVRDB)", "IOC=$(IOC_PV),EVR=$(EVR_PV),CARD=$(EVR_CARD)$$IF(EVR_TRIG),IP$$(EVR_TRIG)E=Enabled$$ENDIF(EVR_TRIG)$$LOOP(EXTRA_TRIG),IP$$(TRIG)E=Enabled$$ENDLOOP(EXTRA_TRIG)" )
 $$ENDIF(EVR_PV)
+
+# Load netstat records
+dbLoadRecords("db/netstat.template", "P=$(IOC_PV),IF=$$IF(NET_IF,$$NET_IF,ETH0),NET_IF_NUM=$$IF(NET_IF_NUM,$$NET_IF_NUM,1)" )
 
 # Load soft ioc related record instances
 dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )

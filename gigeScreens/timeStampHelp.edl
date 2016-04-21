@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 348
-y 1487
+x 352
+y 1511
 w 440
 h 732
 font "helvetica-medium-r-8.0"
@@ -170,7 +170,7 @@ value {
   "proper timestamps!   Current units are multiples of one 360Hz fiducial,"
   "which is approx 2.778ms."
   "Delay = ("
-  "	trigger delay"
+  "        trigger delay"
   "    +   exposure time"
   "    +   camera processing delay"
   "    +   transmission delay"

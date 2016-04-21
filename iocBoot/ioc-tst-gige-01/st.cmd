@@ -26,9 +26,9 @@ epicsEnvSet( "PLUGINS",		"pcdsPlugins" )
 # PV prefix for EVR, if used
 epicsEnvSet( "EVR_ENABLED",	"" )				# "" = YES,  "#" = NO
 epicsEnvSet( "EVR_CARD",	"0" )
-epicsEnvSet( "TRIG",		"0" )
+epicsEnvSet( "EVR_TRIG",	"0" )
 epicsEnvSet( "EVR_PV",		"TST:EVR:GIGE:01" )
-epicsEnvSet( "TRIG_PV",		"$(EVR_PV):TRIG$(TRIG)" )
+epicsEnvSet( "TRIG_PV",		"$(EVR_PV):TRIG$(EVR_TRIG)" )
 
 # EVR Type: 0=VME, 1=PMC, 15=SLAC
 #epicsEnvSet( "EVR_TYPE",	"1" )
@@ -72,7 +72,7 @@ asynSetTraceIOMask( "$(CAM_PORT)", 0, $(TRACE_IO_MASK) )
 # Initialize EVR
 $(EVR_ENABLED) ErDebugLevel( 0 )
 $(EVR_ENABLED) ErConfigure( $(EVR_CARD), 0, 0, 0, $(EVR_TYPE) )
-$(EVR_ENABLED) dbLoadRecords( "db/$(EVR_DB)", "EVR=$(EVR_PV),CARD=$(EVR_CARD),IP$(TRIG)E=Enabled,IP1E=Enabled,IP8E=Enabled,IP9E=Enabled" )
+$(EVR_ENABLED) dbLoadRecords( "db/$(EVR_DB)", "EVR=$(EVR_PV),CARD=$(EVR_CARD),IP$(EVR_TRIG)E=Enabled,IP1E=Enabled,IP8E=Enabled,IP9E=Enabled" )
 
 # Load ADCore timestamp provider
 dbLoadRecords( "db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(EVR_PV):EVENT1CTRL.ENM,DLY=1" )

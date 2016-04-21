@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 52
-y 76
+x 1348
+y 1713
 w 174
 h 146
 font "helvetica-medium-r-12.0"
@@ -38,7 +38,7 @@ h 130
 dataPvStr "$(CAM):THUMBNAIL:ArrayData"
 widthPvStr "$(CAM):THUMBNAIL:ArraySize0_RBV"
 heightPvStr "$(CAM):THUMBNAIL:ArraySize1_RBV"
-dataWidth 512
+dataWidth 0
 pvBasedDataSize 1
 nBitsPerPixel 8
 endObjectProperties
@@ -64,11 +64,17 @@ numDsps 1
 displayFileName {
   0 "gigeScreens/liveImage.edl"
 }
+closeAction {
+  0 1
+}
 setPosition {
   0 "parentWindow"
 }
 symbols {
   0 "CAM=$(CAM),IOC=$(IOC)"
+}
+closeDisplay {
+  0 1
 }
 endObjectProperties
 
@@ -80,8 +86,8 @@ minor 1
 release 1
 x 16
 y 0
-w 57
-h 18
+w 44
+h 14
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 7
