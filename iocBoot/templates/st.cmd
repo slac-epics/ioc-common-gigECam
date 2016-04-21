@@ -200,7 +200,7 @@ $$ENDIF(NO_ST_CMD_DELAY)
 
 # TODO: Remove these dbpf calls if possible
 # Enable callbacks
-#dbpf $(CAM_PV):ArrayCallbacks 1
+dbpf $(CAM_PV):ArrayCallbacks 1
 
 $$IF(AUTO_START)
 dbpf $(CAM_PV):Acquire $$AUTO_START
