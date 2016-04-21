@@ -145,7 +145,7 @@ dbLoadRecords( "$(EVRDB)", "IOC=$(IOC_PV),EVR=$(EVR_PV),CARD=$(EVR_CARD)$$IF(EVR
 $$ENDIF(EVR_PV)
 
 # Load netstat records
-dbLoadRecords("db/netstat.template", "P=$(IOC_PV),IF=$$IF(NET_IF,$$NET_IF,ETH0),NET_IF_NUM=$$IF(NET_IF_NUM,$$NET_IF_NUM,1)" )
+dbLoadRecords("db/netstat.template", "P=$(IOC_PV),IF=$$IF(NET_IF,$$NET_IF,ETH0),IF_NUM=$$IF(NET_IF_NUM,$$NET_IF_NUM,1)" )
 
 # Load soft ioc related record instances
 dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )
