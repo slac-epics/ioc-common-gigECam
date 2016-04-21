@@ -1,0 +1,53 @@
+
+#==============================================================================
+#
+# Abs:  This record provides network information                       
+#
+# Name: netstat.template
+#
+# The netstat.template file defines a subroutine record (PV name is $P:$IF) that uses
+# the linux sar utility to collect rate information for a given network interface
+#
+# Macros:
+#  P          PV base name
+#  IF         Interface name (for the PV only)
+#  IF_NUM     Defines the interface to be monitored - the number of the interface 
+#             is based on the output of the sar command (sysstat rpm package).
+#             For example:
+#
+#             bash-3.2$ hostname
+#             lcls-devcam02
+#             bash-3.2$ /usr/bin/sar -n DEV 1 3 | grep Average | grep -v IFACE
+#             Average:           lo     11.96     11.96    590.03    590.03      0.00      0.00      0.00
+#             Average:         eth0     35.22      5.65   4696.68    601.66      0.00      0.00      1.33
+#             Average:         eth1      1.99      1.99    364.78    127.57      0.00      0.00      0.00
+#             Average:         eth2      1.99      2.66    364.78    170.10      0.00      0.00      0.00
+#             Average:         eth3      2.33      2.33    386.05    148.84      0.00      0.00      0.00
+#             Average:         eth4      1.99      1.99    364.78    127.57      0.00      0.00      0.00
+#             Average:         eth5      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+#             Average:         eth6      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+#             Average:         eth7      0.00      1.00      0.00     63.79      0.00      0.00      0.00
+#             Average:         sit0      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+#             Average:        bond0      0.00      1.00      0.00     63.79      0.00      0.00      0.00
+#              
+#             The interface eth0 has IF_NUM of 1, eth1 has IF_NUM of 2 and so on.
+#             
+#  IF_FUNC    0 for TX rate, 1 for RX rate (in Mbps)
+#  INIT_FUNC  Only one of the records should have the INIT_FUNC defined to
+#             the string "subNetstatInit". All other records must have an
+#             empty string "". The subNetstatInit routine spawns a thread
+#             that periodically invokes the sar command. The statistics
+#             for all interfaces in the system are updated.
+#
+#==============================================================================
+
+record(sub, "$(P):$(IF)")
+{
+    field(INAM, "$(INIT_FUNC)")
+    field(SNAM, "subNetstat")
+    field(SCAN, "2 second")
+    field(A, "$(IF_NUM)")
+    field(B, "$(IF_FUNC)")
+    field(EGU, "Mbps")
+}
+
