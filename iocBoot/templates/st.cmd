@@ -1,4 +1,4 @@
-#!$$IOCTOP/bin/$$TARGET_ARCH/gige
+#!$$IOCTOP/bin/$$IF(TARGET_ARCH,$$TARGET_ARCH,linux-x86_64)/gige
 
 # Run common startup commands for linux soft IOC's
 < $(IOC_COMMON)/All/pre_linux.cmd
@@ -149,6 +149,7 @@ dbLoadRecords("db/netstat.template", "P=$(IOC_PV),IF=$$IF(NET_IF,$$NET_IF,ETH0),
 
 # Load soft ioc related record instances
 dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )
+dbLoadRecords( "db/iocName.db",				"IOC=$(IOC_PV),IOCNAME=$(IOCNAME)" )
 
 # Setup autosave
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
@@ -193,8 +194,6 @@ $$ENDLOOP(BLD)
 
 $$IF(NO_ST_CMD_DELAY)
 $$ELSE(NO_ST_CMD_DELAY)
-# Final delay before auto-start image acquisition
-epicsThreadSleep $(ST_CMD_DELAYS)
 epicsThreadSleep $(ST_CMD_DELAYS)
 $$ENDIF(NO_ST_CMD_DELAY)
 
@@ -203,5 +202,7 @@ $$ENDIF(NO_ST_CMD_DELAY)
 dbpf $(CAM_PV):ArrayCallbacks 1
 
 $$IF(AUTO_START)
+# Final delay before auto-start image acquisition
+epicsThreadSleep 3
 dbpf $(CAM_PV):Acquire $$AUTO_START
 $$ENDIF(AUTO_START)
