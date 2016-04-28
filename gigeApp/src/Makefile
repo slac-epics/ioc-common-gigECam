@@ -36,9 +36,6 @@ gige_DBD += simDetectorSupport.dbd
 gige_DBD += prosilicaSupport.dbd
 gige_DBD += aravisCameraSupport.dbd
 
-# ffmpegServer
-gige_DBD += ffmpegServer.dbd
-
 # ADCore timeStamp provider
 gige_DBD += timeStampFifo.dbd
 
@@ -115,6 +112,9 @@ gige_SYS_LIBS += rt
 gige_SYS_LIBS += readline
 
 # ffmpegServer
+gige_DBD += ffmpegServer.dbd
+DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.cmd)
+DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.db)
 gige_LIBS += avdevice
 gige_LIBS += ffmpegServer
 gige_LIBS += swscale

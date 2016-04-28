@@ -8,6 +8,7 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 DB += timeStampEventCode.db
 DB += netstat.template
+DB += iocName.db
 
 # Create and install Camera DB Files
 DB += prosilica.db
