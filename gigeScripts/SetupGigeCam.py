@@ -3,7 +3,7 @@
 SetupGigeCam.py
 
 Usage:
-  SetupGigeCam.py <PV>... [--config=cfg_name] [-v|--verbose] [-z|--zenity] [--HR | --LR]
+  SetupGigeCam.py <PV>... [--config=cfg_name] [-v|--verbose] [-z|--zenity] [--HR|--LR]
   SetupGigeCam.py [-h|--help]
 
 Arguments:
@@ -12,7 +12,7 @@ Arguments:
                       single entries, or in a range using a hyphen. An example 
                       would be the following: 
 
-                          python pmgrUtils.py save SXR:EXP:GIGE:01-03 05
+                          python SetupGigeCam.py SXR:EXP:GIGE:01-03 05
 
                       This will set up gigecams 01, 02, 03, and 05
 
@@ -25,22 +25,23 @@ Options:
   --LR                Use low res mode for cfg
 
 General quick setup for the gigECams. To create a new configuration just create
-a new cfg file in the configurations folder and then run the 
+a new cfg file in the configurations folder and then run the script specifying
+the config name to use it.
 """
 import pyca
 import os.path
+import sys
 from psp.Pv import Pv
 from ConfigParser import SafeConfigParser
+from optparse import OptionParser
 from pprint import pprint
-from docopt import docopt
-from sys import exit
 from os import system
 
 # caput is defined identically but with a timeout value of 10.0 instead of 2.0
 # The default setting of 2.0 seconds was too short, causing the script to fail
 # before completion.
 def caput(PVName, val):
-	""" Same definition of caput but with a connect timeout of 10.0 """
+	"""Same definition of caput but with a connect timeout of 10.0"""
 	pv = Pv(PVName)
 	pv.connect(timeout=10.0)
 	pv.put(value=val, timeout=10.0)
@@ -119,7 +120,7 @@ def getParser(config, verbose, zenity):
 	return parser
 
 def getConfig(PV, HR, LR, verbose):
-	""" Returns a path to a config file based on the PV """
+	"""Returns a path to a config file based on the PV"""
 	hutch = PV[:3]
 	if hutch.lower() == "sxr" or hutch.lower() == "amo":
 		hutch = "SXD"
@@ -145,7 +146,7 @@ def getConfig(PV, HR, LR, verbose):
 	return config
 
 def parsePVArguments(PVArguments):
-	""" Parses PV input arguments and returns a set of cam PVs """
+	"""Parses PV input arguments and returns a set of cam PVs"""
 	camPVs = set()
 	if '-' in PVArguments[0]:
 		basePV = PVArguments[0].split('-')[0][:-2]
@@ -172,21 +173,29 @@ def parsePVArguments(PVArguments):
 	return camPVs
 
 if __name__ == "__main__":
-	# Parse docopt inputs
-	arguments = docopt(__doc__)
-        PVArguments = arguments["<PV>"]
-        try: camPVs = parsePVArguments(PVArguments)
-        except: exit("Error: Incorrect inputted arguments.")
-	if arguments["--verbose"] or arguments["-v"]: verbose = True
-	else: verbose = False
-	if arguments["--zenity"] or arguments["-z"]: zenity = True
-	else: zenity = False
-	# Get a config
-	if arguments["--config"]: 
-		config = "./gigeScripts/configurations/" + arguments["--config"]
-	else: config = getConfig(camPVs[0], arguments["--HR"], arguments["--LR"], verbose)
+	parser = OptionParser(add_help_option=False)
+	parser.add_option('--config', action='store', type='string', dest='config')
+	parser.add_option('--verbose', '-v', action='store_true', dest='verbose', default=False)
+	parser.add_option('--zenity', '-z', action='store_true', dest='zenity', default=False)
+	parser.add_option('--HR', action='store_true', dest='HR', default=False)
+	parser.add_option('--LR', action='store_true', dest='LR', default=False)
+	parser.add_option('-h', '--help', dest='help', action='store_true',
+	                  help='show this help message and exit')
+	options, PVargs = parser.parse_args()
+	if options.help:
+	    print __doc__
+	    sys.exit()
+	try: camPVs = parsePVArguments(PVargs)
+	except: exit("Error: Incorrect inputted arguments.")
+	verbose = options.verbose
+	zenity = options.zenity
+	HR = options.HR
+	LR = options.LR
+	if options.config: 
+		config = "./gigeScripts/configurations/" + options.config
+	else: config = getConfig(camPVs[0], HR, LR, verbose)
 	if verbose: print "Using config file: {0}".format(config)
-	# Set up each camera
 	for camName in camPVs:
 		print "Setting up {0}".format(camName)
 		SetupGigeCamera(camName, config, verbose, zenity)
+	
