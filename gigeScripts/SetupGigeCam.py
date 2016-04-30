@@ -3,7 +3,8 @@
 SetupGigeCam.py
 
 Usage:
-  SetupGigeCam.py <PV>... [--config=cfg_name] [-v|--verbose] [-z|--zenity] [--HR|--LR]
+  SetupGigeCam.py <PV>... [--config=config] [-v|--verbose] [-z|--zenity]
+  SetupGigeCam.py <PV>... [--hutch=hutch] [--extra=extra] [-v|--verbose] [-z|--zenity] [--HR|--LR]
   SetupGigeCam.py [-h|--help]
 
 Arguments:
@@ -19,6 +20,7 @@ Arguments:
 Options:
   -h|--help           Show this help message
   --config=cfg_name   Explicitly specify which cfg to use.
+  --hutch             Explicitly specify which hutch to use
   -v|--verbose        Print more about active process
   -z|--zenity         Outputs messages via zenity
   --HR                Use high res mode for cfg
@@ -119,35 +121,41 @@ def getParser(config, verbose, zenity):
 		return None	
 	return parser
 
-def getConfig(PV, HR, LR, verbose):
+def getConfig(PV, verbose, **kwargs):
 	"""Returns a path to a config file based on the PV"""
-	hutch = PV[:3]
-	if hutch.lower() == "sxr" or hutch.lower() == "amo":
-		hutch = "SXD"
-	col = ""
-	hr = ""
-	mode = ""
-	if HR:
-		mode = "_HRMode"
-	elif LR:
-		mode = "_LRMode"
+	if 'hutch' in kwargs and kwargs['hutch']:
+		hutch = kwargs['hutch']
+	else:
+		hutch = PV[:3]
+		if hutch.lower() == "sxr" or hutch.lower() == "amo":
+			hutch = "sxd"	
+	col, hr, mode, extra = "", "", "", ""
+	if 'HR' in kwargs and kwargs['HR']:
+		mode = "_hr_mode"
+	elif 'LR' in kwargs and kwargs['LR']:
+		mode = "_lr_mode"
 	else:
 		if ":col:" in PV.lower(): col = "_col"
 		else: col = ""
 		if ":hr:" in PV.lower() : hr = "_hr"
 		else: hr = ""	
-	config = "./gigeScripts/configurations/gige_"+hutch+hr+col+mode+".cfg"
+	if 'extra' in kwargs and kwargs['extra']:
+		extra = "_{0}".format(kwargs['extra'])
+	cfgName = hutch + hr + col + mode + extra
+	config = "./gigeScripts/configurations/gige_{0}.cfg".format(cfgName)
 	# Make sure the file exists
 	if verbose: print "Checking config file"
-	while not os.path.isfile(config):
-		config = config[0:2] + config[14:]   #Get rid of gigeScripts/
-		if not os.path.isfile(config):
-			config = "./gigeScripts/configurations/gige_SXD"+hr+col+".cfg"
+	if not os.path.isfile(config):
+		if not os.path.isfile(config[0:2] + config[14:]):
+			print "Configuration file {0} does not exist!".format(config)
+			config = None
+		else: config = config[0:2] + config[14:]
 	return config
 
 def parsePVArguments(PVArguments):
 	"""Parses PV input arguments and returns a set of cam PVs"""
 	camPVs = set()
+	if len(PVArguments) == 0: return
 	if '-' in PVArguments[0]:
 		basePV = PVArguments[0].split('-')[0][:-2]
 	else:
@@ -172,30 +180,48 @@ def parsePVArguments(PVArguments):
 	camPVs.sort()
 	return camPVs
 
+
 if __name__ == "__main__":
 	parser = OptionParser(add_help_option=False)
 	parser.add_option('--config', action='store', type='string', dest='config')
+	parser.add_option('--hutch', action='store', type='string', dest='hutch', default=None)
+	parser.add_option('--extra', action='store', type='string', dest='extra', default=None)
 	parser.add_option('--verbose', '-v', action='store_true', dest='verbose', default=False)
 	parser.add_option('--zenity', '-z', action='store_true', dest='zenity', default=False)
 	parser.add_option('--HR', action='store_true', dest='HR', default=False)
 	parser.add_option('--LR', action='store_true', dest='LR', default=False)
 	parser.add_option('-h', '--help', dest='help', action='store_true',
-	                  help='show this help message and exit')
+					  help='show this help message and exit')
 	options, PVargs = parser.parse_args()
 	if options.help:
-	    print __doc__
-	    sys.exit()
-	try: camPVs = parsePVArguments(PVargs)
-	except: exit("Error: Incorrect inputted arguments.")
+		print __doc__
+		sys.exit()
+	camPVs = parsePVArguments(PVargs)
+	if not camPVs or len(camPVs) == 0:
+		exit("Error: Incorrect inputted arguments.")
 	verbose = options.verbose
 	zenity = options.zenity
-	HR = options.HR
-	LR = options.LR
+	HRes = options.HR
+	LRes = options.LR
+	configPath = "./gigeScripts/configurations/"
+	cfgExt = ".cfg"
 	if options.config: 
-		config = "./gigeScripts/configurations/" + options.config
-	else: config = getConfig(camPVs[0], HR, LR, verbose)
-	if verbose: print "Using config file: {0}".format(config)
-	for camName in camPVs:
-		print "Setting up {0}".format(camName)
-		SetupGigeCamera(camName, config, verbose, zenity)
+		if os.path.isfile(options.config):
+			config = options.config
+		elif os.path.isfile(options.config + cfgExt):
+			config = options.config + cfgExt
+		elif os.path.isfile(configPath + options.config):
+			config = configPath + options.config
+		elif os.path.isfile(configPath + options.config + cfgExt):
+			config = configPath + options.config + cfgExt
+		else:
+			print "Configuration file {0} does not exist!".format(options.config)
+			config = None
+	else: config = getConfig(camPVs[0], verbose, HR=HRes, LR=LRes,
+							 hutch=options.hutch, extra=options.extra)
+	if config:
+		if verbose: print "Using config file: {0}".format(config)
+		for camName in camPVs:
+			print "Setting up {0}".format(camName)
+			SetupGigeCamera(camName, config, verbose, zenity)
 	
