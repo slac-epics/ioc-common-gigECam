@@ -9,6 +9,7 @@ include $(TOP)/configure/CONFIG
 DB += timeStampEventCode.db
 DB += netstat.template
 DB += iocName.db
+DB += evrUsed.db
 
 # Create and install Camera DB Files
 DB += prosilica.db

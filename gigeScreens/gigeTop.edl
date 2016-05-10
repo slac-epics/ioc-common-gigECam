@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 96
-y 96
+x 1076
+y 1178
 w 832
 h 980
 font "helvetica-medium-r-12.0"
@@ -25,6 +25,25 @@ snapToGrid
 gridSize 4
 endScreenProperties
 
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 368
+w 396
+h 324
+fgColor index 14
+bgColor index 0
+topShadowColor index 1
+botShadowColor index 11
+filePv "$(P)$(R)CamTypeScreen"
+numDsps 0
+noScroll
+endObjectProperties
+
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
@@ -34,7 +53,7 @@ release 0
 x 416
 y 56
 w 400
-h 292
+h 276
 lineColor index 3
 fill
 fillColor index 3
@@ -211,6 +230,38 @@ commandLabel {
 }
 command {
   0 "configSiteTop/$(HUTCH)/camviewer.sh --camerapv $(CAM) --instr $(HUTCH) --pvlist configSiteTop/$(HUTCH)/camviewer.cfg &"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 416
+y 652
+w 100
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "PCDS Plugins"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADStreamScreens/pcdsPlugins.edl"
+}
+symbols {
+  0 "CAM=$(CAM),P=$(CAM):,IOC=$(IOC)"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
 }
 endObjectProperties
 
@@ -1030,7 +1081,7 @@ major 4
 minor 1
 release 1
 x 472
-y 68
+y 64
 w 140
 h 20
 font "helvetica-medium-r-12.0"
@@ -1050,7 +1101,7 @@ major 4
 minor 7
 release 0
 x 628
-y 68
+y 64
 w 59
 h 18
 controlPv "$(P)$(R)AcquireTime"
@@ -1080,7 +1131,7 @@ major 4
 minor 1
 release 1
 x 472
-y 208
+y 204
 w 140
 h 20
 font "helvetica-medium-r-12.0"
@@ -1100,7 +1151,7 @@ major 4
 minor 7
 release 0
 x 628
-y 208
+y 204
 w 59
 h 18
 controlPv "$(P)$(R)AcquirePeriod"
@@ -1128,7 +1179,7 @@ major 4
 minor 7
 release 0
 x 696
-y 68
+y 64
 w 88
 h 20
 controlPv "$(P)$(R)AcquireTime_RBV"
@@ -1154,7 +1205,7 @@ major 4
 minor 7
 release 0
 x 696
-y 208
+y 204
 w 88
 h 20
 controlPv "$(P)$(R)AcquirePeriod_RBV"
@@ -1180,7 +1231,7 @@ major 4
 minor 0
 release 0
 x 568
-y 148
+y 144
 w 120
 h 20
 fgColor index 25
@@ -1200,7 +1251,7 @@ major 4
 minor 0
 release 0
 x 568
-y 180
+y 176
 w 120
 h 20
 fgColor index 25
@@ -1220,7 +1271,7 @@ major 4
 minor 1
 release 1
 x 472
-y 148
+y 144
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -1240,7 +1291,7 @@ major 4
 minor 1
 release 1
 x 472
-y 180
+y 176
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -1260,7 +1311,7 @@ major 4
 minor 7
 release 0
 x 696
-y 148
+y 144
 w 88
 h 20
 controlPv "$(P)$(R)ImageMode_RBV"
@@ -1285,7 +1336,7 @@ major 4
 minor 7
 release 0
 x 696
-y 180
+y 176
 w 88
 h 20
 controlPv "$(P)$(R)TriggerMode_RBV"
@@ -1310,7 +1361,7 @@ major 4
 minor 1
 release 1
 x 472
-y 120
+y 116
 w 140
 h 20
 font "helvetica-medium-r-12.0"
@@ -1330,7 +1381,7 @@ major 4
 minor 7
 release 0
 x 696
-y 120
+y 116
 w 88
 h 20
 controlPv "$(P)$(R)NumImages_RBV"
@@ -1355,7 +1406,7 @@ major 4
 minor 7
 release 0
 x 628
-y 120
+y 116
 w 60
 h 18
 controlPv "$(P)$(R)NumImages"
@@ -1383,7 +1434,7 @@ major 4
 minor 0
 release 0
 x 472
-y 92
+y 88
 w 216
 h 20
 
@@ -1396,7 +1447,7 @@ major 4
 minor 7
 release 0
 x 628
-y 92
+y 88
 w 60
 h 20
 controlPv "$(P)$(R)Gain"
@@ -1423,7 +1474,7 @@ major 4
 minor 1
 release 1
 x 584
-y 92
+y 88
 w 32
 h 20
 font "helvetica-medium-r-12.0"
@@ -1443,7 +1494,7 @@ major 4
 minor 2
 release 0
 x 472
-y 92
+y 88
 w 112
 h 20
 fgColor index 14
@@ -1472,7 +1523,7 @@ major 4
 minor 0
 release 0
 x 696
-y 92
+y 88
 w 88
 h 20
 
@@ -1485,7 +1536,7 @@ major 4
 minor 7
 release 0
 x 696
-y 92
+y 88
 w 88
 h 20
 controlPv "$(P)$(R)Gain_RBV"
@@ -1517,7 +1568,7 @@ major 4
 minor 0
 release 1
 x 416
-y 348
+y 332
 w 400
 h 0
 lineColor index 14
@@ -1530,8 +1581,8 @@ xPoints {
   1 816
 }
 yPoints {
-  0 348
-  1 348
+  0 332
+  1 332
 }
 endObjectProperties
 
@@ -1542,7 +1593,7 @@ major 4
 minor 0
 release 1
 x 416
-y 236
+y 232
 w 400
 h 0
 lineColor index 14
@@ -1555,8 +1606,8 @@ xPoints {
   1 816
 }
 yPoints {
-  0 236
-  1 236
+  0 232
+  1 232
 }
 endObjectProperties
 
@@ -1652,7 +1703,7 @@ commandLabel {
   0 "View IMAGE2 in EDM Viewer"
 }
 command {
-  0 "IOC=$(IOC) P=$(P) R=$(R) IMAGE=IMAGE2 ADStreamScreens/edmViewer.sh"
+  0 "HUTCH=$(HUTCH) EVR=$(EVR) IOC=$(IOC) P=$(P) R=$(R) IMAGE=IMAGE2 EDM_TOP=gigeScreens/gigeTop.edl ADStreamScreens/edmViewer.sh"
 }
 execCursor
 endObjectProperties
@@ -1698,7 +1749,7 @@ release 0
 x 416
 y 496
 w 400
-h 136
+h 148
 lineColor index 3
 fill
 fillColor index 3
@@ -1729,85 +1780,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 656
+x 668
 y 532
-w 104
-h 20
-controlPv "$(P)$(R)TSS:ExpectedDelay"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 548
-y 532
-w 100
-h 20
-controlPv "$(P)$(R)TSS:ExpectedDelay"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 424
-y 532
-w 120
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Fiducial Delay"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 656
-y 556
-w 104
+w 92
 h 20
 controlPv "$(P)$(R)TSS:SyncStatus"
 format "gfloat"
@@ -1825,34 +1800,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 548
-y 556
-w 100
-h 20
-controlPv "$(P)$(R)TSS:TsPolicy"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1860,7 +1807,7 @@ major 4
 minor 1
 release 1
 x 424
-y 556
+y 532
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1870,52 +1817,6 @@ bgColor index 0
 useDisplayBg
 value {
   "Sync Policy/Status"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 656
-y 580
-w 104
-h 20
-controlPv "$(P)$(R)TSS:EventCode_RBV"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 424
-y 580
-w 224
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "TimeStamp Source EventCode"
 }
 endObjectProperties
 
@@ -2049,7 +1950,7 @@ major 4
 minor 4
 release 0
 x 420
-y 608
+y 616
 w 120
 h 20
 fgColor index 14
@@ -2070,25 +1971,6 @@ symbols {
   0 "P=$(P),R=$(R)"
 }
 icon
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 4
-y 368
-w 396
-h 324
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 11
-filePv "$(P)$(R)CamTypeScreen"
-numDsps 0
-noScroll
 endObjectProperties
 
 # (Rectangle)
@@ -2225,6 +2107,61 @@ replaceSymbols {
 noScroll
 endObjectProperties
 
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 640
+y 652
+w 148
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "More Image Streams"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADStreamScreens/commonStreams.edl"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 520
+y 652
+w 116
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "Common Plugins"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADStreamScreens/commonPlugins.edl"
+}
+symbols {
+  0 "CAM=$(CAM),P=$(CAM):,IOC=$(IOC)"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -2334,9 +2271,9 @@ major 4
 minor 0
 release 1
 x 440
-y 236
+y 232
 w 0
-h 113
+h 101
 lineColor index 14
 fill
 fillColor index 14
@@ -2346,8 +2283,8 @@ xPoints {
   1 440
 }
 yPoints {
-  0 236
-  1 349
+  0 232
+  1 333
 }
 endObjectProperties
 
@@ -2358,9 +2295,9 @@ major 4
 minor 0
 release 1
 x 512
-y 236
+y 232
 w 0
-h 112
+h 100
 lineColor index 14
 fill
 fillColor index 14
@@ -2370,8 +2307,8 @@ xPoints {
   1 512
 }
 yPoints {
-  0 236
-  1 348
+  0 232
+  1 332
 }
 endObjectProperties
 
@@ -2382,9 +2319,9 @@ major 4
 minor 0
 release 1
 x 644
-y 236
+y 232
 w 0
-h 112
+h 100
 lineColor index 14
 fill
 fillColor index 14
@@ -2394,8 +2331,8 @@ xPoints {
   1 644
 }
 yPoints {
-  0 236
-  1 348
+  0 232
+  1 332
 }
 endObjectProperties
 
@@ -2406,7 +2343,7 @@ major 4
 minor 0
 release 1
 x 416
-y 312
+y 296
 w 400
 h 0
 lineColor index 14
@@ -2419,8 +2356,8 @@ xPoints {
   1 814
 }
 yPoints {
-  0 312
-  1 312
+  0 296
+  1 296
 }
 endObjectProperties
 
@@ -2431,7 +2368,7 @@ major 4
 minor 0
 release 1
 x 416
-y 276
+y 260
 w 400
 h 0
 lineColor index 14
@@ -2444,8 +2381,8 @@ xPoints {
   1 814
 }
 yPoints {
-  0 276
-  1 276
+  0 260
+  1 260
 }
 endObjectProperties
 
@@ -2502,7 +2439,7 @@ major 4
 minor 1
 release 1
 x 648
-y 284
+y 268
 w 68
 h 20
 font "helvetica-medium-r-12.0"
@@ -2522,7 +2459,7 @@ major 4
 minor 1
 release 1
 x 516
-y 284
+y 268
 w 52
 h 20
 font "helvetica-medium-r-12.0"
@@ -2542,7 +2479,7 @@ major 4
 minor 0
 release 0
 x 520
-y 284
+y 268
 w 52
 h 20
 
@@ -2555,7 +2492,7 @@ major 4
 minor 7
 release 0
 x 518
-y 284
+y 268
 w 50
 h 20
 controlPv "$(P)$(R)MinX"
@@ -2585,7 +2522,7 @@ major 4
 minor 1
 release 1
 x 516
-y 320
+y 304
 w 52
 h 20
 font "helvetica-medium-r-12.0"
@@ -2605,7 +2542,7 @@ major 4
 minor 0
 release 0
 x 520
-y 320
+y 304
 w 52
 h 20
 
@@ -2618,7 +2555,7 @@ major 4
 minor 7
 release 0
 x 518
-y 320
+y 304
 w 49
 h 20
 controlPv "$(P)$(R)MinY"
@@ -2648,7 +2585,7 @@ major 4
 minor 1
 release 1
 x 648
-y 320
+y 304
 w 68
 h 20
 font "helvetica-medium-r-12.0"
@@ -2668,7 +2605,7 @@ major 4
 minor 0
 release 0
 x 652
-y 320
+y 304
 w 68
 h 20
 
@@ -2681,7 +2618,7 @@ major 4
 minor 7
 release 0
 x 650
-y 320
+y 304
 w 67
 h 20
 controlPv "$(P)$(R)SizeY"
@@ -2711,7 +2648,7 @@ major 4
 minor 0
 release 0
 x 652
-y 284
+y 268
 w 68
 h 20
 
@@ -2724,7 +2661,7 @@ major 4
 minor 7
 release 0
 x 650
-y 284
+y 268
 w 67
 h 20
 controlPv "$(P)$(R)SizeX"
@@ -2754,7 +2691,7 @@ major 4
 minor 1
 release 1
 x 448
-y 284
+y 268
 w 24
 h 20
 font "helvetica-medium-r-10.0"
@@ -2773,7 +2710,7 @@ major 4
 minor 1
 release 1
 x 448
-y 320
+y 304
 w 24
 h 20
 font "helvetica-medium-r-10.0"
@@ -2792,7 +2729,7 @@ major 4
 minor 0
 release 0
 x 448
-y 320
+y 304
 w 24
 h 20
 
@@ -2805,7 +2742,7 @@ major 4
 minor 7
 release 0
 x 448
-y 320
+y 304
 w 23
 h 20
 controlPv "$(P)$(R)BinY"
@@ -2835,7 +2772,7 @@ major 4
 minor 0
 release 0
 x 448
-y 284
+y 268
 w 24
 h 20
 
@@ -2848,7 +2785,7 @@ major 4
 minor 7
 release 0
 x 448
-y 284
+y 268
 w 23
 h 20
 controlPv "$(P)$(R)BinX"
@@ -2878,7 +2815,7 @@ major 4
 minor 1
 release 1
 x 728
-y 320
+y 304
 w 72
 h 20
 font "helvetica-medium-r-12.0"
@@ -2898,7 +2835,7 @@ major 4
 minor 1
 release 1
 x 728
-y 284
+y 268
 w 72
 h 20
 font "helvetica-medium-r-12.0"
@@ -2918,7 +2855,7 @@ major 4
 minor 0
 release 0
 x 728
-y 284
+y 268
 w 72
 h 20
 
@@ -2931,7 +2868,7 @@ major 4
 minor 7
 release 0
 x 727
-y 284
+y 268
 w 73
 h 20
 controlPv "$(P)$(R)SizeX_RBV"
@@ -2962,7 +2899,7 @@ major 4
 minor 0
 release 0
 x 728
-y 320
+y 304
 w 72
 h 20
 
@@ -2975,7 +2912,7 @@ major 4
 minor 7
 release 0
 x 727
-y 320
+y 304
 w 73
 h 20
 controlPv "$(P)$(R)SizeY_RBV"
@@ -3006,7 +2943,7 @@ major 4
 minor 1
 release 1
 x 576
-y 320
+y 304
 w 60
 h 20
 font "helvetica-medium-r-12.0"
@@ -3026,7 +2963,7 @@ major 4
 minor 1
 release 1
 x 576
-y 284
+y 268
 w 64
 h 20
 font "helvetica-medium-r-12.0"
@@ -3046,7 +2983,7 @@ major 4
 minor 0
 release 0
 x 576
-y 320
+y 304
 w 64
 h 20
 
@@ -3059,7 +2996,7 @@ major 4
 minor 7
 release 0
 x 577
-y 320
+y 304
 w 60
 h 20
 controlPv "$(P)$(R)MinY_RBV"
@@ -3090,7 +3027,7 @@ major 4
 minor 0
 release 0
 x 576
-y 284
+y 268
 w 56
 h 20
 
@@ -3103,7 +3040,7 @@ major 4
 minor 7
 release 0
 x 577
-y 284
+y 268
 w 60
 h 20
 controlPv "$(P)$(R)MinX_RBV"
@@ -3134,7 +3071,7 @@ major 4
 minor 1
 release 1
 x 480
-y 284
+y 268
 w 28
 h 20
 font "helvetica-medium-r-10.0"
@@ -3153,7 +3090,7 @@ major 4
 minor 1
 release 1
 x 480
-y 320
+y 304
 w 28
 h 20
 font "helvetica-medium-r-10.0"
@@ -3172,7 +3109,7 @@ major 4
 minor 0
 release 0
 x 480
-y 320
+y 304
 w 28
 h 20
 
@@ -3185,7 +3122,7 @@ major 4
 minor 7
 release 0
 x 480
-y 320
+y 304
 w 26
 h 20
 controlPv "$(P)$(R)BinY_RBV"
@@ -3216,7 +3153,7 @@ major 4
 minor 0
 release 0
 x 480
-y 284
+y 268
 w 28
 h 20
 
@@ -3229,7 +3166,7 @@ major 4
 minor 7
 release 0
 x 480
-y 284
+y 268
 w 26
 h 20
 controlPv "$(P)$(R)BinX_RBV"
@@ -3260,7 +3197,7 @@ major 4
 minor 1
 release 1
 x 416
-y 320
+y 304
 w 20
 h 20
 font "helvetica-bold-r-18.0"
@@ -3280,7 +3217,7 @@ major 4
 minor 1
 release 1
 x 416
-y 284
+y 268
 w 20
 h 20
 font "helvetica-bold-r-18.0"
@@ -3299,18 +3236,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 668
-y 240
-w 92
-h 28
+x 652
+y 236
+w 148
+h 20
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Region"
-  "Size"
+  "Region Size"
 }
 endObjectProperties
 
@@ -3321,17 +3257,16 @@ major 4
 minor 1
 release 1
 x 520
-y 240
-w 92
-h 32
+y 236
+w 116
+h 20
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "Region"
-  "Start"
+  "Region Start"
 }
 endObjectProperties
 
@@ -3342,7 +3277,7 @@ major 4
 minor 1
 release 1
 x 444
-y 240
+y 236
 w 64
 h 20
 font "helvetica-bold-r-14.0"
@@ -3355,116 +3290,278 @@ value {
 }
 endObjectProperties
 
-# (Related Display)
-object relatedDisplayClass
+# (Menu Button)
+object activeMenuButtonClass
 beginObjectProperties
 major 4
-minor 4
+minor 0
 release 0
-x 724
-y 648
-w 88
-h 24
-fgColor index 14
-bgColor index 3
-topShadowColor index 0
-botShadowColor index 14
-font "helvetica-medium-r-12.0"
-buttonLabel "More Streams"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "ADStreamScreens/commonStreams.edl"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 512
-y 648
-w 104
-h 24
-fgColor index 14
-bgColor index 3
-topShadowColor index 0
-botShadowColor index 14
-font "helvetica-medium-r-12.0"
-buttonLabel "Common Plugins"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "ADStreamScreens/commonPlugins.edl"
-}
-symbols {
-  0 "CAM=$(CAM),P=$(CAM):,IOC=$(IOC)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 416
-y 648
-w 92
-h 24
-fgColor index 14
-bgColor index 3
-topShadowColor index 0
-botShadowColor index 14
-font "helvetica-medium-r-12.0"
-buttonLabel "PCDS Plugins"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "ADStreamScreens/pcdsPlugins.edl"
-}
-symbols {
-  0 "CAM=$(CAM),P=$(CAM):,IOC=$(IOC)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-endObjectProperties
-
-# (Shell Command)
-object shellCmdClass
-beginObjectProperties
-major 4
-minor 3
-release 0
-x 620
-y 648
+x 560
+y 532
 w 100
-h 24
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 14
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 2
+botShadowColor index 13
+controlPv "$(P)$(R)TSS:TsPolicy"
+indicatorPv "$(P)$(R)TSS:TsPolicy"
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 424
+y 560
+w 336
+h 48
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 668
+y 560
+w 92
+h 20
+controlPv "$(P)$(R)TSS:ExpectedDelay"
+format "gfloat"
 font "helvetica-medium-r-12.0"
-buttonLabel "ReCfg All Strms"
-numCmds 1
-commandLabel {
-  0 "Reconfigure stream"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 424
+y 560
+w 64
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Xmit Delay"
 }
-command {
-  0 "CAM=$(CAM) IMAGE=all IOC=$(IOC) ADStreamScreens/configStream.sh $(CAM) $(IMAGE)"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 492
+y 560
+w 72
+h 20
+controlPv "$(P)$(R)XmitDelay"
+format "gfloat"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 564
+y 560
+w 96
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Total Exp Delay"
 }
-execCursor
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 700
+y 588
+w 60
+h 20
+controlPv "$(P)$(R)TSS:DiffVsExpMax"
+format "gfloat"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 668
+y 588
+w 28
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Max"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 596
+y 588
+w 64
+h 20
+controlPv "$(P)$(R)TSS:DiffVsExpMin"
+format "gfloat"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 560
+y 588
+w 24
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Min"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 492
+y 588
+w 60
+h 20
+controlPv "$(P)$(R)TSS:DiffVsExp"
+format "gfloat"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 424
+y 588
+w 60
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "DiffVsExp"
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(P)$(R)TSS:TsPolicy"
+visMin "0"
+visMax "2"
 endObjectProperties
 

@@ -17,7 +17,7 @@ cd( "$(IOCTOP)" )
 epicsEnvSet( "EPICS_CA_MAX_ARRAY_BYTES", "$$IF(MAX_ARRAY,$$MAX_ARRAY,20000000)" )
 
 # Setup EVR env vars
-epicsEnvSet( "EVR_PV",       "$$EVR_PV" )
+epicsEnvSet( "EVR_PV",       "$$IF(EVR_PV,$$EVR_PV,NoEvr)" )
 epicsEnvSet( "EVR_CARD",     "$$IF(EVR_CARD,$$EVR_CARD,0)" )
 # EVR Type: 0=VME, 1=PMC, 15=SLAC
 epicsEnvSet( "EVRID_PMC",    "1" )
@@ -83,6 +83,9 @@ $$IF(EVR_PV)
 # Load timestamp plugin
 dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
 dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),CAM_DLY_RBV=$(TRIG_PV):BW_TDES" )
+dbLoadRecords( "db/evrUsed.db",				"EVR=$(EVR_PV),EVR_USED=1" )
+$$ELSE(EVR_PV)
+dbLoadRecords( "db/evrUsed.db",				"EVR=$(EVR_PV),EVR_USED=0" )
 $$ENDIF(EVR_PV)
 
 # Load history records
