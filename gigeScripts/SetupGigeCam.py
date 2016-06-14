@@ -179,7 +179,7 @@ def parsePVArguments(PVArguments):
 					camPVs.add(basePV + "{:02}".format(start))
 					start += 1
 			elif len(arg) > 3:
-				if getBasePV(arg) == basePV: camPVs.add(arg)
+				if getBasePV([arg]) == basePV: camPVs.add(arg)
 			elif len(arg) < 3:
 				camPVs.add(basePV + "{:02}".format(int(arg)))
 			else: pass
