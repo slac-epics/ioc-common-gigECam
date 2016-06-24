@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 524
-y 125
+x 526
+y 151
 w 880
 h 540
 font "helvetica-medium-r-12.0"
@@ -302,8 +302,8 @@ minor 1
 release 1
 x 696
 y 360
-w 42
-h 20
+w 30
+h 16
 font "helvetica-medium-r-14.0"
 fontAlign "center"
 fgColor index 14
@@ -323,8 +323,8 @@ minor 1
 release 1
 x 696
 y 384
-w 29
-h 18
+w 22
+h 14
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -999,7 +999,7 @@ buttonLabel "Setup"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "gigeScreens/prosilicaScreens/prosilica.edl"
+  0 "prosilicaScreens/prosilica.edl"
 }
 symbols {
   0 "CAM=$(CAM),P=$(CAM),R=:,IOC=$(IOC)"
