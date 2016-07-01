@@ -13,7 +13,7 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # IOC apps or other Support apps
 # ===============================================================
 ADCORE_MODULE_VERSION        = R2.1-0.4.0
-ADSTREAM_MODULE_VERSION      = R1.4.0
+ADSTREAM_MODULE_VERSION      = R1.5.0
 ADPROSILICA_MODULE_VERSION   = R2.1-0.11.1
 ARAVISGIGE_MODULE_VERSION	 = R0.3.5.5-1.1.0
 ASYN_MODULE_VERSION          = R4.23-0.5.0

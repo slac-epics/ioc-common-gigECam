@@ -13,12 +13,14 @@ file archive_SR.tpl-arch
 	{	IOC = "$$IOC_PV"	}
 }
 
-file ADBase.tpl-arch
+$$IF(EVR_PV)
+file archive_evr_$$(EVR_TYPE).archive
 {
-    {   P = "$$CAM_PV",	R = ":" 	}
+    { EVR = "$$EVR_PV" }
 }
+$$ENDIF(EVR_PV)
 
-file prosilica.tpl-arch
+file ADBase.tpl-arch
 {
     {   P = "$$CAM_PV",	R = ":" 	}
 }
@@ -28,9 +30,8 @@ file cross.tpl-arch
     {   P = "$$CAM_PV",	R = ":" 	}
 }
 
-$$IF(EVR)
-file archive_evr_$$EVR_TYPE.archive
+file prosilica.tpl-arch
 {
-	{ EVR = "$$EVR_PV" }
+    {   P = "$$CAM_PV",	R = ":" 	}
 }
-$$ENDIF(EVR)
+

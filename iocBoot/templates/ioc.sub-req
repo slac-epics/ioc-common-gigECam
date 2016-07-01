@@ -5,23 +5,23 @@
 # Each gigE IOC needs one of these
 file autosave_iocAdmin.tpl-req
 {
-	{	IOC = "$$IOC_PV"	}
+    { IOC = "$$IOC_PV" }
 }
+
+$$IF(EVR_PV)
+file autosave_evr_$$(EVR_TYPE).req
+{
+    { EVR = "$$EVR_PV" }
+}
+$$ENDIF(EVR_PV)
 
 file ADBase_settings.req
 {
-    {   P = "$$CAM_PV",	R = ":" 	}
+    { P = "$$CAM_PV", R = ":"  }
 }
-
 
 file cross.tpl-req
 {
     {   P = "$$CAM_PV",	R = ":" 	}
 }
 
-$$IF(EVR)
-file autosave_evr_$$EVR_TYPE.req
-{
-	{ EVR = "$$EVR_PV" }
-}
-$$ENDIF(EVR)
