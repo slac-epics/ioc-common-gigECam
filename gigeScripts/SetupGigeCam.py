@@ -206,7 +206,7 @@ if __name__ == "__main__":
 		sys.exit()
 	camPVs = parsePVArguments(PVargs)
 	if not camPVs or len(camPVs) == 0:
-		exit("Error: Incorrect inputted arguments.")
+		exit("Error: Incorrect inputted arguments: {0}.".format(PVArgs))
 	verbose = options.verbose
 	zenity = options.zenity
 	HRes = options.HR
