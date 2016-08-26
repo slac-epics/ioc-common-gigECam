@@ -21,7 +21,7 @@ file aravisCamera.template
 	}
 }
 
-file cross.template
+file cross.db
 {
 	{
 	P=$(CAM),

@@ -20,8 +20,3 @@ file ADBase_settings.req
     { P = "$$CAM_PV", R = ":"  }
 }
 
-file cross.tpl-req
-{
-    {   P = "$$CAM_PV",	R = ":" 	}
-}
-

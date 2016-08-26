@@ -25,11 +25,6 @@ file ADBase.tpl-arch
     {   P = "$$CAM_PV",	R = ":" 	}
 }
 
-file cross.tpl-arch
-{
-    {   P = "$$CAM_PV",	R = ":" 	}
-}
-
 file prosilica.tpl-arch
 {
     {   P = "$$CAM_PV",	R = ":" 	}

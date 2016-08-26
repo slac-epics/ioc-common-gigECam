@@ -30,7 +30,7 @@ file prosilica.template
 	}
 }
 
-file cross.template
+file cross.db
 {
 	{
 	P=$(CAM),

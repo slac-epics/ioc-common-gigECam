@@ -44,7 +44,6 @@ DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.cmd)
 ARCHIVE += gige-ioc.archive
 
 # Create and install archive Files
-ARCHIVE += cross.tpl-arch
 ARCHIVE += archive_evr_PMC.archive
 ARCHIVE += archive_evr_SLAC.archive
 
@@ -57,7 +56,6 @@ REQ += gige-ioc.req
 REQ += $(EVENT2)/autosave/eventCodeDelays.req
 
 # Create and install autosave Files
-REQ += cross.tpl-req
 REQ += autosave_evr_PMC.req
 REQ += autosave_evr_SLAC.req
 

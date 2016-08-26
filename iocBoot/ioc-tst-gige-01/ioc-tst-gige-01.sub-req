@@ -16,8 +16,3 @@ file prosilica_settings.req
     { P = "TST:GIGE:01", R = ":"	}
 }
 
-file cross.tpl-req
-{
-    {   P = "TST:GIGE:01",	R = ":" 	}
-}
-

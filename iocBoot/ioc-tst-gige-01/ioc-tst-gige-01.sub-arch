@@ -12,8 +12,3 @@ file archive_evr_SLAC.tpl-arch
     { EVR = "TST:EVR:GIGE:01" }
 }
 
-file cross.tpl-arch
-{
-    {   P = "TST:GIGE:01",	R = ":" 	}
-}
-
