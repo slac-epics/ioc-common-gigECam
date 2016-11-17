@@ -20,24 +20,26 @@ gige_DBD += iocAdmin.dbd
 gige_DBD += autosaveSupport.dbd
 gige_DBD += netstat.dbd
 
+ifdef EVENT2
 # Timing and EVR
 gige_DBD += diagTimer.dbd
 gige_DBD += evrSupport.dbd
 gige_DBD += devMrfEr.dbd
 
+# ADCore timeStamp provider
+gige_DBD += timeStampFifo.dbd
+endif
+
 # areaDetector
 gige_DBD += asyn.dbd
-gige_DBD += busyRecord.dbd
 gige_DBD += busySupport.dbd
-gige_DBD += sscan.dbd
+gige_DBD += calcSupport.dbd
+gige_DBD += sscanSupport.dbd
 gige_DBD += ADSupport.dbd
-gige_DBD += commonDriverSupport.dbd
+gige_DBD += NDPluginSupport.dbd
 gige_DBD += simDetectorSupport.dbd
 gige_DBD += prosilicaSupport.dbd
 gige_DBD += aravisCameraSupport.dbd
-
-# ADCore timeStamp provider
-gige_DBD += timeStampFifo.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 gige_SRCS += gige_registerRecordDeviceDriver.cpp
@@ -64,15 +66,19 @@ gige_LIBS += gthread-2.0
 gige_LIBS += gmodule-2.0
 gige_LIBS += glib-2.0
 
+ifdef EVENT2
 # ADCore Timestamp provider
 gige_LIBS += timeStampFifo
 
 # Timing and EVR
-gige_LIBS += diagTimer
 gige_LIBS += evrSupport
 gige_LIBS += devMrfEr
 gige_LIBS += drvMrf
 gige_LIBS_Linux += mrfApi
+endif
+
+# Diagnostics
+gige_LIBS += diagTimer
 
 # areaDetector
 gige_LIBS += ADBase
@@ -111,6 +117,7 @@ gige_SYS_LIBS += pthread
 gige_SYS_LIBS += rt
 gige_SYS_LIBS += readline
 
+ifdef FFMPEGSERVER
 # ffmpegServer
 gige_DBD += ffmpegServer.dbd
 DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.cmd)
@@ -122,6 +129,7 @@ gige_LIBS += avformat
 gige_LIBS += avcodec
 gige_LIBS += avutil
 #gige_LIBS += bz2
+endif
 
 gige_LIBS += $(EPICS_BASE_IOC_LIBS)
 

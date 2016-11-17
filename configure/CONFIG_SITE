@@ -38,3 +38,7 @@ endif
 # Settings for static and shared build options
 STATIC_BUILD=NO
 SHARED_LIBRARIES=YES
+
+ifneq '$(wildcard $(EVENT2))' ''
+USR_CFLAGS += -dUSE_EVR_IRQ_HANDLER
+endif

@@ -26,10 +26,14 @@ DB_INSTALLS += $(PR_MODELS)
 DB_INSTALLS += $(subst .env,.template,$(PR_MODELS))
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
+ifdef EVENT2
 DB_INSTALLS += $(EVENT2)/db/evrPmc230.db
 DB_INSTALLS += $(EVENT2)/db/evrSLAC.db
-DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
+ifdef TIMESTAMPFIFO
 DB_INSTALLS += $(TIMESTAMPFIFO)/db/timeStampFifo.template
+endif
+endif
 
 # Install ADStream db files
 DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.db)
@@ -44,8 +48,10 @@ DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.cmd)
 ARCHIVE += gige-ioc.archive
 
 # Create and install archive Files
-ARCHIVE += archive_evr_PMC.archive
-ARCHIVE += archive_evr_SLAC.archive
+ifdef EVENT2
+ARCHIVE += $(EVENT2)/archive/archive_evr_PMC.archive
+ARCHIVE += $(EVENT2)/archive/archive_evr_SLAC.archive
+endif
 
 #----------------------------------------------------
 # Create and install (or just install)
@@ -53,11 +59,12 @@ ARCHIVE += archive_evr_SLAC.archive
 #
 REQ += gige-ioc.req
 
-REQ += $(EVENT2)/autosave/eventCodeDelays.req
-
+ifdef EVENT2
 # Create and install autosave Files
-REQ += autosave_evr_PMC.req
-REQ += autosave_evr_SLAC.req
+REQ += $(EVENT2)/autosave/eventCodeDelays.req
+REQ += $(EVENT2)/autosave/autosave_evr_PMC.req
+REQ += $(EVENT2)/autosave/autosave_evr_SLAC.req
+endif
 
 include $(TOP)/configure/RULES
 #----------------------------------------
