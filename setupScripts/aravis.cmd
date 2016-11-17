@@ -17,6 +17,6 @@ epicsEnvSet( "CAM_PORT", "CAM" )
 # Set priority   to 0  for default priority
 # Set stackSize  to 0  for default stackSize
 # Parameters not set explicitly are set to zero
-aravisCameraConfig(  "$(CAM_PORT)", "$(CAM_IP)", 50, 0, 0, 0 )
+aravisCameraConfig(  "$(CAM_PORT)", "$(CAM_IP)", $(N_AD_BUFFERS=100), 0, 0, 0 )
 
 dbLoadRecords( "db/aravis.db",  "CAM=$(CAM_PV),CAM_PORT=$(CAM_PORT),TRIG_PV=$(TRIG_PV)" )
