@@ -6,7 +6,6 @@
 #include <registryFunction.h>     /* for epics register function  */
 #include <epicsExport.h>          /* for epicsExport              */
 #include <epicsTime.h>            /* epics timestamp and proto    */
-#include <evrTime.h>              /* for EVR APIs                 */
 #include <epicsMutex.h>
 
 #define MAX_NICS 16
@@ -100,7 +99,7 @@ static long subNetstatInit(subRecord *prec)
 
 static long subNetstat(subRecord *prec)
 {
-  evrTimeGet(&(prec->time), 0);
+  epicsTimeGetEvent(&(prec->time), 0);
   prec->val = 0;
 
   // If NIC exists, provide the current rate
