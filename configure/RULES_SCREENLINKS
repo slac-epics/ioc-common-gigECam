@@ -14,6 +14,8 @@ EVENT2		?= unused
 HISTORY		?= unused
 IOCADMIN	?= unused
 FFMPEGSERVER	?= unused
+CONFIG_SITE_TOP	?= $(wildcard /reg/g/pcds/pyps/config)
+CONFIG_SITE_TOP	?= $(wildcard /afs/slac/g/pcds/config)
 
 updateScreenLinks:
 	@echo Updating $(TOP)/screenLinks ...
@@ -30,4 +32,5 @@ updateScreenLinks:
 	@ln -s {$(HISTORY),$(INSTALL_SCREENLINKS)}/historyScreens
 	@ln -s {$(IOCADMIN),$(INSTALL_SCREENLINKS)}/iocScreens
 	@ln -s {$(FFMPEGSERVER),$(INSTALL_SCREENLINKS)}/ffmpegScreens
+	@ln -s $(CONFIG_SITE_TOP) $(INSTALL_SCREENLINKS)/configSiteTop
 
