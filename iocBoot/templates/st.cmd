@@ -66,7 +66,9 @@ var DEBUG_TS_FIFO 1
 # Setup the environment for the specified camera model
 < db/$(MODEL).env
 
+# =========================================================
 # Setup environment for this gigE type: aravis or prosilica
+# =========================================================
 epicsEnvSet( "CAM_TYPE", "$$IF(CAM_TYPE,$$CAM_TYPE,prosilica)" )
 < setupScripts/$(CAM_TYPE).cmd
 
@@ -191,6 +193,7 @@ create_monitor_set( "$(IOCNAME).req",    5,  "" )
 < $(IOC_COMMON)/All/post_linux.cmd
 
 $$LOOP(BLD)
+$$IF(BLD_SRC)
 # Configure the BLD client
 epicsEnvSet( "BLD_XTC",     "$$IF(XTC,$$XTC,0x10048)" ) # XTC Type, Id_Spectrometer
 epicsEnvSet( "BLD_SRC",     "$$SRC" ) # Src Id
@@ -198,8 +201,13 @@ epicsEnvSet( "BLD_IP",      "239.255.24.$(BLD_SRC)" )
 epicsEnvSet( "BLD_PORT",    "$$IF(PORT,$$PORT,10148)" )
 epicsEnvSet( "BLD_MAX",     "$$IF(MAX,$$MAX,8980)" )    # 9000 MTU - 20 byte header
 BldConfigSend( "$(BLD_IP)", $(BLD_PORT), $(BLD_MAX) )
+$$IF(BLD_AUTO_START)
+# Autostart plugin specific BLD
 BldStart()
+$$ENDIF(BLD_AUTO_START)
+
 BldIsStarted()
+$$ENDIF(BLD_SRC)
 $$ENDLOOP(BLD)
 
 $$IF(NO_ST_CMD_DELAY)
