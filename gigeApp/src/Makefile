@@ -8,17 +8,24 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build an ioc application
 
-PROD_IOC = gige
+PROD_IOC  = gige
 
 # gige.dbd will be created and installed
 DBD += gige.dbd
 
 # gige.dbd will be made up from these files:
-# base and std modules
-gige_DBD += base.dbd
-gige_DBD += iocAdmin.dbd
-gige_DBD += asSupport.dbd
+
+# Define PROD_NAME before including commonDriverMakefile
+PROD_NAME = gige
+include $(ADCORE)/ADApp/commonDriverMakefile
+
+# Network statistics
 gige_DBD += netstat.dbd
+
+# base and std modules
+#gige_DBD += base.dbd
+#gige_DBD += iocAdmin.dbd
+#gige_DBD += asSupport.dbd
 
 ifdef EVENT2
 # Timing and EVR
@@ -31,12 +38,13 @@ gige_DBD += timeStampFifo.dbd
 endif
 
 # areaDetector
-gige_DBD += asyn.dbd
-gige_DBD += busySupport.dbd
-gige_DBD += calcSupport.dbd
-gige_DBD += sscanSupport.dbd
-gige_DBD += ADSupport.dbd
-gige_DBD += NDPluginSupport.dbd
+# The ADCore ones are handled below by commonDriverMakefile
+#gige_DBD += asyn.dbd
+#gige_DBD += busySupport.dbd
+#gige_DBD += calcSupport.dbd
+#gige_DBD += sscanSupport.dbd
+#gige_DBD += ADSupport.dbd
+#gige_DBD += NDPluginSupport.dbd
 gige_DBD += simDetectorSupport.dbd
 gige_DBD += prosilicaSupport.dbd
 gige_DBD += aravisCameraSupport.dbd
@@ -51,11 +59,12 @@ gige_SRCS_DEFAULT += netstat.c
 
 # Add required libraries
 # base and std modules
-gige_LIBS += autosave
-gige_LIBS += devIocStats
+#gige_LIBS += autosave
+#gige_LIBS += devIocStats
 
 # Prosilica camera libs
 gige_LIBS += prosilica
+gige_LIBS += PvAPI
 
 # aravis camera libs
 gige_LIBS += aravisCamera
@@ -65,6 +74,7 @@ gige_LIBS += gobject-2.0
 gige_LIBS += gthread-2.0
 gige_LIBS += gmodule-2.0
 gige_LIBS += glib-2.0
+gige_SYS_LIBS += resolv
 
 ifdef EVENT2
 # ADCore Timestamp provider
@@ -81,18 +91,19 @@ endif
 gige_LIBS += diagTimer
 
 # areaDetector
-gige_LIBS += ADBase
-gige_LIBS += NDPlugin
-gige_LIBS += calc
-gige_LIBS += busy
+# The ADCore libs and dependents are handled below by commonDriverMakefile
+#gige_LIBS += ADBase
+#gige_LIBS += NDPlugin
+#gige_LIBS += calc
+#gige_LIBS += busy
 # GraphicsMagick not supported in areaDetector 1.9 for RHEL due to compiler issues
 #gige_LIBS += NDFileMagick
-gige_LIBS += netCDF
-gige_LIBS += NeXus
-gige_LIBS += hdf5
+#gige_LIBS += netCDF
+#gige_LIBS += NeXus
+#gige_LIBS += hdf5
 gige_LIBS += simDetector
-gige_LIBS += sscan
-gige_LIBS += asyn
+#gige_LIBS += sscan
+#gige_LIBS += asyn
 #gige_LIBS += recIoc
 #gige_LIBS += softDevIoc
 #gige_LIBS += miscIoc
@@ -102,23 +113,22 @@ gige_LIBS += asyn
 #gige_LIBS += dbIoc
 #gige_LIBS += registryIoc
 #gige_LIBS += dbStaticIoc
-gige_LIBS += dbRecStd
-gige_LIBS += dbCore
-gige_LIBS += ca
-gige_LIBS += Com
-gige_LIBS += PvAPI
-gige_LIBS += szip
+#gige_LIBS += dbRecStd
+#gige_LIBS += dbCore
+#gige_LIBS += ca
+#gige_LIBS += Com
+#gige_LIBS += szip
 #gige_SYS_LIBS += X11
 #gige_LIBS += xml2
-gige_SYS_LIBS += xml2
-gige_SYS_LIBS += tiff
-gige_SYS_LIBS += jpeg
-gige_SYS_LIBS += z
+#gige_SYS_LIBS += xml2
+#gige_SYS_LIBS += tiff
+#gige_SYS_LIBS += jpeg
+#gige_SYS_LIBS += z
 #gige_SYS_LIBS += bz2
 #gige_SYS_LIBS += selinux
-gige_SYS_LIBS += pthread
-gige_SYS_LIBS += rt
-gige_SYS_LIBS += readline
+#gige_SYS_LIBS += pthread
+#gige_SYS_LIBS += rt
+#gige_SYS_LIBS += readline
 
 ifdef FFMPEGSERVER
 # ffmpegServer
@@ -134,7 +144,6 @@ gige_LIBS += avutil
 #gige_LIBS += bz2
 endif
 
-gige_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 
