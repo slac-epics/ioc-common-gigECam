@@ -6,27 +6,28 @@ include $(TOP)/RELEASE_SITE
 # Define the version of modules needed by
 # IOC apps or other Support apps
 # ===============================================================
-ADCORE_MODULE_VERSION        = R2.6-0.3.0
-ADSIMDETECTOR_MODULE_VERSION = R2.4-0.1.2
-ADSTREAM_MODULE_VERSION      = R1.8.1
+ADCORE_MODULE_VERSION        = R2.6-2.2.0
+ADSIMDETECTOR_MODULE_VERSION = R2.4-0.1.5
+ADSTREAM_MODULE_VERSION      = R1.9.2
 ADSUPPORT_MODULE_VERSION     = R1.1-0.1.0
-ADPROSILICA_MODULE_VERSION   = R2.1-1.0.5
-ARAVISGIGE_MODULE_VERSION	 = R2.1-1.1.6
-ASYN_MODULE_VERSION          = R4.31-0.1.0
+ADPROSILICA_MODULE_VERSION   = R2.1-1.0.7
+ARAVISGIGE_MODULE_VERSION    = R2.1-1.1.7
+ASYN_MODULE_VERSION          = R4.31-1.0.0
 AUTOSAVE_MODULE_VERSION      = R5.7.1-2.0.0
-BUSY_MODULE_VERSION          = R1.6.1-0.2.4
+BUSY_MODULE_VERSION          = R1.6.1-0.2.5
 CALC_MODULE_VERSION          = R3.6.1-0.1.0
 DIAG_TIMER_MODULE_VERSION    = R1.9.0
-EVENT2_MODULE_VERSION        = R4.2.0
+EVENT2_MODULE_VERSION        = R4.2.1
 FFMPEGSERVER_MODULE_VERSION  = R1.9-1.0.5
 IOCADMIN_MODULE_VERSION      = R3.1.15-1.0.1
 SSCAN_MODULE_VERSION         = R2.10.2-0.1.0
-TIMESTAMPFIFO_MODULE_VERSION = R1.5.2
+TIMESTAMPFIFO_MODULE_VERSION = R1.5.5
 NORMATIVETYPES_MODULE_VERSION= R5.1.0-0.1.0
-PVACCESS_MODULE_VERSION		 = R5.0.0-0.2.1
-PVASRV_MODULE_VERSION		 = R0.12.0-0.1.1
-PVCOMMON_MODULE_VERSION		 = R4.2.0-0.3.0
-PVDATA_MODULE_VERSION		 = R6.0.0-0.3.0
+PVACCESS_MODULE_VERSION      = R5.0.0-0.2.1
+PVASRV_MODULE_VERSION        = R0.12.0-0.1.1
+PVCOMMON_MODULE_VERSION      = R4.2.0-0.3.0
+PVDATA_MODULE_VERSION        = R6.0.0-0.3.0
+PVDATABASE_MODULE_VERSION    = R4.2.0-0.1.1
 
 # ============================================================
 # External Support module path definitions
@@ -58,24 +59,25 @@ IOCADMIN     = $(EPICS_MODULES)/iocAdmin/$(IOCADMIN_MODULE_VERSION)
 SSCAN        = $(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
 TIMESTAMPFIFO= $(EPICS_MODULES)/timeStampFifo/$(TIMESTAMPFIFO_MODULE_VERSION)
 NORMATIVETYPES=$(EPICS_MODULES)/normativeTypesCPP/$(NORMATIVETYPES_MODULE_VERSION)
-PVDATA		 = $(EPICS_MODULES)/pvDataCPP/$(PVDATA_MODULE_VERSION)
-PVACCESS	 = $(EPICS_MODULES)/pvAccessCPP/$(PVACCESS_MODULE_VERSION)
-PVASRV		 = $(EPICS_MODULES)/pvaSrv/$(PVASRV_MODULE_VERSION)
-PVCOMMON	 = $(EPICS_MODULES)/pvCommonCPP/$(PVCOMMON_MODULE_VERSION)
+PVDATA       = $(EPICS_MODULES)/pvDataCPP/$(PVDATA_MODULE_VERSION)
+PVDATABASE   = $(EPICS_MODULES)/pvDatabaseCPP/$(PVDATABASE_MODULE_VERSION)
+PVACCESS     = $(EPICS_MODULES)/pvAccessCPP/$(PVACCESS_MODULE_VERSION)
+PVASRV       = $(EPICS_MODULES)/pvaSrv/$(PVASRV_MODULE_VERSION)
+PVCOMMON     = $(EPICS_MODULES)/pvCommonCPP/$(PVCOMMON_MODULE_VERSION)
 
 # Set EPICS_BASE last so it appears last in the DB, DBD, INCLUDE, and LIB search paths
 EPICS_BASE = $(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
-MY_MODULES	=/reg/neh/home/bhill/wa2/trunk/pcds/epics/modules
-#MY_MODULES	=/afs/slac/u/ey/bhill/wa4/trunk/pcds/epics/modules
-#MY_MODULES	=/reg/neh/home1/mcbrowne/trunk12/modules
-#FFMPEGSERVER= $(MY_MODULES)/ffmpegServer/current
-#ASYN  = $(MY_MODULES)/asyn/current
-#EVENT2  = $(MY_MODULES)/event2/current
-#ADCORE  = $(MY_MODULES)/ADCore/current
-#ADSTREAM  = $(MY_MODULES)/ADStream/current
-#ARAVISGIGE	= $(MY_MODULES)/aravisGigE/aravisGigE-git
-#ADPROSILICA  = $(MY_MODULES)/ADProsilica/current
-#TIMESTAMPFIFO  = $(MY_MODULES)/timeStampFifo/current
+#MY_MODULES = /reg/neh/home/bhill/git-wa-neh/modules
+#MY_MODULES = /afs/slac/u/ey/bhill/git-wa/modules
+#MY_MODULES = /reg/neh/home1/mcbrowne/trunk12/modules
+#ADCORE         = $(MY_MODULES)/ADCore-git
+#ADPROSILICA    = $(MY_MODULES)/ADProsilica-git
+#ADSTREAM       = $(MY_MODULES)/ADStream-git
+#ARAVISGIGE     = $(MY_MODULES)/aravisGigE/aravisGigE-git
+#ASYN           = $(MY_MODULES)/asyn-git
+#EVENT2         = $(MY_MODULES)/event2-git
+#FFMPEGSERVER   = $(MY_MODULES)/ffmpegServer-git
+#TIMESTAMPFIFO  = $(MY_MODULES)/timeStampFifo-git
 
-#EPICS_BASE=/reg/neh/home2/bhill/wa2/trunk/pcds/epics/base/current
+#EPICS_BASE=$(MY_MODULES)/../base-git
