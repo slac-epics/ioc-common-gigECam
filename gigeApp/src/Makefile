@@ -22,9 +22,9 @@ include $(ADCORE)/ADApp/commonDriverMakefile
 # Network statistics
 gige_DBD += netstat.dbd
 
+gige_DBD += iocAdmin.dbd
 # base and std modules
 #gige_DBD += base.dbd
-#gige_DBD += iocAdmin.dbd
 #gige_DBD += asSupport.dbd
 
 ifdef EVENT2
@@ -60,7 +60,7 @@ gige_SRCS_DEFAULT += netstat.c
 # Add required libraries
 # base and std modules
 #gige_LIBS += autosave
-#gige_LIBS += devIocStats
+gige_LIBS += devIocStats
 
 # Prosilica camera libs
 gige_LIBS += prosilica
