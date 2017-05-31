@@ -28,6 +28,7 @@ updateScreenLinks_withSoftLinks:
 	@echo Updating $(TOP)/screenLinks with soft links ...
 	@rm -rf    $(INSTALL_SCREENLINKS)/*
 	@mkdir -p  $(INSTALL_SCREENLINKS)
+	@ln -s $(CONFIG_SITE_TOP) $(INSTALL_SCREENLINKS)/configSiteTop
 	@ln -s {..,$(INSTALL_SCREENLINKS)}/gigeScreens
 	@ln -s {$(ADSTREAM),$(INSTALL_SCREENLINKS)}/ADStreamScreens
 	@ln -s {$(ADCORE),$(INSTALL_SCREENLINKS)}/areaDetectorHelp

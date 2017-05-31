@@ -229,7 +229,7 @@ commandLabel {
   0 "Color Viewer"
 }
 command {
-  0 "configSiteTop/$(HUTCH)/camviewer.sh --camerapv $(CAM) &"
+  0 "ADStreamScreens/camviewer.sh $(HUTCH) --camerapv $(CAM):IMAGE1 &"
 }
 endObjectProperties
 
