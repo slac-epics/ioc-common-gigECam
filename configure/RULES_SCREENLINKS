@@ -2,7 +2,10 @@
 INSTALL_SCREENLINKS = $(INSTALL_LOCATION)/screenLinks
 UNINSTALL_DIRS	+= $(INSTALL_SCREENLINKS)
 
+ifeq (,$(BUILD_TOP))
+# Only run this rule in the parent ioc
 install: updateScreenLinks
+endif
 
 .PHONY: updateScreenLinks
 
