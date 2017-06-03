@@ -10,15 +10,6 @@ file ADBase.template
 	}
 }
 
-file NDFile.template
-{
-	{
-	P=$(CAM),
-	R=:,
-	PORT=$(CAM_PORT),
-	}
-}
-
 file prosilica.template
 {
 	{
