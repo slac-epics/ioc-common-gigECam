@@ -17,7 +17,7 @@ cd( "$(IOCTOP)" )
 epicsEnvSet( "EPICS_CA_MAX_ARRAY_BYTES", "$$IF(MAX_ARRAY,$$MAX_ARRAY,20000000)" )
 
 # Setup EVR env vars
-epicsEnvSet( "EVR_PV",       "$$IF(EVR_PV,$$EVR_PV,NoEvr)" )
+epicsEnvSet( "EVR_PV",       "$$IF(EVR_PV,$$EVR_PV,$$CAM_PV:NoEvr)" )
 epicsEnvSet( "EVR_CARD",     "$$IF(EVR_CARD,$$EVR_CARD,0)" )
 # EVR Type: 0=VME, 1=PMC, 15=SLAC
 epicsEnvSet( "EVRID_PMC",    "1" )
@@ -39,7 +39,6 @@ errlog( "CAM_PV not defined" )
 exit()
 $$ENDIF(CAM_PV)
 epicsEnvSet( "CAM_PORT",     "$$IF(PORT,$$PORT,CAM)" )
-epicsEnvSet( "TRIG_PV",      "$$(EVR_PV):TRIG$$IF(EVR_TRIG,$$EVR_TRIG,0)" )
 epicsEnvSet( "MODEL",        "$$MODEL" )
 epicsEnvSet( "HTTP_PORT",    "$$IF(HTTP_PORT,$$HTTP_PORT,7800)" )
 $$IF(ARV_DEBUG)
@@ -89,6 +88,7 @@ $$ENDIF(NO_ST_CMD_DELAY)
 dbLoadRecords( db/$(MODEL).template, "P=$(CAM_PV),R=:,PORT=$(CAM_PORT),TYPE=$(CAM_TYPE)" )
 
 $$IF(EVR_PV)
+epicsEnvSet( "TRIG_PV",      "$$(EVR_PV):TRIG$$IF(EVR_TRIG,$$EVR_TRIG,0)" )
 # Load timestamp plugin
 dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
 dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),CAM_DLY_RBV=$(TRIG_PV):BW_TDES" )
