@@ -2,6 +2,13 @@
 INSTALL_SCREENLINKS = $(INSTALL_LOCATION)/screenLinks
 UNINSTALL_DIRS	+= $(INSTALL_SCREENLINKS)
 
+ifeq (,$(BUILD_TOP))
+# Only run this rule in the parent ioc
+install: updateScreenLinks
+endif
+
+.PHONY: updateScreenLinks
+
 # Mark optional AD camera modules w/ unused/fooScreens
 ADSTREAM        ?= unused
 ADPROSILICA     ?= unused
@@ -11,22 +18,16 @@ HISTORY         ?= unused
 IOCADMIN        ?= unused
 FFMPEGSERVER    ?= unused
 
-ifeq (,$(BUILD_TOP))
-# Only run this rule in the parent ioc
-install: updateScreenLinks
-
-.PHONY: updateScreenLinks
 # Choose either directory soft links or copies for edm screens
 # Copies are recommended when releasing to PROD
 # Soft linked directories are more convenient during development
 # especially when the linked directories are in your work area too.
 updateScreenLinks:	updateScreenLinks_withSoftLinks
 #updateScreenLinks:	updateScreenLinks_withCopies
-endif
 
 updateScreenLinks_withSoftLinks:
 	@echo Updating $(TOP)/screenLinks with soft links ...
-	@rm -rf    $(INSTALL_SCREENLINKS)/*
+	@rm -f     $(INSTALL_SCREENLINKS)/*
 	@mkdir -p  $(INSTALL_SCREENLINKS)
 	@ln -s {..,$(INSTALL_SCREENLINKS)}/gigeScreens
 	@ln -s {$(ADSTREAM),$(INSTALL_SCREENLINKS)}/ADStreamScreens
@@ -47,7 +48,7 @@ updateScreenLinks_withSoftLinks:
 # and we'll need another solution for how to deploy it to accelerator.
 updateScreenLinks_withCopies:
 	@echo Updating $(TOP)/screenLinks ...
-	@rm    -rf  $(INSTALL_SCREENLINKS)/*
+	@rm    -f  $(INSTALL_SCREENLINKS)/*
 	@mkdir -p   $(INSTALL_SCREENLINKS)
 	@ln -s {..,$(INSTALL_SCREENLINKS)}/gigeScreens
 	@mkdir -p   $(INSTALL_SCREENLINKS)/ADStreamScreens
