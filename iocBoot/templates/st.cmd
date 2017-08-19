@@ -18,6 +18,7 @@ epicsEnvSet( "EPICS_CA_MAX_ARRAY_BYTES", "$$IF(MAX_ARRAY,$$MAX_ARRAY,20000000)" 
 
 # Setup EVR env vars
 epicsEnvSet( "EVR_PV",       "$$IF(EVR_PV,$$EVR_PV,$$CAM_PV:NoEvr)" )
+epicsEnvSet( "TRIG_PV",      "$(EVR_PV):TRIG$$IF(EVR_TRIG,$$EVR_TRIG,0)" )
 epicsEnvSet( "EVR_CARD",     "$$IF(EVR_CARD,$$EVR_CARD,0)" )
 # EVR Type: 0=VME, 1=PMC, 15=SLAC
 epicsEnvSet( "EVRID_PMC",    "1" )
@@ -41,6 +42,7 @@ $$ENDIF(CAM_PV)
 epicsEnvSet( "CAM_PORT",     "$$IF(PORT,$$PORT,CAM)" )
 epicsEnvSet( "MODEL",        "$$MODEL" )
 epicsEnvSet( "HTTP_PORT",    "$$IF(HTTP_PORT,$$HTTP_PORT,7800)" )
+epicsEnvSet( "N_AD_BUFFERS", "$$IF(N_AD_BUFFERS,$$N_AD_BUFFERS,0)" )
 $$IF(ARV_DEBUG)
 epicsEnvSet( "ARV_DEBUG",    "$$ARV_DEBUG" )
 $$ELSE(ARV_DEBUG)
@@ -57,7 +59,7 @@ dbLoadDatabase( "dbd/gige.dbd" )
 gige_registerRecordDeviceDriver(pdbbase)
 
 # Bump up scanOnce queue size for evr invariant timing
-scanOnceSetQueueSize( $$IF(SCAN_ONCE_QUEUE_SIZE,$$SCAN_ONCE_QUEUE_SIZE,2000) )
+scanOnceSetQueueSize( $$IF(SCAN_ONCE_QUEUE_SIZE,$$SCAN_ONCE_QUEUE_SIZE,4000) )
 
 # Set iocsh debug variables
 var DEBUG_TS_FIFO 1
@@ -87,12 +89,9 @@ $$ENDIF(NO_ST_CMD_DELAY)
 # Load the camera model specific template
 dbLoadRecords( db/$(MODEL).template, "P=$(CAM_PV),R=:,PORT=$(CAM_PORT),TYPE=$(CAM_TYPE)" )
 
-$$IF(EVR_PV)
-epicsEnvSet( "TRIG_PV",      "$$(EVR_PV):TRIG$$IF(EVR_TRIG,$$EVR_TRIG,0)" )
 # Load timestamp plugin
 dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
 dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),CAM_DLY_RBV=$(TRIG_PV):BW_TDES" )
-$$ENDIF(EVR_PV)
 
 # Load history records
 $$IF(BLD_SRC)
@@ -112,11 +111,24 @@ epicsEnvSet( "QSIZE", "10" )
 
 # Configure and load any image streams
 $$LOOP(STREAM)
+$$IF(NAME,data)
+epicsEnvSet( "IMAGE_NAME",   "$$IF(IMAGE_NAME,$$IMAGE_NAME,DATA1)" )
+$$ENDIF(NAME)
+$$IF(NAME,viewer)
 epicsEnvSet( "IMAGE_NAME",   "$$IF(IMAGE_NAME,$$IMAGE_NAME,IMAGE1)" )
+$$ENDIF(NAME)
+$$IF(NAME,thumbnail)
+epicsEnvSet( "IMAGE_NAME",   "$$IF(IMAGE_NAME,$$IMAGE_NAME,THUMBNAIL)" )
+$$ENDIF(NAME)
+$$IF(STREAM_NELM)
+epicsEnvSet( "STREAM_NELM",  "$$STREAM_NELM" )
+$$ELSE(STREAM_NELM)
+epicsEnvSet( "STREAM_NELM",  "$(IMAGE_NELM)" )
+$$ENDIF(STREAM_NELM)
 < db/$$(NAME)Stream.cmd
 $$ENDLOOP(STREAM)
 
-# Configure and load any desired viewers
+# Configure and load any desired viewers (deprecated)
 $$LOOP(VIEWER)
 epicsEnvSet( "IMAGE_NAME",   "$$IF(IMAGE_NAME,$$IMAGE_NAME,IMAGE1)" )
 < db/$$(NAME)Viewer.cmd
@@ -161,7 +173,7 @@ dbLoadRecords("db/netstat.template", "P=$(IOC_PV),IF=$$IF(NET_IF,$$NET_IF,ETH0),
 
 # Load soft ioc related record instances
 dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )
-dbLoadRecords( "db/iocName.db",				"IOC=$(IOC_PV),IOCNAME=$(IOCNAME)" )
+dbLoadRecords( "db/iocName.db",				"IOC=$(IOC_PV),IOCNAME=$(IOCNAME),CAM=$(CAM_PV)" )
 
 # Setup autosave
 dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
@@ -218,6 +230,7 @@ $$ENDIF(NO_ST_CMD_DELAY)
 # TODO: Remove these dbpf calls if possible
 # Enable callbacks
 dbpf $(CAM_PV):ArrayCallbacks 1
+dbpf $(CAM_PV):LAUNCH_EDM "$$TOP/iocBoot/$(IOCNAME)/edm-$(IOCNAME).cmd"
 
 $$IF(AUTO_START)
 # Final delay before auto-start image acquisition
