@@ -6,7 +6,8 @@ file ADBase.template
 	{
 	P=$(CAM),
 	R=:,
-	PORT=$(CAM_PORT),
+	PORT		= "$(CAM_PORT)",
+	RATE_SMOOTH	= "\$(RATE_SMOOTH=0.2)"
 	}
 }
 

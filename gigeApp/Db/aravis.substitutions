@@ -8,7 +8,8 @@ file aravisCamera.template
 	P			= $(CAM),
 	R			= :,
 	PORT		= $(CAM_PORT),
-	CAM_DLY_RBV	= $(TRIG_PV):BW_TDES
+	CAM_DLY_RBV	= "$(TRIG_PV):BW_TDES",
+	RATE_SMOOTH	= "\$(RATE_SMOOTH=0.2)"
 	}
 }
 
