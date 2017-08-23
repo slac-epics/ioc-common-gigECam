@@ -89,8 +89,10 @@ $$ENDIF(NO_ST_CMD_DELAY)
 # Load the camera model specific template
 dbLoadRecords( db/$(MODEL).template, "P=$(CAM_PV),R=:,PORT=$(CAM_PORT),TYPE=$(CAM_TYPE)" )
 
+$$IF(EVR_PV)
 # Load timestamp plugin
 dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
+$$ENDIF(EVR_PV)
 dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),CAM_DLY_RBV=$(TRIG_PV):BW_TDES" )
 
 # Load history records
