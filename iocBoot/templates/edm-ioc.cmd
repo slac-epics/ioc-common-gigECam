@@ -1,14 +1,16 @@
 #! /bin/bash
 
 # Setup the common directory env variables
-if [ -e /reg/g/pcds/pyps/config/common_dirs.sh ]; then
-	source /reg/g/pcds/pyps/config/common_dirs.sh
-else
-	source /afs/slac/g/pcds/config/common_dirs.sh
+if [ -e      /reg/g/pcds/pyps/config/common_dirs.sh ]; then
+	source   /reg/g/pcds/pyps/config/common_dirs.sh
+elif [ -e    /afs/slac/g/pcds/pyps/config/common_dirs.sh ]; then
+	source   /afs/slac/g/pcds/pyps/config/common_dirs.sh
 fi
 
 # Setup edm environment
-source $SETUP_SITE_TOP/epicsenv-cur.sh
+if [ -f    ${SETUP_SITE_TOP}/epicsenv-cur.sh ]; then
+	source ${SETUP_SITE_TOP}/epicsenv-cur.sh
+fi
 
 export EVR_PV=$$IF(EVR_PV,$$EVR_PV,$$CAM_PV:NoEvr)
 export IOC_PV=$$IOC_PV
