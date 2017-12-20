@@ -47,7 +47,9 @@ endif
 #gige_DBD += NDPluginSupport.dbd
 gige_DBD += simDetectorSupport.dbd
 gige_DBD += prosilicaSupport.dbd
+ifdef ARAVISGIGE
 gige_DBD += aravisCameraSupport.dbd
+endif
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 gige_SRCS += gige_registerRecordDeviceDriver.cpp
@@ -66,6 +68,7 @@ gige_LIBS += devIocStats
 gige_LIBS += prosilica
 gige_LIBS += PvAPI
 
+ifdef ARAVISGIGE
 # aravis camera libs
 gige_LIBS += aravisCamera
 gige_LIBS += aravis-0.4
@@ -75,6 +78,7 @@ gige_LIBS += gthread-2.0
 gige_LIBS += gmodule-2.0
 gige_LIBS += glib-2.0
 gige_SYS_LIBS += resolv
+endif
 
 ifdef EVENT2
 # ADCore Timestamp provider
