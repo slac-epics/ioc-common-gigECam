@@ -192,9 +192,22 @@ set_pass1_restoreFile( "autoSettings.sav" )
 set_pass1_restoreFile( "$(IOC).sav" )
 
 #
-# Initialize the IOC and start processing records
+# iocInit: Initialize the IOC and start processing records
 #
+$$IF(NO_ST_CMD_DELAY)
+$$ELSE(NO_ST_CMD_DELAY)
+epicsThreadSleep $(ST_CMD_DELAYS)
+$$ENDIF(NO_ST_CMD_DELAY)
 iocInit()
+
+# iocInit done
+$$IF(NO_ST_CMD_DELAY)
+$$ELSE(NO_ST_CMD_DELAY)
+epicsThreadSleep $(ST_CMD_DELAYS)
+$$ENDIF(NO_ST_CMD_DELAY)
+
+# Start PVAccess Server
+startPVAServer()
 
 # Create autosave files from info directives
 makeAutosaveFileFromDbInfo( "$(IOC_DATA)/$(IOC)/autosave/autoSettings.req", "autosaveFields" )

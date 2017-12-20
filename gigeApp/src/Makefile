@@ -7,44 +7,37 @@ include $(TOP)/configure/CONFIG
 
 #=============================
 # Build an ioc application
-
-PROD_IOC  = gige
-
-# gige.dbd will be created and installed
-DBD += gige.dbd
-
-# gige.dbd will be made up from these files:
-
-# Define PROD_NAME before including commonDriverMakefile
 PROD_NAME = gige
+
+PROD_IOC = $(PROD_NAME)
+
+# $(PROD_NAME).dbd will be created and installed
+DBD += $(PROD_NAME).dbd
+
+# $(PROD_NAME).dbd will be made up from these files:
+
 include $(ADCORE)/ADApp/commonDriverMakefile
 
 # Network statistics
-gige_DBD += netstat.dbd
+$(PROD_NAME)_DBD += netstat.dbd
 
-gige_DBD += iocAdmin.dbd
-# base and std modules
-#gige_DBD += base.dbd
-#gige_DBD += asSupport.dbd
+# std ioc modules
+$(PROD_NAME)_DBD += iocAdmin.dbd
+$(PROD_NAME)_DBD += caPutLog.dbd
+
+# pvaSrv
+$(PROD_NAME)_DBD += dbPv.dbd
 
 ifdef EVENT2
 # Timing and EVR
-gige_DBD += diagTimer.dbd
-gige_DBD += evrSupport.dbd
-gige_DBD += devMrfEr.dbd
+$(PROD_NAME)_DBD += diagTimer.dbd
+$(PROD_NAME)_DBD += evrSupport.dbd
+$(PROD_NAME)_DBD += devMrfEr.dbd
 
 # ADCore timeStamp provider
-gige_DBD += timeStampFifo.dbd
+$(PROD_NAME)_DBD += timeStampFifo.dbd
 endif
 
-# areaDetector
-# The ADCore ones are handled below by commonDriverMakefile
-#gige_DBD += asyn.dbd
-#gige_DBD += busySupport.dbd
-#gige_DBD += calcSupport.dbd
-#gige_DBD += sscanSupport.dbd
-#gige_DBD += ADSupport.dbd
-#gige_DBD += NDPluginSupport.dbd
 gige_DBD += simDetectorSupport.dbd
 gige_DBD += prosilicaSupport.dbd
 ifdef ARAVISGIGE
@@ -61,8 +54,25 @@ gige_SRCS_DEFAULT += netstat.c
 
 # Add required libraries
 # base and std modules
-#gige_LIBS += autosave
-gige_LIBS += devIocStats
+$(PROD_NAME)_LIBS += devIocStats
+$(PROD_NAME)_LIBS += caPutLog
+
+# pvaSrv
+$(PROD_NAME)_LIBS += pvaSrv
+
+ifdef EVENT2
+# ADCore Timestamp provider
+$(PROD_NAME)_LIBS += timeStampFifo
+
+# Timing and EVR
+$(PROD_NAME)_LIBS += evrSupport
+$(PROD_NAME)_LIBS += devMrfEr
+$(PROD_NAME)_LIBS += drvMrf
+$(PROD_NAME)_LIBS_Linux += mrfApi
+
+# Diagnostics
+$(PROD_NAME)_LIBS += diagTimer
+endif
 
 # Prosilica camera libs
 gige_LIBS += prosilica
@@ -80,72 +90,23 @@ gige_LIBS += glib-2.0
 gige_SYS_LIBS += resolv
 endif
 
-ifdef EVENT2
-# ADCore Timestamp provider
-gige_LIBS += timeStampFifo
-
-# Timing and EVR
-gige_LIBS += evrSupport
-gige_LIBS += devMrfEr
-gige_LIBS += drvMrf
-gige_LIBS_Linux += mrfApi
-endif
-
-# Diagnostics
-gige_LIBS += diagTimer
-
-# areaDetector
-# The ADCore libs and dependents are handled below by commonDriverMakefile
-#gige_LIBS += ADBase
-#gige_LIBS += NDPlugin
-#gige_LIBS += calc
-#gige_LIBS += busy
-# GraphicsMagick not supported in areaDetector 1.9 for RHEL due to compiler issues
-#gige_LIBS += NDFileMagick
-#gige_LIBS += netCDF
-#gige_LIBS += NeXus
-#gige_LIBS += hdf5
-gige_LIBS += simDetector
-#gige_LIBS += sscan
-#gige_LIBS += asyn
-#gige_LIBS += recIoc
-#gige_LIBS += softDevIoc
-#gige_LIBS += miscIoc
-#gige_LIBS += rsrvIoc
-#gige_LIBS += dbtoolsIoc
-#gige_LIBS += asIoc
-#gige_LIBS += dbIoc
-#gige_LIBS += registryIoc
-#gige_LIBS += dbStaticIoc
-#gige_LIBS += dbRecStd
-#gige_LIBS += dbCore
-#gige_LIBS += ca
-#gige_LIBS += Com
-#gige_LIBS += szip
-#gige_SYS_LIBS += X11
-#gige_LIBS += xml2
-#gige_SYS_LIBS += xml2
-#gige_SYS_LIBS += tiff
-#gige_SYS_LIBS += jpeg
-#gige_SYS_LIBS += z
-#gige_SYS_LIBS += bz2
-#gige_SYS_LIBS += selinux
-#gige_SYS_LIBS += pthread
-#gige_SYS_LIBS += rt
-#gige_SYS_LIBS += readline
+# areaDetector ADSimDetector
+$(PROD_NAME)_LIBS += simDetector
 
 ifdef FFMPEGSERVER
 # ffmpegServer
-gige_DBD += ffmpegServer.dbd
+$(PROD_NAME)_DBD += ffmpegServer.dbd
 DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.cmd)
 DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.db)
-gige_LIBS += avdevice
-gige_LIBS += ffmpegServer
-gige_LIBS += swscale
-gige_LIBS += avformat
-gige_LIBS += avcodec
-gige_LIBS += avutil
-#gige_LIBS += bz2
+$(PROD_NAME)_LIBS += avdevice
+$(PROD_NAME)_LIBS += ffmpegServer
+$(PROD_NAME)_LIBS += swscale
+$(PROD_NAME)_LIBS += avformat
+$(PROD_NAME)_LIBS += avcodec
+$(PROD_NAME)_LIBS += avutil
+$(PROD_NAME)_LIBS += swresample
+$(PROD_NAME)_LIBS += bz2
+$(PROD_NAME)_LIBS += lzma
 endif
 
 
