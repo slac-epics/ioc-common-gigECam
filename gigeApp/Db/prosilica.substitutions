@@ -22,6 +22,14 @@ file prosilica.template
 	}
 }
 
+file boxLimits.template
+{
+	{
+	P=$(CAM),
+	R=:,
+	}
+}
+
 file cross.db
 {
 	{

@@ -13,7 +13,9 @@ DB += evrUsed.db
 
 # Create and install Camera DB Files
 DB += prosilica.db
+ifdef ARAVISGIGE
 DB += aravis.db
+endif
 
 # Aravis cameras need to have their custom db and env files installed
 ARV_MODELS := $(wildcard $(ARAVISGIGE)/db/*.env)
