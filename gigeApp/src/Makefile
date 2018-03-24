@@ -26,7 +26,7 @@ $(PROD_NAME)_DBD += iocAdmin.dbd
 $(PROD_NAME)_DBD += caPutLog.dbd
 
 # pvaSrv
-$(PROD_NAME)_DBD += dbPv.dbd
+#$(PROD_NAME)_DBD += dbPv.dbd
 
 ifdef EVENT2
 # Timing and EVR
@@ -58,7 +58,7 @@ $(PROD_NAME)_LIBS += devIocStats
 $(PROD_NAME)_LIBS += caPutLog
 
 # pvaSrv
-$(PROD_NAME)_LIBS += pvaSrv
+#$(PROD_NAME)_LIBS += pvaSrv
 
 ifdef EVENT2
 # ADCore Timestamp provider
@@ -90,6 +90,14 @@ gige_LIBS += glib-2.0
 gige_SYS_LIBS += resolv
 endif
 
+ifdef FFI_LIB
+PROD_LIBS += ffi
+ffi_DIR = $(FFI_LIB)
+endif
+ifdef PCRE_LIB
+PROD_LIBS += pcre
+endif
+
 # areaDetector ADSimDetector
 $(PROD_NAME)_LIBS += simDetector
 
@@ -108,7 +116,6 @@ $(PROD_NAME)_LIBS += swresample
 $(PROD_NAME)_LIBS += bz2
 $(PROD_NAME)_LIBS += lzma
 endif
-
 
 #===========================
 

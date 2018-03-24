@@ -21,6 +21,29 @@ ifeq '$(EPICS_HOST_ARCH)' 'linux-x86_64'
 CROSS_COMPILER_TARGET_ARCHS    =
 endif
 
+PKG_ARCH    = $(T_A)
+
+# Configure LIBFFI_TOP
+FFI_TOP			  = $(PSPKG_ROOT)/release/ffi/3.2.1/$(PKG_ARCH)
+FFI_LIB			  = $(FFI_TOP)/lib64
+ffi_DIR			  = $(FFI_TOP)/lib64
+#PROD_DEPLIB_DIRS += $(FFI_LIB)
+#LIB_INSTALLS	  += $(wildcard $(FFI_TOP)/lib64/lib*)
+
+# Configure PCRE_TOP
+PCRE_TOP		  = $(PSPKG_ROOT)/release/pcre/8.37/$(PKG_ARCH)
+PCRE_LIB		  = $(PCRE_TOP)/lib
+pcre_DIR		  = $(PCRE_TOP)/lib
+PROD_DEPLIB_DIRS += $(PCRE_LIB)
+#LIB_INSTALLS	+=	$(wildcard $(PCRE_TOP)/lib/lib*)
+
+# Add ffmpeg package
+FFMPEG_VERSION      :=  3.3
+FFMPEG_TOP          :=  $(PSPKG_ROOT)/release/ffmpeg/$(FFMPEG_VERSION)/$(PKG_ARCH)
+#LIB_INSTALLS        +=  $(wildcard $(FFMPEG_TOP)/lib/lib*)
+#USR_INCLUDES        +=  -I$(FFMPEG_TOP)/include
+PROD_DEPLIB_DIRS    +=  $(FFMPEG_TOP)/lib
+
 # Configure which 3rd party libraries to use and where to find them.
 # For each library XXX the following definitions are used:
 # WITH_XXX      Build the plugins and drivers that require this library.
