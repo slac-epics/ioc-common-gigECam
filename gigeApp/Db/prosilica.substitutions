@@ -4,8 +4,10 @@
 file ADBase.template
 {
 	{
-	P=$(CAM),
-	R=:,
+	P			= $(CAM),
+	R			= :,
+	ADDR		= "\$(ADDR=0)"
+	TIMEOUT		= "\$(TIMEOUT=1)"
 	PORT		= "$(CAM_PORT)",
 	RATE_SMOOTH	= "\$(RATE_SMOOTH=0.2)"
 	}
@@ -16,6 +18,8 @@ file prosilica.template
 	{
 	P			= $(CAM),
 	R			= :,
+	ADDR		= "\$(ADDR=0)"
+	TIMEOUT		= "\$(TIMEOUT=1)"
 	PORT		= $(CAM_PORT),
 	CAM_DLY_RBV	= $(TRIG_PV):BW_TDES
 	TRSCAN	 	= "Passive"
@@ -25,15 +29,15 @@ file prosilica.template
 file boxLimits.template
 {
 	{
-	P=$(CAM),
-	R=:,
+	P			= $(CAM),
+	R			= :,
 	}
 }
 
 file cross.db
 {
 	{
-	P=$(CAM),
-	R=:,
+	P			= $(CAM),
+	R			= :,
 	}
 }
