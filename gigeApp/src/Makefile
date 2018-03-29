@@ -15,7 +15,6 @@ PROD_IOC = $(PROD_NAME)
 DBD += $(PROD_NAME).dbd
 
 # $(PROD_NAME).dbd will be made up from these files:
-
 include $(ADCORE)/ADApp/commonDriverMakefile
 
 # Network statistics
@@ -88,14 +87,8 @@ gige_LIBS += gthread-2.0
 gige_LIBS += gmodule-2.0
 gige_LIBS += glib-2.0
 gige_SYS_LIBS += resolv
-endif
-
-ifdef FFI_LIB
-PROD_LIBS += ffi
-ffi_DIR = $(FFI_LIB)
-endif
-ifdef PCRE_LIB
 PROD_LIBS += pcre
+PROD_LIBS += ffi
 endif
 
 # areaDetector ADSimDetector
