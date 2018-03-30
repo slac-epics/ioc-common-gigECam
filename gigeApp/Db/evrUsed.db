@@ -40,3 +40,10 @@ record(bi, "$(EVR):LINK")
   field(ZNAM, "OFF")
   field(ONAM, "ON")
 }
+
+# Dummy records to avoid error msgs re unable to connect to trigger PV's
+record(calc,    "$(EVR):TRIG0:BW_TDES") { }
+record(longout, "$(EVR):TRIG0:EC_RBV") { }
+record(sub,     "$(EVR):TRIG0:RATE") { }
+record(ao,      "$(EVR):TRIG0:TDES") { }
+record(longout, "$(EVR):TRIG0:TEC") { }

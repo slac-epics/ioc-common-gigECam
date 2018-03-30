@@ -93,7 +93,7 @@ $$IF(EVR_PV)
 # Load timestamp plugin
 dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
 $$ENDIF(EVR_PV)
-dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),CAM_DLY_RBV=$(TRIG_PV):BW_TDES" )
+dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),TSS=$(CAM_PV):TSS" )
 
 # Load history records
 $$IF(BLD_SRC)
