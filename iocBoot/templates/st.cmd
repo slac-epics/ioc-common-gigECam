@@ -58,6 +58,9 @@ epicsEnvSet( "CAM_TRACE_IO_MASK",	"$$IF(CAM_TRACE_IO,$$CAM_TRACE_IO,0)" )
 dbLoadDatabase( "dbd/gige.dbd" )
 gige_registerRecordDeviceDriver(pdbbase)
 
+# Set a prefix for the iocLog
+iocLogPrefix( "$(IOCNAME): " )
+
 # Bump up scanOnce queue size for evr invariant timing
 scanOnceSetQueueSize( $$IF(SCAN_ONCE_QUEUE_SIZE,$$SCAN_ONCE_QUEUE_SIZE,4000) )
 
