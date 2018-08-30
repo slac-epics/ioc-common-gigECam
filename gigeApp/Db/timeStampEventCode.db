@@ -9,9 +9,12 @@
 #
 # Required macros:
 #	CAM				- Prefix for camera
+#	TSS				- Prefix for timeStampFifo PVs
 #	CAM_TRIG		- Prefix for EVR trigger
 #
 # Optional macros:
+#	CAM_DLY			- PV to write camera trigger delay to
+#	CAM_DLY_RBV		- PV for camera trigger delay readback
 #	CAM_DLY_EGU		- EGU for camera delay, defaults to ns
 #	CAM_DLY_SCALE	- Scale factor for coverting camera delay to sec, defaults to 1e9
 #	TSDLY_PV		- PV to write timestamp delay to, default to $(TSS):ExpectedDelay
@@ -27,12 +30,14 @@ record( ao, "$(CAM):CamTrigDelay" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR PREC VAL" )
 }
 
+# This record calculates the EVR trigger delay and writes it to the
+# appropriate EVR record via macro CAM_DLY
 record( calcout, "$(CAM):CamTrigDelayCalc" )
 {
 	field( INPA, "$(CAM):CamTrigDelay NPP MS" )
 	field( INPB, "$(CAM):CamDelayScale CPP MS" )
 	field( CALC, "A*B" )
-	field( OUT,  "$(CAM_TRIG):TDES" )
+	field( OUT,  "$(CAM_DLY=) PP" )
 	field( EGU,  "sec" )
 	field( PREC, "4" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC PREC" )
@@ -50,7 +55,7 @@ record( longout, "$(CAM):CamDelayScale" )
 
 record( calc, "$(CAM):CamTrigDelay_RBV" )
 {
-	field( INPA, "$(CAM_TRIG):BW_TDES CPP MS" )
+	field( INPA, "$(CAM_DLY_RBV=unused) CPP MS" )
 	field( INPB, "$(CAM):CamDelayScale CPP MS" )
 	field( CALC, "B==0?A:(A/B)" )
 	field( EGU,  "sec" )
