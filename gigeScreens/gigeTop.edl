@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 184
-y 1104
+x 1020
+y 49
 w 832
 h 980
 font "helvetica-medium-r-12.0"
@@ -145,9 +145,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 28
+x 8
 y 0
-w 196
+w 228
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -190,9 +190,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 28
+x 8
 y 16
-w 196
+w 228
 h 20
 controlPv "$(CAM):Model_RBV"
 font "helvetica-medium-r-12.0"
