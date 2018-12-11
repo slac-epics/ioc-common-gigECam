@@ -6,10 +6,10 @@ include $(TOP)/RELEASE_SITE
 # Define the version of modules needed by
 # IOC apps or other Support apps
 # ===============================================================
-ADCORE_MODULE_VERSION               = R3.1-2.2.0
-ADPROSILICA_MODULE_VERSION          = R2.1-1.4.2
-ADSIMDETECTOR_MODULE_VERSION        = R2.7-0.0.5
-ADSTREAM_MODULE_VERSION             = R2.6.1
+ADCORE_MODULE_VERSION               = R3.1-2.1.1
+ADPROSILICA_MODULE_VERSION          = R2.1-1.4.3
+ADSIMDETECTOR_MODULE_VERSION        = R2.7-0.0.4
+ADSTREAM_MODULE_VERSION             = R2.5.4
 ADSUPPORT_MODULE_VERSION            = R1.1-0.1.1
 ARAVISGIGE_MODULE_VERSION           = R2.1-1.1.15
 ASYN_MODULE_VERSION                 = R4.32-1.0.0
@@ -17,10 +17,10 @@ AUTOSAVE_MODULE_VERSION             = R5.7.1-2.0.0
 BUSY_MODULE_VERSION                 = R1.6.1-0.2.6
 CALC_MODULE_VERSION                 = R3.6.1-0.1.0
 CAPUTLOG_MODULE_VERSION             = R3.5-1.0.0
-DIAG_TIMER_MODULE_VERSION           = R1.9.2
-EVENT2_MODULE_VERSION               = R4.4.0
+DIAG_TIMER_MODULE_VERSION           = R1.9.1
+EVENT2_MODULE_VERSION               = R4.3.0
 FFMPEGSERVER_MODULE_VERSION         = R2.1.1-2.2.1
-IOCADMIN_MODULE_VERSION             = R3.1.15-1.2.0
+IOCADMIN_MODULE_VERSION             = R3.1.15-1.0.1
 NORMATIVETYPES_MODULE_VERSION       = R5.2.0-0.0.1
 PVACCESS_MODULE_VERSION             = R6.0.0-0.2.0
 PVASRV_MODULE_VERSION               = R0.12.0-0.2.1
@@ -28,7 +28,7 @@ PVA2PVA_MODULE_VERSION              = R1.0.0-0.3.0
 PVDATABASE_MODULE_VERSION           = R4.3.0-0.0.1
 PVDATA_MODULE_VERSION               = R7.0.0-0.0.1
 SSCAN_MODULE_VERSION                = R2.10.2-1.0.0
-TIMESTAMPFIFO_MODULE_VERSION        = R1.6.0
+TIMESTAMPFIFO_MODULE_VERSION        = R1.5.12
 
 # ============================================================
 # External Support module path definitions
@@ -45,6 +45,7 @@ TIMESTAMPFIFO_MODULE_VERSION        = R1.6.0
 # ============================================================
 ADCORE          = $(EPICS_MODULES)/ADCore/$(ADCORE_MODULE_VERSION)
 ADPROSILICA     = $(EPICS_MODULES)/ADProsilica/$(ADPROSILICA_MODULE_VERSION)
+#ADPROSILICA     = /reg/neh/home/sheppard/ioc/ADProsilica/
 ADSIMDETECTOR   = $(EPICS_MODULES)/ADSimDetector/$(ADSIMDETECTOR_MODULE_VERSION)
 ADSTREAM        = $(EPICS_MODULES)/ADStream/$(ADSTREAM_MODULE_VERSION)
 ADSUPPORT       = $(EPICS_MODULES)/ADSupport/$(ADSUPPORT_MODULE_VERSION)
