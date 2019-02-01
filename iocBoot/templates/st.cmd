@@ -11,6 +11,8 @@ epicsEnvSet( "IOCSH_PS1",    "$(IOCNAME)> " )
 epicsEnvSet( "IOC_PV",       "$$IOC_PV" )
 epicsEnvSet( "IOCTOP",       "$$IOCTOP" )
 epicsEnvSet( "BUILD_TOP",    "$$TOP" )
+epicsEnvSet( "EPICS_PVA_AUTO_ADDR_LIST",         "TRUE" )
+epicsEnvSet( "EPICS_PVAS_AUTO_BEACON_ADDR_LIST", "TRUE" )
 cd( "$(IOCTOP)" )
 
 # Set Max array size
@@ -64,8 +66,15 @@ iocLogPrefix( "$(IOCNAME): " )
 # Bump up scanOnce queue size for evr invariant timing
 scanOnceSetQueueSize( $$IF(SCAN_ONCE_QUEUE_SIZE,$$SCAN_ONCE_QUEUE_SIZE,4000) )
 
+$$IF(CPU_AFFINITY_SET)
+# Set MCoreUtils rules for cpu affinity
+mcoreThreadRuleAdd CAM_cpu * * $$CPU_AFFINITY_SET CAM.*
+mcoreThreadRuleAdd evr_cpu * * $$CPU_AFFINITY_SET evr.*
+$$ENDIF(CPU_AFFINITY_SET)
+
 # Set iocsh debug variables
-var DEBUG_TS_FIFO 1
+var DEBUG_TS_FIFO $$IF(DEBUG_TS_FIFO,$$DEBUG_TS_FIFO,1)
+var save_restoreLogMissingRecords $$IF(save_restoreLogMissingRecords,$$save_restoreLogMissingRecords,0)
 
 # Setup the environment for the specified camera model
 < db/$(MODEL).env
@@ -97,11 +106,6 @@ $$IF(EVR_PV)
 dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
 $$ENDIF(EVR_PV)
 dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),TSS=$(CAM_PV):TSS" )
-
-# Load history records
-$$IF(BLD_SRC)
-dbLoadRecords("db/bld_hist.db",     "P=$(CAM_PV),R=:" )
-$$ENDIF(BLD_SRC)
 
 $$IF(NO_ST_CMD_DELAY)
 $$ELSE(NO_ST_CMD_DELAY)
@@ -152,10 +156,18 @@ epicsEnvSet( "PLUGIN_SRC",   "$$IF(SRC,$$SRC,CAM)" )
 $$ENDLOOP(PLUGIN)
 
 $$LOOP(BLD)
+# TODO: Reconfigure BLD as Spectrometer plugin
 # Configure and load BLD plugin
 epicsEnvSet( "N",            "$$CALC{INDEX+1}" )
 epicsEnvSet( "PLUGIN_SRC",   "CAM" )
 < db/pluginBldSpectrometer.cmd
+$$IF(HIST)
+# Load history records
+# TODO: Fix me!  bld_hist.substitutions should become something
+# along the lines of
+# dbLoadRecords( "db/plugin$$(NAME)Hist.db 
+dbLoadRecords("db/bld_hist.db",     "P=$(CAM_PV),R=:" )
+$$ENDIF(HIST)
 $$ENDLOOP(BLD)
 
 $$IF(NO_ST_CMD_DELAY)
@@ -168,9 +180,9 @@ $$IF(EVR_PV)
 ErDebugLevel( $$IF(ErDebug,$$ErDebug,0) )
 ErConfigure( $(EVR_CARD), 0, 0, 0, $(EVRID_$$EVR_TYPE) )
 dbLoadRecords( "$(EVRDB)", "IOC=$(IOC_PV),EVR=$(EVR_PV),CARD=$(EVR_CARD)$$IF(EVR_TRIG),IP$$(EVR_TRIG)E=Enabled$$ENDIF(EVR_TRIG)$$LOOP(EXTRA_TRIG),IP$$(TRIG)E=Enabled$$ENDLOOP(EXTRA_TRIG)" )
-dbLoadRecords( "db/evrUsed.db",				"EVR=$(EVR_PV),EVR_USED=1" )
+dbLoadRecords( "db/devEvrInfo.db",				"DEV=$(CAM_PV),IOC=$(IOC_PV),EVR=$(EVR_PV),TRIG_CH=$$IF(EVR_TRIG,$$EVR_TRIG,0),EVR_USED=1" )
 $$ELSE(EVR_PV)
-dbLoadRecords( "db/evrUsed.db",				"EVR=$(EVR_PV),EVR_USED=0" )
+dbLoadRecords( "db/devEvrInfo.db",				"DEV=$(CAM_PV),EVR=$(EVR_PV),EVR_USED=0" )
 $$ENDIF(EVR_PV)
 
 # Load netstat records
@@ -178,10 +190,22 @@ dbLoadRecords("db/netstat.template", "P=$(IOC_PV),IF=$$IF(NET_IF,$$NET_IF,ETH0),
 
 # Load soft ioc related record instances
 dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )
-dbLoadRecords( "db/iocName.db",				"IOC=$(IOC_PV),IOCNAME=$(IOCNAME),CAM=$(CAM_PV)" )
+dbLoadRecords( "db/iocRelease.db",			"IOC=$(IOC_PV)" )
+epicsEnvSet( "DEV_INFO", "DEV=$(CAM_PV),IOC=$(IOC_PV),IOCNAME=$(IOCNAME)" )
+epicsEnvSet( "DEV_INFO", "$(DEV_INFO),COM_TYPE=camLink,COM_PORT=Card $(EDT_CARD) Chan $(EDT_CHAN)" )
+$$IF(POWER)
+epicsEnvSet( "DEV_INFO", "$(DEV_INFO),POWER=$$POWER" )
+$$ENDIF(POWER)
+$$IF(WEB_URL)
+epicsEnvSet( "DEV_INFO", "$(DEV_INFO),WEB_URL=$$WEB_URL" )
+$$ENDIF(WEB_URL)
+$$IF(CAPTAR)
+epicsEnvSet( "DEV_INFO", "$(DEV_INFO),CAPTAR=$$CAPTAR" )
+$$ENDIF(CAPTAR)
+dbLoadRecords( "db/devIocInfo.db",			"$(DEV_INFO)" )
 
 # Setup autosave
-dbLoadRecords( "db/save_restoreStatus.db",	"IOC=$(IOC_PV)" )
+dbLoadRecords( "db/save_restoreStatus.db",	"P=$(IOC_PV),IOC=$(IOC_PV)" )
 set_savefile_path( "$(IOC_DATA)/$(IOC)/autosave" )
 set_requestfile_path( "$(BUILD_TOP)/autosave" )
 # Also look in the iocData autosave folder for auto generated req files
@@ -189,8 +213,10 @@ set_requestfile_path( "$(IOC_DATA)/$(IOC)/autosave" )
 save_restoreSet_status_prefix( "$(IOC_PV):" )
 save_restoreSet_IncompleteSetsOk( 1 )
 save_restoreSet_DatedBackupFiles( 1 )
+# pass0 autosave restore IS needed for cameras and slows IOC boot
 set_pass0_restoreFile( "autoSettings.sav" )
 set_pass0_restoreFile( "$(IOC).sav" )
+# Is pass1 needed?
 set_pass1_restoreFile( "autoSettings.sav" )
 set_pass1_restoreFile( "$(IOC).sav" )
 
