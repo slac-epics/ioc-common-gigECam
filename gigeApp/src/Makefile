@@ -33,6 +33,8 @@ $(PROD_NAME)_DBD += diagTimer.dbd
 $(PROD_NAME)_DBD += event2Support.dbd
 $(PROD_NAME)_DBD += devEvent2Er.dbd
 
+$(PROD_NAME)_DBD += mcoreutils.dbd
+
 # ADCore timeStamp provider
 $(PROD_NAME)_DBD += timeStampFifo.dbd
 endif
@@ -67,6 +69,8 @@ $(PROD_NAME)_LIBS += timeStampFifo
 $(PROD_NAME)_LIBS += event2Support
 $(PROD_NAME)_LIBS += devEvent2Er
 $(PROD_NAME)_LIBS += drvEvent2
+
+$(PROD_NAME)_LIBS += mcoreutils
 
 # Diagnostics
 $(PROD_NAME)_LIBS += diagTimer
