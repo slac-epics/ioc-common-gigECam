@@ -23,6 +23,19 @@ endif
 
 PKG_ARCH    = $(T_A)
 
+# Configure which 3rd party libraries to use and where to find them.
+# For each library XXX the following definitions are used:
+# WITH_XXX      Build the plugins and drivers that require this library.
+#               Build the source code for this library in ADSupport if XXX_EXTERNAL=NO.
+# XXX_EXTERNAL  If NO then build the source code for this library in ADSupport.
+# XXX_INCLUDE   If XXX_EXTERNAL=YES then this is the path to the include files for XXX.
+#               However, if XXX is a system library whose include files are in a 
+#               standard include search path then do not define XXX_INCLUDE.
+# XXX_LIB       If XXX_EXTERNAL=YES then this is the path to the library files for XXX.
+#               However, if XXX is a system library whose library files in a 
+#               standard library search path then do not define XXX_LIB.
+#
+
 # EPICS_V4 is required for NDPluginPva and pvaDriver
 WITH_EPICS_V4  = YES
 # As of R3-2 WITH_EPICS_V4 changes to WITH_PVA
@@ -44,17 +57,7 @@ WITH_PVA  = YES
 
 # Settings for static and shared build options
 STATIC_BUILD=YES
-SHARED_LIBRARIES=NO
-
-ifeq ($(T_A),linux-x86_64)
 SHARED_LIBRARIES=YES
-endif
-ifeq ($(T_A),rhel6-x86_64)
-SHARED_LIBRARIES=YES
-endif
-ifeq ($(T_A),rhel7-x86_64)
-SHARED_LIBRARIES=YES
-endif
 
 ifneq '$(wildcard $(EVENT2))' ''
 USR_CFLAGS += -DUSE_EVR_IRQ_HANDLER

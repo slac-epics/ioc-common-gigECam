@@ -30,8 +30,8 @@ $(PROD_NAME)_DBD += caPutLog.dbd
 ifdef EVENT2
 # Timing and EVR
 $(PROD_NAME)_DBD += diagTimer.dbd
-$(PROD_NAME)_DBD += evrSupport.dbd
-$(PROD_NAME)_DBD += devMrfEr.dbd
+$(PROD_NAME)_DBD += event2Support.dbd
+$(PROD_NAME)_DBD += devEvent2Er.dbd
 
 # ADCore timeStamp provider
 $(PROD_NAME)_DBD += timeStampFifo.dbd
@@ -64,10 +64,9 @@ ifdef EVENT2
 $(PROD_NAME)_LIBS += timeStampFifo
 
 # Timing and EVR
-$(PROD_NAME)_LIBS += evrSupport
-$(PROD_NAME)_LIBS += devMrfEr
-$(PROD_NAME)_LIBS += drvMrf
-$(PROD_NAME)_LIBS_Linux += mrfApi
+$(PROD_NAME)_LIBS += event2Support
+$(PROD_NAME)_LIBS += devEvent2Er
+$(PROD_NAME)_LIBS += drvEvent2
 
 # Diagnostics
 $(PROD_NAME)_LIBS += diagTimer
