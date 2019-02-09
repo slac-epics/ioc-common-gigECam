@@ -19,4 +19,4 @@ epicsEnvSet( "CAM_PORT", "CAM" )
 # Set maxPvAPIFrames  to 0  for default (2 frame buffers)
 # Parameters not set explicitly are set to zero
 prosilicaConfig(  "$(CAM_PORT)", "$(CAM_IP)", $(N_AD_BUFFERS=0), 0, 0, 0 )
-dbLoadRecords( "db/prosilica.db",  "CAM=$(CAM_PV),CAM_PORT=$(CAM_PORT),TRIG_PV=$(TRIG_PV=unused)" )
+dbLoadRecords( "db/prosilica.db",  "CAM=$(CAM_PV),CAM_PORT=$(CAM_PORT),CAM_TRIG=$(CAM_TRIG=unused)" )
