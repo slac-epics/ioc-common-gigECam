@@ -6,8 +6,8 @@ file ADBase.template
 	{
 	P			= $(CAM),
 	R			= :,
-	ADDR		= "\$(ADDR=0)"
-	TIMEOUT		= "\$(TIMEOUT=1)"
+	ADDR		= "\$(ADDR=0)",
+	TIMEOUT		= "\$(TIMEOUT=1)",
 	PORT		= "$(CAM_PORT)",
 	RATE_SMOOTH	= "\$(RATE_SMOOTH=0.2)"
 	}
@@ -29,15 +29,39 @@ file prosilica.template
 file boxLimits.template
 {
 	{
-	P			= $(CAM),
-	R			= :,
+	P				= $(CAM),
+	R				= :,
 	}
 }
 
 file cross.db
 {
 	{
-	P			= $(CAM),
-	R			= :,
+	P				= $(CAM),
+	R				= :,
+	}
+}
+
+file timeStampEventCode.db
+{
+	{
+	CAM				= "$(CAM)",
+	TSS				= "$(CAM):TSS",
+	CAM_DLY			= "$(CAM_TRIG):TDES",
+	}
+}
+
+file image_meta.template
+{
+	{
+	CAM				= "\$(CAM)",
+	P				= "\$(CAM)",
+	R				= ":",
+	RESOLUTION		= "\$(RESOLUTION=1)",
+	RES_EGU			= "\$(RES_EGU=um)",
+	XO				= "\$(XO=1)",
+	YO				= "\$(YO=1)",
+	XRC				= "\$(XRC=1000)",
+	YRC				= "\$(YRC=1000)",
 	}
 }

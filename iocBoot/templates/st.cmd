@@ -86,8 +86,8 @@ epicsEnvSet( "CAM_TYPE", "$$IF(CAM_TYPE,$$CAM_TYPE,prosilica)" )
 < setupScripts/$(CAM_TYPE).cmd
 
 # Set asyn trace flags
-asynSetTraceMask(   "$(CAM_PORT)", 0, $(CAM_TRACE_MASK) )
-asynSetTraceIOMask( "$(CAM_PORT)", 0, $(CAM_TRACE_IO_MASK) )
+asynSetTraceMask(   "$(CAM_PORT)",      0, $(CAM_TRACE_MASK) )
+asynSetTraceIOMask( "$(CAM_PORT)",      0, $(CAM_TRACE_IO_MASK) )
 $$IF(USE_TRACE_FILES)
 asynSetTraceFile(	"$(CAM_PORT)",		0, "$(IOC_DATA)/$(IOC)/$(CAM_PORT).log" )
 $$ENDIF(USE_TRACE_FILES)
@@ -105,7 +105,7 @@ $$IF(EVR_PV)
 # Load timestamp plugin
 dbLoadRecords("db/timeStampFifo.template",  "DEV=$(CAM_PV):TSS,PORT_PV=$(CAM_PV):PortName_RBV,EC_PV=$(CAM_PV):CamEventCode_RBV,DLY_PV=$(CAM_PV):TrigToTS_Calc NMS CPP" )
 $$ENDIF(EVR_PV)
-dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),TSS=$(CAM_PV):TSS" )
+#dbLoadRecords("db/timeStampEventCode.db",  "CAM=$(CAM_PV),CAM_TRIG=$(TRIG_PV),TSS=$(CAM_PV):TSS" )
 
 $$IF(NO_ST_CMD_DELAY)
 $$ELSE(NO_ST_CMD_DELAY)
@@ -215,10 +215,10 @@ save_restoreSet_IncompleteSetsOk( 1 )
 save_restoreSet_DatedBackupFiles( 1 )
 # pass0 autosave restore IS needed for cameras and slows IOC boot
 set_pass0_restoreFile( "autoSettings.sav" )
-set_pass0_restoreFile( "$(IOC).sav" )
+#set_pass0_restoreFile( "$(IOC).sav" )
 # Is pass1 needed?
 set_pass1_restoreFile( "autoSettings.sav" )
-set_pass1_restoreFile( "$(IOC).sav" )
+#set_pass1_restoreFile( "$(IOC).sav" )
 
 #
 # iocInit: Initialize the IOC and start processing records
@@ -236,7 +236,7 @@ epicsThreadSleep $(ST_CMD_DELAYS)
 $$ENDIF(NO_ST_CMD_DELAY)
 
 # Start PVAccess Server
-startPVAServer()
+#startPVAServer()
 
 # Create autosave files from info directives
 makeAutosaveFileFromDbInfo( "$(IOC_DATA)/$(IOC)/autosave/autoSettings.req", "autosaveFields" )
@@ -251,12 +251,14 @@ create_monitor_set( "$(IOCNAME).req",    5,  "" )
 $$LOOP(BLD)
 $$IF(BLD_SRC)
 # Configure the BLD client
+epicsEnvSet( "BLD_IP",      "239.255.24.$$BLD_SRC" )
 epicsEnvSet( "BLD_XTC",     "$$IF(XTC,$$XTC,0x10048)" ) # XTC Type, Id_Spectrometer
 epicsEnvSet( "BLD_SRC",     "$$SRC" ) # Src Id
-epicsEnvSet( "BLD_IP",      "239.255.24.$(BLD_SRC)" )
 epicsEnvSet( "BLD_PORT",    "$$IF(PORT,$$PORT,10148)" )
 epicsEnvSet( "BLD_MAX",     "$$IF(MAX,$$MAX,8980)" )    # 9000 MTU - 20 byte header
-BldConfigSend( "$(BLD_IP)", $(BLD_PORT), $(BLD_MAX) )
+BldSetID( "$$IF(BLD_ID,$$BLD_ID,0)" )
+BldConfigSend( "239.255.24.$$BLD_SRC", "$$IF(PORT,$$PORT,10148)", "$$IF(MAX,$$MAX,8980)", "$$IF(BLD_IF,$$BLD_IF,)" )
+#BldConfigSend( "$(BLD_IP)", $(BLD_PORT), $(BLD_MAX) )
 $$IF(BLD_AUTO_START)
 # Autostart plugin specific BLD
 BldStart()

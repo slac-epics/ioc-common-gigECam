@@ -29,7 +29,7 @@ PVASRV_MODULE_VERSION               = R0.12.0-0.2.1
 PVDATABASE_MODULE_VERSION           = R4.3.0-0.0.1
 PVDATA_MODULE_VERSION               = R7.0.0-0.0.1
 SSCAN_MODULE_VERSION                = R2.10.2-1.0.0
-TIMESTAMPFIFO_MODULE_VERSION        = R1.6.2
+TIMESTAMPFIFO_MODULE_VERSION        = R1.7.0
 
 # ============================================================
 # External Support module path definitions

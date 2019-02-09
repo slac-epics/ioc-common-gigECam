@@ -2,13 +2,15 @@
 # Standard aravis.substitutions
 #
 
+# aravisCamera.template includes ADBase.template
 file aravisCamera.template
 {
 	{
 	P			= $(CAM),
 	R			= :,
-	PORT		= $(CAM_PORT),
-	CAM_DLY_RBV	= "$(TRIG_PV):BW_TDES",
+	ADDR		= "\$(ADDR=0)",
+	TIMEOUT		= "\$(TIMEOUT=1)",
+	PORT		= "$(CAM_PORT)",
 	RATE_SMOOTH	= "\$(RATE_SMOOTH=0.2)"
 	}
 }
@@ -16,15 +18,39 @@ file aravisCamera.template
 file boxLimits.template
 {
 	{
-	P=$(CAM),
-	R=:,
+	P				= $(CAM),
+	R				= :,
 	}
 }
 
 file cross.db
 {
 	{
-	P=$(CAM),
-	R=:,
+	P				= $(CAM),
+	R				= :,
+	}
+}
+
+file timeStampEventCode.db
+{
+	{
+	CAM				= "$(CAM)",
+	TSS				= "$(CAM):TSS",
+	CAM_DLY			= "$(CAM_TRIG):TDES",
+	}
+}
+
+file image_meta.template
+{
+	{
+	CAM				= "\$(CAM)",
+	P				= "\$(CAM)",
+	R				= ":",
+	RESOLUTION		= "\$(RESOLUTION=1)",
+	RES_EGU			= "\$(RES_EGU=um)",
+	XO				= "\$(XO=1)",
+	YO				= "\$(YO=1)",
+	XRC				= "\$(XRC=1000)",
+	YRC				= "\$(YRC=1000)",
 	}
 }

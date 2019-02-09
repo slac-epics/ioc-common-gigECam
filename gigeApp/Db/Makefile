@@ -3,14 +3,44 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
+DB_INSTALLS += $(EVENT2)/db/devEvrInfo.db
+
 #----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
 DB += timeStampEventCode.db
 DB += netstat.template
-DB += iocName.db
-DB += evrUsed.db
 
+DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
+DB_INSTALLS += $(IOCADMIN)/db/devIocInfo.db
+
+# Create iocRelease.db
+IOCRELEASE_DB	+=	iocRelease.db
+
+ifdef EVENT2
+DB_INSTALLS += $(EVENT2)/db/evrPmc230.db
+DB_INSTALLS += $(EVENT2)/db/evrSLAC.db
+DB_INSTALLS += $(EVENT2)/db/eventCodeDelays.db
+ifdef TIMESTAMPFIFO
+DB_INSTALLS += $(TIMESTAMPFIFO)/db/timeStampFifo.template
+endif
+endif
+
+# Install ADStream db files
+DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.db)
+
+# Install ADStream cmd scripts
+DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.cmd)
+
+DB += ffmpegUsed.db
+ifdef FFMPEGSERVER
+# Install ffmpegServer files
+DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.db)
+DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.cmd)
+endif
+
+#
 # Create and install Camera DB Files
 DB += prosilica.db
 ifdef ARAVISGIGE
@@ -27,29 +57,12 @@ PR_MODELS := $(wildcard $(ADPROSILICA)/db/*.env)
 DB_INSTALLS += $(PR_MODELS)
 DB_INSTALLS += $(subst .env,.template,$(PR_MODELS))
 
-DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
-DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
-ifdef EVENT2
-DB_INSTALLS += $(EVENT2)/db/evrPmc230.db
-DB_INSTALLS += $(EVENT2)/db/evrSLAC.db
-ifdef TIMESTAMPFIFO
-DB_INSTALLS += $(TIMESTAMPFIFO)/db/timeStampFifo.template
-endif
-endif
-
-# Install ADStream db files
-DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.db)
-
-# Install ADStream cmd scripts
-DB_INSTALLS += $(wildcard $(ADSTREAM)/db/*.cmd)
-
 #----------------------------------------------------
 # Create and install (or just install)
 # Archive files, templates, substitutions like this
 #
 ARCHIVE += gige-ioc.archive
 
-# Create and install archive Files
 ifdef EVENT2
 ARCHIVE += $(EVENT2)/archive/archive_evr_PMC.archive
 ARCHIVE += $(EVENT2)/archive/archive_evr_SLAC.archive
