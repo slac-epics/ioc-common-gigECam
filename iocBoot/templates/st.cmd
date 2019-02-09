@@ -192,7 +192,7 @@ dbLoadRecords("db/netstat.template", "P=$(IOC_PV),IF=$$IF(NET_IF,$$NET_IF,ETH0),
 dbLoadRecords( "db/iocSoft.db",				"IOC=$(IOC_PV)" )
 dbLoadRecords( "db/iocRelease.db",			"IOC=$(IOC_PV)" )
 epicsEnvSet( "DEV_INFO", "DEV=$(CAM_PV),IOC=$(IOC_PV),IOCNAME=$(IOCNAME)" )
-epicsEnvSet( "DEV_INFO", "$(DEV_INFO),COM_TYPE=camLink,COM_PORT=Card $(EDT_CARD) Chan $(EDT_CHAN)" )
+epicsEnvSet( "DEV_INFO", "$(DEV_INFO),COM_TYPE=camLink,COM_PORT=eNet $CAM_IP" )
 $$IF(POWER)
 epicsEnvSet( "DEV_INFO", "$(DEV_INFO),POWER=$$POWER" )
 $$ENDIF(POWER)
