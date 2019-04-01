@@ -24,8 +24,8 @@ $(PROD_NAME)_DBD += netstat.dbd
 $(PROD_NAME)_DBD += iocAdmin.dbd
 $(PROD_NAME)_DBD += caPutLog.dbd
 
-# pvaSrv
-#$(PROD_NAME)_DBD += dbPv.dbd
+# pva2pva
+$(PROD_NAME)_DBD += qsrv.dbd
 
 ifdef EVENT2
 # Timing and EVR
@@ -55,6 +55,8 @@ gige_SRCS_DEFAULT += netstat.c
 
 # Add required libraries
 # base and std modules
+PROD_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
+
 $(PROD_NAME)_LIBS += devIocStats
 $(PROD_NAME)_LIBS += caPutLog
 
