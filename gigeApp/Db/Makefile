@@ -10,6 +10,11 @@ DB_INSTALLS += $(EVENT2)/db/devEvrInfo.db
 # databases, templates, substitutions like this
 DB += timeStampEventCode.db
 DB += netstat.template
+DB += Sim4MP.env
+DB += Sim4MP.template
+DB += simDetector.db 
+#DB += readTrapWrite.acf
+
 
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db

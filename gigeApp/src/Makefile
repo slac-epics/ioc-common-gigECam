@@ -115,6 +115,10 @@ $(PROD_NAME)_LIBS += bz2
 $(PROD_NAME)_LIBS += lzma
 endif
 
+ifdef SNCSEQ
+gige_LIBS += seq
+endif
+
 #===========================
 
 include $(TOP)/configure/RULES

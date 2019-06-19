@@ -1,0 +1,56 @@
+#
+# simDetector.substitutions
+#
+
+# simDetector.template includes ADBase.template
+file simDetector.template
+{
+	{
+	P			= $(CAM),
+	R			= :,
+	ADDR		= "\$(ADDR=0)",
+	TIMEOUT		= "\$(TIMEOUT=1)",
+	PORT		= "$(CAM_PORT)",
+	RATE_SMOOTH	= "\$(RATE_SMOOTH=0.2)"
+	}
+}
+
+file boxLimits.template
+{
+	{
+	P				= $(CAM),
+	R				= :,
+	}
+}
+
+file cross.db
+{
+	{
+	P				= $(CAM),
+	R				= :,
+	}
+}
+
+file timeStampEventCode.db
+{
+	{
+	CAM				= "$(CAM)",
+	TSS				= "$(CAM):TSS",
+	CAM_DLY			= "$(CAM_TRIG):TDES",
+	}
+}
+
+file image_meta.template
+{
+	{
+	CAM				= "\$(CAM)",
+	P				= "\$(CAM)",
+	R				= ":",
+	RESOLUTION		= "\$(RESOLUTION=1)",
+	RES_EGU			= "\$(RES_EGU=um)",
+	XO				= "\$(XO=1)",
+	YO				= "\$(YO=1)",
+	XRC				= "\$(XRC=1000)",
+	YRC				= "\$(YRC=1000)",
+	}
+}

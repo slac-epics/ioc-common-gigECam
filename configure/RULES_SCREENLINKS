@@ -10,6 +10,7 @@ endif
 .PHONY: updateScreenLinks
 
 # Mark optional AD camera modules w/ unused/fooScreens
+ADSIMDETECTOR   ?= unused
 ADSTREAM        ?= unused
 ADPROSILICA     ?= unused
 ARAVISGIGE      ?= unused
@@ -30,6 +31,7 @@ updateScreenLinks_withSoftLinks:
 	@rm -f     $(INSTALL_SCREENLINKS)/*
 	@mkdir -p  $(INSTALL_SCREENLINKS)
 	@ln -s {..,$(INSTALL_SCREENLINKS)}/gigeScreens
+	-@ln -s {$(ADSIMDETECTOR),$(INSTALL_SCREENLINKS)}/ADSimDetectorScreens 2> /dev/null
 	-@ln -s {$(ADSTREAM),$(INSTALL_SCREENLINKS)}/ADStreamScreens 2> /dev/null
 	-@ln -s {$(ADCORE),$(INSTALL_SCREENLINKS)}/areaDetectorHelp 2> /dev/null
 	-@ln -s {$(ADCORE),$(INSTALL_SCREENLINKS)}/areaDetectorScreens 2> /dev/null
@@ -37,7 +39,6 @@ updateScreenLinks_withSoftLinks:
 	-@ln -s {$(ADPROSILICA),$(INSTALL_SCREENLINKS)}/prosilicaScreens 2> /dev/null
 	-@ln -s {$(ARAVISGIGE),$(INSTALL_SCREENLINKS)}/arvScreens 2> /dev/null
 	-@ln -s {$(EVENT2),$(INSTALL_SCREENLINKS)}/event2Screens 2> /dev/null
-	-@ln -s {$(HISTORY),$(INSTALL_SCREENLINKS)}/historyScreens 2> /dev/null
 	-@ln -s {$(IOCADMIN),$(INSTALL_SCREENLINKS)}/iocScreens 2> /dev/null
 	-@ln -s {$(FFMPEGSERVER),$(INSTALL_SCREENLINKS)}/ffmpegScreens 2> /dev/null
 
@@ -51,6 +52,7 @@ updateScreenLinks_withCopies:
 	@rm    -f  $(INSTALL_SCREENLINKS)/*
 	@mkdir -p   $(INSTALL_SCREENLINKS)
 	@ln -s {..,$(INSTALL_SCREENLINKS)}/gigeScreens
+	@mkdir -p   $(INSTALL_SCREENLINKS)/ADSimDetectorScreens
 	@mkdir -p   $(INSTALL_SCREENLINKS)/ADStreamScreens
 	@mkdir -p   $(INSTALL_SCREENLINKS)/areaDetectorHelp
 	@mkdir -p   $(INSTALL_SCREENLINKS)/areaDetectorScreens
@@ -61,14 +63,16 @@ updateScreenLinks_withCopies:
 	@mkdir -p   $(INSTALL_SCREENLINKS)/arvScreens
 	@mkdir -p   $(INSTALL_SCREENLINKS)/ffmpegScreens
 	@mkdir -p   $(INSTALL_SCREENLINKS)/historyScreens
-	-@cp $(ADCORE)/areaDetectorHelp/*.*      $(INSTALL_SCREENLINKS)/areaDetectorHelp    2> /dev/null
-	-@cp $(ADCORE)/areaDetectorScreens/*.*   $(INSTALL_SCREENLINKS)/areaDetectorScreens 2> /dev/null
-	-@cp $(ADPROSILICA)/prosilicaScreens/*.* $(INSTALL_SCREENLINKS)/prosilicaScreens    2> /dev/null
-	-@cp $(ARAVISGIGE)/arvScreens/*.*        $(INSTALL_SCREENLINKS)/arvScreens          2> /dev/null
-	-@cp $(ADSTREAM)/ADStreamScreens/*.*     $(INSTALL_SCREENLINKS)/ADStreamScreens     2> /dev/null
-	-@cp $(ASYN)/asynScreens/*.*             $(INSTALL_SCREENLINKS)/asynScreens         2> /dev/null
-	-@cp $(EVENT2)/event2Screens/*.*         $(INSTALL_SCREENLINKS)/event2Screens       2> /dev/null
-	-@cp $(FFMPEGSERVER)/ffmpegScreens/*.*   $(INSTALL_SCREENLINKS)/ffmpegScreens       2> /dev/null
-	-@cp $(HISTORY)/historyScreens/*.*       $(INSTALL_SCREENLINKS)/historyScreens      2> /dev/null
-	-@cp $(IOCADMIN)/iocScreens/*.*          $(INSTALL_SCREENLINKS)/iocScreens          2> /dev/null
+	-@cp $(ADCORE)/areaDetectorHelp/*.*            $(INSTALL_SCREENLINKS)/areaDetectorHelp     2> /dev/null
+	-@cp $(ADCORE)/areaDetectorScreens/*.*         $(INSTALL_SCREENLINKS)/areaDetectorScreens  2> /dev/null
+	-@cp $(ADSIMDETECTOR)/ADSimDetectorScreens/*.* $(INSTALL_SCREENLINKS)/ADSimDetectorScreens 2> /dev/null
+	-@cp $(ADPROSILICA)/prosilicaScreens/*.*       $(INSTALL_SCREENLINKS)/prosilicaScreens     2> /dev/null
+	-@cp $(ARAVISGIGE)/arvScreens/*.*              $(INSTALL_SCREENLINKS)/arvScreens           2> /dev/null
+	-@cp $(ADSTREAM)/ADStreamScreens/*.*           $(INSTALL_SCREENLINKS)/ADStreamScreens      2> /dev/null
+	-@cp $(ASYN)/asynScreens/*.*                   $(INSTALL_SCREENLINKS)/asynScreens          2> /dev/null
+	-@cp $(EVENT2)/event2Screens/*.*               $(INSTALL_SCREENLINKS)/event2Screens        2> /dev/null
+	-@cp $(FFMPEGSERVER)/ffmpegScreens/*.*         $(INSTALL_SCREENLINKS)/ffmpegScreens        2> /dev/null
+	-@cp $(IOCADMIN)/iocScreens/*.*                $(INSTALL_SCREENLINKS)/iocScreens           2> /dev/null
 
+#-@cp $(HISTORY)/historyScreens/*.*             $(INSTALL_SCREENLINKS)/historyScreens       2> /dev/null
+#-@ln -s {$(HISTORY),$(INSTALL_SCREENLINKS)}/historyScreens 2> /dev/null

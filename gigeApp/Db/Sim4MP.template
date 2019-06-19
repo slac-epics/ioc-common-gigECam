@@ -1,0 +1,31 @@
+# Sim4MP.template
+# DB Template file for 4M Pixel simDetector
+
+# Macros:
+#% macro, P, Device Prefix
+#% macro, R, Device Suffix
+
+record( stringin, "$(P)$(R)CamModel" )
+{
+	field( VAL,   "Sim4MP" )
+	field( PINI,  "YES" )
+}
+
+record( stringin, "$(P)$(R)CamModelScreen" )
+{
+	field( VAL,   "ADSimDetectorScreens/Sim4MP.edl" )
+	field( PINI,  "YES" )
+}
+
+record( stringin, "$(P)$(R)CamType" )
+{
+	field( VAL,   "prosilica" )
+	field( PINI,  "YES" )
+}
+
+record( stringin, "$(P)$(R)CamTypeScreen" )
+{
+	field( VAL,   "ADSimDetectorScreens/simDetector.edl" )
+	field( PINI,  "YES" )
+}
+
