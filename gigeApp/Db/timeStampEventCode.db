@@ -157,5 +157,9 @@ record( calcout, "$(CAM):TsFreeRunCalc" )
 	info( autosaveFields, "DESC" )
 }
 
-record( bo, "$(TSS):TsFreeRun" ) { }
+record( bo, "$(TSS):TsFreeRun" )
+{
+  field( ZNAM, "Triggered" )
+  field( ONAM, "FreeRun" )
+}
 record( ao, "$(TSS):ExpectedDelay" ) { }
