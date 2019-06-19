@@ -302,7 +302,7 @@ commandLabel {
   0 "View MPEG stream in browser"
 }
 command {
-  0 "firefox --no-remote `caget -t -S $(CAM):MJPG1:MJPG_URL_RBV`"
+  0 "firefox-tmp-profile.sh `caget -t -S $(CAM):MJPG1:MJPG_URL_RBV`"
 }
 endObjectProperties
 
