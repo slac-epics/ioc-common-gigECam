@@ -22,4 +22,4 @@ epicsEnvSet( "SIM_DATA_TYPE", 3 )
 # Parameters not set explicitly are set to zero
 simDetectorConfig(  "$(CAM_PORT)", $(IMAGE_XSIZE), $(IMAGE_YSIZE), $(SIM_DATA_TYPE), $(N_AD_BUFFERS=0), 0, 0, 0 )
 
-dbLoadRecords( "db/simDetector.db",  "CAM=$(CAM_PV),CAM_PORT=$(CAM_PORT),CAM_TRIG=$(CAM_TRIG=unused)" )
+dbLoadRecords( "db/simDetector.db",  "CAM=$(CAM_PV),CAM_PORT=$(CAM_PORT),CAM_TRIG=$(TRIG_PV=unused)" )

@@ -19,4 +19,4 @@ epicsEnvSet( "CAM_PORT", "CAM" )
 # Parameters not set explicitly are set to zero
 aravisCameraConfig(  "$(CAM_PORT)", "$(CAM_IP)", $(N_AD_BUFFERS=0), 0, 0, 0 )
 
-dbLoadRecords( "db/aravis.db",  "CAM=$(CAM_PV),CAM_PORT=$(CAM_PORT),CAM_TRIG=$(CAM_TRIG=unused)" )
+dbLoadRecords( "db/aravis.db",  "CAM=$(CAM_PV),CAM_PORT=$(CAM_PORT),CAM_TRIG=$(TRIG_PV=unused)" )
