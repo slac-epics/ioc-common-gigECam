@@ -6,21 +6,21 @@ include $(TOP)/RELEASE_SITE
 # Define the version of modules needed by
 # IOC apps or other Support apps
 # ===============================================================
-ADCORE_MODULE_VERSION               = R3.1-2.3.0
-ADPROSILICA_MODULE_VERSION          = R2.1-1.5.1
-ADSIMDETECTOR_MODULE_VERSION        = R2.8-0.0.1
-ADSTREAM_MODULE_VERSION             = R2.6.2
+ADCORE_MODULE_VERSION               = R3.1-2.3.3
+ADPROSILICA_MODULE_VERSION          = R2.1-1.5.2
+ADSIMDETECTOR_MODULE_VERSION        = R2.8-0.0.2
+ADSTREAM_MODULE_VERSION             = R2.7.0
 ADSUPPORT_MODULE_VERSION            = R1.1-0.1.1
-ARAVISGIGE_MODULE_VERSION           = R2.1-2.0.4
+ARAVISGIGE_MODULE_VERSION           = R2.1-2.0.5
 ASYN_MODULE_VERSION                 = R4.32-1.0.0
 AUTOSAVE_MODULE_VERSION             = R5.8-2.1.0
 BUSY_MODULE_VERSION                 = R1.6.1-0.2.6
-CALC_MODULE_VERSION                 = R3.7-1.0.0
+CALC_MODULE_VERSION                 = R3.7-1.0.1
 CAPUTLOG_MODULE_VERSION             = R3.5-1.0.0
 DIAG_TIMER_MODULE_VERSION           = R1.9.2
 EVENT2_MODULE_VERSION               = R4.6.0
 FFMPEGSERVER_MODULE_VERSION         = R2.1.1-2.2.1
-IOCADMIN_MODULE_VERSION             = R3.1.15-1.10.0
+IOCADMIN_MODULE_VERSION             = R3.1.16-1.1.0
 MCOREUTILS_MODULE_VERSION           = R1.2.1-0.1.0
 NORMATIVETYPES_MODULE_VERSION       = R5.2.0-0.0.1
 PVA2PVA_MODULE_VERSION              = R1.0.0-0.3.0
@@ -30,7 +30,7 @@ PVDATABASE_MODULE_VERSION           = R4.3.0-0.0.1
 PVDATA_MODULE_VERSION               = R7.0.0-0.0.1
 SNCSEQ_MODULE_VERSION               = R2.2.4-1.0
 SSCAN_MODULE_VERSION                = R2.10.2-1.0.0
-TIMESTAMPFIFO_MODULE_VERSION        = R1.7.0
+TIMESTAMPFIFO_MODULE_VERSION        = R1.7.1
 
 # ============================================================
 # External Support module path definitions
@@ -72,10 +72,10 @@ SSCAN           = $(EPICS_MODULES)/sscan/$(SSCAN_MODULE_VERSION)
 TIMESTAMPFIFO   = $(EPICS_MODULES)/timeStampFifo/$(TIMESTAMPFIFO_MODULE_VERSION)
 
 # Set EPICS_BASE last so it appears last in the DB, DBD, INCLUDE, and LIB search paths
-#EPICS_BASE      = $(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
+EPICS_BASE      = $(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
 #MY_MODULES = /afs/slac/u/ey/bhill/git-wa/modules
-MY_MODULES  = /reg/neh/home5/bhill/git-wa-neh/modules
+#MY_MODULES  = /reg/neh/home5/bhill/git-wa-neh/modules
 #MY_MODULES = /reg/neh/home4/mcbrowne/git/modules
 
 #ADCORE         = $(MY_MODULES)/ADCore-git
@@ -94,4 +94,4 @@ MY_MODULES  = /reg/neh/home5/bhill/git-wa-neh/modules
 #MCOREUTILS     = $(MY_MODULES)/MCoreUtils-git
 #TIMESTAMPFIFO  = $(MY_MODULES)/timeStampFifo-git
 
-EPICS_BASE		= /reg/neh/home/bhill/git-wa-neh/base-R7-git
+#EPICS_BASE		= /reg/neh/home/bhill/git-wa-neh/base-R7-git
