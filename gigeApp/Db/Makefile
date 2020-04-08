@@ -16,6 +16,7 @@ DB += simDetector.db
 #DB += readTrapWrite.acf
 
 
+DB_INSTALLS += $(ASYN)/db/asynRecord.db
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 DB_INSTALLS += $(IOCADMIN)/db/iocSoft.db
 DB_INSTALLS += $(IOCADMIN)/db/devIocInfo.db
@@ -45,6 +46,10 @@ DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.db)
 DB_INSTALLS += $(wildcard $(FFMPEGSERVER)/db/plugin*.cmd)
 endif
 
+# History DB Files
+DB += bld-hist.db
+DB += gige-hist.db
+
 #
 # Create and install Camera DB Files
 DB += prosilica.db
@@ -66,6 +71,8 @@ DB_INSTALLS += $(subst .env,.template,$(PR_MODELS))
 # Create and install (or just install)
 # Archive files, templates, substitutions like this
 #
+ARCHIVE += bld-hist.archive
+ARCHIVE += gige-hist.archive
 ARCHIVE += gige-ioc.archive
 
 ifdef EVENT2
@@ -77,6 +84,8 @@ endif
 # Create and install (or just install)
 # Autosave request files, templates, substitutions like this
 #
+REQ += bld-hist.req
+REQ += gige-hist.req
 REQ += gige-ioc.req
 
 ifdef EVENT2

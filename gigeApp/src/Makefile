@@ -23,6 +23,8 @@ $(PROD_NAME)_DBD += netstat.dbd
 # std ioc modules
 $(PROD_NAME)_DBD += iocAdmin.dbd
 $(PROD_NAME)_DBD += caPutLog.dbd
+$(PROD_NAME)_DBD += history.dbd
+
 
 # pva2pva
 $(PROD_NAME)_DBD += qsrv.dbd
@@ -33,6 +35,7 @@ $(PROD_NAME)_DBD += diagTimer.dbd
 $(PROD_NAME)_DBD += event2Support.dbd
 $(PROD_NAME)_DBD += devEvent2Er.dbd
 
+# Multicore utilities
 $(PROD_NAME)_DBD += mcoreutils.dbd
 
 # ADCore timeStamp provider
@@ -50,15 +53,14 @@ gige_SRCS += gige_registerRecordDeviceDriver.cpp
 gige_SRCS_DEFAULT += gigeMain.cpp
 gige_SRCS_DEFAULT += netstat.c
 
-# Add locally compiled object code
-#gige_SRCS += dbSubExample.c
-
 # Add required libraries
 # base and std modules
 PROD_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
 
 $(PROD_NAME)_LIBS += devIocStats
 $(PROD_NAME)_LIBS += caPutLog
+#$(PROD_NAME)_LIBS += bldClient
+$(PROD_NAME)_LIBS += history
 
 # pvaSrv
 #$(PROD_NAME)_LIBS += pvaSrv
@@ -85,13 +87,15 @@ gige_LIBS += PvAPI
 ifdef ARAVISGIGE
 # aravis camera libs
 gige_LIBS += aravisCamera
-gige_LIBS += aravis-0.4
+gige_LIBS += aravis-0.6
 gige_LIBS += gio-2.0
 gige_LIBS += gobject-2.0
 gige_LIBS += gthread-2.0
 gige_LIBS += gmodule-2.0
 gige_LIBS += glib-2.0
 gige_SYS_LIBS += resolv
+gige_SYS_LIBS += usb-1.0
+gige_SYS_LIBS += mount
 PROD_LIBS += pcre
 PROD_LIBS += ffi
 endif
@@ -113,10 +117,6 @@ $(PROD_NAME)_LIBS += avutil
 $(PROD_NAME)_LIBS += swresample
 $(PROD_NAME)_LIBS += bz2
 $(PROD_NAME)_LIBS += lzma
-endif
-
-ifdef SNCSEQ
-gige_LIBS += seq
 endif
 
 #===========================
