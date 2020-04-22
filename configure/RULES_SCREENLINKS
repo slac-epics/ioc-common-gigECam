@@ -41,6 +41,7 @@ updateScreenLinks_withSoftLinks:
 	-@ln -s {$(EVENT2),$(INSTALL_SCREENLINKS)}/event2Screens 2> /dev/null
 	-@ln -s {$(IOCADMIN),$(INSTALL_SCREENLINKS)}/iocScreens 2> /dev/null
 	-@ln -s {$(FFMPEGSERVER),$(INSTALL_SCREENLINKS)}/ffmpegScreens 2> /dev/null
+	-@ln -s {$(HISTORY),$(INSTALL_SCREENLINKS)}/historyScreens 2> /dev/null
 
 # Use copies for most screens so they can be deployed to accelerator
 # PROD area via cram.
@@ -73,6 +74,4 @@ updateScreenLinks_withCopies:
 	-@cp $(EVENT2)/event2Screens/*.*               $(INSTALL_SCREENLINKS)/event2Screens        2> /dev/null
 	-@cp $(FFMPEGSERVER)/ffmpegScreens/*.*         $(INSTALL_SCREENLINKS)/ffmpegScreens        2> /dev/null
 	-@cp $(IOCADMIN)/iocScreens/*.*                $(INSTALL_SCREENLINKS)/iocScreens           2> /dev/null
-
-#-@cp $(HISTORY)/historyScreens/*.*             $(INSTALL_SCREENLINKS)/historyScreens       2> /dev/null
-#-@ln -s {$(HISTORY),$(INSTALL_SCREENLINKS)}/historyScreens 2> /dev/null
+	-@cp $(HISTORY)/historyScreens/*.*             $(INSTALL_SCREENLINKS)/historyScreens       2> /dev/null
